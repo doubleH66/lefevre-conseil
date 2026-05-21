@@ -336,31 +336,6 @@ function ContactForm({ email }: { email: string }) {
   );
 }
 
-function QuickContactChip({
-  href,
-  label,
-  value,
-  external,
-}: {
-  href: string;
-  label: string;
-  value: string;
-  external?: boolean;
-}) {
-  return (
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={cn(
-        "group flex min-w-0 flex-1 flex-col rounded-2xl border border-[#1f2a7c]/12 bg-white px-4 py-3.5 shadow-sm transition-shadow hover:shadow-md sm:px-5 sm:py-4",
-      )}
-    >
-      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/45">{label}</span>
-      <span className="mt-1 truncate text-sm font-semibold text-[#1f2a7c] group-hover:text-[#182266]">{value}</span>
-    </a>
-  );
-}
-
 function InfoRow({
   icon,
   label,
@@ -408,18 +383,7 @@ export function ContactPage() {
     <MarketingSubpage hero={PAGE_HEROES.contact} breadcrumbs={[...BREADCRUMBS]} hideBilanCta>
       <MarketingPageStack className={marketingPageShellClass}>
         <div className={cn(marketingInnerClass, "max-w-6xl")}>
-          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <QuickContactChip href={`tel:${phoneTel}`} label="Téléphone" value={phone} />
-            <QuickContactChip href={`mailto:${email}`} label="E-mail" value={email} />
-            <QuickContactChip
-              href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
-              label="Cabinet"
-              value="Perpignan"
-              external
-            />
-          </div>
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 xl:mt-10">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8">
             <ContactForm email={email} />
 
             <div className="flex flex-col gap-5">
@@ -499,7 +463,6 @@ export function ContactPage() {
                 <h2 id="map-title" className="mt-1 text-lg font-semibold tracking-tight text-[#1f2a7c]">
                   Localisation
                 </h2>
-                <p className="mt-1 text-sm text-[#1f2a7c]/60">{formatAddressLine()}</p>
               </div>
               <Link
                 href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
