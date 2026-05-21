@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { PwaRegister } from "@/components/client/pwa-register";
 import { defaultMetadata, SITE_NAME, SITE_URL } from "@/lib/seo/metadata";
 import { financialServiceJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import "./globals.css";
@@ -64,6 +65,7 @@ export default function RootLayout({
         <SiteChrome>{children}</SiteChrome>
         <Analytics />
         <SpeedInsights />
+        <PwaRegister />
       </body>
     </html>
   );
