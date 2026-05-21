@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /espace-client/
+Disallow: /espace-admin/
+Disallow: /login
+Disallow: /auth/
+Disallow: /api/
+
+Sitemap: https://lefevre-conseil.fr/sitemap.xml

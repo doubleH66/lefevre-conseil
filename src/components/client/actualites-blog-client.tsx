@@ -26,7 +26,7 @@ function ArticleCard({ article, searchQuery }: { article: Article; searchQuery: 
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#1f2a7c]/5">
         <Image
           src={article.image}
-          alt=""
+          alt={article.title}
           fill
           unoptimized
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
@@ -90,7 +90,7 @@ function FeaturedCard({ article, searchQuery }: { article: Article; searchQuery:
         <div className="relative min-h-[200px] overflow-hidden bg-[#1f2a7c]/5 lg:min-h-[300px]">
           <Image
             src={article.image}
-            alt=""
+            alt={article.title}
             fill
             unoptimized
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"

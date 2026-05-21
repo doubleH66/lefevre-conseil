@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { FaqAccordion } from "@/components/client/faq-accordion";
 import { ServiceActionBand } from "@/components/services/service-action-band";
+import { ServiceComparateurBlock } from "@/components/services/service-comparateur-block";
 import { RichText } from "@/components/ui/rich-text";
 import { ComparisonTable } from "@/components/ui/comparison-table";
 import type { ServicePremiumContent } from "@/lib/content/service-premium-types";
@@ -91,6 +92,8 @@ export function ServicePremiumClient({
             ))}
           </ul>
         ) : null}
+
+        {content.slug === "prevoyance-sante-assurance-pret" ? <ServiceComparateurBlock /> : null}
       </Block>
 
       {/* Bandeau CTA */}

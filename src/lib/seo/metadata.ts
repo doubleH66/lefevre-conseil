@@ -3,9 +3,9 @@ import { SITE_NAME, SITE_URL } from "@/lib/content/site";
 export { SITE_NAME, SITE_URL };
 
 export const defaultMetadata = {
-  title: "Lefèvre Conseil - Cabinet de gestion de patrimoine à Perpignan",
+  title: "Lefèvre Conseil — Gestion de patrimoine Perpignan",
   description:
-    "Cabinet indépendant de conseil en gestion de patrimoine à Perpignan. Épargne, retraite, défiscalisation, prévoyance, transmission - accompagnement personnalisé partout en France. Note 5/5 sur Google.",
+    "Cabinet CGP indépendant à Perpignan. Épargne, retraite, défiscalisation, prévoyance, transmission — accompagnement sur toute la France. Note 5/5 Google.",
   keywords: [
     "gestion de patrimoine",
     "Perpignan",

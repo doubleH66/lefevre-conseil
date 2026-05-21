@@ -209,9 +209,9 @@ export function LefevreUniqueTestimonials() {
                 <div className="relative shrink-0">
                   {testimonial.avatar ? (
                     /* eslint-disable-next-line @next/next/no-img-element -- avatar Google client */
-                    <img
-                      src={testimonial.avatar}
-                      alt=""
+                  <img
+                    src={testimonial.avatar}
+                    alt={`Photo de ${testimonial.author}`}
                       className={cn(
                         "size-8 rounded-full object-cover transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
                         isActive ? "ring-2 ring-white/50" : "ring-0",

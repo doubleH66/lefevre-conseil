@@ -90,7 +90,7 @@ export function SiteFooter() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={SITE_LOGO_URL}
-                    alt=""
+                    alt="Lefèvre Conseil"
                     className="h-9 w-auto max-w-[min(100%,220px)] object-contain object-left brightness-0 invert sm:h-10"
                   />
                 </Link>
