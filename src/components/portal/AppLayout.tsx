@@ -55,11 +55,6 @@ export function AppLayout({
           badge: toUpload > 0 ? String(toUpload) : undefined,
           icon: <Files className={iconClass} aria-hidden />,
         },
-      ],
-    },
-    {
-      title: "Mon compte",
-      items: [
         {
           key: "client-profile",
           label: "Mon profil",

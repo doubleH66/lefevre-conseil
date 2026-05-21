@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { PortalWorkspace } from "@/components/portal/PortalWorkspace";
 
 export const metadata: Metadata = {
   title: "Mes pièces justificatives | Lefèvre Conseil",
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function EspaceClientPage() {
-  return <PortalWorkspace initialMode="client" />;
+  return null;
 }

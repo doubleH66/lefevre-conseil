@@ -10,6 +10,8 @@ export const ROUTES = {
   installation: "/installation",
   login: "/login",
   espaceClient: "/espace-client",
+  espaceClientProfil: "/espace-client/profil",
+  espaceClientReglages: "/espace-client/reglages",
   espaceAdmin: "/espace-admin",
   cookies: "/cookies",
   simulateur: "/simulateur",
