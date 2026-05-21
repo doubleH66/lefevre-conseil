@@ -11,6 +11,8 @@ import { useAccountSession } from "@/components/auth/use-account-session";
 import { LOGIN_HREF } from "@/lib/content/routes";
 import { sanitizeInternalPath } from "@/lib/sanitize-internal-path";
 import { isSupabasePublicConfigured } from "@/lib/supabase/public-env";
+import { heroCtaPrimaryCompactClassName } from "@/components/ui/hero-cta";
+import { marketingCardClass } from "@/components/marketing/marketing-styles";
 import { cn } from "@/lib/utils";
 
 const DIALOG_TITLE_ID = "account-auth-dialog-title";
@@ -145,13 +147,18 @@ export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthShee
                   <Link
                     href={loginFullPageHref}
                     onClick={onClose}
-                    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#1f2a7c] px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#18226b]"
+                    className={cn(heroCtaPrimaryCompactClassName, "inline-flex w-full items-center justify-center")}
                   >
                     Page compte (infos)
                   </Link>
                 </div>
               ) : session.status === "loading" ? (
-                <p className="rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-600">
+                <p
+                  className={cn(
+                    marketingCardClass,
+                    "px-4 py-8 text-center text-sm text-[#1f2a7c]/65",
+                  )}
+                >
                   Vérification de la session…
                 </p>
               ) : session.status === "authenticated" ? (
@@ -166,6 +173,7 @@ export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthShee
                 <AuthPanel
                   nextPath={nextPath}
                   embedded
+                  hideHeader
                   idSuffix="-sheet"
                   onSuccess={onClose}
                 />

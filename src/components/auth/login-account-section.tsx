@@ -3,6 +3,8 @@
 import { AccountConnectedPanel } from "@/components/auth/account-connected-panel";
 import { AuthPanel } from "@/components/auth/auth-panel";
 import { useAccountSession } from "@/components/auth/use-account-session";
+import { marketingCardClass } from "@/components/marketing/marketing-styles";
+import { cn } from "@/lib/utils";
 import * as React from "react";
 
 export function LoginAccountSection({
@@ -26,7 +28,12 @@ export function LoginAccountSection({
 
   if (session.status === "loading") {
     return (
-      <p className="mt-8 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-600">
+      <p
+        className={cn(
+          marketingCardClass,
+          "px-6 py-10 text-center text-sm text-[#1f2a7c]/65",
+        )}
+      >
         Vérification de la session…
       </p>
     );
@@ -34,9 +41,7 @@ export function LoginAccountSection({
 
   if (session.status === "authenticated") {
     return (
-      <div className="mt-8">
-        <AccountConnectedPanel session={session} onSignOut={handleSignOut} signingOut={signingOut} />
-      </div>
+      <AccountConnectedPanel session={session} onSignOut={handleSignOut} signingOut={signingOut} />
     );
   }
 

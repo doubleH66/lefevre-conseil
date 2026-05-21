@@ -1,10 +1,19 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import {
+  fieldClass,
+  marketingCardClass,
+  marketingKickerClass,
+  marketingProseClass,
+} from "@/components/marketing/marketing-styles";
+import { HeroCtaPrimaryButton } from "@/components/ui/hero-cta";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
 type AppRoleChoice = "client" | "admin";
+
+const labelClass = "mb-1.5 block text-sm font-medium text-[#1f2a7c]/80";
 
 export function AuthPanel({
   nextPath,
@@ -12,15 +21,15 @@ export function AuthPanel({
   embedded = false,
   idSuffix = "",
   onSuccess,
+  hideHeader = false,
 }: {
   nextPath: string;
   initialMode?: "login" | "register";
-  /** Bandeau / modale : pas de marge page, carte plus légère. */
   embedded?: boolean;
-  /** Suffixed field ids (évite doublons si page `/login` + tiroir). */
   idSuffix?: string;
-  /** Appelé après connexion réussie (ex. fermer le tiroir avant redirection). */
   onSuccess?: () => void;
+  /** Tiroir nav : le titre est déjà affiché au-dessus du formulaire. */
+  hideHeader?: boolean;
 }) {
   const [mode, setMode] = React.useState<"login" | "register">(initialMode);
   const [email, setEmail] = React.useState("");
@@ -51,9 +60,12 @@ export function AuthPanel({
         password,
       });
       if (error) setErr(error.message);
-      else window.location.assign(nextPath);
+      else {
+        onSuccess?.();
+        window.location.assign(nextPath);
+      }
     } catch {
-      setErr("Impossible de contacter Supabase (variables d’environnement ou réseau).");
+      setErr("Impossible de contacter Supabase (variables d'environnement ou réseau).");
     } finally {
       setLoading(false);
     }
@@ -85,32 +97,37 @@ export function AuthPanel({
       else if (data.session) {
         onSuccess?.();
         window.location.assign(nextAfter);
-      }
-      else
+      } else
         setMsg(
           "Compte créé. Vérifiez votre boîte mail pour confirmer votre adresse avant la première connexion.",
         );
     } catch {
-      setErr("Impossible de contacter Supabase (variables d’environnement ou réseau).");
+      setErr("Impossible de contacter Supabase (variables d'environnement ou réseau).");
     } finally {
       setLoading(false);
     }
   }
 
-  const inputClass =
-    "mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900 outline-none ring-[#1f2a7c]/20 placeholder:text-neutral-400 focus:border-[#1f2a7c]/30 focus:ring-2";
-
-  const rootClass = embedded ? "mx-auto w-full max-w-none" : "mx-auto mt-8 max-w-md";
-  const cardClass = embedded
-    ? "rounded-xl border border-neutral-200/80 bg-neutral-50/40 shadow-none"
-    : "rounded-2xl border border-neutral-200/90 bg-white shadow-[0_8px_30px_rgba(15,23,42,0.06)]";
+  const rootClass = embedded ? "mx-auto w-full max-w-none" : "mx-auto w-full max-w-md";
 
   return (
     <div className={rootClass}>
-      <div className={cardClass}>
-        <div className="border-b border-neutral-100 p-1.5 sm:p-2">
+      <section className={cn(marketingCardClass, "overflow-hidden", embedded && "border-neutral-200/80 shadow-none")}>
+        {!hideHeader ? (
+          <div className="border-b border-neutral-100 px-6 py-5 sm:px-8 sm:py-6">
+            <p className={marketingKickerClass}>Compte</p>
+            <h2 className="mt-2 text-balance text-[clamp(1.2rem,2.8vw,1.65rem)] font-normal tracking-[-0.03em] text-[#1f2a7c]">
+              Connexion ou inscription
+            </h2>
+            <p className={cn("mt-2 text-sm leading-relaxed", marketingProseClass)}>
+              Accédez à votre espace client ou créez un compte en quelques instants.
+            </p>
+          </div>
+        ) : null}
+
+        <div className={cn("border-b border-neutral-100 px-5 py-4 sm:px-6", hideHeader && "border-t-0")}>
           <div
-            className="flex gap-1 rounded-xl bg-neutral-100/90 p-1"
+            className="flex flex-col gap-2 rounded-2xl border border-[#1f2a7c]/10 bg-[#1f2a7c]/[0.03] p-1.5 sm:flex-row"
             role="tablist"
             aria-label="Connexion ou inscription"
           >
@@ -118,13 +135,13 @@ export function AuthPanel({
               type="button"
               role="tab"
               aria-selected={mode === "login"}
-              className={cn(
-                "flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/35",
-                mode === "login"
-                  ? "bg-white text-[#1f2a7c] shadow-sm"
-                  : "text-neutral-600 hover:text-neutral-900",
-              )}
               onClick={() => setMode("login")}
+              className={cn(
+                "flex flex-1 items-center justify-center rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors",
+                mode === "login"
+                  ? "bg-[#1f2a7c] text-white shadow-sm"
+                  : "text-[#1f2a7c]/65 hover:bg-white hover:text-[#1f2a7c]",
+              )}
             >
               Connexion
             </button>
@@ -132,27 +149,24 @@ export function AuthPanel({
               type="button"
               role="tab"
               aria-selected={mode === "register"}
-              className={cn(
-                "flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/35",
-                mode === "register"
-                  ? "bg-white text-[#1f2a7c] shadow-sm"
-                  : "text-neutral-600 hover:text-neutral-900",
-              )}
               onClick={() => setMode("register")}
+              className={cn(
+                "flex flex-1 items-center justify-center rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors",
+                mode === "register"
+                  ? "bg-[#1f2a7c] text-white shadow-sm"
+                  : "text-[#1f2a7c]/65 hover:bg-white hover:text-[#1f2a7c]",
+              )}
             >
               Inscription
             </button>
           </div>
         </div>
 
-        <div className="px-5 pb-6 pt-5 sm:px-6 sm:pb-7 sm:pt-6">
+        <div className="px-6 py-6 sm:px-8 sm:py-7">
           {mode === "login" ? (
             <form onSubmit={submitLogin} className="space-y-4">
-              <p className="text-sm leading-relaxed text-neutral-600">
-                Connectez-vous avec votre e-mail et votre mot de passe.
-              </p>
               <div>
-                <label htmlFor={`auth-email-login${idSuffix}`} className="block text-sm font-medium text-neutral-800">
+                <label htmlFor={`auth-email-login${idSuffix}`} className={labelClass}>
                   E-mail
                 </label>
                 <input
@@ -163,12 +177,12 @@ export function AuthPanel({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={inputClass}
+                  className={fieldClass}
                   placeholder="vous@exemple.com"
                 />
               </div>
               <div>
-                <label htmlFor={`auth-password-login${idSuffix}`} className="block text-sm font-medium text-neutral-800">
+                <label htmlFor={`auth-password-login${idSuffix}`} className={labelClass}>
                   Mot de passe
                 </label>
                 <input
@@ -180,22 +194,23 @@ export function AuthPanel({
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={inputClass}
+                  className={fieldClass}
                   placeholder="Votre mot de passe"
                 />
               </div>
-              <button
+              <HeroCtaPrimaryButton
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-xl bg-[#1f2a7c] px-4 py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+                layout="page"
+                className="!w-full disabled:opacity-60"
               >
                 {loading ? "Connexion…" : "Se connecter"}
-              </button>
+              </HeroCtaPrimaryButton>
             </form>
           ) : (
             <form onSubmit={submitRegister} className="space-y-5">
               <div>
-                <label htmlFor={`auth-email-register${idSuffix}`} className="block text-sm font-medium text-neutral-800">
+                <label htmlFor={`auth-email-register${idSuffix}`} className={labelClass}>
                   E-mail
                 </label>
                 <input
@@ -206,12 +221,12 @@ export function AuthPanel({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={inputClass}
+                  className={fieldClass}
                   placeholder="vous@exemple.com"
                 />
               </div>
               <div>
-                <label htmlFor={`auth-password-register${idSuffix}`} className="block text-sm font-medium text-neutral-800">
+                <label htmlFor={`auth-password-register${idSuffix}`} className={labelClass}>
                   Mot de passe
                 </label>
                 <input
@@ -223,14 +238,14 @@ export function AuthPanel({
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={inputClass}
+                  className={fieldClass}
                   placeholder="Minimum 8 caractères"
                 />
               </div>
 
               <fieldset>
-                <legend className="text-sm font-medium text-neutral-800">Type de compte</legend>
-                <p className="mt-0.5 text-xs text-neutral-500">Sélectionnez le profil correspondant à votre usage.</p>
+                <legend className={labelClass}>Type de compte</legend>
+                <p className="text-xs text-[#1f2a7c]/55">Sélectionnez le profil correspondant à votre usage.</p>
                 <div
                   className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2"
                   role="radiogroup"
@@ -253,20 +268,29 @@ export function AuthPanel({
                 </div>
               </fieldset>
 
-              <button
+              <HeroCtaPrimaryButton
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-xl bg-[#1f2a7c] px-4 py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+                layout="page"
+                className="!w-full disabled:opacity-60"
               >
                 {loading ? "Création…" : "Créer mon compte"}
-              </button>
+              </HeroCtaPrimaryButton>
             </form>
           )}
 
-          {msg ? <p className="mt-4 text-sm leading-relaxed text-emerald-800">{msg}</p> : null}
-          {err ? <p className="mt-4 text-sm text-red-600">{err}</p> : null}
+          {msg ? (
+            <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-sm leading-relaxed text-emerald-900">
+              {msg}
+            </p>
+          ) : null}
+          {err ? (
+            <p role="alert" className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-800">
+              {err}
+            </p>
+          ) : null}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
@@ -290,12 +314,12 @@ function RoleCard({
         "relative flex cursor-pointer flex-col rounded-xl border px-3.5 py-3 transition-colors duration-200",
         selected
           ? "border-[#1f2a7c] bg-[#1f2a7c]/[0.06] ring-1 ring-[#1f2a7c]/25"
-          : "border-neutral-200 bg-neutral-50/50 hover:border-neutral-300 hover:bg-neutral-50",
+          : "border-[#1f2a7c]/12 bg-white hover:border-[#1f2a7c]/25 hover:bg-[#1f2a7c]/[0.02]",
       )}
     >
       <input id={id} type="radio" name="account_role" className="sr-only" checked={selected} onChange={onSelect} />
-      <span className="text-sm font-semibold text-neutral-900">{title}</span>
-      <span className="mt-0.5 text-xs leading-snug text-neutral-600">{description}</span>
+      <span className="text-sm font-semibold text-[#1f2a7c]">{title}</span>
+      <span className="mt-0.5 text-xs leading-snug text-[#1f2a7c]/65">{description}</span>
     </label>
   );
 }
