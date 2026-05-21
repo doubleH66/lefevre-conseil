@@ -105,8 +105,9 @@ export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthShee
             aria-modal="true"
             aria-labelledby={DIALOG_TITLE_ID}
             className={cn(
-              "relative z-10 flex max-h-[min(90dvh,720px)] w-full max-w-lg flex-col overflow-y-auto bg-white shadow-2xl outline-none",
-              "rounded-t-[1.35rem] border border-[#1f2a7c]/10 p-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:max-h-[min(88dvh,680px)] md:rounded-2xl md:p-7 md:pb-7",
+              "relative z-10 flex w-full max-w-lg flex-col overflow-y-auto bg-white shadow-2xl outline-none",
+              "max-h-[min(88dvh,640px)] rounded-t-[1.35rem] border border-[#1f2a7c]/10 p-6 pb-[max(1.25rem,env(safe-area-inset-bottom))]",
+              "md:max-h-[min(80dvh,560px)] md:rounded-2xl md:p-7 md:pb-7",
             )}
             initial={mdUp ? { opacity: 0, scale: 0.96, y: 0 } : { opacity: 1, y: "100%" }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -170,13 +171,24 @@ export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthShee
                   signingOut={signingOut}
                 />
               ) : (
-                <AuthPanel
-                  nextPath={nextPath}
-                  embedded
-                  hideHeader
-                  idSuffix="-sheet"
-                  onSuccess={onClose}
-                />
+                <>
+                  <AuthPanel
+                    nextPath={nextPath}
+                    embedded
+                    hideHeader
+                    idSuffix="-sheet"
+                    onSuccess={onClose}
+                  />
+                  <p className="mt-4 text-center text-xs text-[#1f2a7c]/60">
+                    <Link
+                      href={loginFullPageHref}
+                      onClick={onClose}
+                      className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline"
+                    >
+                      Ouvrir la page compte
+                    </Link>
+                  </p>
+                </>
               )}
             </div>
           </motion.div>

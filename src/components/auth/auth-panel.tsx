@@ -108,24 +108,14 @@ export function AuthPanel({
     }
   }
 
+  const isSheet = embedded && hideHeader;
   const rootClass = embedded ? "mx-auto w-full max-w-none" : "mx-auto w-full max-w-md";
+  const shellClass = isSheet
+    ? "w-full"
+    : cn(marketingCardClass, "overflow-hidden", embedded && "border-neutral-200/80 shadow-none");
 
-  return (
-    <div className={rootClass}>
-      <section className={cn(marketingCardClass, "overflow-hidden", embedded && "border-neutral-200/80 shadow-none")}>
-        {!hideHeader ? (
-          <div className="border-b border-neutral-100 px-6 py-5 sm:px-8 sm:py-6">
-            <p className={marketingKickerClass}>Compte</p>
-            <h2 className="mt-2 text-balance text-[clamp(1.2rem,2.8vw,1.65rem)] font-normal tracking-[-0.03em] text-[#1f2a7c]">
-              Connexion ou inscription
-            </h2>
-            <p className={cn("mt-2 text-sm leading-relaxed", marketingProseClass)}>
-              Accédez à votre espace client ou créez un compte en quelques instants.
-            </p>
-          </div>
-        ) : null}
-
-        <div className={cn("border-b border-neutral-100 px-5 py-4 sm:px-6", hideHeader && "border-t-0")}>
+  const tabsBlock = (
+    <div className={cn(!isSheet && "border-b border-neutral-100 px-5 py-4 sm:px-6")}>
           <div
             className="flex flex-col gap-2 rounded-2xl border border-[#1f2a7c]/10 bg-[#1f2a7c]/[0.03] p-1.5 sm:flex-row"
             role="tablist"
@@ -160,9 +150,11 @@ export function AuthPanel({
               Inscription
             </button>
           </div>
-        </div>
+    </div>
+  );
 
-        <div className="px-6 py-6 sm:px-8 sm:py-7">
+  const formBlock = (
+    <div className={cn(isSheet ? "mt-4" : "px-6 py-6 sm:px-8 sm:py-7")}>
           {mode === "login" ? (
             <form onSubmit={submitLogin} className="space-y-4">
               <div>
@@ -289,8 +281,33 @@ export function AuthPanel({
               {err}
             </p>
           ) : null}
-        </div>
-      </section>
+    </div>
+  );
+
+  return (
+    <div className={rootClass}>
+      {isSheet ? (
+        <>
+          {tabsBlock}
+          {formBlock}
+        </>
+      ) : (
+        <section className={shellClass}>
+          {!hideHeader ? (
+            <div className="border-b border-neutral-100 px-6 py-5 sm:px-8 sm:py-6">
+              <p className={marketingKickerClass}>Compte</p>
+              <h2 className="mt-2 text-balance text-[clamp(1.2rem,2.8vw,1.65rem)] font-normal tracking-[-0.03em] text-[#1f2a7c]">
+                Connexion ou inscription
+              </h2>
+              <p className={cn("mt-2 text-sm leading-relaxed", marketingProseClass)}>
+                Accédez à votre espace client ou créez un compte en quelques instants.
+              </p>
+            </div>
+          ) : null}
+          {tabsBlock}
+          {formBlock}
+        </section>
+      )}
     </div>
   );
 }

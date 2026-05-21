@@ -41,6 +41,12 @@ export function SiteNavbar({ hero: heroProp }: SiteNavbarProps = {}) {
 
   const resolveHref = useCallback((href: string) => resolveSiteHref(pathname ?? "/", href), [pathname]);
 
+  const openAccountSheet = useCallback(() => {
+    setAccountSheetOpen(true);
+    setMobileOpen(false);
+    setDesktopOpen(null);
+  }, []);
+
   const controlsLight = mobileOpen ? false : !docked || navTheme === "dark";
 
   /** Verre flou unique : navbar + sous-menus (jamais fond blanc opaque). */
@@ -57,6 +63,7 @@ export function SiteNavbar({ hero: heroProp }: SiteNavbarProps = {}) {
   useEffect(() => {
     setMobileOpen(false);
     setDesktopOpen(null);
+    setAccountSheetOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -103,10 +110,14 @@ export function SiteNavbar({ hero: heroProp }: SiteNavbarProps = {}) {
               setMobileOpen={setMobileOpen}
               desktopOpen={desktopOpen}
               setDesktopOpen={setDesktopOpen}
-              onAccountClick={() => setAccountSheetOpen(true)}
+              onAccountClick={openAccountSheet}
             />
           </div>
-          <NavMobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} />
+          <NavMobileMenu
+            open={mobileOpen}
+            onClose={() => setMobileOpen(false)}
+            onAccountClick={openAccountSheet}
+          />
         </div>
       </header>
 

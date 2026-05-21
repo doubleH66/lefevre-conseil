@@ -68,7 +68,16 @@ function MobileAccordion({
   );
 }
 
-export function NavMobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function NavMobileMenu({
+  open,
+  onClose,
+  onAccountClick,
+}: {
+  open: boolean;
+  onClose: () => void;
+  /** Ouvre la modale compte (tiroir bas) au lieu de naviguer vers /login. */
+  onAccountClick?: () => void;
+}) {
   const [active, setActive] = useState<NavDropdownId | null>(null);
 
   useEffect(() => {
@@ -112,14 +121,28 @@ export function NavMobileMenu({ open, onClose }: { open: boolean; onClose: () =>
                 {NAV_PRIMARY_CTA.mobileLabel}
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
-              <Link
-                href={NAV_ACCOUNT.href}
-                onClick={onClose}
-                aria-label="Compte : connexion ou inscription"
-                className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", navGlassWhite)}
-              >
-                <User className="h-5 w-5" />
-              </Link>
+              {onAccountClick ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onAccountClick();
+                  }}
+                  aria-label="Compte : connexion ou inscription"
+                  className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", navGlassWhite)}
+                >
+                  <User className="h-5 w-5" />
+                </button>
+              ) : (
+                <Link
+                  href={NAV_ACCOUNT.href}
+                  onClick={onClose}
+                  aria-label="Compte : connexion ou inscription"
+                  className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", navGlassWhite)}
+                >
+                  <User className="h-5 w-5" />
+                </Link>
+              )}
             </div>
           </div>
         </motion.div>
