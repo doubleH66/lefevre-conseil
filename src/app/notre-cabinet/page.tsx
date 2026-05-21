@@ -6,7 +6,7 @@ import { NOTRE_CABINET_HREF } from "@/lib/content/routes";
 const PATH = NOTRE_CABINET_HREF;
 const TITLE = "Notre cabinet | Lefèvre Conseil";
 const DESCRIPTION =
-  "Lefèvre Conseil, cabinet indépendant de gestion de patrimoine à Perpignan : expertise, indépendance et accompagnement national.";
+  "Découvrez Lefèvre Conseil, cabinet indépendant à Perpignan, spécialisé en gestion de patrimoine, épargne, prévoyance et conseil.";
 
 export const metadata: Metadata = {
   title: TITLE,
