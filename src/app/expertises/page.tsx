@@ -3,9 +3,9 @@ import { ServicesHub } from "@/components/client/services-hub";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
-import { SERVICES_BASE_HREF } from "@/lib/content/routes";
+import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
 
-const PATH = SERVICES_BASE_HREF;
+const PATH = EXPERTISES_BASE_HREF;
 const TITLE = "Nos expertises | Lefèvre Conseil";
 const DESCRIPTION =
   "Six expertises pour structurer, protéger et transmettre votre patrimoine : gestion de patrimoine, épargne, retraite, fiscalité, prévoyance et investissement dans l’art.";
@@ -27,7 +27,7 @@ export default function ServicesPage() {
         ]}
       />
       <MarketingSubpage
-        hero={PAGE_HEROES.services}
+        hero={PAGE_HEROES.expertises}
         breadcrumbs={[
           { label: "Accueil", href: "/" },
           { label: "Nos expertises" },

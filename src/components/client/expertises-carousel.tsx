@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { SERVICE_CATALOG } from "@/lib/content/services";
 import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
@@ -245,6 +245,7 @@ function CarouselExpertisesBar({
 }
 
 function ArrowsCarousel() {
+  const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const maxIndex = Math.max(homeServiceSlides.length - 1, 0);
   const { viewportRef, trackRef, maxTranslate, positions } = useCarouselMeasurements();
@@ -278,7 +279,11 @@ function ArrowsCarousel() {
           <motion.div
             ref={trackRef}
             animate={{ x: targetX }}
-            transition={{ type: "tween", duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              type: "tween",
+              duration: reduceMotion ? 0.01 : 0.42,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="flex w-max items-center gap-3 md:gap-4"
           >
             {homeServiceSlides.map((service) => (

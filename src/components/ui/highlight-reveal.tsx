@@ -22,8 +22,40 @@ export function HighlightReveal({
   triggerOnMount = false,
 }: HighlightRevealProps) {
   const ref = React.useRef<HTMLSpanElement>(null);
-  const inViewScroll = useInView(ref, { once: true, amount: 0.55, margin: "0px 0px -10% 0px" });
-  const inView = triggerOnMount || inViewScroll;
+  const inViewScroll = useInView(ref, {
+    once: true,
+    amount: 0.08,
+    margin: "0px 0px -8% 0px",
+  });
+
+  const [mountedVisible, setMountedVisible] = React.useState(triggerOnMount);
+
+  React.useEffect(() => {
+    if (triggerOnMount) {
+      setMountedVisible(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+
+    const revealIfVisible = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < vh * 0.95 && rect.bottom > 0) {
+        setMountedVisible(true);
+      }
+    };
+
+    revealIfVisible();
+    const id = window.requestAnimationFrame(revealIfVisible);
+    return () => window.cancelAnimationFrame(id);
+  }, [triggerOnMount]);
+
+  React.useEffect(() => {
+    if (inViewScroll) setMountedVisible(true);
+  }, [inViewScroll]);
+
+  const inView = mountedVisible || inViewScroll;
 
   return (
     <span

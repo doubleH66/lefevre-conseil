@@ -1,3 +1,4 @@
+import { serviceHref } from "@/lib/content/routes";
 import type { ServiceSlug } from "@/lib/content/services";
 import { SERVICE_CATALOG, getServiceBySlug } from "@/lib/content/services";
 import { getServicePremiumContent } from "@/lib/content/services-premium";
@@ -41,6 +42,6 @@ export function getOtherServices(slug: ServiceSlug, limit = 4) {
     .map((s) => ({
       slug: s.slug,
       name: s.title,
-      href: `/services/${s.slug}`,
+      href: serviceHref(s.slug),
     }));
 }

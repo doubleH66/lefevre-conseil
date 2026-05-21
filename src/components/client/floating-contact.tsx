@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X } from "lucide-react";
+import { ArrowUpRight, Phone, X } from "lucide-react";
 import { CONTACT_HREF } from "@/lib/content/routes";
 import { CABINET_CONTACT } from "@/lib/content/site";
 import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION } from "@/lib/content/site";
@@ -50,10 +50,10 @@ export function FloatingConsultButton({
   imageAlt = CABINET_CONTACT.name,
   revolvingText = `ME CONTACTER - ${CABINET_CONTACT.name.toUpperCase()} - PATRIMOINE - `,
   revolvingSpeed = 14,
-  popupHeading = "Échange avec le cabinet",
-  popupDescription = `Une prise de contact simple : nous revenons vers vous sous 24h. Conseil en gestion de patrimoine à ${CABINET_CONTACT.address.city}, ouvert sur toute la France.`,
-  popupBadgeText = "Sans engagement",
-  ctaButtonText = "Accéder au contact",
+  popupHeading = "Contactez le cabinet",
+  popupDescription = `Un conseiller vous répond sous 24 h, en cabinet à ${CABINET_CONTACT.address.city} ou à distance partout en France. Premier échange confidentiel, sans engagement.`,
+  popupBadgeText = "Réponse sous 24 h",
+  ctaButtonText = "Nous contacter",
   ctaHref = CONTACT_HREF,
   position,
   cornerBadgeText,
@@ -125,25 +125,41 @@ export function FloatingConsultButton({
             </button>
 
             <div className="space-y-5 pr-10 pt-1 sm:pr-12">
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f2a7c]/50">
+                  {CABINET_CONTACT.name}
+                </p>
                 <h3
                   id="floating-consult-title"
-                  className="text-balance pr-2 text-2xl font-semibold leading-tight tracking-tight text-[#1f2a7c] sm:text-3xl"
+                  className="text-balance pr-2 text-xl font-semibold leading-tight tracking-tight text-[#1f2a7c] sm:text-2xl"
                 >
                   {popupHeading}
                 </h3>
-                <span className="w-fit rounded-full border-2 border-[#1f2a7c]/25 bg-[#1f2a7c]/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#1f2a7c]">
-                  {popupBadgeText}
+                <span className="w-fit rounded-full border border-[#1f2a7c]/15 bg-[#1f2a7c]/[0.06] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#1f2a7c]">
+                  {popupBadgeText} · sans engagement
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-neutral-600 sm:text-base">{popupDescription}</p>
-              <button
-                type="button"
-                className="h-12 w-full rounded-full bg-[#1f2a7c] text-base font-semibold text-white hover:bg-[#1f2a7c]/90"
-                onClick={onCta}
-              >
-                {ctaButtonText}
-              </button>
+              <p className="text-sm leading-relaxed text-neutral-600">{popupDescription}</p>
+              <div className="flex flex-col gap-2.5">
+                <button
+                  type="button"
+                  className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#1f2a7c] text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  onClick={onCta}
+                >
+                  {ctaButtonText}
+                  <ArrowUpRight
+                    aria-hidden
+                    className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </button>
+                <a
+                  href={`tel:${CABINET_CONTACT.phoneTel}`}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#1f2a7c]/15 bg-white py-2.5 text-sm font-semibold text-[#1f2a7c] transition-colors hover:bg-[#1f2a7c]/[0.04]"
+                >
+                  <Phone className="size-4 text-[#1f2a7c]/55" aria-hidden />
+                  {CABINET_CONTACT.phone}
+                </a>
+              </div>
             </div>
           </motion.div>
         ) : null}

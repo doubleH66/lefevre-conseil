@@ -1,12 +1,12 @@
 import {
-  ACTUALITES_HREF,
   BILAN_PATRIMOINE_HREF,
+  CONSEILS_HREF,
   CONTACT_HREF,
+  EXPERTISES_BASE_HREF,
   FAQ_HREF,
   INSTALLATION_HREF,
   NOTRE_CABINET_HREF,
   ROUTES,
-  SERVICES_BASE_HREF,
   LOGIN_HREF,
   serviceHref,
 } from "@/lib/content/routes";
@@ -21,7 +21,7 @@ export const NAV_CABINET_LINKS: NavLink[] = [
 ];
 
 export const NAV_EXPERTISE_LINKS: NavLink[] = [
-  { label: "Voir toutes les expertises", href: SERVICES_BASE_HREF },
+  { label: "Voir toutes les expertises", href: EXPERTISES_BASE_HREF },
   ...SERVICE_CATALOG.map((s) => ({ label: s.title, href: serviceHref(s.slug) })),
 ];
 
@@ -35,11 +35,11 @@ export type NavDropdownId = keyof typeof NAV_DROPDOWNS;
 /** Routes avec bandeau hero sombre : navbar transparente en haut de page. */
 export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
   ROUTES.home,
-  ROUTES.services,
+  ROUTES.expertises,
   ROUTES.bilanPatrimonial,
   ROUTES.contact,
   ROUTES.notreCabinet,
-  ROUTES.actualites,
+  ROUTES.conseils,
   ROUTES.faq,
   ROUTES.installation,
   ROUTES.simulateur,
@@ -53,7 +53,10 @@ export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
 ]);
 
 export function pathnameHasHeroOverlay(pathname: string): boolean {
-  return NAV_HERO_OVERLAY_PATHS.has(pathname);
+  if (NAV_HERO_OVERLAY_PATHS.has(pathname)) return true;
+  // Routes dynamiques avec bandeau hero : articles /conseils/[slug]
+  if (pathname.startsWith(CONSEILS_HREF + "/")) return true;
+  return false;
 }
 
 export const NAV_PRIMARY_CTA = {
@@ -63,7 +66,7 @@ export const NAV_PRIMARY_CTA = {
 } as const;
 
 export const NAV_CONTACT = { label: "Contact", href: CONTACT_HREF } as const;
-export const NAV_CONSEILS = { label: "Conseils", href: ACTUALITES_HREF } as const;
+export const NAV_CONSEILS = { label: "Conseils", href: CONSEILS_HREF } as const;
 export const NAV_ACCOUNT = { label: "Compte", href: LOGIN_HREF } as const;
 
 export { ROUTES };

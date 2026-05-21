@@ -15,10 +15,10 @@ export function NotreCabinetPage() {
       ]}
     >
       <MarketingPageStack className={marketingPageShellClass}>
-        <CabinetIntro />
-        <div className="mx-2.5 mt-3 bg-white lg:mx-4 lg:mt-4">
-          <PartnersStrip layout="page" />
+        <div className="mx-2.5 lg:mx-4 lg:-mt-8">
+          <PartnersStrip layout="hero" />
         </div>
+        <CabinetIntro />
       </MarketingPageStack>
     </MarketingSubpage>
   );

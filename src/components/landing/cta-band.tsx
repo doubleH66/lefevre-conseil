@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
 import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { heroCtaRowCompactClassName } from "@/lib/styles/cta";
-import { ACTUALITES_HREF, CONTACT_HREF, SIMULATION_HREF } from "@/lib/content/routes";
+import { CONSEILS_HREF, CONTACT_HREF, SIMULATION_HREF, articleHref } from "@/lib/content/routes";
 import { HOME_ARTICLES_TEASER } from "@/lib/content/articles";
 
 type CtaBandProps = {
@@ -206,7 +206,7 @@ export function CtaBand({
               {HOME_ARTICLES_TEASER.map((article) => (
                 <li key={article.slug}>
                   <Link
-                    href={`/actualites/${article.slug}`}
+                    href={articleHref(article.slug)}
                     className="group block rounded-lg text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
                   >
                     <span className="line-clamp-2 text-sm font-medium leading-snug text-white transition-colors group-hover:text-white/90">
@@ -220,7 +220,7 @@ export function CtaBand({
               ))}
             </ul>
             <Link
-              href={ACTUALITES_HREF}
+              href={CONSEILS_HREF}
               className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 outline-none transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
             >
               Tous les conseils

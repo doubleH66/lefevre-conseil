@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ArticleDetailPage } from "@/components/pages/article-detail-page";
 import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
 import { getArticleBySlug, getAllArticleSlugs } from "@/lib/content/articles";
-import { ACTUALITES_HREF, articleHref } from "@/lib/content/routes";
+import { CONSEILS_HREF, articleHref } from "@/lib/content/routes";
 
 type Params = { slug: string };
 
@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", path: "/" },
-          { name: "Conseils", path: ACTUALITES_HREF },
+          { name: "Conseils", path: CONSEILS_HREF },
           { name: article.category, path },
         ]}
       />

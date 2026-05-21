@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DefiscalisationServicePage } from "@/components/pages/defiscalisation-service-page";
-import { ServicePremiumPage } from "@/components/services/service-premium-page";
+import { ServiceMarketingPage } from "@/components/services/service-marketing-page";
 import {
   BreadcrumbJsonLd,
   FAQPageJsonLd,
   ServiceJsonLd,
 } from "@/components/seo/page-jsonld";
-import { SERVICES_BASE_HREF } from "@/lib/content/routes";
+import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
 import { SERVICE_CATALOG, getServiceBySlug, isServiceSlug } from "@/lib/content/services";
 import { getServicePremiumContent } from "@/lib/content/services-premium";
 
@@ -26,7 +26,7 @@ export async function generateMetadata({
   const content = getServicePremiumContent(slug);
   if (!content) return { title: "Service introuvable" };
 
-  const path = `${SERVICES_BASE_HREF}/${slug}`;
+  const path = `${EXPERTISES_BASE_HREF}/${slug}`;
   const { title, description } = content.meta;
 
   return {
@@ -60,31 +60,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
   }
 
   const catalog = getServiceBySlug(slug);
-  const path = `${SERVICES_BASE_HREF}/${slug}`;
+  const path = `${EXPERTISES_BASE_HREF}/${slug}`;
 
-  if (slug === "fiscalite-investissement") {
-    return (
-      <>
-        <ServiceJsonLd
-          name={content.hero.h1}
-          description={`${content.hero.subtitle} ${content.hero.intro}`}
-          path={path}
-          category={catalog?.title ?? "Gestion de patrimoine"}
-        />
-        <BreadcrumbJsonLd
-          items={[
-            { name: "Accueil", path: "/" },
-            { name: "Nos expertises", path: SERVICES_BASE_HREF },
-            { name: catalog?.title ?? content.hero.h1, path },
-          ]}
-        />
-        <FAQPageJsonLd items={content.faq} />
-        <DefiscalisationServicePage />
-      </>
-    );
-  }
-
-  return (
+  const jsonLd = (
     <>
       <ServiceJsonLd
         name={content.hero.h1}
@@ -95,12 +73,27 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", path: "/" },
-          { name: "Nos expertises", path: SERVICES_BASE_HREF },
+          { name: "Nos expertises", path: EXPERTISES_BASE_HREF },
           { name: catalog?.title ?? content.hero.h1, path },
         ]}
       />
       <FAQPageJsonLd items={content.faq} />
-      <ServicePremiumPage content={content} />
+    </>
+  );
+
+  if (slug === "fiscalite-investissement") {
+    return (
+      <>
+        {jsonLd}
+        <DefiscalisationServicePage />
+      </>
+    );
+  }
+
+  return (
+    <>
+      {jsonLd}
+      <ServiceMarketingPage content={content} />
     </>
   );
 }

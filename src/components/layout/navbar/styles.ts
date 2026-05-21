@@ -1,6 +1,8 @@
 export {
   navGlassBlue,
   navGlassDocked,
+  navGlassDropdownSurface,
+  navGlassDropdownSurfaceDark,
   navGlassRest,
   navGlassSurfaceDocked,
   navGlassSurfaceRest,

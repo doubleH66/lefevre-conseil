@@ -1,4 +1,5 @@
 import type { ServiceSlug } from "@/lib/content/services";
+import type { ComparisonTableData } from "@/components/ui/comparison-table";
 
 export type ServiceFaqItem = { q: string; a: string };
 
@@ -39,4 +40,6 @@ export type ServicePremiumContent = {
   };
   faq: ServiceFaqItem[];
   internalLinks: { slug: ServiceSlug; label: string }[];
+  /** Tableau de comparaison optionnel, affiché dans le bloc solutions */
+  comparison?: ComparisonTableData;
 };

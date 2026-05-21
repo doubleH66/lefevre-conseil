@@ -95,7 +95,7 @@ export function SiteNavbar({ hero: heroProp }: SiteNavbarProps = {}) {
         )}
       >
         <div className="mx-auto w-full max-w-none">
-          <div className={cn("relative rounded-[1.75rem] transition-[background,box-shadow] duration-300", shellClass)}>
+          <div className={cn("relative overflow-visible rounded-[1.75rem] transition-[background,box-shadow] duration-300", shellClass)}>
             <NavContent
               light={controlsLight}
               dropdownSurfaceClass={dropdownSurfaceClass}

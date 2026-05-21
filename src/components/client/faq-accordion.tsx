@@ -3,7 +3,16 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { HighlightReveal } from "@/components/ui/highlight-reveal";
+import { RichText } from "@/components/ui/rich-text";
+import { SearchHighlight } from "@/components/ui/search-highlight";
 import { cn } from "@/lib/utils";
+
+function stripInlineMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1");
+}
 
 const questionHighlightPill = "rounded-lg px-1.5 pb-0.5";
 
@@ -13,11 +22,15 @@ export function FaqAccordion({
   items,
   className,
   questionEmphasis = "none",
+  searchQuery = "",
 }: {
   items: readonly FaqItem[];
   className?: string;
   questionEmphasis?: "none" | "highlight";
+  /** Terme de recherche : les correspondances sont soulignées dans les questions et réponses. */
+  searchQuery?: string;
 }) {
+  const hasSearch = searchQuery.trim().length > 0;
   const baseId = React.useId().replace(/:/g, "");
   const reduceMotion = useReducedMotion();
   const [openSet, setOpenSet] = React.useState<Set<number>>(() => new Set());
@@ -68,8 +81,14 @@ export function FaqAccordion({
                 <span className="min-w-0 flex-1 leading-snug">
                   {questionEmphasis === "highlight" ? (
                     <HighlightReveal variant="light" delay="none" className={questionHighlightPill}>
-                      {item.q}
+                      {hasSearch ? (
+                        <SearchHighlight text={item.q} query={searchQuery} />
+                      ) : (
+                        item.q
+                      )}
                     </HighlightReveal>
+                  ) : hasSearch ? (
+                    <SearchHighlight text={item.q} query={searchQuery} />
                   ) : (
                     item.q
                   )}
@@ -99,9 +118,15 @@ export function FaqAccordion({
               className="overflow-hidden will-change-[height,opacity]"
             >
               <div className="px-5 pb-4 pt-0 sm:px-6">
-                <p className="text-sm leading-relaxed text-[#1f2a7c]/72 sm:text-[15px] sm:leading-relaxed">
-                  {item.a}
-                </p>
+                {hasSearch ? (
+                  <p className="text-sm leading-relaxed text-[#1f2a7c]/72 sm:text-[15px] sm:leading-relaxed">
+                    <SearchHighlight text={stripInlineMarkdown(item.a)} query={searchQuery} />
+                  </p>
+                ) : (
+                  <RichText className="text-sm leading-relaxed text-[#1f2a7c]/72 sm:text-[15px] sm:leading-relaxed">
+                    {item.a}
+                  </RichText>
+                )}
               </div>
             </motion.div>
           </li>

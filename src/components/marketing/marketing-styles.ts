@@ -4,7 +4,7 @@ export const marketingSectionClass = "mt-10 sm:mt-14";
 
 export const marketingInnerClass = "mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8";
 
-export const marketingPageShellClass = "relative z-0 flex-1 bg-[#f2f3f7] pb-10 pt-6 text-neutral-950 sm:pb-14 sm:pt-8";
+export const marketingPageShellClass = "relative z-0 flex-1 bg-white pb-10 pt-6 text-neutral-950 sm:pb-14 sm:pt-8";
 
 export const marketingProseClass =
   "text-[#1f2a7c]/78 max-lg:text-[#1f2a7c]/72 lg:text-[#1f2a7c]/88";

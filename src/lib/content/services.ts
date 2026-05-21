@@ -1,4 +1,4 @@
-import { SERVICES_BASE_HREF, serviceHref } from "@/lib/content/routes";
+import { serviceHref } from "@/lib/content/routes";
 
 export const SERVICE_CATALOG = [
   {

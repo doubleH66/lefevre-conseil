@@ -3,13 +3,14 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, HeartPulse, Send, Sparkles } from "lucide-react";
-import { SubpageShell } from "@/components/layout/subpage-shell";
+import { MarketingSubpage } from "@/components/layout/marketing-subpage";
+import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { MutuelleEmbed } from "@/components/marketing/comparateur-embed";
 import { HeroCtaPrimaryButton, HeroCtaSecondaryLink } from "@/components/marketing/hero-site-cta";
 import { SERVICE_CATALOG, serviceDetailHref } from "@/lib/content/services";
 import type { ServiceSlug } from "@/lib/content/services";
 import { CABINET_CONTACT } from "@/lib/content/site";
-import { CONTACT_HREF } from "@/lib/content/routes";
+import { CONTACT_HREF, EXPERTISES_BASE_HREF } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 
 const SIMULATEUR_BREADCRUMBS = [
@@ -55,21 +56,8 @@ export function SimulateurPage() {
   };
 
   return (
-    <SubpageShell breadcrumbs={[...SIMULATEUR_BREADCRUMBS]}>
+    <MarketingSubpage hero={PAGE_HEROES.simulateur} breadcrumbs={[...SIMULATEUR_BREADCRUMBS]}>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <header className="mx-auto max-w-2xl text-center">
-          <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/70">
-            <span aria-hidden className="inline-block h-px w-5 bg-[#1f2a7c]/40" />
-            Simulateur
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
-            Choisissez votre parcours
-          </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-neutral-600 sm:text-base">
-            Simulation patrimoniale personnalisée avec le cabinet, ou comparateur mutuelle santé en ligne.
-          </p>
-        </header>
-
         <div
           className="mx-auto mt-10 flex max-w-xl flex-col gap-2 rounded-2xl border border-neutral-200/90 bg-neutral-50/80 p-1.5 sm:flex-row"
           role="tablist"
@@ -249,8 +237,8 @@ export function SimulateurPage() {
                 Découvrir nos domaines
               </h2>
             </div>
-            <Link href="/services" className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1f2a7c] hover:underline">
-              Tous les services
+            <Link href={EXPERTISES_BASE_HREF} className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1f2a7c] hover:underline">
+              Toutes les expertises
               <ArrowRight className="size-4" aria-hidden />
             </Link>
           </div>
@@ -268,7 +256,7 @@ export function SimulateurPage() {
           </ul>
         </section>
       </main>
-    </SubpageShell>
+    </MarketingSubpage>
   );
 }
 

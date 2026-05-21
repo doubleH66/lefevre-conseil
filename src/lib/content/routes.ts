@@ -4,8 +4,8 @@ export const ROUTES = {
   bilanPatrimonial: "/bilan-patrimonial",
   contact: "/contact",
   notreCabinet: "/notre-cabinet",
-  services: "/services",
-  actualites: "/actualites",
+  expertises: "/expertises",
+  conseils: "/conseils",
   faq: "/faq",
   installation: "/installation",
   login: "/login",
@@ -25,18 +25,22 @@ export const BILAN_PATRIMOINE_HREF = ROUTES.bilanPatrimonial;
 export const SIMULATION_HREF = ROUTES.bilanPatrimonial;
 export const SIMULATEUR_HREF = ROUTES.simulateur;
 export const CONTACT_HREF = ROUTES.contact;
-export const ACTUALITES_HREF = ROUTES.actualites;
+export const CONSEILS_HREF = ROUTES.conseils;
+/** @deprecated Utiliser `CONSEILS_HREF`. */
+export const ACTUALITES_HREF = CONSEILS_HREF;
 export const NOTRE_CABINET_HREF = ROUTES.notreCabinet;
 export const FAQ_HREF = ROUTES.faq;
 export const INSTALLATION_HREF = ROUTES.installation;
-export const SERVICES_BASE_HREF = ROUTES.services;
+export const EXPERTISES_BASE_HREF = ROUTES.expertises;
+/** @deprecated Utiliser `EXPERTISES_BASE_HREF`. */
+export const SERVICES_BASE_HREF = EXPERTISES_BASE_HREF;
 export const LOGIN_HREF = ROUTES.login;
 export const LOGIN_INSCRIPTION_HREF = `${ROUTES.login}?tab=inscription` as const;
 
 export function serviceHref(slug: string) {
-  return `${ROUTES.services}/${slug}`;
+  return `${ROUTES.expertises}/${slug}`;
 }
 
 export function articleHref(slug: string) {
-  return `${ROUTES.actualites}/${slug}`;
+  return `${ROUTES.conseils}/${slug}`;
 }

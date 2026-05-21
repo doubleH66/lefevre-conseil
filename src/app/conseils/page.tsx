@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { ActualitesPage } from "@/components/pages/actualites-page";
 import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
-import { ACTUALITES_HREF } from "@/lib/content/routes";
+import { CONSEILS_HREF } from "@/lib/content/routes";
 
-const PATH = ACTUALITES_HREF;
+const PATH = CONSEILS_HREF;
 const TITLE = "Conseils & actualités | Lefèvre Conseil";
 const DESCRIPTION =
   "Articles et décryptages du cabinet Lefèvre Conseil : fiscalité, épargne, retraite et gestion de patrimoine.";

@@ -1,24 +1,39 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import {
-  ACTUALITES_HREF,
+  CONSEILS_HREF,
   CONTACT_HREF,
+  EXPERTISES_BASE_HREF,
   FAQ_HREF,
   INSTALLATION_HREF,
   NOTRE_CABINET_HREF,
-  SERVICES_BASE_HREF,
 } from "@/lib/content/routes";
-import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { NewsletterSignup } from "@/components/client/newsletter-signup";
 import { AURENIS_LOGO_URL, CABINET_CONTACT, SITE_LOGO_URL } from "@/lib/content/site";
+import { navGlassRest } from "@/lib/styles/glass";
 import { cn } from "@/lib/utils";
+
+const footerGlassBtnClass = cn(
+  "inline-flex cursor-pointer items-center justify-center rounded-full outline-none transition-[background-color,box-shadow] duration-150 focus-visible:ring-[3px] focus-visible:ring-white/30 hover:bg-white/[0.16]",
+  navGlassRest,
+);
 
 const legalLinks = [
   { href: "/mentions-legales", label: "Mentions légales" },
   { href: "/confidentialite", label: "Confidentialité" },
   { href: "/cookies", label: "Cookies" },
   { href: "/conditions-utilisation", label: "Conditions d’utilisation" },
+] as const;
+
+const navigationLinks = [
+  { href: "/", label: "Accueil" },
+  { href: CONSEILS_HREF, label: "Conseils" },
+  { href: EXPERTISES_BASE_HREF, label: "Nos expertises" },
+  { href: CONTACT_HREF, label: "Contact" },
+  { href: NOTRE_CABINET_HREF, label: "À propos" },
+  { href: FAQ_HREF, label: "FAQ" },
+  { href: INSTALLATION_HREF, label: "Installer l’app" },
 ] as const;
 
 const socialLinks = [
@@ -37,9 +52,15 @@ const footerLinkClass =
 
 const footerColTitleClass = "text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55";
 
+const TAGLINE =
+  "Cabinet indépendant - gestion de patrimoine, courtage et conseils aux particuliers et professionnels.";
+
 export function SiteFooter() {
   const year = new Date().getFullYear();
   const { phone, phoneTel, email, address } = CABINET_CONTACT;
+  const mapsQuery = encodeURIComponent(
+    `${address.street} ${address.postalCode} ${address.city}`,
+  );
 
   return (
     <footer className="relative z-[2] mx-2.5 mt-12 mb-10 sm:mx-3 sm:mb-12 lg:mx-4 lg:mb-14">
@@ -59,8 +80,12 @@ export function SiteFooter() {
 
         <div className="relative z-[2] px-5 py-12 sm:px-8 sm:py-14 lg:px-12 lg:py-16">
           <div className="mx-auto max-w-6xl">
-            <div className="grid gap-10 sm:gap-12 lg:grid-cols-12 lg:gap-x-10">
-              <div className="lg:col-span-4">
+            <div className="grid gap-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-0">
+              {/* Marque + newsletter + réseaux */}
+              <section
+                aria-labelledby="footer-brand"
+                className="sm:col-span-2 lg:col-span-4"
+              >
                 <Link href="/" aria-label={`${CABINET_CONTACT.name} - accueil`} className="inline-flex">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -69,23 +94,62 @@ export function SiteFooter() {
                     className="h-9 w-auto max-w-[min(100%,220px)] object-contain object-left brightness-0 invert sm:h-10"
                   />
                 </Link>
-                <p className="mt-5 max-w-md text-left text-[15px] leading-[1.55] text-white/75 sm:text-base">
-                  Cabinet indépendant - gestion de patrimoine, courtage et conseils aux particuliers et
-                  professionnels.
+                <p
+                  id="footer-brand"
+                  className="mt-5 max-w-md text-left text-[15px] leading-[1.55] text-white/75 sm:text-base"
+                >
+                  {TAGLINE}
                 </p>
-              </div>
 
-              <FooterColumn className="lg:col-span-2" title="Navigation">
-                <FooterLink href="/">Accueil</FooterLink>
-                <FooterLink href={ACTUALITES_HREF}>Conseils</FooterLink>
-                <FooterLink href={SERVICES_BASE_HREF}>Nos expertises</FooterLink>
-                <FooterLink href={CONTACT_HREF}>Contact</FooterLink>
-                <FooterLink href={NOTRE_CABINET_HREF}>À propos</FooterLink>
-                <FooterLink href={FAQ_HREF}>FAQ</FooterLink>
-                <FooterLink href={INSTALLATION_HREF}>Installer l’app</FooterLink>
+                <div className="mt-8" aria-labelledby="footer-newsletter-title">
+                  <p id="footer-newsletter-title" className={footerColTitleClass}>
+                    Newsletter
+                  </p>
+                  <p className="mt-2 text-sm leading-snug text-white/55">
+                    Environ une fois par mois, sans spam.
+                  </p>
+                  <NewsletterSignup
+                    presentation="dialog-trigger"
+                    variant="compact"
+                    idSuffix="footer"
+                    footerOnDark
+                    className="mt-3 !justify-start"
+                  />
+                </div>
+
+                {socialLinksActive.length > 0 ? (
+                  <div className="mt-8" aria-labelledby="footer-social-title">
+                    <p id="footer-social-title" className={footerColTitleClass}>
+                      Réseaux
+                    </p>
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {socialLinksActive.map(({ href, label, Icon }) => (
+                        <li key={label}>
+                          <a
+                            href={href}
+                            aria-label={label}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={cn(footerGlassBtnClass, "size-12")}
+                          >
+                            <Icon className="size-4" aria-hidden />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </section>
+
+              <FooterColumn className="lg:col-span-2" title="Navigation" titleId="footer-nav">
+                {navigationLinks.map((link) => (
+                  <FooterLink key={link.href} href={link.href}>
+                    {link.label}
+                  </FooterLink>
+                ))}
               </FooterColumn>
 
-              <FooterColumn className="lg:col-span-3" title="Légal">
+              <FooterColumn className="lg:col-span-3" title="Légal" titleId="footer-legal">
                 {legalLinks.map((link) => (
                   <FooterLink key={link.href} href={link.href}>
                     {link.label}
@@ -93,8 +157,10 @@ export function SiteFooter() {
                 ))}
               </FooterColumn>
 
-              <div className="lg:col-span-3">
-                <p className={footerColTitleClass}>Coordonnées</p>
+              <section aria-labelledby="footer-coords-title" className="lg:col-span-3">
+                <p id="footer-coords-title" className={footerColTitleClass}>
+                  Coordonnées
+                </p>
                 <ul className="mt-4 space-y-3">
                   <li>
                     <a
@@ -114,50 +180,27 @@ export function SiteFooter() {
                       <span className="break-all">{email}</span>
                     </a>
                   </li>
-                  <li className="flex items-start gap-2.5 text-[15px] leading-snug text-white/80">
-                    <MapPin className="mt-0.5 size-4 shrink-0 text-white/45" aria-hidden />
-                    <address className="not-italic">
-                      {address.street}
-                      <br />
-                      {address.postalCode} {address.city}
-                    </address>
+                  <li>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-start gap-2.5 text-[15px] leading-snug text-white/80 transition-colors hover:text-white"
+                    >
+                      <MapPin className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
+                      <address className="not-italic">
+                        {address.street}
+                        <br />
+                        {address.postalCode} {address.city}
+                      </address>
+                    </a>
                   </li>
                 </ul>
-
-                {socialLinksActive.length > 0 ? (
-                  <div className="mt-8">
-                    <p className={footerColTitleClass}>Réseaux</p>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {socialLinksActive.map(({ href, label, Icon }) => (
-                        <li key={label}>
-                          <a
-                            href={href}
-                            aria-label={label}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex size-10 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white/90 transition-colors duration-200 hover:bg-white/18"
-                          >
-                            <Icon className="size-4" aria-hidden />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-              </div>
+              </section>
             </div>
           </div>
 
-          <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center gap-8 border-t border-white/10 pt-10 sm:mt-12 sm:pt-12">
-            <div className="flex w-full max-w-lg flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-              <ContactGlassLink light layout="hero" className="sm:min-w-[10rem]" />
-              <NewsletterSignup
-                presentation="dialog-trigger"
-                variant="compact"
-                idSuffix="footer"
-                footerOnDark
-              />
-            </div>
+          <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center gap-6 border-t border-white/10 pt-10 sm:mt-12 sm:pt-12">
             <p className="text-center text-[13px] text-white/50 sm:text-sm">
               © {year} {CABINET_CONTACT.name}
             </p>
@@ -178,18 +221,22 @@ export function SiteFooter() {
 
 function FooterColumn({
   title,
+  titleId,
   children,
   className,
 }: {
   title: string;
+  titleId: string;
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn("text-left", className)}>
-      <p className={footerColTitleClass}>{title}</p>
+    <nav aria-labelledby={titleId} className={cn("text-left", className)}>
+      <p id={titleId} className={footerColTitleClass}>
+        {title}
+      </p>
       <ul className="mt-4 space-y-2.5">{children}</ul>
-    </div>
+    </nav>
   );
 }
 

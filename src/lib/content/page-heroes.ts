@@ -26,12 +26,12 @@ export const PAGE_HEROES = {
     taglineHighlightAfter: "cabinet indépendant",
     titleId: "notre-cabinet-hero-title",
   },
-  actualites: {
+  conseils: {
     title: "Conseils & actualités",
     tagline:
       "Décryptages patrimoniaux, fiscalité et épargne — des articles pour mieux décider, sans jargon inutile.",
     taglineHighlightAfter: " — des articles",
-    titleId: "actualites-hero-title",
+    titleId: "conseils-hero-title",
   },
   faq: {
     title: "Questions fréquentes",
@@ -54,12 +54,12 @@ export const PAGE_HEROES = {
     taglineHighlightAfter: " sur le site",
     titleId: "cookies-hero-title",
   },
-  services: {
+  expertises: {
     title: "Nos expertises",
     tagline:
       "Six domaines d’accompagnement pour structurer, développer et protéger votre patrimoine.",
     taglineHighlightAfter: ", développer",
-    titleId: "services-hero-title",
+    titleId: "expertises-hero-title",
   },
   bilanPatrimonial: {
     title: "Réalisez votre bilan patrimonial",

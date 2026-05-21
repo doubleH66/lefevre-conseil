@@ -28,7 +28,7 @@ export const CABINET_CONTACT = {
     city: "Perpignan",
     country: "France",
   },
-  geo: { lat: 42.6966, lng: 2.8954 },
+  geo: { lat: 42.6974, lng: 2.8837 },
   social: {
     facebook: "https://www.facebook.com/profile.php?id=61555558500990",
     linkedin: "https://www.linkedin.com/company/lefevre-conseil/",

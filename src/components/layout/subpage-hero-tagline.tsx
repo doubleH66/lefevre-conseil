@@ -30,7 +30,8 @@ export function SubpageHeroTagline({ text, highlightAfter, animateOnMount }: Sub
       <HighlightReveal
         variant="dark"
         className="rounded-xl px-2 pb-1"
-        triggerOnMount={animateOnMount}
+        triggerOnMount
+        delay={animateOnMount ? "hero" : "none"}
       >
         {lead}
       </HighlightReveal>

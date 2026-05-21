@@ -19,16 +19,28 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/a-propos", destination: "/notre-cabinet", permanent: true },
-      { source: "/conseils", destination: "/actualites", permanent: true },
-      { source: "/conseils/:slug", destination: "/actualites/:slug", permanent: true },
+      { source: "/actualites", destination: "/conseils", permanent: true },
+      { source: "/actualites/:slug", destination: "/conseils/:slug", permanent: true },
+      { source: "/services", destination: "/expertises", permanent: true },
+      { source: "/services/:slug", destination: "/expertises/:slug", permanent: true },
+      {
+        source: "/expertises/defiscalisation",
+        destination: "/expertises/fiscalite-investissement",
+        permanent: true,
+      },
       {
         source: "/services/defiscalisation",
-        destination: "/services/fiscalite-investissement",
+        destination: "/expertises/fiscalite-investissement",
+        permanent: true,
+      },
+      {
+        source: "/expertises/optimisation-fiscale",
+        destination: "/expertises/fiscalite-investissement",
         permanent: true,
       },
       {
         source: "/services/optimisation-fiscale",
-        destination: "/services/fiscalite-investissement",
+        destination: "/expertises/fiscalite-investissement",
         permanent: true,
       },
     ];
