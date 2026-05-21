@@ -11,8 +11,7 @@ export async function GET() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1f2a7c",
-          borderRadius: 104,
+          background: "#ffffff",
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
