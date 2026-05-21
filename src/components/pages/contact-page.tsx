@@ -309,7 +309,6 @@ export function ContactPage() {
                       sizes="72px"
                       className="object-cover"
                       style={{ objectPosition: ADVISOR_ROUND_AVATAR_OBJECT_POSITION }}
-                      unoptimized
                     />
                   </div>
                   <div>

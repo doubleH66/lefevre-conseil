@@ -75,6 +75,44 @@ export function ContactPageJsonLd({ path }: { path: string }) {
   );
 }
 
+export function ArticleJsonLd({
+  title,
+  description,
+  path,
+  datePublished,
+  imageUrl,
+  category,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  imageUrl?: string;
+  category: string;
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    url: `${SITE_URL}${path}`,
+    datePublished,
+    author: { "@id": `${SITE_URL}/#cabinet` },
+    publisher: { "@id": `${SITE_URL}/#cabinet` },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    ...(imageUrl && { image: imageUrl }),
+    articleSection: category,
+    inLanguage: "fr-FR",
+  } as const;
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
 export function FAQPageJsonLd({ items }: { items: readonly { q: string; a: string }[] }) {
   if (items.length === 0) return null;
 

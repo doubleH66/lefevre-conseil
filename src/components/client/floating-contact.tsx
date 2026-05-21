@@ -237,7 +237,6 @@ export function FloatingConsultButton({
                   sizes="96px"
                   className="object-cover"
                   style={{ objectPosition: ADVISOR_ROUND_AVATAR_OBJECT_POSITION }}
-                  unoptimized
                 />
               </div>
             </div>

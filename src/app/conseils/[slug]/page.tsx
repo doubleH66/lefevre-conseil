@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleDetailPage } from "@/components/pages/article-detail-page";
-import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
 import { getArticleBySlug, getAllArticleSlugs } from "@/lib/content/articles";
 import { CONSEILS_HREF, articleHref } from "@/lib/content/routes";
 
@@ -34,6 +34,14 @@ export default async function Page({ params }: { params: Promise<Params> }) {
 
   return (
     <>
+      <ArticleJsonLd
+        title={article.title}
+        description={article.excerpt}
+        path={path}
+        datePublished={article.date}
+        imageUrl={article.image}
+        category={article.category}
+      />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", path: "/" },

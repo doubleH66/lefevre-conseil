@@ -50,7 +50,6 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                     src={article.image}
                     alt=""
                     fill
-                    unoptimized
                     className="object-cover"
                     sizes="256px"
                   />
@@ -100,7 +99,6 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                   src={article.image}
                   alt={article.title}
                   fill
-                  unoptimized
                   priority
                   className="object-cover"
                   sizes="(max-width:1024px) 100vw, 700px"
