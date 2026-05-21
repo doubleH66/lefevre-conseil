@@ -75,7 +75,7 @@ export function ServiceComparateurBlock() {
             </p>
           </div>
         )}
-        <div className="bg-neutral-50/80 p-2 sm:p-3">
+        <div className="bg-neutral-50/80 p-4 sm:p-6">
           {mode === "mutuelle" ? <MutuelleEmbed /> : <ComparateurEmbed />}
         </div>
       </div>

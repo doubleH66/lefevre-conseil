@@ -90,21 +90,25 @@ export function AssurDistributionEmbed({ variant = "comparateur", className }: A
   }, [triggerResize]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      id={config.iframeId}
-      title={config.title}
-      src={src}
-      scrolling="no"
-      onLoad={triggerResize}
-      className={className ?? "block w-full min-w-full border-0"}
-      style={{
-        width: "1px",
-        minWidth: "100%",
-        height: `${heightPx}px`,
-        overflow: "hidden",
-      }}
-    />
+    <div className="relative w-full overflow-hidden rounded-xl">
+      <iframe
+        ref={iframeRef}
+        id={config.iframeId}
+        title={config.title}
+        src={src}
+        scrolling="yes"
+        onLoad={triggerResize}
+        className="block w-full border-0"
+        style={{
+          width: "1px",
+          minWidth: "100%",
+          height: `${heightPx}px`,
+          maxHeight: "min(85vh, 900px)",
+          minHeight: "520px",
+          overflowY: "auto",
+        }}
+      />
+    </div>
   );
 }
 
