@@ -1,26 +1,183 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(240 10% 3.9%);
+  --color-primary: hsl(240 5.9% 10%);
+  --color-primary-foreground: hsl(0 0% 98%);
+  --color-border: hsl(240 5.9% 90%);
+  --color-ring: hsl(240 10% 3.9%);
+  --z-index-tooltip: 70;
+  --z-index-cookie: 75;
+  --z-index-modal: 85;
+  --z-index-toast: 95;
+  --z-index-sheet: 100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility z-tooltip {
+  z-index: var(--z-index-tooltip);
+}
+@utility z-cookie {
+  z-index: var(--z-index-cookie);
+}
+@utility z-modal {
+  z-index: var(--z-index-modal);
+}
+@utility z-toast {
+  z-index: var(--z-index-toast);
+}
+@utility z-sheet {
+  z-index: var(--z-index-sheet);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-inter), Inter, system-ui, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Surlignage animé (heritage) */
+@keyframes highlight-reveal-expand {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+.highlight-reveal-base {
+  position: relative;
+  display: inline-block;
+  border-radius: 0.75rem;
+  padding: 0.125rem 0.5rem 0.25rem;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+}
+
+.highlight-reveal--dark {
+  background-image: linear-gradient(90deg, #1f2a7c, #1f2a7c);
+  color: #fff;
+}
+
+.highlight-reveal--light {
+  background-image: linear-gradient(90deg, rgb(31 42 124 / 0.22), rgb(31 42 124 / 0.22));
+  color: #1f2a7c;
+}
+
+.highlight-reveal--animate {
+  animation: highlight-reveal-expand 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.highlight-reveal--animate-delayed {
+  animation-delay: 0.45s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlight-reveal--animate,
+  .highlight-reveal--animate-delayed {
+    animation: none;
+    background-size: 100% 100%;
+  }
+}
+
+/* Carrousel partenaires */
+@keyframes infiniteSlider {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.infinite-slider-track {
+  animation: infiniteSlider 28s linear infinite;
+  will-change: transform;
+}
+
+@media (min-width: 1024px) {
+  .infinite-slider-track {
+    animation-duration: 26s;
+  }
+}
+
+.infinite-slider-track:hover {
+  animation-play-state: paused;
+}
+
+.partner-mask {
+  mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+}
+
+@media (min-width: 1024px) {
+  .partner-mask {
+    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infinite-slider-track {
+    animation: none;
+    transform: translateX(0);
+  }
+}
+
+/* Indicateur scroll hero (mobile) */
+@keyframes heroScrollHint {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(4px);
+  }
+}
+
+.hero-scroll-hint-a {
+  animation: heroScrollHint 2s ease-in-out infinite;
+}
+
+.hero-scroll-hint-b {
+  animation: heroScrollHint 2s ease-in-out 0.35s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-hint-a,
+  .hero-scroll-hint-b {
+    animation: none;
+  }
+}
+
+@utility shadow-card {
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  width: 100%;
+  max-width: 1400px;
 }

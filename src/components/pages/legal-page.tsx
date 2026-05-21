@@ -1,0 +1,51 @@
+import { MarketingSubpage } from "@/components/layout/marketing-subpage";
+import {
+  MarketingHeading,
+  MarketingPageStack,
+  MarketingSection,
+} from "@/components/marketing/marketing-section";
+import { marketingCardClass, marketingPageShellClass } from "@/components/marketing/marketing-styles";
+import type { PageHeroConfig } from "@/lib/content/page-heroes";
+import { cn } from "@/lib/utils";
+
+type LegalSection = {
+  title: string;
+  body: string[];
+};
+
+type LegalPageProps = {
+  hero: PageHeroConfig;
+  breadcrumbLabel: string;
+  updatedAt: string;
+  sections: LegalSection[];
+};
+
+export function LegalPage({ hero, breadcrumbLabel, updatedAt, sections }: LegalPageProps) {
+  return (
+    <MarketingSubpage
+      hero={hero}
+      breadcrumbs={[
+        { label: "Accueil", href: "/" },
+        { label: breadcrumbLabel },
+      ]}
+    >
+      <MarketingPageStack className={marketingPageShellClass}>
+        <MarketingSection labelledBy="legal-updated">
+          <p className="text-center text-xs text-[#1f2a7c]/55">Dernière mise à jour : {updatedAt}</p>
+        </MarketingSection>
+        {sections.map((section, index) => (
+          <MarketingSection key={section.title} labelledBy={`legal-section-${index}`}>
+            <MarketingHeading titleId={`legal-section-${index}`} title={section.title} align="left" />
+            <div className={cn(marketingCardClass, "mt-6 space-y-3 p-5 sm:p-6")}>
+              {section.body.map((paragraph) => (
+                <p key={paragraph} className="text-sm leading-relaxed text-[#1f2a7c]/78">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </MarketingSection>
+        ))}
+      </MarketingPageStack>
+    </MarketingSubpage>
+  );
+}
