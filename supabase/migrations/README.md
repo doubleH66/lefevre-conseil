@@ -15,6 +15,8 @@ Exécuter **dans cet ordre** dans [Supabase Dashboard → SQL Editor](https://su
 | 9 | [009_portal_documents_fix.sql](./009_portal_documents_fix.sql) | **Correctif** envoi pièces justificatives (bucket + droits Storage) |
 | 10 | [010_client_profile_save.sql](./010_client_profile_save.sql) | Sauvegarde profil client fiable (`update_my_client_account`) |
 
+Voir aussi le flux **profil espace client** côté Next : [../docs-profil-espace-client.md](../docs-profil-espace-client.md).
+
 ## Accès rapide dans le projet
 
 Dossier :

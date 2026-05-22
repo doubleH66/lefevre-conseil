@@ -3,23 +3,17 @@
 import * as React from "react";
 import type { PortalClient } from "@/components/portal/types";
 import { ProfileAvatarField } from "@/components/portal/ProfileAvatarField";
-import { createClient } from "@/lib/supabase/client";
+import { saveClientProfileAction } from "@/app/espace-client/actions";
 import { formatPortalError } from "@/lib/portal/errors";
-import { updateClientProfile } from "@/lib/portal/update-client-profile";
 import { usePortal } from "@/components/portal/portal-provider";
 
-function syncFormFromClient(client: PortalClient) {
-  return {
-    companyName: client.companyName,
-    contactName: client.contactName,
-    phone: client.phone,
-    address: client.address,
-    website: client.website,
-  };
-}
-
+/**
+ * Les champs reflètent le `client` passé au **premier montage**.
+ * Au changement réel des données venant du portail (nouvel `updatedAtIso`),
+ * le parent passe une nouvelle `key` → **remount** sans `useEffect`.
+ */
 export function ClientProfileForm({ client }: { client: PortalClient }) {
-  const { authUser, patchClient, refresh, updateAuthAvatar, updateAuthFullName } = usePortal();
+  const { authUser, refresh, updateAuthAvatar, updateAuthFullName } = usePortal();
   const [companyName, setCompanyName] = React.useState(client.companyName);
   const [contactName, setContactName] = React.useState(client.contactName);
   const [phone, setPhone] = React.useState(client.phone);
@@ -29,17 +23,6 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [message, setMessage] = React.useState<string | null>(null);
   const [messageTone, setMessageTone] = React.useState<"ok" | "error">("ok");
   const [isDirty, setIsDirty] = React.useState(false);
-
-  // Resync depuis la DB : `updatedAtIso` = `client_accounts.updated_at` (unique par save), pas le libellé `lastActivity`.
-  React.useEffect(() => {
-    const next = syncFormFromClient(client);
-    setCompanyName(next.companyName);
-    setContactName(next.contactName);
-    setPhone(next.phone);
-    setAddress(next.address);
-    setWebsite(next.website);
-    setIsDirty(false);
-  }, [client.id, client.updatedAtIso]);
 
   const markDirty = () => setIsDirty(true);
 
@@ -59,9 +42,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
     }
 
     try {
-      const supabase = createClient();
-      const saved = await updateClientProfile(supabase, {
-        clientId: client.id,
+      await saveClientProfileAction({
         companyName: trimmedCompany,
         contactName: trimmedContact,
         phone: phone.trim(),
@@ -69,26 +50,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         website: website.trim(),
       });
 
-      if (authUser?.id) {
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .update({ full_name: trimmedContact })
-          .eq("id", authUser.id);
-        if (profileError) throw profileError;
-        updateAuthFullName(trimmedContact);
-      }
-
-      patchClient(saved.id, {
-        companyName: saved.companyName,
-        contactName: saved.contactName,
-        phone: saved.phone,
-        address: saved.address,
-        website: saved.website,
-        email: saved.email,
-        lastActivity: saved.lastActivity,
-        updatedAtIso: saved.updatedAtIso,
-      });
-
+      updateAuthFullName(trimmedContact);
       await refresh({ silent: true });
 
       setIsDirty(false);
@@ -199,9 +161,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         {message ? (
           <p
             className={
-              messageTone === "error"
-                ? "text-sm text-red-700"
-                : "text-sm text-emerald-800"
+              messageTone === "error" ? "text-sm text-red-700" : "text-sm text-emerald-800"
             }
             role={messageTone === "error" ? "alert" : "status"}
           >
@@ -209,7 +169,9 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
           </p>
         ) : null}
         {isDirty ? (
-          <p className="text-xs text-neutral-500">Modifications non enregistrées — cliquez sur Enregistrer.</p>
+          <p className="text-xs text-neutral-500">
+            Modifications non enregistrées — cliquez sur Enregistrer.
+          </p>
         ) : null}
       </form>
     </div>

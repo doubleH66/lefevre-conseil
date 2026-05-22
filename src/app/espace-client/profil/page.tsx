@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/** Le rendu métier vit dans `PortalWorkspace` (pathname → `ClientPortal`). Ce segment apporte uniquement SEO / metadata. */
 export default function EspaceClientProfilPage() {
   return null;
 }

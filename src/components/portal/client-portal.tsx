@@ -12,6 +12,7 @@ import { UploadZone } from "@/components/portal/UploadZone";
 import { usePortal } from "@/components/portal/portal-provider";
 import type { PortalDocument } from "@/components/portal/types";
 import { CONTACT_HREF } from "@/lib/content/routes";
+import { profileFormRemountKey } from "@/lib/portal/profile-form-remount-key";
 import { cn } from "@/lib/utils";
 
 export type ClientPageKey = "client-documents" | "client-profile" | "client-settings";
@@ -53,7 +54,7 @@ export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
           ) : error ? (
             <p className="py-8 text-center text-sm text-rose-700">{error}</p>
           ) : client ? (
-            <ClientProfileForm client={client} />
+            <ClientProfileForm key={profileFormRemountKey(client)} client={client} />
           ) : (
             <p className="py-8 text-center text-sm text-neutral-600">
               Impossible d’afficher votre profil. Rechargez la page ou reconnectez-vous.
