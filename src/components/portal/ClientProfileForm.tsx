@@ -18,16 +18,6 @@ function syncFormFromClient(client: PortalClient) {
   };
 }
 
-const DEBUG_PROFILE =
-  typeof process !== "undefined" && process.env.NEXT_PUBLIC_DEBUG_PORTAL_PROFILE === "true";
-
-/** Log instrumentation (activer NEXT_PUBLIC_DEBUG_PORTAL_PROFILE=true + rebuild dev). */
-function debugProfile(phase: string, payload: Record<string, unknown>) {
-  if (!DEBUG_PROFILE) return;
-  // eslint-disable-next-line no-console
-  console.debug(`[portal profile] ${phase}`, payload);
-}
-
 export function ClientProfileForm({ client }: { client: PortalClient }) {
   const { authUser, patchClient, refresh, updateAuthAvatar, updateAuthFullName } = usePortal();
   const [companyName, setCompanyName] = React.useState(client.companyName);
@@ -40,13 +30,9 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [messageTone, setMessageTone] = React.useState<"ok" | "error">("ok");
   const [isDirty, setIsDirty] = React.useState(false);
 
-  // `lastActivity` seul peut rester inchangé (même minute côté format FR) alors que les champs ont changé.
+  // Resync depuis la DB : `updatedAtIso` = `client_accounts.updated_at` (unique par save), pas le libellé `lastActivity`.
   React.useEffect(() => {
     const next = syncFormFromClient(client);
-    debugProfile("sync-from-client-prop", {
-      deps: { id: client.id, updatedAtIso: client.updatedAtIso, lastActivity: client.lastActivity },
-      nextFields: next,
-    });
     setCompanyName(next.companyName);
     setContactName(next.contactName);
     setPhone(next.phone);
@@ -74,9 +60,6 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
 
     try {
       const supabase = createClient();
-      debugProfile("submit", {
-        before: { companyName, contactName, phone, address, website },
-      });
       const saved = await updateClientProfile(supabase, {
         clientId: client.id,
         companyName: trimmedCompany,
@@ -85,8 +68,6 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         address: address.trim(),
         website: website.trim(),
       });
-
-      debugProfile("after-rpc/updateClientProfile", { saved });
 
       if (authUser?.id) {
         const { error: profileError } = await supabase
@@ -108,11 +89,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         updatedAtIso: saved.updatedAtIso,
       });
 
-      debugProfile("after-patchClient", { saved });
-
       await refresh({ silent: true });
-
-      debugProfile("after-refresh-silent-complete", {});
 
       setIsDirty(false);
       setMessageTone("ok");
