@@ -93,6 +93,7 @@ function mapClient(row: ClientAccountRow, stats: { projects: number; pendingDocs
     website: row.website ?? "",
     status: row.status,
     lastActivity: formatDateTimeFr(row.updated_at),
+    updatedAtIso: row.updated_at ?? "",
     projectsCount: stats.projects,
     pendingDocuments: stats.pendingDocs,
   };

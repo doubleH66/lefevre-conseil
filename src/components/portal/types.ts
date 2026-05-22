@@ -14,6 +14,8 @@ export type PortalClient = {
   email: string;
   phone: string;
   lastActivity: string;
+  /** Valeur brute `client_accounts.updated_at` (ISO) pour resync fiable du formulaire. */
+  updatedAtIso: string;
   projectsCount: number;
   pendingDocuments: number;
   status: ClientStatus;

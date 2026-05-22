@@ -49,6 +49,7 @@ const baseClient: PortalClient = {
   lastActivity: "01/01/2026",
   projectsCount: 0,
   pendingDocuments: 0,
+  updatedAtIso: "2026-01-01T12:00:00.000Z",
 };
 
 describe("ClientProfileForm", () => {
@@ -69,6 +70,7 @@ describe("ClientProfileForm", () => {
           phone: "0752052934",
           address: "21 rue rem",
           lastActivity: "22/05/2026 14:00",
+          updatedAtIso: "2026-05-22T13:00:00.001Z",
         }}
       />,
     );
@@ -88,6 +90,7 @@ describe("ClientProfileForm", () => {
       address: "21 rue test",
       website: "",
       lastActivity: "22/05/2026 15:00",
+      updatedAtIso: "2026-05-22T14:00:00.000Z",
     });
 
     render(<ClientProfileForm client={baseClient} />);

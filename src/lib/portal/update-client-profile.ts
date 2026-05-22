@@ -10,6 +10,7 @@ export type SavedClientProfile = {
   address: string;
   website: string;
   lastActivity: string;
+  updatedAtIso: string;
 };
 
 type ClientAccountRow = {
@@ -33,6 +34,7 @@ function mapRow(row: ClientAccountRow): SavedClientProfile {
     address: row.address ?? "",
     website: row.website ?? "",
     lastActivity: formatDateTimeFr(row.updated_at),
+    updatedAtIso: row.updated_at ?? "",
   };
 }
 
