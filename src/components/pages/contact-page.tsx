@@ -20,7 +20,6 @@ import { CABINET_CONTACT, CONTACT_SUBJECTS, formatAddressLine } from "@/lib/cont
 import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION } from "@/lib/site-brand";
 import { BILAN_PATRIMOINE_HREF } from "@/lib/content/routes";
 import { CtaPrimaryLink } from "@/components/ui/cta-link";
-import { navGlassBlue } from "@/lib/styles/glass";
 import { cn } from "@/lib/utils";
 
 const BREADCRUMBS = [
@@ -454,32 +453,20 @@ export function ContactPage() {
           </div>
 
           <section
-            aria-labelledby="map-title"
+            aria-label="Carte du cabinet"
             className={cn(marketingCardClass, "mt-8 overflow-hidden xl:mt-10")}
           >
-            <div className="flex flex-col gap-3 border-b border-neutral-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-5">
-              <div>
-                <p className={marketingKickerClass}>Nous trouver</p>
-                <h2 id="map-title" className="mt-1 text-lg font-semibold tracking-tight text-[#1f2a7c]">
-                  Localisation
-                </h2>
-              </div>
+            <div className={cn(CONTACT_MAP_ASPECT, "relative overflow-hidden")}>
+              <ContactMap />
               <Link
-                href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${mapsQuery}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={cn(
-                  "inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-[background-color,box-shadow] duration-150",
-                  navGlassBlue,
-                  "hover:bg-white/[0.16] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/20",
-                )}
+                className="absolute bottom-4 right-4 z-10 inline-flex items-center justify-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#1f2a7c] shadow-[0_4px_20px_rgba(10,20,40,0.12)] ring-1 ring-neutral-200/90 transition-[background-color,box-shadow] duration-150 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/25 sm:bottom-5 sm:right-5"
               >
                 Itinéraire
                 <ArrowUpRight className="size-3.5" aria-hidden />
               </Link>
-            </div>
-            <div className={cn(CONTACT_MAP_ASPECT, "overflow-hidden")}>
-              <ContactMap />
             </div>
           </section>
         </div>

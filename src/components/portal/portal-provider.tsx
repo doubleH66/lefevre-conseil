@@ -130,6 +130,7 @@ export function PortalProvider({
   const [demands, setDemands] = React.useState<PortalDemand[]>([]);
   const [messages, setMessages] = React.useState<PortalMessage[]>([]);
   const [toasts, setToasts] = React.useState<PortalToast[]>([]);
+  const hasLoadedOnceRef = React.useRef(false);
 
   const pushToast = React.useCallback((message: string, type: ToastType = "success") => {
     const id = `toast-${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -163,11 +164,12 @@ export function PortalProvider({
 
     if (!isSupabasePublicConfigured()) {
       setError("Connexion Supabase non configurée. Ajoutez les variables d'environnement du projet.");
-      if (!silent) setLoading(false);
+      if (!silent && !hasLoadedOnceRef.current) setLoading(false);
       return;
     }
 
-    if (!silent) setLoading(true);
+    const showFullPageLoader = !silent && !hasLoadedOnceRef.current;
+    if (showFullPageLoader) setLoading(true);
     setError(null);
 
     try {
@@ -179,7 +181,7 @@ export function PortalProvider({
       if (!user) {
         setAuthUser(null);
         setError("Session expirée. Reconnectez-vous.");
-        if (!silent) setLoading(false);
+        if (showFullPageLoader) setLoading(false);
         return;
       }
 
@@ -222,7 +224,7 @@ export function PortalProvider({
           setDocuments([]);
           setDemands([]);
           setMessages([]);
-          if (!silent) setLoading(false);
+          if (showFullPageLoader) setLoading(false);
           return;
         }
 
@@ -234,17 +236,22 @@ export function PortalProvider({
         setMessages(data.messages);
         setSelectedClientId(clientId);
       }
+
+      hasLoadedOnceRef.current = true;
     } catch (e) {
       console.warn("portal refresh failed:", e);
       setError(formatPortalError(e));
     } finally {
-      if (!silent) setLoading(false);
+      if (showFullPageLoader) setLoading(false);
     }
   }, [lockClientMode, mode]);
 
+  const refreshRef = React.useRef(refresh);
+  refreshRef.current = refresh;
+
   React.useEffect(() => {
-    void refresh();
-  }, [refresh]);
+    void refreshRef.current();
+  }, []);
 
   const submitClientDemand = React.useCallback(
     async (content: string) => {

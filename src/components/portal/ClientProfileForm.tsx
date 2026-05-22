@@ -126,7 +126,13 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
     }
   };
 
-  if (!authUser) return null;
+  if (!authUser) {
+    return (
+      <p className="py-6 text-center text-sm text-neutral-600">
+        Connexion en cours… Si cet écran reste vide, rechargez la page.
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-6">

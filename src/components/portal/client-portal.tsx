@@ -32,8 +32,9 @@ function canUpload(status: PortalDocument["status"]) {
 }
 
 export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
-  const { clients, documents, uploadClientDocument, downloadDocument } = usePortal();
-  const client = clients[0];
+  const { clients, selectedClientId, documents, uploadClientDocument, downloadDocument, loading, error } =
+    usePortal();
+  const client = clients.find((c) => c.id === selectedClientId) ?? clients[0];
   const [tab, setTab] = React.useState<DocumentsTab>("overview");
 
   const toUpload = documents.filter((d) => canUpload(d.status));
@@ -42,22 +43,38 @@ export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
 
   const badgeCounts = { upload: toUpload.length, review: pendingReview.length };
 
-  if (activePage === "client-profile" && client) {
+  if (activePage === "client-profile") {
     return (
       <div className="space-y-6">
         <PageHeader title="Mon profil" lead="Vos coordonnées partagées avec le cabinet." />
         <section className="mx-auto max-w-2xl rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
-          <ClientProfileForm client={client} />
+          {loading ? (
+            <p className="py-8 text-center text-sm text-neutral-600">Chargement de votre profil…</p>
+          ) : error ? (
+            <p className="py-8 text-center text-sm text-rose-700">{error}</p>
+          ) : client ? (
+            <ClientProfileForm client={client} />
+          ) : (
+            <p className="py-8 text-center text-sm text-neutral-600">
+              Impossible d’afficher votre profil. Rechargez la page ou reconnectez-vous.
+            </p>
+          )}
         </section>
       </div>
     );
   }
 
-  if (activePage === "client-settings" && client) {
+  if (activePage === "client-settings") {
     return (
       <div className="space-y-6">
         <PageHeader title="Réglages" lead="Compte, déconnexion et liens utiles." />
-        <ClientSettingsPage client={client} />
+        {loading ? (
+          <p className="py-8 text-center text-sm text-neutral-600">Chargement…</p>
+        ) : client ? (
+          <ClientSettingsPage client={client} />
+        ) : (
+          <p className="py-8 text-center text-sm text-neutral-600">Espace client indisponible.</p>
+        )}
       </div>
     );
   }

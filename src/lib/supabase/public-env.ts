@@ -1,4 +1,8 @@
 import type { CookieOptions } from "@supabase/ssr";
+import {
+  NEXT_PUBLIC_SUPABASE_ANON_KEY as ENV_SUPABASE_ANON_KEY,
+  NEXT_PUBLIC_SUPABASE_URL as ENV_SUPABASE_URL,
+} from "@/lib/supabase/env-public";
 
 /**
  * Variables publiques Supabase (NEXT_PUBLIC_*).
@@ -9,15 +13,18 @@ function trimEnv(value: string | undefined): string {
   return (value ?? "").trim();
 }
 
+function decodeBase64Url(segment: string): string {
+  const b64 = segment.replace(/-/g, "+").replace(/_/g, "/");
+  const pad = b64.length % 4 === 0 ? "" : "=".repeat(4 - (b64.length % 4));
+  return globalThis.atob(b64 + pad);
+}
+
 /** Décode le payload d’un JWT sans vérifier la signature (champ `role` uniquement). */
 function readJwtRole(token: string): string | undefined {
   const parts = token.split(".");
   if (parts.length !== 3 || !parts[1]) return undefined;
   try {
-    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const pad = b64.length % 4 === 0 ? "" : "=".repeat(4 - (b64.length % 4));
-    const json = atob(b64 + pad);
-    const payload = JSON.parse(json) as { role?: string };
+    const payload = JSON.parse(decodeBase64Url(parts[1])) as { role?: string };
     return typeof payload.role === "string" ? payload.role : undefined;
   } catch {
     return undefined;
@@ -34,9 +41,7 @@ function assertKeyIsNotServiceRole(key: string): void {
 }
 
 function getRawSupabasePublicKey(): string {
-  const anon = trimEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-  if (anon) return anon;
-  return trimEnv(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  return trimEnv(ENV_SUPABASE_ANON_KEY);
 }
 
 /**
@@ -44,7 +49,7 @@ function getRawSupabasePublicKey(): string {
  * Refuse les schémas non http(s). En production, seul HTTPS est accepté (sauf tests locaux rares).
  */
 export function getSupabaseUrl(): string | undefined {
-  const raw = trimEnv(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  const raw = trimEnv(ENV_SUPABASE_URL);
   if (!raw) return undefined;
   try {
     const u = new URL(raw);

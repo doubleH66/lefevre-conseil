@@ -99,7 +99,7 @@ export function AppLayout({
         <Header onOpenMobileMenu={() => setMobileOpen(true)} />
 
         <main className="min-h-[calc(100dvh-2rem)] rounded-3xl border border-neutral-200 bg-white p-4 shadow-[0_10px_30px_rgba(10,20,40,0.04)] sm:p-5 lg:p-6">
-          {loading ? (
+          {loading && clients.length === 0 ? (
             <p className="py-12 text-center text-sm text-neutral-600" role="status">
               Chargement de votre espace…
             </p>
