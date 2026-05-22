@@ -86,6 +86,7 @@ type PortalStore = {
   toasts: PortalToast[];
   dismissToast: (id: string) => void;
   updateAuthAvatar: (url: string | null) => void;
+  updateAuthFullName: (name: string) => void;
   submitClientDemand: (content: string) => Promise<void>;
   uploadClientDocument: (documentId: string, file: File, comment?: string) => Promise<void>;
   downloadDocument: (storagePath: string) => Promise<void>;
@@ -503,6 +504,11 @@ export function PortalProvider({
     setAuthUser((prev) => (prev ? { ...prev, avatarUrl: url } : prev));
   }, []);
 
+  const updateAuthFullName = React.useCallback((name: string) => {
+    const trimmed = name.trim();
+    setAuthUser((prev) => (prev ? { ...prev, fullName: trimmed || null } : prev));
+  }, []);
+
   return (
     <PortalContext.Provider
       value={{
@@ -524,6 +530,7 @@ export function PortalProvider({
         toasts,
         dismissToast,
         updateAuthAvatar,
+        updateAuthFullName,
         submitClientDemand,
         uploadClientDocument,
         downloadDocument,

@@ -5,10 +5,21 @@ import type { PortalClient } from "@/components/portal/types";
 import { ProfileAvatarField } from "@/components/portal/ProfileAvatarField";
 import { createClient } from "@/lib/supabase/client";
 import { formatPortalError } from "@/lib/portal/errors";
+import { updateClientProfile } from "@/lib/portal/update-client-profile";
 import { usePortal } from "@/components/portal/portal-provider";
 
+function syncFormFromClient(client: PortalClient) {
+  return {
+    companyName: client.companyName,
+    contactName: client.contactName,
+    phone: client.phone,
+    address: client.address,
+    website: client.website,
+  };
+}
+
 export function ClientProfileForm({ client }: { client: PortalClient }) {
-  const { authUser, refresh, patchClient, updateAuthAvatar } = usePortal();
+  const { authUser, patchClient, updateAuthAvatar, updateAuthFullName } = usePortal();
   const [companyName, setCompanyName] = React.useState(client.companyName);
   const [contactName, setContactName] = React.useState(client.contactName);
   const [phone, setPhone] = React.useState(client.phone);
@@ -18,16 +29,38 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [message, setMessage] = React.useState<string | null>(null);
   const [messageTone, setMessageTone] = React.useState<"ok" | "error">("ok");
   const [isDirty, setIsDirty] = React.useState(false);
+  const lastSyncedClientId = React.useRef(client.id);
 
-  // Synchroniser depuis le serveur uniquement tant que l'utilisateur n'a pas modifié le formulaire.
+  // Resynchroniser seulement si on change de compte client (pas à chaque re-render parent).
   React.useEffect(() => {
-    if (isDirty) return;
-    setCompanyName(client.companyName);
-    setContactName(client.contactName);
-    setPhone(client.phone);
-    setAddress(client.address);
-    setWebsite(client.website);
-  }, [client, isDirty]);
+    if (client.id !== lastSyncedClientId.current) {
+      lastSyncedClientId.current = client.id;
+      const next = syncFormFromClient(client);
+      setCompanyName(next.companyName);
+      setContactName(next.contactName);
+      setPhone(next.phone);
+      setAddress(next.address);
+      setWebsite(next.website);
+      setIsDirty(false);
+      return;
+    }
+    if (!isDirty) {
+      const next = syncFormFromClient(client);
+      setCompanyName(next.companyName);
+      setContactName(next.contactName);
+      setPhone(next.phone);
+      setAddress(next.address);
+      setWebsite(next.website);
+    }
+  }, [
+    client.id,
+    client.companyName,
+    client.contactName,
+    client.phone,
+    client.address,
+    client.website,
+    isDirty,
+  ]);
 
   const markDirty = () => setIsDirty(true);
 
@@ -48,25 +81,14 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
 
     try {
       const supabase = createClient();
-      const { data, error } = await supabase
-        .from("client_accounts")
-        .update({
-          company_name: trimmedCompany,
-          contact_name: trimmedContact,
-          phone: phone.trim() || null,
-          address: address.trim() || null,
-          website: website.trim() || null,
-        })
-        .eq("id", client.id)
-        .select("company_name, contact_name, phone, address, website")
-        .maybeSingle();
-
-      if (error) throw error;
-      if (!data) {
-        throw new Error(
-          "Enregistrement refusé. Vérifiez la migration 004 (droits client) ou contactez le cabinet.",
-        );
-      }
+      const saved = await updateClientProfile(supabase, {
+        clientId: client.id,
+        companyName: trimmedCompany,
+        contactName: trimmedContact,
+        phone: phone.trim(),
+        address: address.trim(),
+        website: website.trim(),
+      });
 
       if (authUser?.id) {
         const { error: profileError } = await supabase
@@ -74,17 +96,20 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
           .update({ full_name: trimmedContact })
           .eq("id", authUser.id);
         if (profileError) throw profileError;
+        updateAuthFullName(trimmedContact);
       }
 
-      const saved = {
-        companyName: data.company_name,
-        contactName: data.contact_name,
-        phone: data.phone ?? "",
-        address: data.address ?? "",
-        website: data.website ?? "",
-      };
+      lastSyncedClientId.current = saved.id;
 
-      patchClient(client.id, saved);
+      patchClient(saved.id, {
+        companyName: saved.companyName,
+        contactName: saved.contactName,
+        phone: saved.phone,
+        address: saved.address,
+        website: saved.website,
+        email: saved.email,
+      });
+
       setCompanyName(saved.companyName);
       setContactName(saved.contactName);
       setPhone(saved.phone);
@@ -93,8 +118,6 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
       setIsDirty(false);
       setMessageTone("ok");
       setMessage("Profil enregistré.");
-
-      await refresh({ silent: true });
     } catch (err) {
       setMessageTone("error");
       setMessage(formatPortalError(err));

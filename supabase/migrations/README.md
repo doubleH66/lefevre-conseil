@@ -13,6 +13,7 @@ Exécuter **dans cet ordre** dans [Supabase Dashboard → SQL Editor](https://su
 | 7 | [007_public_media_bucket.sql](./007_public_media_bucket.sql) | Bucket `public-media` (admin) |
 | 8 | [008_profile_avatar.sql](./008_profile_avatar.sql) | Photos de profil (`profile-avatars`) |
 | 9 | [009_portal_documents_fix.sql](./009_portal_documents_fix.sql) | **Correctif** envoi pièces justificatives (bucket + droits Storage) |
+| 10 | [010_client_profile_save.sql](./010_client_profile_save.sql) | Sauvegarde profil client fiable (`update_my_client_account`) |
 
 ## Accès rapide dans le projet
 
@@ -20,9 +21,13 @@ Dossier :
 
 `Philippe lefevre site web/lefevre-conseil/supabase/migrations/`
 
-Archive (les 9 fichiers) :
+Archive (les 10 fichiers) :
 
 `Philippe lefevre site web/lefevre-conseil/supabase/migrations-bundle.tar.gz`
+
+## Si le profil client se vide après enregistrement
+
+Exécutez **`010_client_profile_save.sql`** (et **`004`** si pas encore fait). Cette migration enregistre toujours sur le bon compte client lié à votre session.
 
 ## Si l'envoi de pièces justificatives échoue
 
