@@ -74,7 +74,8 @@ type PortalStore = {
   authUser: PortalAuthUser | null;
   loading: boolean;
   error: string | null;
-  refresh: () => Promise<void>;
+  refresh: (options?: { silent?: boolean }) => Promise<void>;
+  patchClient: (id: string, patch: Partial<PortalClient>) => void;
   selectedClientId: string;
   setSelectedClientId: (id: string) => void;
   clients: PortalClient[];
@@ -152,14 +153,20 @@ export function PortalProvider({
     [clients],
   );
 
-  const refresh = React.useCallback(async () => {
+  const patchClient = React.useCallback((id: string, patch: Partial<PortalClient>) => {
+    setClients((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  }, []);
+
+  const refresh = React.useCallback(async (options?: { silent?: boolean }) => {
+    const silent = options?.silent ?? false;
+
     if (!isSupabasePublicConfigured()) {
       setError("Connexion Supabase non configurée. Ajoutez les variables d'environnement du projet.");
-      setLoading(false);
+      if (!silent) setLoading(false);
       return;
     }
 
-    setLoading(true);
+    if (!silent) setLoading(true);
     setError(null);
 
     try {
@@ -171,7 +178,7 @@ export function PortalProvider({
       if (!user) {
         setAuthUser(null);
         setError("Session expirée. Reconnectez-vous.");
-        setLoading(false);
+        if (!silent) setLoading(false);
         return;
       }
 
@@ -214,7 +221,7 @@ export function PortalProvider({
           setDocuments([]);
           setDemands([]);
           setMessages([]);
-          setLoading(false);
+          if (!silent) setLoading(false);
           return;
         }
 
@@ -230,7 +237,7 @@ export function PortalProvider({
       console.warn("portal refresh failed:", e);
       setError(formatPortalError(e));
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, [lockClientMode, mode]);
 
@@ -506,6 +513,7 @@ export function PortalProvider({
         loading,
         error,
         refresh,
+        patchClient,
         selectedClientId,
         setSelectedClientId,
         clients,

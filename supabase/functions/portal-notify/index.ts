@@ -15,42 +15,66 @@ type NotifyPayload = {
   context?: Record<string, unknown>;
 };
 
+function jsonResponse(body: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    if (!RESEND_API_KEY) {
-      return new Response(
-        JSON.stringify({ error: "RESEND_API_KEY manquante dans les secrets Supabase Functions." }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    const resendApiKey = Deno.env.get("RESEND_API_KEY")?.trim();
+    if (!resendApiKey) {
+      // Pas d'erreur 500 : les e-mails sont optionnels tant que Resend n'est pas configuré.
+      return jsonResponse({
+        ok: false,
+        skipped: true,
+        reason: "RESEND_API_KEY manquante. Définir le secret Supabase pour activer les e-mails.",
+      });
     }
+
+    const from =
+      Deno.env.get("RESEND_FROM_EMAIL")?.trim() || "Lefevre Conseil <onboarding@resend.dev>";
 
     const payload = (await req.json()) as NotifyPayload;
-    if (!payload?.to || !payload?.subject) {
-      return new Response(
-        JSON.stringify({ error: "Payload invalide. Champs requis : to, subject." }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (!payload?.subject?.trim()) {
+      return jsonResponse({ error: "Payload invalide. Champ requis : subject." }, 400);
     }
 
-    const toList = Array.isArray(payload.to) ? payload.to : [payload.to];
+    const toList = (Array.isArray(payload.to) ? payload.to : [payload.to])
+      .map((e) => (typeof e === "string" ? e.trim() : ""))
+      .filter(isValidEmail);
+
+    if (toList.length === 0) {
+      return jsonResponse({
+        ok: false,
+        skipped: true,
+        reason: "Aucune adresse e-mail valide dans le champ to.",
+      });
+    }
+
     const html = payload.html ?? defaultHtml(payload);
     const text = payload.text ?? defaultText(payload);
 
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${resendApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Lefevre Conseil <no-reply@lefevre-conseil.fr>",
+        from,
         to: toList,
-        subject: payload.subject,
+        subject: payload.subject.trim(),
         html,
         text,
       }),
@@ -59,27 +83,29 @@ serve(async (req) => {
     const resendData = await resendResponse.json();
 
     if (!resendResponse.ok) {
-      return new Response(
-        JSON.stringify({
+      return jsonResponse(
+        {
+          ok: false,
           error: "Erreur envoi Resend",
           details: resendData,
-        }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        },
+        502,
       );
     }
 
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        provider: "resend",
-        data: resendData,
-      }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return jsonResponse({
+      ok: true,
+      provider: "resend",
+      data: resendData,
+    });
   } catch (error: any) {
-    return new Response(
-      JSON.stringify({ error: "Erreur inattendue portal-notify", details: error?.message ?? String(error) }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    return jsonResponse(
+      {
+        ok: false,
+        error: "Erreur inattendue portal-notify",
+        details: error?.message ?? String(error),
+      },
+      500,
     );
   }
 });
@@ -113,4 +139,3 @@ function escapeHtml(input: string) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 }
-

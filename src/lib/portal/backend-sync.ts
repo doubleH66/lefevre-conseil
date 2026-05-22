@@ -13,11 +13,39 @@ function enabled() {
   return isSupabasePublicConfigured();
 }
 
+function normalizeRecipients(to: string | string[]): string[] {
+  const list = Array.isArray(to) ? to : [to];
+  return list.map((e) => e.trim()).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e));
+}
+
+/** E-mails transactionnels (optionnels). N'échoue jamais l'action portail principale. */
 async function invokeNotify(payload: NotifyPayload) {
   if (!enabled()) return;
+
+  const recipients = normalizeRecipients(payload.to);
+  if (recipients.length === 0) return;
+
   try {
     const supabase = createClient();
-    await supabase.functions.invoke("portal-notify", { body: payload });
+    const { data, error } = await supabase.functions.invoke("portal-notify", {
+      body: { ...payload, to: recipients.length === 1 ? recipients[0] : recipients },
+    });
+
+    if (error) {
+      console.warn("portal-notify:", error.message);
+      return;
+    }
+
+    const result = data as { ok?: boolean; skipped?: boolean; reason?: string; error?: string } | null;
+    if (result?.skipped) {
+      if (process.env.NODE_ENV === "development") {
+        console.info("portal-notify ignoré:", result.reason ?? "non configuré");
+      }
+      return;
+    }
+    if (result && result.ok === false && result.error) {
+      console.warn("portal-notify:", result.error, result);
+    }
   } catch (error) {
     console.warn("portal-notify invocation failed:", error);
   }

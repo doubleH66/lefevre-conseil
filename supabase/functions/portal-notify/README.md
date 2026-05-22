@@ -1,37 +1,37 @@
 # portal-notify (Supabase Edge Function)
 
-Envoie des emails transactionnels via Resend pour les actions du portail client/admin.
+Envoie des e-mails transactionnels via [Resend](https://resend.com) pour le portail client/admin.
 
-## Variables secrètes requises
+**Sans configuration Resend**, la fonction répond `200` avec `{ skipped: true }` — le portail continue de fonctionner (pas d'erreur 500 dans la console).
+
+## Variables secrètes
+
+Dans Supabase Dashboard → **Project Settings → Edge Functions → Secrets** (ou CLI) :
 
 ```bash
-supabase secrets set RESEND_API_KEY=your_resend_api_key
+supabase secrets set RESEND_API_KEY=re_xxxxxxxx
+# Optionnel — domaine vérifié chez Resend (sinon onboarding@resend.dev en test)
+supabase secrets set RESEND_FROM_EMAIL="Lefèvre Conseil <no-reply@votredomaine.fr>"
 ```
 
 ## Déploiement
 
 ```bash
+supabase link --project-ref qhiyxnbcegbxtvydcjhf
 supabase functions deploy portal-notify
 ```
 
-## Test local
+## Test
 
 ```bash
-supabase functions serve portal-notify --env-file .env.local
+curl -i "https://qhiyxnbcegbxtvydcjhf.supabase.co/functions/v1/portal-notify" \
+  -H "Authorization: Bearer VOTRE_ANON_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"to":"vous@example.com","subject":"Test portail","text":"Hello"}'
 ```
 
-## Exemple d'appel
+Réponse attendue sans clé Resend :
 
 ```json
-{
-  "to": "contact@client-alpha.fr",
-  "subject": "Nouvelle demande de pièce",
-  "clientName": "Client Alpha",
-  "html": "<p>Votre document est demandé.</p>"
-}
+{ "ok": false, "skipped": true, "reason": "RESEND_API_KEY manquante..." }
 ```
-
-L'expéditeur est forcé à :
-
-`Lefevre Conseil <no-reply@lefevre-conseil.fr>`
-
