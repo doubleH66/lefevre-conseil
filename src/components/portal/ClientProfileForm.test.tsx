@@ -87,13 +87,16 @@ describe("ClientProfileForm", () => {
 
     render(<ClientProfileForm client={baseClient} />);
 
-    await user.clear(screen.getByRole("textbox", { name: /entreprise/i }));
-    await user.type(screen.getByRole("textbox", { name: /entreprise/i }), "Nouvelle SA");
+    const companyInput = screen.getByRole("textbox", { name: /entreprise/i });
+    await user.clear(companyInput);
+    await user.type(companyInput, "Nouvelle SA");
     await user.click(screen.getByRole("button", { name: /enregistrer/i }));
 
     expect(updateClientProfile).toHaveBeenCalled();
     expect(await screen.findByText("Profil enregistré.")).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("0700000000");
-    expect(patchClient).toHaveBeenCalled();
+    expect(patchClient).toHaveBeenCalledWith(
+      "client-1",
+      expect.objectContaining({ companyName: "Nouvelle SA", phone: "0700000000" }),
+    );
   });
 });
