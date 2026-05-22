@@ -19,7 +19,7 @@ function syncFormFromClient(client: PortalClient) {
 }
 
 export function ClientProfileForm({ client }: { client: PortalClient }) {
-  const { authUser, patchClient, updateAuthAvatar, updateAuthFullName } = usePortal();
+  const { authUser, patchClient, refresh, updateAuthAvatar, updateAuthFullName } = usePortal();
   const [companyName, setCompanyName] = React.useState(client.companyName);
   const [contactName, setContactName] = React.useState(client.contactName);
   const [phone, setPhone] = React.useState(client.phone);
@@ -29,38 +29,17 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [message, setMessage] = React.useState<string | null>(null);
   const [messageTone, setMessageTone] = React.useState<"ok" | "error">("ok");
   const [isDirty, setIsDirty] = React.useState(false);
-  const lastSyncedClientId = React.useRef(client.id);
 
-  // Resynchroniser seulement si on change de compte client (pas à chaque re-render parent).
+  // Resynchroniser quand les données serveur changent (refresh / F5), pas pendant la saisie.
   React.useEffect(() => {
-    if (client.id !== lastSyncedClientId.current) {
-      lastSyncedClientId.current = client.id;
-      const next = syncFormFromClient(client);
-      setCompanyName(next.companyName);
-      setContactName(next.contactName);
-      setPhone(next.phone);
-      setAddress(next.address);
-      setWebsite(next.website);
-      setIsDirty(false);
-      return;
-    }
-    if (!isDirty) {
-      const next = syncFormFromClient(client);
-      setCompanyName(next.companyName);
-      setContactName(next.contactName);
-      setPhone(next.phone);
-      setAddress(next.address);
-      setWebsite(next.website);
-    }
-  }, [
-    client.id,
-    client.companyName,
-    client.contactName,
-    client.phone,
-    client.address,
-    client.website,
-    isDirty,
-  ]);
+    const next = syncFormFromClient(client);
+    setCompanyName(next.companyName);
+    setContactName(next.contactName);
+    setPhone(next.phone);
+    setAddress(next.address);
+    setWebsite(next.website);
+    setIsDirty(false);
+  }, [client.id, client.lastActivity]);
 
   const markDirty = () => setIsDirty(true);
 
@@ -99,8 +78,6 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         updateAuthFullName(trimmedContact);
       }
 
-      lastSyncedClientId.current = saved.id;
-
       patchClient(saved.id, {
         companyName: saved.companyName,
         contactName: saved.contactName,
@@ -108,13 +85,11 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         address: saved.address,
         website: saved.website,
         email: saved.email,
+        lastActivity: saved.lastActivity,
       });
 
-      setCompanyName(saved.companyName);
-      setContactName(saved.contactName);
-      setPhone(saved.phone);
-      setAddress(saved.address);
-      setWebsite(saved.website);
+      await refresh({ silent: true });
+
       setIsDirty(false);
       setMessageTone("ok");
       setMessage("Profil enregistré.");

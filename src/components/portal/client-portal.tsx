@@ -48,7 +48,7 @@ export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
       <div className="space-y-6">
         <PageHeader title="Mon profil" lead="Vos coordonnées partagées avec le cabinet." />
         <section className="mx-auto max-w-2xl rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
-          {loading ? (
+          {loading && !client ? (
             <p className="py-8 text-center text-sm text-neutral-600">Chargement de votre profil…</p>
           ) : error ? (
             <p className="py-8 text-center text-sm text-rose-700">{error}</p>

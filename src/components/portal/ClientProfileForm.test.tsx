@@ -5,6 +5,7 @@ import { ClientProfileForm } from "@/components/portal/ClientProfileForm";
 import type { PortalClient } from "@/components/portal/types";
 
 const patchClient = vi.fn();
+const refresh = vi.fn().mockResolvedValue(undefined);
 const updateClientProfile = vi.fn();
 const createClient = vi.fn(() => ({
   from: () => ({
@@ -26,6 +27,7 @@ vi.mock("@/components/portal/portal-provider", () => ({
   usePortal: () => ({
     authUser: { id: "user-1", email: "test@example.com", fullName: "Test", avatarUrl: null },
     patchClient,
+    refresh,
     updateAuthAvatar: vi.fn(),
     updateAuthFullName: vi.fn(),
   }),
@@ -52,6 +54,7 @@ const baseClient: PortalClient = {
 describe("ClientProfileForm", () => {
   beforeEach(() => {
     patchClient.mockClear();
+    refresh.mockClear();
     updateClientProfile.mockReset();
   });
 
@@ -65,6 +68,7 @@ describe("ClientProfileForm", () => {
           ...baseClient,
           phone: "0752052934",
           address: "21 rue rem",
+          lastActivity: "22/05/2026 14:00",
         }}
       />,
     );
@@ -83,6 +87,7 @@ describe("ClientProfileForm", () => {
       phone: "0700000000",
       address: "21 rue test",
       website: "",
+      lastActivity: "22/05/2026 15:00",
     });
 
     render(<ClientProfileForm client={baseClient} />);
@@ -98,5 +103,6 @@ describe("ClientProfileForm", () => {
       "client-1",
       expect.objectContaining({ companyName: "Nouvelle SA", phone: "0700000000" }),
     );
+    expect(refresh).toHaveBeenCalledWith({ silent: true });
   });
 });

@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { formatDateTimeFr } from "@/lib/portal/format";
 
 export type SavedClientProfile = {
   id: string;
@@ -8,6 +9,7 @@ export type SavedClientProfile = {
   phone: string;
   address: string;
   website: string;
+  lastActivity: string;
 };
 
 type ClientAccountRow = {
@@ -18,6 +20,7 @@ type ClientAccountRow = {
   phone: string | null;
   address: string | null;
   website: string | null;
+  updated_at?: string;
 };
 
 function mapRow(row: ClientAccountRow): SavedClientProfile {
@@ -29,6 +32,7 @@ function mapRow(row: ClientAccountRow): SavedClientProfile {
     phone: row.phone ?? "",
     address: row.address ?? "",
     website: row.website ?? "",
+    lastActivity: formatDateTimeFr(row.updated_at),
   };
 }
 
@@ -74,7 +78,7 @@ export async function updateClientProfile(
       website: input.website || null,
     })
     .eq("id", input.clientId)
-    .select("id, company_name, contact_name, email, phone, address, website")
+    .select("id, company_name, contact_name, email, phone, address, website, updated_at")
     .maybeSingle();
 
   if (error) throw error;
