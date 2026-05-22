@@ -68,7 +68,17 @@ describe("ClientProfileForm", () => {
 
   it("appelle la Server Action puis refresh après enregistrement", async () => {
     const user = userEvent.setup();
-    saveClientProfileAction.mockResolvedValue(undefined);
+    saveClientProfileAction.mockResolvedValue({
+      id: "client-1",
+      companyName: "Nouvelle SA",
+      contactName: "Jean Dupont",
+      email: "test@example.com",
+      phone: "0700000000",
+      address: "21 rue test",
+      website: "",
+      lastActivity: "22/05/2026 15:00",
+      updatedAtIso: "2026-05-22T14:00:00.000Z",
+    });
 
     render(<ClientProfileForm key={profileFormRemountKey(baseClient)} client={baseClient} />);
 

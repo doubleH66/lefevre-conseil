@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { formatDateTimeFr } from "@/lib/portal/format";
+import { profileClientSnapshot, profileLog } from "@/lib/portal/profile-debug-log";
 
 export type SavedClientProfile = {
   id: string;
@@ -50,6 +51,17 @@ export async function updateClientProfile(
     website: string;
   },
 ): Promise<SavedClientProfile> {
+  profileLog("updateClientProfile — entrée", {
+    clientId: input.clientId,
+    payload: {
+      companyName: input.companyName,
+      contactName: input.contactName,
+      phone: input.phone,
+      address: input.address,
+      website: input.website,
+    },
+  });
+
   const { data: rpcData, error: rpcError } = await supabase.rpc("update_my_client_account", {
     p_company_name: input.companyName,
     p_contact_name: input.contactName,
@@ -58,9 +70,19 @@ export async function updateClientProfile(
     p_website: input.website || null,
   });
 
+  profileLog("updateClientProfile — RPC update_my_client_account", {
+    rpcError: rpcError?.message ?? null,
+    rpcCode: rpcError?.code ?? null,
+    rpcDataPreview: rpcData,
+  });
+
   if (!rpcError && rpcData) {
     const row = (Array.isArray(rpcData) ? rpcData[0] : rpcData) as ClientAccountRow | undefined;
-    if (row?.id) return mapRow(row);
+    if (row?.id) {
+      const mapped = mapRow(row);
+      profileLog("updateClientProfile — OK via RPC", profileClientSnapshot(mapped));
+      return mapped;
+    }
   }
 
   const isMissingRpc =
@@ -69,6 +91,11 @@ export async function updateClientProfile(
     rpcError?.code === "PGRST202";
 
   if (!isMissingRpc && rpcError) throw rpcError;
+
+  profileLog("updateClientProfile — repli UPDATE direct client_accounts", {
+    isMissingRpc,
+    clientId: input.clientId,
+  });
 
   const { data, error } = await supabase
     .from("client_accounts")
@@ -83,6 +110,12 @@ export async function updateClientProfile(
     .select("id, company_name, contact_name, email, phone, address, website, updated_at")
     .maybeSingle();
 
+  profileLog("updateClientProfile — repli UPDATE résultat", {
+    error: error?.message ?? null,
+    rows: data ? 1 : 0,
+    data,
+  });
+
   if (error) throw error;
   if (!data) {
     throw new Error(
@@ -90,5 +123,7 @@ export async function updateClientProfile(
     );
   }
 
-  return mapRow(data as ClientAccountRow);
+  const mapped = mapRow(data as ClientAccountRow);
+  profileLog("updateClientProfile — OK via repli", profileClientSnapshot(mapped));
+  return mapped;
 }

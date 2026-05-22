@@ -12,6 +12,7 @@ import type {
 } from "@/components/portal/types";
 import { formatDateFr, formatDateTimeFr } from "@/lib/portal/format";
 import { formatPortalError } from "@/lib/portal/errors";
+import { profileClientSnapshot, profileLog } from "@/lib/portal/profile-debug-log";
 
 function assertNoError(error: { message: string } | null, context: string): void {
   if (error) throw new Error(formatPortalError({ message: `${context} : ${error.message}` }));
@@ -159,6 +160,11 @@ function mapMessage(row: MessageRow): PortalMessage {
 export async function ensureClientMembership(supabase: SupabaseClient): Promise<string | null> {
   const { data, error } = await supabase.rpc("ensure_client_portal_access");
 
+  profileLog("ensureClientMembership — RPC ensure_client_portal_access", {
+    clientId: data,
+    error: error?.message ?? null,
+  });
+
   if (error) {
     console.warn("ensure_client_portal_access:", error);
     return null;
@@ -184,8 +190,17 @@ export async function loadClientPortalData(
     .single();
 
   if (accountError || !account) {
+    profileLog("loadClientPortalData — SELECT client_accounts ERREUR", {
+      clientId,
+      error: accountError?.message,
+    });
     throw new Error("Compte client introuvable.");
   }
+
+  profileLog("loadClientPortalData — SELECT client_accounts OK (ligne brute)", {
+    clientId,
+    row: account,
+  });
 
   const [projectsRes, docsRes, uploadsRes, demandsRes, messagesRes] = await Promise.all([
     supabase.from("projects").select("*").eq("client_id", clientId).order("updated_at", { ascending: false }),
@@ -223,6 +238,8 @@ export async function loadClientPortalData(
     projects: projectRows.length,
     pendingDocs,
   });
+
+  profileLog("loadClientPortalData — PortalClient mappé", profileClientSnapshot(client));
 
   return {
     client,

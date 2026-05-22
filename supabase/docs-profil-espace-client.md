@@ -24,3 +24,18 @@ select id, company_name, phone, updated_at from public.client_accounts where id 
 
 La mutation passe par une **Server Action** (`saveClientProfileAction`) : même session que le navigateur (cookies SSR Supabase).  
 Ensuite le portail client appelle **`refresh({ silent: true })`** pour recharger `PortalClient` depuis la DB — **pas** de second état contradictoire avec `patchClient` sur ces champs.
+
+## Logs de diagnostic (temporaire)
+
+En **local** (`npm run dev`), les logs `[profil]` sont **activés automatiquement**.
+
+En **prod / preview**, ajouter dans Vercel puis **redéployer** :
+
+`NEXT_PUBLIC_DEBUG_PORTAL_PROFILE=true`
+
+| Où regarder | Quoi |
+|-------------|------|
+| **Console navigateur** (F12) | `ClientProfileForm`, `portal-provider refresh`, `profileFormRemountKey`, `client-portal` |
+| **Terminal** où tourne `npm run dev` | Lignes `SERVER saveClientProfileAction`, `updateClientProfile`, RPC |
+
+Ordre attendu après « Enregistrer » : `submit` → `SERVER …` → `updateClientProfile — RPC` → `refresh — début` → `loadClientPortalData — SELECT OK` → `profileFormRemountKey` (nouvelle clé) → `ClientProfileForm — mount`.

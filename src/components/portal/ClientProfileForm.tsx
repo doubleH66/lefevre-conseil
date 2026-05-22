@@ -5,6 +5,8 @@ import type { PortalClient } from "@/components/portal/types";
 import { ProfileAvatarField } from "@/components/portal/ProfileAvatarField";
 import { saveClientProfileAction } from "@/app/espace-client/actions";
 import { formatPortalError } from "@/lib/portal/errors";
+import { profileClientSnapshot, profileLog } from "@/lib/portal/profile-debug-log";
+import { profileFormRemountKey } from "@/lib/portal/profile-form-remount-key";
 import { usePortal } from "@/components/portal/portal-provider";
 
 /**
@@ -24,7 +26,24 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [messageTone, setMessageTone] = React.useState<"ok" | "error">("ok");
   const [isDirty, setIsDirty] = React.useState(false);
 
-  const markDirty = () => setIsDirty(true);
+  React.useEffect(() => {
+    profileLog("ClientProfileForm — mount", {
+      remountKey: profileFormRemountKey(client),
+      clientProp: profileClientSnapshot(client),
+      stateInit: {
+        companyName: client.companyName,
+        contactName: client.contactName,
+        phone: client.phone,
+        address: client.address,
+        website: client.website,
+      },
+    });
+  }, []);
+
+  const markDirty = () => {
+    setIsDirty(true);
+    profileLog("ClientProfileForm — dirty");
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,22 +60,30 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
       return;
     }
 
+    const payload = {
+      companyName: trimmedCompany,
+      contactName: trimmedContact,
+      phone: phone.trim(),
+      address: address.trim(),
+      website: website.trim(),
+    };
+
     try {
-      await saveClientProfileAction({
-        companyName: trimmedCompany,
-        contactName: trimmedContact,
-        phone: phone.trim(),
-        address: address.trim(),
-        website: website.trim(),
-      });
+      profileLog("ClientProfileForm — submit (champs UI)", payload);
+
+      const saved = await saveClientProfileAction(payload);
+      profileLog("ClientProfileForm — saveClientProfileAction OK", profileClientSnapshot(saved));
 
       updateAuthFullName(trimmedContact);
+      profileLog("ClientProfileForm — refresh({ silent: true }) — début");
       await refresh({ silent: true });
+      profileLog("ClientProfileForm — refresh({ silent: true }) — fin (voir logs portal-provider)");
 
       setIsDirty(false);
       setMessageTone("ok");
       setMessage("Profil enregistré.");
     } catch (err) {
+      profileLog("ClientProfileForm — erreur", err);
       setMessageTone("error");
       setMessage(formatPortalError(err));
     } finally {

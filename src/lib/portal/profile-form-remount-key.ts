@@ -1,4 +1,5 @@
 import type { PortalClient } from "@/components/portal/types";
+import { profileLog } from "@/lib/portal/profile-debug-log";
 
 /**
  * Force un remount du formulaire profil lorsque les données serveur changent,
@@ -9,6 +10,10 @@ import type { PortalClient } from "@/components/portal/types";
  */
 export function profileFormRemountKey(c: PortalClient): string {
   const ts = (c.updatedAtIso ?? "").trim();
-  if (ts.length > 0) return `${c.id}:${ts}`;
-  return `${c.id}|${c.companyName}|${c.contactName}|${c.phone}|${c.address}|${c.website}|${c.email}`;
+  const key =
+    ts.length > 0
+      ? `${c.id}:${ts}`
+      : `${c.id}|${c.companyName}|${c.contactName}|${c.phone}|${c.address}|${c.website}|${c.email}`;
+  profileLog("profileFormRemountKey", { key, updatedAtIso: ts || "(vide → empreinte champs)" });
+  return key;
 }
