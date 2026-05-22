@@ -3,6 +3,26 @@ import type { DocumentStatus, Priority } from "@/components/portal/types";
 
 const PORTAL_BUCKET = "portal-documents";
 
+function normalizeProjectId(projectId: string | null | undefined): string | null {
+  const trimmed = projectId?.trim();
+  return trimmed ? trimmed : null;
+}
+
+function resolveUploadContentType(file: File): string | undefined {
+  if (file.type) return file.type;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  const byExt: Record<string, string> = {
+    pdf: "application/pdf",
+    png: "image/png",
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    webp: "image/webp",
+    doc: "application/msword",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  };
+  return byExt[ext ?? ""] ?? undefined;
+}
+
 export async function insertClientDemand(supabase: SupabaseClient, clientId: string, content: string, userId: string) {
   const { error } = await supabase.from("client_demands").insert({
     client_id: clientId,
@@ -42,7 +62,7 @@ export async function insertDocumentRequest(
 ) {
   const { error } = await supabase.from("document_requests").insert({
     client_id: payload.clientId,
-    project_id: payload.projectId?.trim() ? payload.projectId : null,
+    project_id: normalizeProjectId(payload.projectId),
     name: payload.name,
     description: payload.description || null,
     due_date: payload.dueDate || null,
@@ -135,18 +155,19 @@ export async function uploadDocumentForRequest(
     userId: string;
   },
 ) {
+  const projectId = normalizeProjectId(input.projectId);
   const safeName = input.file.name.replace(/[^\w.\-() ]+/g, "_");
-  const path = `${input.clientId}/${input.projectId ?? "general"}/${Date.now()}-${safeName}`;
+  const path = `${input.clientId}/${projectId ?? "general"}/${Date.now()}-${safeName}`;
 
   const { error: uploadError } = await supabase.storage.from(PORTAL_BUCKET).upload(path, input.file, {
     upsert: false,
-    contentType: input.file.type || undefined,
+    contentType: resolveUploadContentType(input.file),
   });
   if (uploadError) throw uploadError;
 
   const { error: docError } = await supabase.from("documents").insert({
     client_id: input.clientId,
-    project_id: input.projectId,
+    project_id: projectId,
     request_id: input.requestId,
     storage_path: path,
     original_name: input.file.name,

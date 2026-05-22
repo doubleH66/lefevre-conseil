@@ -12,16 +12,20 @@ export function UploadZone({
   const [comment, setComment] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
   const [busy, setBusy] = React.useState(false);
+  const [uploadError, setUploadError] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit = async () => {
     if (!file || busy || disabled) return;
     setBusy(true);
+    setUploadError(null);
     try {
       await onUpload(file, comment);
       setComment("");
       setFile(null);
       if (inputRef.current) inputRef.current.value = "";
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : "Échec de l'envoi du fichier.");
     } finally {
       setBusy(false);
     }
@@ -31,6 +35,11 @@ export function UploadZone({
     <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-4">
       <p className="text-sm font-semibold text-neutral-900">Déposer un fichier</p>
       <p className="mt-1 text-xs text-neutral-500">PDF, images ou Word - 50 Mo max.</p>
+      {uploadError ? (
+        <p className="mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800" role="alert">
+          {uploadError}
+        </p>
+      ) : null}
       <input
         ref={inputRef}
         type="file"

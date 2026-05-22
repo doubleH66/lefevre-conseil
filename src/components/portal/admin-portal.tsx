@@ -5,13 +5,18 @@ import { Plus, Search } from "lucide-react";
 import { AdminTable } from "@/components/portal/AdminTable";
 import { ClientCard } from "@/components/portal/ClientCard";
 import { DocumentCard } from "@/components/portal/DocumentCard";
+import { AdminPublicMediaPage } from "@/components/portal/AdminPublicMediaPage";
 import { DocumentRequestModal } from "@/components/portal/DocumentRequestModal";
 import { EmptyState } from "@/components/portal/EmptyState";
 import { StatCard } from "@/components/portal/StatCard";
 import { StatusBadge } from "@/components/portal/StatusBadge";
 import { usePortal } from "@/components/portal/portal-provider";
 import type { DocumentStatus } from "@/components/portal/types";
-export type AdminPageKey = "admin-dashboard" | "admin-clients" | "admin-documents";
+export type AdminPageKey =
+  | "admin-dashboard"
+  | "admin-clients"
+  | "admin-documents"
+  | "admin-settings";
 
 type AdminPortalProps = {
   activePage: AdminPageKey;
@@ -382,6 +387,20 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
           onSubmit={requestDocument}
         />
       </>
+    );
+  }
+
+  if (activePage === "admin-settings") {
+    return (
+      <section className="space-y-5">
+        <header>
+          <h1 className="text-2xl font-semibold text-neutral-900">Médias du site</h1>
+          <p className="mt-1 text-sm text-neutral-600">
+            Fichiers publics (images, PDF) hébergés sur Supabase — migration 007 requise.
+          </p>
+        </header>
+        <AdminPublicMediaPage />
+      </section>
     );
   }
 

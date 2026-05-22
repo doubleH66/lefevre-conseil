@@ -12,6 +12,7 @@ Exécuter **dans cet ordre** dans [Supabase Dashboard → SQL Editor](https://su
 | 6 | [006_client_status_actif.sql](./006_client_status_actif.sql) | Statut Actif par défaut |
 | 7 | [007_public_media_bucket.sql](./007_public_media_bucket.sql) | Bucket `public-media` (admin) |
 | 8 | [008_profile_avatar.sql](./008_profile_avatar.sql) | Photos de profil (`profile-avatars`) |
+| 9 | [009_portal_documents_fix.sql](./009_portal_documents_fix.sql) | **Correctif** envoi pièces justificatives (bucket + droits Storage) |
 
 ## Accès rapide dans le projet
 
@@ -19,9 +20,15 @@ Dossier :
 
 `Philippe lefevre site web/lefevre-conseil/supabase/migrations/`
 
-Archive (les 8 fichiers) :
+Archive (les 9 fichiers) :
 
 `Philippe lefevre site web/lefevre-conseil/supabase/migrations-bundle.tar.gz`
+
+## Si l'envoi de pièces justificatives échoue
+
+1. Vérifiez que les migrations **003**, **005** et **009** sont exécutées (dans l'ordre).
+2. Dans Supabase → **Storage**, le bucket `portal-documents` doit exister.
+3. Le compte **client** doit utiliser le **même e-mail** que la fiche client (liaison via migration 005).
 
 ## CLI Supabase (optionnel)
 

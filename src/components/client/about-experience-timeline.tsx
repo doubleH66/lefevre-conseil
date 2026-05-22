@@ -222,6 +222,7 @@ function TimelineStepButton({
   tabId,
   panelId,
   onSelect,
+  selectOnHover = false,
 }: {
   item: AboutTimelineMilestone;
   isActive: boolean;
@@ -230,6 +231,7 @@ function TimelineStepButton({
   tabId: string;
   panelId: string;
   onSelect: () => void;
+  selectOnHover?: boolean;
 }) {
   const yearClass = cn(
     "text-sm font-semibold tabular-nums tracking-tight transition-colors",
@@ -254,8 +256,13 @@ function TimelineStepButton({
       aria-controls={panelId}
       id={tabId}
       tabIndex={isActive ? 0 : -1}
-      onClick={onSelect}
-      className="group relative flex flex-col items-center rounded-lg outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#17213b]/25 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      onMouseEnter={selectOnHover ? onSelect : undefined}
+      onFocus={selectOnHover ? onSelect : undefined}
+      onClick={selectOnHover ? undefined : onSelect}
+      className={cn(
+        "group relative flex flex-col items-center rounded-lg outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#17213b]/25 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+        selectOnHover && "cursor-default",
+      )}
       aria-label={`Voir l’étape ${item.year}`}
     >
       <span className="flex h-12 w-full items-center justify-center">
@@ -338,6 +345,7 @@ function DesktopTimelineTrack({
               tabId={tabId}
               panelId={panelId}
               onSelect={() => onSelect(index)}
+              selectOnHover
             />
           );
         })}

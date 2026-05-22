@@ -73,13 +73,17 @@ export function DocumentRequestModal({
         priority,
         message: message.trim(),
       }),
-    ).then(() => {
-      setName("");
-      setDescription("");
-      setDueDate("");
-      setMessage("");
-      onClose();
-    });
+    )
+      .then(() => {
+        setName("");
+        setDescription("");
+        setDueDate("");
+        setMessage("");
+        onClose();
+      })
+      .catch((e: unknown) => {
+        setError(e instanceof Error ? e.message : "Impossible d'enregistrer la demande.");
+      });
   };
 
   return (

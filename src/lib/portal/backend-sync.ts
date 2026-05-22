@@ -30,16 +30,6 @@ export async function syncClientDemand(input: {
   clientEmail: string;
 }) {
   if (!enabled()) return;
-  try {
-    const supabase = createClient();
-    await supabase.from("client_demands").insert({
-      client_id: input.clientId,
-      content: input.content,
-      status: "Reçue",
-    });
-  } catch (error) {
-    console.warn("sync client demand failed:", error);
-  }
 
   await invokeNotify({
     to: input.clientEmail,
@@ -61,21 +51,6 @@ export async function syncDocumentRequest(input: {
   clientEmail: string;
 }) {
   if (!enabled()) return;
-  try {
-    const supabase = createClient();
-    await supabase.from("document_requests").insert({
-      client_id: input.clientId,
-      project_id: input.projectId,
-      name: input.name,
-      description: input.description ?? null,
-      due_date: input.dueDate || null,
-      priority: input.priority,
-      status: "Demandé",
-      message: input.message ?? null,
-    });
-  } catch (error) {
-    console.warn("sync document request failed:", error);
-  }
 
   await invokeNotify({
     to: input.clientEmail,
@@ -102,23 +77,6 @@ export async function syncProjectCreation(input: {
   clientEmail: string;
 }) {
   if (!enabled()) return;
-  try {
-    const supabase = createClient();
-    await supabase.from("projects").insert({
-      client_id: input.clientId,
-      name: input.name,
-      description: input.description ?? null,
-      status: "En attente",
-      progress: 5,
-      start_date: input.startDate || null,
-      target_date: input.targetDate || null,
-      next_step: input.nextStep || null,
-      owner_name: input.owner || null,
-      internal_notes: input.internalNotes || null,
-    });
-  } catch (error) {
-    console.warn("sync project creation failed:", error);
-  }
 
   await invokeNotify({
     to: input.clientEmail,
@@ -134,17 +92,7 @@ export async function syncPortalMessage(input: {
   body: string;
 }) {
   if (!enabled()) return;
-  try {
-    const supabase = createClient();
-    await supabase.from("portal_messages").insert({
-      client_id: input.clientId,
-      sender_type: input.senderType,
-      body: input.body,
-      status: "Envoyé",
-    });
-  } catch (error) {
-    console.warn("sync portal message failed:", error);
-  }
+  void input;
 }
 
 export async function syncDocumentUpload(input: {
@@ -156,25 +104,12 @@ export async function syncDocumentUpload(input: {
   clientEmail: string;
 }) {
   if (!enabled()) return;
-  try {
-    const supabase = createClient();
-    await supabase.from("documents").insert({
-      client_id: input.clientId,
-      project_id: input.projectId ?? null,
-      storage_path: `${input.clientId}/mock/${Date.now()}-${slugify(input.documentName)}.txt`,
-      original_name: input.documentName,
-      status: "Reçu",
-      comment: input.comment ?? null,
-    });
-  } catch (error) {
-    console.warn("sync document upload failed:", error);
-  }
 
   await invokeNotify({
     to: input.clientEmail,
     subject: `Document reçu : ${input.documentName}`,
     clientName: input.clientName,
-    text: `Bonjour,\n\nVotre document "${input.documentName}" a bien été reçu.`,
+    text: `Bonjour,\n\nVotre document "${input.documentName}" a bien été reçu par le cabinet.`,
   });
 }
 
@@ -195,13 +130,3 @@ export async function syncDocumentStatusNotice(input: {
       `${input.comment ? `\nCommentaire : ${input.comment}` : ""}`,
   });
 }
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-

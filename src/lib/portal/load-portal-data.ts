@@ -11,6 +11,11 @@ import type {
   ProjectStatus,
 } from "@/components/portal/types";
 import { formatDateFr, formatDateTimeFr } from "@/lib/portal/format";
+import { formatPortalError } from "@/lib/portal/errors";
+
+function assertNoError(error: { message: string } | null, context: string): void {
+  if (error) throw new Error(formatPortalError({ message: `${context} : ${error.message}` }));
+}
 
 type ClientAccountRow = {
   id: string;
@@ -197,6 +202,12 @@ export async function loadClientPortalData(
     supabase.from("portal_messages").select("*").eq("client_id", clientId).order("created_at", { ascending: true }),
   ]);
 
+  assertNoError(projectsRes.error, "Chargement des projets");
+  assertNoError(docsRes.error, "Chargement des pièces demandées");
+  assertNoError(uploadsRes.error, "Chargement des fichiers déposés");
+  assertNoError(demandsRes.error, "Chargement des demandes");
+  assertNoError(messagesRes.error, "Chargement des messages");
+
   const projectRows = (projectsRes.data ?? []) as ProjectRow[];
   const docRows = (docsRes.data ?? []) as DocumentRequestRow[];
   const uploadByRequest = new Map<string, UploadedDocRow>();
@@ -247,6 +258,13 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
     supabase.from("client_demands").select("*").order("created_at", { ascending: false }),
     supabase.from("portal_messages").select("*").order("created_at", { ascending: false }),
   ]);
+
+  assertNoError(clientsRes.error, "Chargement des clients");
+  assertNoError(projectsRes.error, "Chargement des projets");
+  assertNoError(docsRes.error, "Chargement des pièces");
+  assertNoError(uploadsRes.error, "Chargement des fichiers");
+  assertNoError(demandsRes.error, "Chargement des demandes clients");
+  assertNoError(messagesRes.error, "Chargement des messages");
 
   const projectRows = (projectsRes.data ?? []) as ProjectRow[];
   const docRows = (docsRes.data ?? []) as DocumentRequestRow[];

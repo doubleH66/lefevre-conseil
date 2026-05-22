@@ -21,6 +21,7 @@ import {
   syncPortalMessage,
   syncProjectCreation,
 } from "@/lib/portal/backend-sync";
+import { formatPortalError } from "@/lib/portal/errors";
 import {
   ensureClientMembership,
   loadAdminPortalData,
@@ -227,7 +228,7 @@ export function PortalProvider({
       }
     } catch (e) {
       console.warn("portal refresh failed:", e);
-      setError(e instanceof Error ? e.message : "Erreur lors du chargement de l'espace.");
+      setError(formatPortalError(e));
     } finally {
       setLoading(false);
     }
@@ -240,17 +241,22 @@ export function PortalProvider({
   const submitClientDemand = React.useCallback(
     async (content: string) => {
       if (!content.trim() || !selectedClientId || !userId) return;
-      const supabase = createClient();
-      await insertClientDemand(supabase, selectedClientId, content.trim(), userId);
-      const clientMeta = getClientMeta(selectedClientId);
-      void syncClientDemand({
-        clientId: selectedClientId,
-        content: content.trim(),
-        clientName: clientMeta.companyName,
-        clientEmail: clientMeta.email,
-      });
-      pushToast("Demande enregistrée.", "success");
-      await refresh();
+      try {
+        const supabase = createClient();
+        await insertClientDemand(supabase, selectedClientId, content.trim(), userId);
+        const clientMeta = getClientMeta(selectedClientId);
+        void syncClientDemand({
+          clientId: selectedClientId,
+          content: content.trim(),
+          clientName: clientMeta.companyName,
+          clientEmail: clientMeta.email,
+        });
+        pushToast("Demande enregistrée.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [getClientMeta, pushToast, refresh, selectedClientId, userId],
   );
@@ -258,58 +264,75 @@ export function PortalProvider({
   const uploadClientDocument = React.useCallback(
     async (documentId: string, file: File, comment?: string) => {
       const target = documents.find((doc) => doc.id === documentId);
-      if (!target || !userId) return;
-      const supabase = createClient();
-      await uploadDocumentForRequest(supabase, {
-        clientId: target.clientId,
-        requestId: documentId,
-        projectId: target.projectId || null,
-        file,
-        comment,
-        userId,
-      });
-      const clientMeta = getClientMeta(target.clientId);
-      void syncDocumentUpload({
-        clientId: target.clientId,
-        projectId: target.projectId || undefined,
-        documentName: target.name,
-        comment,
-        clientName: clientMeta.companyName,
-        clientEmail: clientMeta.email,
-      });
-      pushToast("Document envoyé.", "success");
-      await refresh();
+      if (!target || !userId) {
+        throw new Error("Document introuvable ou session expirée.");
+      }
+      try {
+        const supabase = createClient();
+        await uploadDocumentForRequest(supabase, {
+          clientId: target.clientId,
+          requestId: documentId,
+          projectId: target.projectId || null,
+          file,
+          comment,
+          userId,
+        });
+        const clientMeta = getClientMeta(target.clientId);
+        void syncDocumentUpload({
+          clientId: target.clientId,
+          projectId: target.projectId || undefined,
+          documentName: target.name,
+          comment,
+          clientName: clientMeta.companyName,
+          clientEmail: clientMeta.email,
+        });
+        pushToast("Document envoyé.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [documents, getClientMeta, pushToast, refresh, userId],
   );
 
   const downloadDocument = React.useCallback(
     async (storagePath: string) => {
-      const supabase = createClient();
-      const url = await getSignedDocumentUrl(supabase, storagePath);
-      window.open(url, "_blank", "noopener,noreferrer");
+      try {
+        const supabase = createClient();
+        const url = await getSignedDocumentUrl(supabase, storagePath);
+        window.open(url, "_blank", "noopener,noreferrer");
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
-    [],
+    [pushToast],
   );
 
   const sendMessage = React.useCallback(
     async (text: string) => {
       if (!text.trim() || !selectedClientId || !userId) return;
-      const supabase = createClient();
-      const senderType = mode === "client" ? "client" : "team";
-      await insertPortalMessage(supabase, {
-        clientId: selectedClientId,
-        senderType,
-        body: text.trim(),
-        userId,
-      });
-      void syncPortalMessage({
-        clientId: selectedClientId,
-        senderType,
-        body: text.trim(),
-      });
-      pushToast("Message envoyé.", "success");
-      await refresh();
+      try {
+        const supabase = createClient();
+        const senderType = mode === "client" ? "client" : "team";
+        await insertPortalMessage(supabase, {
+          clientId: selectedClientId,
+          senderType,
+          body: text.trim(),
+          userId,
+        });
+        void syncPortalMessage({
+          clientId: selectedClientId,
+          senderType,
+          body: text.trim(),
+        });
+        pushToast("Message envoyé.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [mode, pushToast, refresh, selectedClientId, userId],
   );
@@ -324,17 +347,22 @@ export function PortalProvider({
       priority: Priority;
       message: string;
     }) => {
-      if (!userId) return;
-      const supabase = createClient();
-      await insertDocumentRequest(supabase, { ...payload, requestedBy: userId });
-      const clientMeta = getClientMeta(payload.clientId);
-      void syncDocumentRequest({
-        ...payload,
-        clientName: clientMeta.companyName,
-        clientEmail: clientMeta.email,
-      });
-      pushToast("Demande de pièce envoyée.", "success");
-      await refresh();
+      if (!userId) throw new Error("Session expirée. Reconnectez-vous.");
+      try {
+        const supabase = createClient();
+        await insertDocumentRequest(supabase, { ...payload, requestedBy: userId });
+        const clientMeta = getClientMeta(payload.clientId);
+        void syncDocumentRequest({
+          ...payload,
+          clientName: clientMeta.companyName,
+          clientEmail: clientMeta.email,
+        });
+        pushToast("Demande de pièce envoyée.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [getClientMeta, pushToast, refresh, userId],
   );
@@ -342,19 +370,24 @@ export function PortalProvider({
   const validateDocument = React.useCallback(
     async (id: string) => {
       const target = documents.find((doc) => doc.id === id);
-      const supabase = createClient();
-      await updateDocumentRequestStatus(supabase, id, "Validé");
-      pushToast("Document validé.", "success");
-      if (target) {
-        const clientMeta = getClientMeta(target.clientId);
-        void syncDocumentStatusNotice({
-          clientName: clientMeta.companyName,
-          clientEmail: clientMeta.email,
-          documentName: target.name,
-          status: "Validé",
-        });
+      try {
+        const supabase = createClient();
+        await updateDocumentRequestStatus(supabase, id, "Validé");
+        pushToast("Document validé.", "success");
+        if (target) {
+          const clientMeta = getClientMeta(target.clientId);
+          void syncDocumentStatusNotice({
+            clientName: clientMeta.companyName,
+            clientEmail: clientMeta.email,
+            documentName: target.name,
+            status: "Validé",
+          });
+        }
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
       }
-      await refresh();
     },
     [documents, getClientMeta, pushToast, refresh],
   );
@@ -362,79 +395,99 @@ export function PortalProvider({
   const refuseDocument = React.useCallback(
     async (id: string, comment: string) => {
       const target = documents.find((doc) => doc.id === id);
-      const supabase = createClient();
-      await requestDocumentCorrection(
-        supabase,
-        id,
-        comment || "Merci de corriger et renvoyer le document.",
-      );
-      pushToast("Correction demandée au client.", "warning");
-      if (target) {
-        const clientMeta = getClientMeta(target.clientId);
-        void syncDocumentStatusNotice({
-          clientName: clientMeta.companyName,
-          clientEmail: clientMeta.email,
-          documentName: target.name,
-          status: "À corriger",
-          comment,
-        });
+      try {
+        const supabase = createClient();
+        await requestDocumentCorrection(
+          supabase,
+          id,
+          comment || "Merci de corriger et renvoyer le document.",
+        );
+        pushToast("Correction demandée au client.", "warning");
+        if (target) {
+          const clientMeta = getClientMeta(target.clientId);
+          void syncDocumentStatusNotice({
+            clientName: clientMeta.companyName,
+            clientEmail: clientMeta.email,
+            documentName: target.name,
+            status: "À corriger",
+            comment,
+          });
+        }
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
       }
-      await refresh();
     },
     [documents, getClientMeta, pushToast, refresh],
   );
 
   const updateDemandStatus = React.useCallback(
     async (id: string, status: "Reçue" | "En cours" | "Traitée") => {
-      const supabase = createClient();
-      await updateClientDemandStatus(supabase, id, status);
-      pushToast("Demande mise à jour.", "success");
-      await refresh();
+      try {
+        const supabase = createClient();
+        await updateClientDemandStatus(supabase, id, status);
+        pushToast("Demande mise à jour.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [pushToast, refresh],
   );
 
   const createProject = React.useCallback(
     async (payload: NewProjectPayload) => {
-      if (!userId) return;
-      const supabase = createClient();
-      await insertProject(supabase, {
-        clientId: payload.clientId,
-        name: payload.name,
-        description: payload.description,
-        owner: payload.owner,
-        startDate: payload.startDate,
-        targetDate: payload.targetDate,
-        nextStep: payload.nextStep,
-        internalNotes: payload.internalNotes,
-        createdBy: userId,
-      });
-      const clientMeta = getClientMeta(payload.clientId);
-      void syncProjectCreation({
-        clientId: payload.clientId,
-        name: payload.name,
-        description: payload.description,
-        owner: payload.owner,
-        startDate: payload.startDate,
-        targetDate: payload.targetDate,
-        nextStep: payload.nextStep,
-        internalNotes: payload.internalNotes,
-        clientName: clientMeta.companyName,
-        clientEmail: clientMeta.email,
-      });
-      pushToast("Projet créé.", "success");
-      await refresh();
+      if (!userId) throw new Error("Session expirée. Reconnectez-vous.");
+      try {
+        const supabase = createClient();
+        await insertProject(supabase, {
+          clientId: payload.clientId,
+          name: payload.name,
+          description: payload.description,
+          owner: payload.owner,
+          startDate: payload.startDate,
+          targetDate: payload.targetDate,
+          nextStep: payload.nextStep,
+          internalNotes: payload.internalNotes,
+          createdBy: userId,
+        });
+        const clientMeta = getClientMeta(payload.clientId);
+        void syncProjectCreation({
+          clientId: payload.clientId,
+          name: payload.name,
+          description: payload.description,
+          owner: payload.owner,
+          startDate: payload.startDate,
+          targetDate: payload.targetDate,
+          nextStep: payload.nextStep,
+          internalNotes: payload.internalNotes,
+          clientName: clientMeta.companyName,
+          clientEmail: clientMeta.email,
+        });
+        pushToast("Projet créé.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [getClientMeta, pushToast, refresh, userId],
   );
 
   const updateProjectProgress = React.useCallback(
     async (id: string, progress: number) => {
-      const supabase = createClient();
-      const next = Math.max(0, Math.min(100, progress));
-      await updateProjectProgressDb(supabase, id, next);
-      pushToast("Progression mise à jour.", "info");
-      await refresh();
+      try {
+        const supabase = createClient();
+        const next = Math.max(0, Math.min(100, progress));
+        await updateProjectProgressDb(supabase, id, next);
+        pushToast("Progression mise à jour.", "info");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
     },
     [pushToast, refresh],
   );
