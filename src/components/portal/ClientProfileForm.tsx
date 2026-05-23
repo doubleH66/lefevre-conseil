@@ -3,19 +3,37 @@
 import * as React from "react";
 import type { PortalClient } from "@/components/portal/types";
 import { ProfileAvatarField } from "@/components/portal/ProfileAvatarField";
-import { saveClientProfileAction } from "@/app/espace-client/actions";
+import { createClient } from "@/lib/supabase/client";
 import { formatPortalError } from "@/lib/portal/errors";
-import { profileClientSnapshot, profileLog } from "@/lib/portal/profile-debug-log";
-import { profileFormRemountKey } from "@/lib/portal/profile-form-remount-key";
+import {
+  portalClientPatchFromSaved,
+  profileFieldsFromClient,
+  profileFieldsFromSaved,
+  type ProfileFormFields,
+} from "@/lib/portal/portal-client-patch";
+import { saveClientProfile } from "@/lib/portal/save-client-profile";
 import { usePortal } from "@/components/portal/portal-provider";
 
-/**
- * Les champs reflètent le `client` passé au **premier montage**.
- * Au changement réel des données venant du portail (nouvel `updatedAtIso`),
- * le parent passe une nouvelle `key` → **remount** sans `useEffect`.
- */
+function applyFields(
+  setters: {
+    setCompanyName: (v: string) => void;
+    setContactName: (v: string) => void;
+    setPhone: (v: string) => void;
+    setAddress: (v: string) => void;
+    setWebsite: (v: string) => void;
+  },
+  fields: ProfileFormFields,
+) {
+  setters.setCompanyName(fields.companyName);
+  setters.setContactName(fields.contactName);
+  setters.setPhone(fields.phone);
+  setters.setAddress(fields.address);
+  setters.setWebsite(fields.website);
+}
+
+/** Profil client — lecture et écriture via le même client Supabase navigateur (comme les médias publics). */
 export function ClientProfileForm({ client }: { client: PortalClient }) {
-  const { authUser, refresh, updateAuthAvatar, updateAuthFullName } = usePortal();
+  const { authUser, patchClient, updateAuthAvatar, updateAuthFullName } = usePortal();
   const [companyName, setCompanyName] = React.useState(client.companyName);
   const [contactName, setContactName] = React.useState(client.contactName);
   const [phone, setPhone] = React.useState(client.phone);
@@ -25,24 +43,31 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [message, setMessage] = React.useState<string | null>(null);
   const [messageTone, setMessageTone] = React.useState<"ok" | "error">("ok");
   const [isDirty, setIsDirty] = React.useState(false);
+  const syncedIsoRef = React.useRef(client.updatedAtIso);
+
+  const fieldSetters = React.useMemo(
+    () => ({
+      setCompanyName,
+      setContactName,
+      setPhone,
+      setAddress,
+      setWebsite,
+    }),
+    [],
+  );
 
   React.useEffect(() => {
-    profileLog("ClientProfileForm — mount", {
-      remountKey: profileFormRemountKey(client),
-      clientProp: profileClientSnapshot(client),
-      stateInit: {
-        companyName: client.companyName,
-        contactName: client.contactName,
-        phone: client.phone,
-        address: client.address,
-        website: client.website,
-      },
-    });
-  }, []);
+    if (isDirty || busy) return;
+    const iso = client.updatedAtIso;
+    if (!iso || iso === syncedIsoRef.current) return;
+    if (iso < syncedIsoRef.current) return;
+    syncedIsoRef.current = iso;
+    applyFields(fieldSetters, profileFieldsFromClient(client));
+  }, [client.updatedAtIso, client.companyName, client.contactName, client.phone, client.address, client.website, isDirty, busy, fieldSetters]);
 
   const markDirty = () => {
     setIsDirty(true);
-    profileLog("ClientProfileForm — dirty");
+    if (messageTone === "ok" && message) setMessage(null);
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -50,40 +75,38 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
     setBusy(true);
     setMessage(null);
 
-    const trimmedCompany = companyName.trim();
-    const trimmedContact = contactName.trim();
+    const payload = {
+      companyName: companyName.trim(),
+      contactName: contactName.trim(),
+      phone: phone.trim(),
+      address: address.trim(),
+      website: website.trim(),
+    };
 
-    if (!trimmedCompany || !trimmedContact) {
+    if (!payload.companyName || !payload.contactName) {
       setMessageTone("error");
       setMessage("Entreprise et nom de contact sont obligatoires.");
       setBusy(false);
       return;
     }
 
-    const payload = {
-      companyName: trimmedCompany,
-      contactName: trimmedContact,
-      phone: phone.trim(),
-      address: address.trim(),
-      website: website.trim(),
-    };
-
     try {
-      profileLog("ClientProfileForm — submit (champs UI)", payload);
+      const supabase = createClient();
+      const result = await saveClientProfile(supabase, payload);
 
-      const saved = await saveClientProfileAction(payload);
-      profileLog("ClientProfileForm — saveClientProfileAction OK", profileClientSnapshot(saved));
+      if (!result.ok) {
+        throw new Error(result.error);
+      }
 
-      updateAuthFullName(trimmedContact);
-      profileLog("ClientProfileForm — refresh({ silent: true }) — début");
-      await refresh({ silent: true });
-      profileLog("ClientProfileForm — refresh({ silent: true }) — fin (voir logs portal-provider)");
-
+      const { saved } = result;
+      patchClient(client.id, portalClientPatchFromSaved(saved));
+      applyFields(fieldSetters, profileFieldsFromSaved(saved));
+      syncedIsoRef.current = saved.updatedAtIso;
+      updateAuthFullName(saved.contactName);
       setIsDirty(false);
       setMessageTone("ok");
       setMessage("Profil enregistré.");
     } catch (err) {
-      profileLog("ClientProfileForm — erreur", err);
       setMessageTone("error");
       setMessage(formatPortalError(err));
     } finally {
@@ -109,10 +132,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
         onUpdated={updateAuthAvatar}
       />
 
-      <form
-        onSubmit={(e) => void handleSave(e)}
-        className="grid gap-3 border-t border-neutral-100 pt-6 text-sm text-neutral-700"
-      >
+      <form onSubmit={(e) => void handleSave(e)} className="grid gap-3 border-t border-neutral-100 pt-6 text-sm text-neutral-700">
         <label>
           Entreprise
           <input
@@ -122,6 +142,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
               setCompanyName(e.target.value);
             }}
             required
+            autoComplete="organization"
             className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2"
           />
         </label>
@@ -134,6 +155,7 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
               setContactName(e.target.value);
             }}
             required
+            autoComplete="name"
             className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2"
           />
         </label>
@@ -153,6 +175,8 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
               markDirty();
               setPhone(e.target.value);
             }}
+            autoComplete="tel"
+            placeholder="Optionnel — laissez vide pour effacer"
             className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2"
           />
         </label>
@@ -164,6 +188,8 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
               markDirty();
               setAddress(e.target.value);
             }}
+            autoComplete="street-address"
+            placeholder="Optionnel — laissez vide pour effacer"
             className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2"
           />
         </label>
@@ -175,6 +201,8 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
               markDirty();
               setWebsite(e.target.value);
             }}
+            autoComplete="url"
+            placeholder="Optionnel — laissez vide pour effacer"
             className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2"
           />
         </label>

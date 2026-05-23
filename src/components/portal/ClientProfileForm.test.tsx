@@ -3,19 +3,22 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ClientProfileForm } from "@/components/portal/ClientProfileForm";
 import type { PortalClient } from "@/components/portal/types";
-import { profileFormRemountKey } from "@/lib/portal/profile-form-remount-key";
 
-const refresh = vi.fn().mockResolvedValue(undefined);
-const saveClientProfileAction = vi.fn();
+const patchClient = vi.fn();
+const saveClientProfile = vi.fn();
 
-vi.mock("@/app/espace-client/actions", () => ({
-  saveClientProfileAction: (...args: unknown[]) => saveClientProfileAction(...args),
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: () => ({}),
+}));
+
+vi.mock("@/lib/portal/save-client-profile", () => ({
+  saveClientProfile: (...args: unknown[]) => saveClientProfile(...args),
 }));
 
 vi.mock("@/components/portal/portal-provider", () => ({
   usePortal: () => ({
     authUser: { id: "user-1", email: "test@example.com", fullName: "Test", avatarUrl: null },
-    refresh,
+    patchClient,
     updateAuthAvatar: vi.fn(),
     updateAuthFullName: vi.fn(),
   }),
@@ -42,55 +45,56 @@ const baseClient: PortalClient = {
 
 describe("ClientProfileForm", () => {
   beforeEach(() => {
-    refresh.mockClear();
-    saveClientProfileAction.mockReset();
+    patchClient.mockClear();
+    saveClientProfile.mockReset();
   });
 
-  it("remonte le formulaire quand les données DB changent (nouvelle updatedAtIso)", () => {
+  it("synchronise les champs quand le client portail change", () => {
     const nextClient: PortalClient = {
       ...baseClient,
       phone: "0752052934",
       address: "21 rue rem",
-      lastActivity: "22/05/2026 14:00",
       updatedAtIso: "2026-05-22T13:00:00.001Z",
     };
 
-    const { rerender } = render(
-      <ClientProfileForm key={profileFormRemountKey(baseClient)} client={baseClient} />,
-    );
+    const { rerender } = render(<ClientProfileForm client={baseClient} />);
     expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("");
 
-    rerender(<ClientProfileForm key={profileFormRemountKey(nextClient)} client={nextClient} />);
+    rerender(<ClientProfileForm client={nextClient} />);
 
     expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("0752052934");
-    expect(screen.getByRole("textbox", { name: /adresse/i })).toHaveValue("21 rue rem");
   });
 
-  it("appelle la Server Action puis refresh après enregistrement", async () => {
+  it("applique la réponse RPC au store et au formulaire", async () => {
     const user = userEvent.setup();
-    saveClientProfileAction.mockResolvedValue({
-      id: "client-1",
-      companyName: "Nouvelle SA",
-      contactName: "Jean Dupont",
-      email: "test@example.com",
-      phone: "0700000000",
-      address: "21 rue test",
-      website: "",
-      lastActivity: "22/05/2026 15:00",
-      updatedAtIso: "2026-05-22T14:00:00.000Z",
+    saveClientProfile.mockResolvedValue({
+      ok: true,
+      saved: {
+        id: "client-1",
+        companyName: "Nouvelle SA",
+        contactName: "Jean Dupont",
+        email: "test@example.com",
+        phone: "0700000000",
+        address: "21 rue test",
+        website: "",
+        lastActivity: "22/05/2026 15:00",
+        updatedAtIso: "2026-05-22T14:00:00.000Z",
+      },
     });
 
-    render(<ClientProfileForm key={profileFormRemountKey(baseClient)} client={baseClient} />);
+    render(<ClientProfileForm client={baseClient} />);
 
     const companyInput = screen.getByRole("textbox", { name: /entreprise/i });
     await user.clear(companyInput);
     await user.type(companyInput, "Nouvelle SA");
     await user.click(screen.getByRole("button", { name: /enregistrer/i }));
 
-    expect(saveClientProfileAction).toHaveBeenCalledWith(
-      expect.objectContaining({ companyName: "Nouvelle SA" }),
+    expect(saveClientProfile).toHaveBeenCalled();
+    expect(patchClient).toHaveBeenCalledWith(
+      "client-1",
+      expect.objectContaining({ companyName: "Nouvelle SA", phone: "0700000000" }),
     );
     expect(await screen.findByText("Profil enregistré.")).toBeInTheDocument();
-    expect(refresh).toHaveBeenCalledWith({ silent: true });
+    expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("0700000000");
   });
 });

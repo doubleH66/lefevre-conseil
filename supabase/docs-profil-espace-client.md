@@ -1,41 +1,44 @@
 # Profil espace client — flux Supabase (source de vérité)
 
-Le front **lit** `public.client_accounts` via `loadClientPortalData()` (JWT utilisateur).  
-L’écriture se fait avec la RPC **`update_my_client_account`** (migration **`010_client_profile_save.sql`**) : fonction `SECURITY DEFINER` qui résout toujours le bon `client_id` via **`ensure_client_portal_access()`**.
+Le front **lit** `public.client_accounts` via `loadClientPortalData()` (JWT navigateur).  
+L’**écriture** passe par `saveClientProfile()` : RPC **`update_my_client_account`** (migration **`010_client_profile_save.sql`**) via le **même client Supabase navigateur** que le chargement (pattern identique aux médias publics / avatar).
 
-## Ordre d’application (nouveau projet)
+## Projet Supabase attendu
 
-Exécuter les migrations **`001`** → **`010`** comme dans [`migrations/README.md`](../migrations/README.md), en particulier :
+Production : **`qhiyxnbcegbxtvydcjhf`** → `https://qhiyxnbcegbxtvydcjhf.supabase.co`
 
-- **`005_ensure_client_portal_access.sql`** — droits + RPC de liaison utilisateur ⇄ fiche client  
-- **`010_client_profile_save.sql`** — `ensure_client_portal_access` résolue avec tri + **`update_my_client_account`**
+Vérification automatique : `src/lib/supabase/config.ts` — en production, toute autre URL lève une erreur explicite au démarrage des clients Supabase.
 
-## Vérifications rapides (SQL Editor)
+## Variables d’environnement
 
-```sql
--- La RPC existe
-select proname from pg_proc where proname = 'update_my_client_account';
+| Variable | Où |
+|----------|-----|
+| `NEXT_PUBLIC_SUPABASE_URL` | Vercel Production / Preview / Development + `.env.local` local |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | idem |
 
--- Ligne compte mise à jour (remplacer l’uuid)
-select id, company_name, phone, updated_at from public.client_accounts where id = '…';
-```
+Pas de `SUPABASE_SERVICE_ROLE_KEY` côté Next.js (non utilisée dans ce repo).
+
+**Important** : après changement d’une `NEXT_PUBLIC_*` sur Vercel → **redéployer** (valeurs figées au build).
+
+## Fichiers env locaux
+
+- `.env.example` — modèle (commité)
+- `.env.local` — dev local (gitignored)
+- Pas de `.env.production` dans le repo
+
+## Ordre migrations
+
+**001** → **010** — voir [`migrations/README.md`](../migrations/README.md).
 
 ## Côté Next.js
 
-La mutation passe par une **Server Action** (`saveClientProfileAction`) : même session que le navigateur (cookies SSR Supabase).  
-Ensuite le portail client appelle **`refresh({ silent: true })`** pour recharger `PortalClient` depuis la DB — **pas** de second état contradictoire avec `patchClient` sur ces champs.
+| Couche | Client Supabase | Source données profil |
+|--------|-----------------|------------------------|
+| Chargement portail | Browser (`createClient`) | `client_accounts` |
+| Sauvegarde profil | Browser (`saveClientProfile`) | RPC → `client_accounts` |
+| Avatar | Browser | `profiles.avatar_url` |
+| Nom header auth | Browser + `profiles.full_name` | sync après save contact |
+| Middleware session | Server anon + cookies | auth only |
+| Server Action profil | **Supprimée** (évitait double session) |
 
-## Logs de diagnostic (temporaire)
-
-En **local** (`npm run dev`), les logs `[profil]` sont **activés automatiquement**.
-
-En **prod / preview**, ajouter dans Vercel puis **redéployer** :
-
-`NEXT_PUBLIC_DEBUG_PORTAL_PROFILE=true`
-
-| Où regarder | Quoi |
-|-------------|------|
-| **Console navigateur** (F12) | `ClientProfileForm`, `portal-provider refresh`, `profileFormRemountKey`, `client-portal` |
-| **Terminal** où tourne `npm run dev` | Lignes `SERVER saveClientProfileAction`, `updateClientProfile`, RPC |
-
-Ordre attendu après « Enregistrer » : `submit` → `SERVER …` → `updateClientProfile — RPC` → `refresh — début` → `loadClientPortalData — SELECT OK` → `profileFormRemountKey` (nouvelle clé) → `ClientProfileForm — mount`.
+Script SQL grants : [`scripts/verify-grants-profil.sql`](../scripts/verify-grants-profil.sql).

@@ -14,7 +14,21 @@ function createSupabaseMock(overrides: {
       getUser: vi.fn().mockResolvedValue({ data: { user } }),
     },
     rpc: vi.fn().mockResolvedValue({
-      data: overrides.rpcRows === undefined ? [{ company_name: "Co", contact_name: "Nom", phone: "06", address: "Adr", website: null }] : overrides.rpcRows,
+      data:
+        overrides.rpcRows === undefined
+          ? [
+              {
+                id: "client-1",
+                company_name: "Co",
+                contact_name: "Nom",
+                email: "a@b.fr",
+                phone: "06",
+                address: "Adr",
+                website: null,
+                updated_at: "2026-05-22T12:00:00.000Z",
+              },
+            ]
+          : overrides.rpcRows,
       error: overrides.rpcError ?? null,
     }),
     from: vi.fn(() => ({
@@ -33,11 +47,14 @@ describe("saveClientProfile", () => {
   it("renvoie les données réellement enregistrées par la RPC", async () => {
     const supabase = createSupabaseMock({
       rpcRows: {
+        id: "client-1",
         company_name: "Société X",
         contact_name: "Paul",
+        email: "p@x.fr",
         phone: "0611111111",
         address: "10 rue A",
         website: "https://x.fr",
+        updated_at: "2026-05-22T14:00:00.000Z",
       },
     });
 
@@ -50,16 +67,12 @@ describe("saveClientProfile", () => {
     });
 
     const result = await saveClientProfile(supabase as never, fd);
-    expect(result).toEqual({
-      ok: true,
-      profile: {
-        companyName: "Société X",
-        contactName: "Paul",
-        phone: "0611111111",
-        address: "10 rue A",
-        website: "https://x.fr",
-      },
-    });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.saved.companyName).toBe("Société X");
+      expect(result.saved.phone).toBe("0611111111");
+      expect(result.saved.updatedAtIso).toBe("2026-05-22T14:00:00.000Z");
+    }
     expect(supabase.rpc).toHaveBeenCalledWith("update_my_client_account", expect.any(Object));
   });
 

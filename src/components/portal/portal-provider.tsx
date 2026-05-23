@@ -27,7 +27,6 @@ import {
   loadAdminPortalData,
   loadClientPortalData,
 } from "@/lib/portal/load-portal-data";
-import { profileClientSnapshot, profileLog } from "@/lib/portal/profile-debug-log";
 import {
   insertClientDemand,
   insertDocumentRequest,
@@ -162,7 +161,6 @@ export function PortalProvider({
 
   const refresh = React.useCallback(async (options?: { silent?: boolean }) => {
     const silent = options?.silent ?? false;
-    profileLog("portal-provider refresh — début", { silent, mode });
 
     if (!isSupabasePublicConfigured()) {
       setError("Connexion Supabase non configurée. Ajoutez les variables d'environnement du projet.");
@@ -231,10 +229,6 @@ export function PortalProvider({
         }
 
         const data = await loadClientPortalData(supabase, clientId);
-        profileLog("portal-provider refresh — setClients (mode client)", {
-          clientId,
-          client: profileClientSnapshot(data.client),
-        });
         setClients([data.client]);
         setProjects(data.projects);
         setDocuments(data.documents);
@@ -244,14 +238,11 @@ export function PortalProvider({
       }
 
       hasLoadedOnceRef.current = true;
-      profileLog("portal-provider refresh — succès");
     } catch (e) {
-      profileLog("portal-provider refresh — erreur", e);
       console.warn("portal refresh failed:", e);
       setError(formatPortalError(e));
     } finally {
       if (showFullPageLoader) setLoading(false);
-      profileLog("portal-provider refresh — fin", { loading: showFullPageLoader });
     }
   }, [lockClientMode, mode]);
 

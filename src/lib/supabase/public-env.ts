@@ -3,6 +3,7 @@ import {
   NEXT_PUBLIC_SUPABASE_ANON_KEY as ENV_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_SUPABASE_URL as ENV_SUPABASE_URL,
 } from "@/lib/supabase/env-public";
+import { assertProductionSupabaseUrl } from "@/lib/supabase/config";
 
 /**
  * Variables publiques Supabase (NEXT_PUBLIC_*).
@@ -57,7 +58,9 @@ export function getSupabaseUrl(): string | undefined {
     if (process.env.NODE_ENV === "production" && u.protocol !== "https:") {
       return undefined;
     }
-    return raw.replace(/\/+$/, "");
+    const normalized = raw.replace(/\/+$/, "");
+    assertProductionSupabaseUrl(normalized);
+    return normalized;
   } catch {
     return undefined;
   }

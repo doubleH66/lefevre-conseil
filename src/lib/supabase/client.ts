@@ -9,5 +9,9 @@ export function createClient() {
       "Supabase non configuré : définissez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY (ou PUBLISHABLE_KEY), puis redémarrez le serveur.",
     );
   }
+  if (process.env.NODE_ENV === "development") {
+    // eslint-disable-next-line no-console
+    console.log("[supabase-config] browser client →", url);
+  }
   return createBrowserClient(url, anonKey);
 }

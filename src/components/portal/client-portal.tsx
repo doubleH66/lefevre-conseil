@@ -12,8 +12,6 @@ import { UploadZone } from "@/components/portal/UploadZone";
 import { usePortal } from "@/components/portal/portal-provider";
 import type { PortalDocument } from "@/components/portal/types";
 import { CONTACT_HREF } from "@/lib/content/routes";
-import { profileClientSnapshot, profileLog } from "@/lib/portal/profile-debug-log";
-import { profileFormRemountKey } from "@/lib/portal/profile-form-remount-key";
 import { cn } from "@/lib/utils";
 
 export type ClientPageKey = "client-documents" | "client-profile" | "client-settings";
@@ -46,14 +44,6 @@ export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
   const badgeCounts = { upload: toUpload.length, review: pendingReview.length };
 
   if (activePage === "client-profile") {
-    const profileKey = client ? profileFormRemountKey(client) : null;
-    if (client && profileKey) {
-      profileLog("client-portal — rendu ClientProfileForm", {
-        key: profileKey,
-        client: profileClientSnapshot(client),
-      });
-    }
-
     return (
       <div className="space-y-6">
         <PageHeader title="Mon profil" lead="Vos coordonnées partagées avec le cabinet." />
@@ -62,8 +52,8 @@ export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
             <p className="py-8 text-center text-sm text-neutral-600">Chargement de votre profil…</p>
           ) : error ? (
             <p className="py-8 text-center text-sm text-rose-700">{error}</p>
-          ) : client && profileKey ? (
-            <ClientProfileForm key={profileKey} client={client} />
+          ) : client ? (
+            <ClientProfileForm key={client.id} client={client} />
           ) : (
             <p className="py-8 text-center text-sm text-neutral-600">
               Impossible d’afficher votre profil. Rechargez la page ou reconnectez-vous.
