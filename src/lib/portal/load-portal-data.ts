@@ -224,8 +224,6 @@ export async function loadClientPortalData(
     pendingDocs,
   });
 
-  profileLog("loadClientPortalData — PortalClient mappé", profileClientSnapshot(client));
-
   return {
     client,
     projects: projectRows.map(mapProject),
