@@ -12,6 +12,12 @@ import {
   type ProfileFormFields,
 } from "@/lib/portal/portal-client-patch";
 import { saveClientProfile } from "@/lib/portal/save-client-profile";
+import {
+  profileClientSnapshot,
+  profileDebugLog,
+  ProfileDebugPanel,
+} from "@/lib/portal/profile-debug";
+import { getSupabaseUrl } from "@/lib/supabase/public-env";
 import { usePortal } from "@/components/portal/portal-provider";
 
 function applyFields(
@@ -45,6 +51,12 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
   const [isDirty, setIsDirty] = React.useState(false);
   const syncedIsoRef = React.useRef(client.updatedAtIso);
 
+  React.useEffect(() => {
+    profileDebugLog("initial portal client", profileClientSnapshot(client));
+    profileDebugLog("initial form state", profileFieldsFromClient(client));
+    profileDebugLog("supabase url", { url: getSupabaseUrl() ?? "(non configuré)" });
+  }, []);
+
   const fieldSetters = React.useMemo(
     () => ({
       setCompanyName,
@@ -60,9 +72,21 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
     if (isDirty || busy) return;
     const iso = client.updatedAtIso;
     if (!iso || iso === syncedIsoRef.current) return;
-    if (iso < syncedIsoRef.current) return;
+    if (iso < syncedIsoRef.current) {
+      profileDebugLog("effect resync — ignoré (portal stale)", {
+        portalIso: iso,
+        syncedIso: syncedIsoRef.current,
+      });
+      return;
+    }
     syncedIsoRef.current = iso;
-    applyFields(fieldSetters, profileFieldsFromClient(client));
+    const next = profileFieldsFromClient(client);
+    applyFields(fieldSetters, next);
+    profileDebugLog("effect resync — appliqué", {
+      portalIso: iso,
+      formState: next,
+      portalClient: profileClientSnapshot(client),
+    });
   }, [client.updatedAtIso, client.companyName, client.contactName, client.phone, client.address, client.website, isDirty, busy, fieldSetters]);
 
   const markDirty = () => {
@@ -99,14 +123,23 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
       }
 
       const { saved } = result;
+      if (saved.id !== client.id) {
+        profileDebugLog("⚠ id mismatch", {
+          displayedClientId: client.id,
+          savedClientId: saved.id,
+        });
+      }
       patchClient(client.id, portalClientPatchFromSaved(saved));
-      applyFields(fieldSetters, profileFieldsFromSaved(saved));
+      const applied = profileFieldsFromSaved(saved);
+      applyFields(fieldSetters, applied);
+      profileDebugLog("form state applied", applied);
       syncedIsoRef.current = saved.updatedAtIso;
       updateAuthFullName(saved.contactName);
       setIsDirty(false);
       setMessageTone("ok");
       setMessage("Profil enregistré.");
     } catch (err) {
+      profileDebugLog("save error", { message: formatPortalError(err) });
       setMessageTone("error");
       setMessage(formatPortalError(err));
     } finally {
@@ -229,6 +262,8 @@ export function ClientProfileForm({ client }: { client: PortalClient }) {
           </p>
         ) : null}
       </form>
+
+      <ProfileDebugPanel />
     </div>
   );
 }

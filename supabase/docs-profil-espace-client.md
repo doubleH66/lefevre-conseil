@@ -41,4 +41,12 @@ Pas de `SUPABASE_SERVICE_ROLE_KEY` côté Next.js (non utilisée dans ce repo).
 | Middleware session | Server anon + cookies | auth only |
 | Server Action profil | **Supprimée** (évitait double session) |
 
-Script SQL grants : [`scripts/verify-grants-profil.sql`](../scripts/verify-grants-profil.sql).
+## Debug profil (logs à l’écran)
+
+Actif automatiquement en **`npm run dev`**, ou en prod/preview avec :
+
+`NEXT_PUBLIC_DEBUG_PORTAL_PROFILE=true` (+ redéploiement Vercel)
+
+Sur **`/espace-client/profil`**, un panneau amber **Debug profil (écran)** s’affiche sous le formulaire avec l’historique des événements (refresh, RPC, patchClient, resync, etc.). Boutons **Masquer** / **Effacer**.
+
+Les mêmes lignes sont aussi dans la console navigateur (`[profil]`).

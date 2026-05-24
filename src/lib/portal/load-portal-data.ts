@@ -12,6 +12,7 @@ import type {
 } from "@/components/portal/types";
 import { formatDateFr, formatDateTimeFr } from "@/lib/portal/format";
 import { formatPortalError } from "@/lib/portal/errors";
+import { profileClientSnapshot, profileDebugLog } from "@/lib/portal/profile-debug";
 
 function assertNoError(error: { message: string } | null, context: string): void {
   if (error) throw new Error(formatPortalError({ message: `${context} : ${error.message}` }));
@@ -159,6 +160,8 @@ function mapMessage(row: MessageRow): PortalMessage {
 export async function ensureClientMembership(supabase: SupabaseClient): Promise<string | null> {
   const { data, error } = await supabase.rpc("ensure_client_portal_access");
 
+  profileDebugLog("ensure_client_portal_access", { clientId: data, error: error?.message ?? null });
+
   if (error) {
     console.warn("ensure_client_portal_access:", error);
     return null;
@@ -222,6 +225,11 @@ export async function loadClientPortalData(
   const client = mapClient(account as ClientAccountRow, {
     projects: projectRows.length,
     pendingDocs,
+  });
+
+  profileDebugLog("loadClientPortalData", {
+    clientId,
+    client: profileClientSnapshot(client),
   });
 
   return {
