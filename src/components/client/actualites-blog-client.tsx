@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, BookOpen, Calendar, Search, X } from "lucide-react";
-import { ALL_ARTICLES, ARTICLE_CATEGORIES, FEATURED_ARTICLE } from "@/lib/content/articles";
+import { ALL_ARTICLES, ARTICLE_CATEGORIES, ARTICLES_PUBLISHED, FEATURED_ARTICLE } from "@/lib/content/articles";
 import type { Article, ArticleCategory } from "@/lib/content/articles";
 import { articleHref } from "@/lib/content/routes";
 import { fieldClass } from "@/components/marketing/marketing-styles";
@@ -18,11 +18,8 @@ const FILTERS: Filter[] = ["Tous", ...ARTICLE_CATEGORIES];
 
 function ArticleCard({ article, searchQuery }: { article: Article; searchQuery: string }) {
   const hasSearch = searchQuery.trim().length > 0;
-  return (
-    <Link
-      href={articleHref(article.slug)}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm transition-shadow hover:shadow-md"
-    >
+  const inner = (
+    <>
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#1f2a7c]/5">
         <Image
           src={article.image}
@@ -65,80 +62,101 @@ function ArticleCard({ article, searchQuery }: { article: Article; searchQuery: 
           )}
         </p>
         <span className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-[#1f2a7c]">
-          Lire l'article
-          <ArrowUpRight
-            aria-hidden
-            className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-          />
+          {ARTICLES_PUBLISHED ? "Lire l'article" : "Bientôt disponible"}
+          {ARTICLES_PUBLISHED ? (
+            <ArrowUpRight
+              aria-hidden
+              className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+          ) : null}
         </span>
       </div>
+    </>
+  );
+
+  if (!ARTICLES_PUBLISHED) {
+    return (
+      <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm opacity-95">
+        {inner}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={articleHref(article.slug)}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm transition-shadow hover:shadow-md"
+    >
+      {inner}
     </Link>
   );
 }
 
-// ─── Featured card ────────────────────────────────────────────────────────────
-
 function FeaturedCard({ article, searchQuery }: { article: Article; searchQuery: string }) {
   const hasSearch = searchQuery.trim().length > 0;
+  const inner = (
+    <div className="grid lg:grid-cols-[1fr_1.1fr]">
+      <div className="relative min-h-[200px] overflow-hidden bg-[#1f2a7c]/5 lg:min-h-[300px]">
+        <Image
+          src={article.image}
+          alt={article.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          sizes="(max-width:1024px) 100vw, 50vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1f2a7c]/70 via-[#1f2a7c]/40 to-transparent" />
+        <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
+          <span className="inline-flex w-fit rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+            À la une ·{" "}
+            {hasSearch ? (
+              <SearchHighlight text={article.category} query={searchQuery} variant="dark" />
+            ) : (
+              article.category
+            )}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col justify-center gap-4 p-7 sm:p-9">
+        <div className="flex items-center gap-3 text-[11px] font-medium text-[#1f2a7c]/45">
+          <Calendar className="size-3.5" aria-hidden />
+          {article.date}
+          <span className="text-[#1f2a7c]/25">·</span>
+          <BookOpen className="size-3.5" aria-hidden />
+          {article.readTime}
+        </div>
+        <h2 className="text-xl font-semibold leading-snug tracking-tight text-[#1f2a7c] sm:text-2xl">
+          {hasSearch ? <SearchHighlight text={article.title} query={searchQuery} /> : article.title}
+        </h2>
+        <p className="text-sm leading-relaxed text-[#1f2a7c]/65">
+          {hasSearch ? <SearchHighlight text={article.excerpt} query={searchQuery} /> : article.excerpt}
+        </p>
+        <span className="flex items-center gap-1.5 text-sm font-semibold text-[#1f2a7c]">
+          {ARTICLES_PUBLISHED ? "Lire l'article" : "Bientôt disponible"}
+          {ARTICLES_PUBLISHED ? (
+            <ArrowUpRight
+              aria-hidden
+              className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+          ) : null}
+        </span>
+      </div>
+    </div>
+  );
+
+  if (!ARTICLES_PUBLISHED) {
+    return (
+      <div className="overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm">{inner}</div>
+    );
+  }
+
   return (
     <Link
       href={articleHref(article.slug)}
       className="group overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm transition-shadow hover:shadow-md"
     >
-      <div className="grid lg:grid-cols-[1fr_1.1fr]">
-        <div className="relative min-h-[200px] overflow-hidden bg-[#1f2a7c]/5 lg:min-h-[300px]">
-          <Image
-            src={article.image}
-            alt={article.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            sizes="(max-width:1024px) 100vw, 50vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1f2a7c]/70 via-[#1f2a7c]/40 to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
-            <span className="inline-flex w-fit rounded-full border border-white/30 bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
-              À la une ·{" "}
-              {hasSearch ? (
-                <SearchHighlight text={article.category} query={searchQuery} variant="dark" />
-              ) : (
-                article.category
-              )}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex flex-col justify-center gap-4 p-7 sm:p-9">
-          <div className="flex items-center gap-3 text-[11px] font-medium text-[#1f2a7c]/45">
-            <Calendar className="size-3.5" aria-hidden />
-            {article.date}
-            <span className="text-[#1f2a7c]/25">·</span>
-            <BookOpen className="size-3.5" aria-hidden />
-            {article.readTime}
-          </div>
-          <h2 className="text-xl font-semibold leading-snug tracking-tight text-[#1f2a7c] sm:text-2xl">
-            {hasSearch ? (
-              <SearchHighlight text={article.title} query={searchQuery} />
-            ) : (
-              article.title
-            )}
-          </h2>
-          <p className="text-sm leading-relaxed text-[#1f2a7c]/65">
-            {hasSearch ? (
-              <SearchHighlight text={article.excerpt} query={searchQuery} />
-            ) : (
-              article.excerpt
-            )}
-          </p>
-          <span className="flex items-center gap-1.5 text-sm font-semibold text-[#1f2a7c]">
-            Lire l'article
-            <ArrowUpRight
-              aria-hidden
-              className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
-          </span>
-        </div>
-      </div>
+      {inner}
     </Link>
   );
 }
@@ -222,6 +240,15 @@ export function ActualitesBlogClient() {
 
       {/* ── Content ── */}
       <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8">
+        {!ARTICLES_PUBLISHED ? (
+          <p className="mb-6 rounded-xl border border-[#1f2a7c]/15 bg-[#1f2a7c]/5 px-4 py-3 text-sm text-[#1f2a7c]/80">
+            Les articles complets seront publiés prochainement. Vous pouvez parcourir les thématiques ci-dessous ou{" "}
+            <Link href="/demande" className="font-semibold underline-offset-2 hover:underline">
+              nous contacter via le formulaire de demande
+            </Link>
+            .
+          </p>
+        ) : null}
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-4 py-24 text-center">
             <div className="grid size-14 place-items-center rounded-full bg-neutral-100">

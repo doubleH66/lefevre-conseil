@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { createClient } from "@/lib/supabase/client";
+import { resolvePortalDestination } from "@/lib/portal/resolve-portal-destination";
 import { isSupabasePublicConfigured } from "@/lib/supabase/public-env";
 
 export type AccountSession =
@@ -46,7 +47,7 @@ export function useAccountSession(active: boolean) {
       email: user.email ?? "",
       fullName: profile?.full_name?.trim() || null,
       role,
-      destinationPath: role === "admin" ? "/espace-admin" : "/espace-client",
+      destinationPath: resolvePortalDestination(role),
     });
   }, []);
 

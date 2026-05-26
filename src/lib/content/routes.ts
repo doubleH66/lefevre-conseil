@@ -2,6 +2,7 @@
 export const ROUTES = {
   home: "/",
   bilanPatrimonial: "/bilan-patrimonial",
+  demande: "/demande",
   contact: "/contact",
   notreCabinet: "/notre-cabinet",
   expertises: "/expertises",
@@ -13,6 +14,11 @@ export const ROUTES = {
   espaceClientProfil: "/espace-client/profil",
   espaceClientReglages: "/espace-client/reglages",
   espaceAdmin: "/espace-admin",
+  espaceAdminClients: "/espace-admin/clients",
+  espaceAdminDemandes: "/espace-admin/demandes",
+  espaceAdminDocuments: "/espace-admin/documents",
+  espaceAdminMessages: "/espace-admin/messages",
+  espaceAdminReglages: "/espace-admin/reglages",
   cookies: "/cookies",
   simulateur: "/simulateur",
   comparateur: "/comparateur",
@@ -25,6 +31,7 @@ export const ROUTES = {
 export const SIMULATION_ANCHOR_ID = "simulation" as const;
 
 export const BILAN_PATRIMOINE_HREF = ROUTES.bilanPatrimonial;
+export const DEMANDE_HREF = ROUTES.demande;
 export const SIMULATION_HREF = ROUTES.bilanPatrimonial;
 export const SIMULATEUR_HREF = ROUTES.simulateur;
 export const CONTACT_HREF = ROUTES.contact;

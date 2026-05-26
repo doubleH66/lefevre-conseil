@@ -7,6 +7,7 @@ import { ClientPortal, type ClientPageKey } from "@/components/portal/client-por
 import { PortalProvider, usePortal } from "@/components/portal/portal-provider";
 import { ToastStack } from "@/components/portal/Toast";
 import type { ViewMode } from "@/components/portal/types";
+import { ADMIN_PORTAL_PATHS, adminPageKeyFromPath } from "@/lib/portal/admin-routes";
 import { CLIENT_PORTAL_PATHS, clientPageKeyFromPath } from "@/lib/portal/client-routes";
 import * as React from "react";
 
@@ -24,10 +25,9 @@ function PortalWorkspaceInner() {
   const { mode, toasts, dismissToast } = usePortal();
   const pathname = usePathname();
   const router = useRouter();
-  const [adminPage, setAdminPage] = React.useState<AdminPageKey>("admin-dashboard");
 
   const activePage: PageKey =
-    mode === "client" ? clientPageKeyFromPath(pathname) : adminPage;
+    mode === "client" ? clientPageKeyFromPath(pathname) : adminPageKeyFromPath(pathname);
 
   const onChangePage = React.useCallback(
     (key: string) => {
@@ -36,14 +36,11 @@ function PortalWorkspaceInner() {
         if (path && path !== pathname) router.push(path);
         return;
       }
-      setAdminPage(key as AdminPageKey);
+      const path = ADMIN_PORTAL_PATHS[key as AdminPageKey];
+      if (path && path !== pathname) router.push(path);
     },
     [mode, pathname, router],
   );
-
-  React.useEffect(() => {
-    if (mode === "admin") setAdminPage("admin-dashboard");
-  }, [mode]);
 
   return (
     <>

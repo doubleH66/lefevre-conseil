@@ -18,7 +18,8 @@ export function AppLayout({
   onChangePage: (key: string) => void;
   children: ReactNode;
 }) {
-  const { mode, authUser, loading, error, refresh, documents, clients, selectedClientId } = usePortal();
+  const { mode, authUser, loading, error, refresh, documents, clients, selectedClientId, siteLeads, notifications } =
+    usePortal();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) ?? clients[0];
@@ -73,9 +74,21 @@ export function AppLayout({
     { key: "admin-dashboard", label: "Tableau de bord" },
     { key: "admin-clients", label: "Clients" },
     {
+      key: "admin-demandes",
+      label: "Demandes",
+      badge:
+        siteLeads.filter((l) => l.status !== "Traitée" && l.status !== "Archivée").length > 0
+          ? String(siteLeads.filter((l) => l.status !== "Traitée" && l.status !== "Archivée").length)
+          : undefined,
+    },
+    {
       key: "admin-documents",
       label: "Pièces justificatives",
       badge: toValidate > 0 ? String(toValidate) : undefined,
+    },
+    {
+      key: "admin-messages",
+      label: "Messages",
     },
   ];
 

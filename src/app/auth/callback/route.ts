@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { sanitizeInternalPath } from "@/lib/sanitize-internal-path";
+import { resolvePortalDestination } from "@/lib/portal/resolve-portal-destination";
 import { requireSupabasePublicEnv, supabaseAuthCookieOptions } from "@/lib/supabase/public-env";
 
 export async function GET(request: Request) {
@@ -45,5 +46,20 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL("/login?error=auth", origin));
   }
 
-  return NextResponse.redirect(`${origin}${next}`);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let destination = next;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    const role = profile?.role === "admin" ? "admin" : "client";
+    destination = resolvePortalDestination(role, next);
+  }
+
+  return NextResponse.redirect(`${origin}${destination}`);
 }

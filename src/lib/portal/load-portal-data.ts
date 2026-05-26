@@ -1,14 +1,19 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
+  AdminActivityEntry,
+  AdminNotification,
   ClientStatus,
   DemandStatus,
   DocumentStatus,
+  InternalNote,
   PortalClient,
   PortalDemand,
   PortalDocument,
   PortalMessage,
   PortalProject,
+  PortalSiteLead,
   ProjectStatus,
+  SiteLeadStatus,
 } from "@/components/portal/types";
 import { formatDateFr, formatDateTimeFr } from "@/lib/portal/format";
 import { formatPortalError } from "@/lib/portal/errors";
@@ -82,6 +87,104 @@ type MessageRow = {
   status: string;
   created_at: string;
 };
+
+type SiteLeadRow = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  current_situation: string | null;
+  request_type: string;
+  patrimonial_goal: string | null;
+  approximate_amount: string | null;
+  message: string | null;
+  contact_preference: "email" | "phone" | "either";
+  status: SiteLeadStatus;
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+type AdminNotificationRow = {
+  id: string;
+  kind: string;
+  title: string;
+  body: string | null;
+  link: string | null;
+  read_at: string | null;
+  created_at: string;
+};
+
+type InternalNoteRow = {
+  id: string;
+  client_id: string;
+  project_id: string | null;
+  note: string;
+  created_at: string;
+};
+
+type AdminActivityRow = {
+  id: string;
+  action: string;
+  entity_type: string;
+  entity_id: string | null;
+  metadata: Record<string, unknown> | null;
+  created_at: string;
+};
+
+function mapSiteLead(row: SiteLeadRow): PortalSiteLead {
+  return {
+    id: row.id,
+    firstName: row.first_name,
+    lastName: row.last_name,
+    email: row.email,
+    phone: row.phone ?? "",
+    currentSituation: row.current_situation ?? "",
+    requestType: row.request_type,
+    patrimonialGoal: row.patrimonial_goal ?? "",
+    approximateAmount: row.approximate_amount ?? "",
+    message: row.message ?? "",
+    contactPreference: row.contact_preference,
+    status: row.status,
+    adminNotes: row.admin_notes ?? "",
+    createdAt: formatDateTimeFr(row.created_at),
+    updatedAt: formatDateTimeFr(row.updated_at),
+  };
+}
+
+function mapAdminNotification(row: AdminNotificationRow): AdminNotification {
+  return {
+    id: row.id,
+    kind: row.kind,
+    title: row.title,
+    body: row.body ?? "",
+    link: row.link ?? "",
+    readAt: row.read_at,
+    createdAt: formatDateTimeFr(row.created_at),
+  };
+}
+
+function mapInternalNote(row: InternalNoteRow): InternalNote {
+  return {
+    id: row.id,
+    clientId: row.client_id,
+    projectId: row.project_id,
+    note: row.note,
+    createdAt: formatDateTimeFr(row.created_at),
+  };
+}
+
+function mapAdminActivity(row: AdminActivityRow): AdminActivityEntry {
+  return {
+    id: row.id,
+    action: row.action,
+    entityType: row.entity_type,
+    entityId: row.entity_id,
+    metadata: row.metadata ?? {},
+    createdAt: formatDateTimeFr(row.created_at),
+  };
+}
 
 function mapClient(row: ClientAccountRow, stats: { projects: number; pendingDocs: number }): PortalClient {
   return {
@@ -255,8 +358,23 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
   documents: PortalDocument[];
   demands: PortalDemand[];
   messages: PortalMessage[];
+  siteLeads: PortalSiteLead[];
+  notifications: AdminNotification[];
+  internalNotes: InternalNote[];
+  activityLog: AdminActivityEntry[];
 }> {
-  const [clientsRes, projectsRes, docsRes, uploadsRes, demandsRes, messagesRes] = await Promise.all([
+  const [
+    clientsRes,
+    projectsRes,
+    docsRes,
+    uploadsRes,
+    demandsRes,
+    messagesRes,
+    siteLeadsRes,
+    notificationsRes,
+    notesRes,
+    activityRes,
+  ] = await Promise.all([
     supabase.from("client_accounts").select("*").order("updated_at", { ascending: false }),
     supabase.from("projects").select("*").order("updated_at", { ascending: false }),
     supabase.from("document_requests").select("*").order("created_at", { ascending: false }),
@@ -266,6 +384,10 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
       .order("created_at", { ascending: false }),
     supabase.from("client_demands").select("*").order("created_at", { ascending: false }),
     supabase.from("portal_messages").select("*").order("created_at", { ascending: false }),
+    supabase.from("site_leads").select("*").order("created_at", { ascending: false }),
+    supabase.from("admin_notifications").select("*").order("created_at", { ascending: false }).limit(50),
+    supabase.from("internal_notes").select("*").order("created_at", { ascending: false }),
+    supabase.from("admin_activity_log").select("*").order("created_at", { ascending: false }).limit(100),
   ]);
 
   assertNoError(clientsRes.error, "Chargement des clients");
@@ -274,6 +396,18 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
   assertNoError(uploadsRes.error, "Chargement des fichiers");
   assertNoError(demandsRes.error, "Chargement des demandes clients");
   assertNoError(messagesRes.error, "Chargement des messages");
+  if (siteLeadsRes.error && !siteLeadsRes.error.message.includes("site_leads")) {
+    assertNoError(siteLeadsRes.error, "Chargement des demandes site");
+  }
+  if (notificationsRes.error && !notificationsRes.error.message.includes("admin_notifications")) {
+    assertNoError(notificationsRes.error, "Chargement des notifications");
+  }
+  if (notesRes.error && !notesRes.error.message.includes("internal_notes")) {
+    assertNoError(notesRes.error, "Chargement des notes internes");
+  }
+  if (activityRes.error && !activityRes.error.message.includes("admin_activity_log")) {
+    assertNoError(activityRes.error, "Chargement de l'historique");
+  }
 
   const projectRows = (projectsRes.data ?? []) as ProjectRow[];
   const docRows = (docsRes.data ?? []) as DocumentRequestRow[];
@@ -318,5 +452,9 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
     }),
     demands: demandRows.map(mapDemand),
     messages: ((messagesRes.data ?? []) as MessageRow[]).map(mapMessage),
+    siteLeads: ((siteLeadsRes.data ?? []) as SiteLeadRow[]).map(mapSiteLead),
+    notifications: ((notificationsRes.data ?? []) as AdminNotificationRow[]).map(mapAdminNotification),
+    internalNotes: ((notesRes.data ?? []) as InternalNoteRow[]).map(mapInternalNote),
+    activityLog: ((activityRes.data ?? []) as AdminActivityRow[]).map(mapAdminActivity),
   };
 }

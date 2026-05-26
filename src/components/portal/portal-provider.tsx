@@ -3,12 +3,18 @@
 import * as React from "react";
 import type { ReactNode } from "react";
 import type {
+  AdminActivityEntry,
+  AdminNotification,
+  ClientStatus,
+  InternalNote,
   PortalClient,
   PortalDemand,
   PortalDocument,
   PortalMessage,
   PortalProject,
+  PortalSiteLead,
   Priority,
+  SiteLeadStatus,
   ViewMode,
 } from "@/components/portal/types";
 import { createClient } from "@/lib/supabase/client";
@@ -22,12 +28,21 @@ import {
   syncProjectCreation,
 } from "@/lib/portal/backend-sync";
 import { formatPortalError } from "@/lib/portal/errors";
+import { ROUTES } from "@/lib/content/routes";
 import {
   ensureClientMembership,
   loadAdminPortalData,
   loadClientPortalData,
 } from "@/lib/portal/load-portal-data";
 import { profileClientSnapshot, profileDebugLog } from "@/lib/portal/profile-debug";
+import {
+  adminAddInternalNote,
+  adminCreateClientAccount,
+  adminSendPortalMessage,
+  adminUpdateClientAccount,
+  adminUpdateSiteLeadStatus,
+  markAdminNotificationRead,
+} from "@/lib/portal/admin-mutations";
 import {
   insertClientDemand,
   insertDocumentRequest,
@@ -84,6 +99,10 @@ type PortalStore = {
   documents: PortalDocument[];
   demands: PortalDemand[];
   messages: PortalMessage[];
+  siteLeads: PortalSiteLead[];
+  notifications: AdminNotification[];
+  internalNotes: InternalNote[];
+  activityLog: AdminActivityEntry[];
   toasts: PortalToast[];
   dismissToast: (id: string) => void;
   updateAuthAvatar: (url: string | null) => void;
@@ -104,6 +123,28 @@ type PortalStore = {
   validateDocument: (id: string) => Promise<void>;
   refuseDocument: (id: string, comment: string) => Promise<void>;
   updateDemandStatus: (id: string, status: "Reçue" | "En cours" | "Traitée") => Promise<void>;
+  updateSiteLeadStatus: (id: string, status: SiteLeadStatus, adminNotes?: string) => Promise<void>;
+  createClientAccount: (payload: {
+    companyName: string;
+    contactName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    website?: string;
+    status?: ClientStatus;
+  }) => Promise<void>;
+  updateClientAccount: (payload: {
+    clientId: string;
+    companyName: string;
+    contactName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    website?: string;
+    status?: ClientStatus;
+  }) => Promise<void>;
+  addInternalNote: (clientId: string, note: string) => Promise<void>;
+  markNotificationRead: (id: string) => Promise<void>;
   createProject: (payload: NewProjectPayload) => Promise<void>;
   updateProjectProgress: (id: string, progress: number) => Promise<void>;
 };
@@ -130,6 +171,10 @@ export function PortalProvider({
   const [documents, setDocuments] = React.useState<PortalDocument[]>([]);
   const [demands, setDemands] = React.useState<PortalDemand[]>([]);
   const [messages, setMessages] = React.useState<PortalMessage[]>([]);
+  const [siteLeads, setSiteLeads] = React.useState<PortalSiteLead[]>([]);
+  const [notifications, setNotifications] = React.useState<AdminNotification[]>([]);
+  const [internalNotes, setInternalNotes] = React.useState<InternalNote[]>([]);
+  const [activityLog, setActivityLog] = React.useState<AdminActivityEntry[]>([]);
   const [toasts, setToasts] = React.useState<PortalToast[]>([]);
   const hasLoadedOnceRef = React.useRef(false);
 
@@ -202,7 +247,12 @@ export function PortalProvider({
         avatarUrl: profile?.avatar_url?.trim() || null,
       });
       const isAdmin = profile?.role === "admin";
-      setCanSwitchMode(isAdmin && !lockClientMode);
+      setCanSwitchMode(false);
+
+      if (isAdmin && lockClientMode) {
+        window.location.replace(ROUTES.espaceAdmin);
+        return;
+      }
 
       if (mode === "admin" && isAdmin) {
         const data = await loadAdminPortalData(supabase);
@@ -211,6 +261,10 @@ export function PortalProvider({
         setDocuments(data.documents);
         setDemands(data.demands);
         setMessages(data.messages);
+        setSiteLeads(data.siteLeads);
+        setNotifications(data.notifications);
+        setInternalNotes(data.internalNotes);
+        setActivityLog(data.activityLog);
         setSelectedClientId((prev) => {
           if (prev && data.clients.some((c) => c.id === prev)) return prev;
           return data.clients[0]?.id ?? "";
@@ -227,6 +281,10 @@ export function PortalProvider({
           setDocuments([]);
           setDemands([]);
           setMessages([]);
+          setSiteLeads([]);
+          setNotifications([]);
+          setInternalNotes([]);
+          setActivityLog([]);
           if (showFullPageLoader) setLoading(false);
           return;
         }
@@ -340,12 +398,16 @@ export function PortalProvider({
       try {
         const supabase = createClient();
         const senderType = mode === "client" ? "client" : "team";
-        await insertPortalMessage(supabase, {
-          clientId: selectedClientId,
-          senderType,
-          body: text.trim(),
-          userId,
-        });
+        if (mode === "admin") {
+          await adminSendPortalMessage(supabase, selectedClientId, text.trim());
+        } else {
+          await insertPortalMessage(supabase, {
+            clientId: selectedClientId,
+            senderType,
+            body: text.trim(),
+            userId,
+          });
+        }
         void syncPortalMessage({
           clientId: selectedClientId,
           senderType,
@@ -461,6 +523,98 @@ export function PortalProvider({
     [pushToast, refresh],
   );
 
+  const updateSiteLeadStatus = React.useCallback(
+    async (id: string, status: SiteLeadStatus, adminNotes?: string) => {
+      try {
+        const supabase = createClient();
+        await adminUpdateSiteLeadStatus(supabase, id, status, adminNotes);
+        pushToast("Demande site mise à jour.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
+    },
+    [pushToast, refresh],
+  );
+
+  const createClientAccount = React.useCallback(
+    async (payload: {
+      companyName: string;
+      contactName: string;
+      email: string;
+      phone?: string;
+      address?: string;
+      website?: string;
+      status?: ClientStatus;
+    }) => {
+      try {
+        const supabase = createClient();
+        await adminCreateClientAccount(supabase, payload);
+        pushToast("Client créé.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
+    },
+    [pushToast, refresh],
+  );
+
+  const updateClientAccount = React.useCallback(
+    async (payload: {
+      clientId: string;
+      companyName: string;
+      contactName: string;
+      email: string;
+      phone?: string;
+      address?: string;
+      website?: string;
+      status?: ClientStatus;
+    }) => {
+      try {
+        const supabase = createClient();
+        await adminUpdateClientAccount(supabase, payload);
+        pushToast("Fiche client mise à jour.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
+    },
+    [pushToast, refresh],
+  );
+
+  const addInternalNote = React.useCallback(
+    async (clientId: string, note: string) => {
+      try {
+        const supabase = createClient();
+        await adminAddInternalNote(supabase, clientId, note);
+        pushToast("Note interne ajoutée.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
+    },
+    [pushToast, refresh],
+  );
+
+  const markNotificationRead = React.useCallback(
+    async (id: string) => {
+      try {
+        const supabase = createClient();
+        await markAdminNotificationRead(supabase, id);
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, readAt: new Date().toISOString() } : n)),
+        );
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+      }
+    },
+    [pushToast],
+  );
+
   const createProject = React.useCallback(
     async (payload: NewProjectPayload) => {
       if (!userId) throw new Error("Session expirée. Reconnectez-vous.");
@@ -543,6 +697,10 @@ export function PortalProvider({
         documents,
         demands,
         messages,
+        siteLeads,
+        notifications,
+        internalNotes,
+        activityLog,
         toasts,
         dismissToast,
         updateAuthAvatar,
@@ -555,6 +713,11 @@ export function PortalProvider({
         validateDocument,
         refuseDocument,
         updateDemandStatus,
+        updateSiteLeadStatus,
+        createClientAccount,
+        updateClientAccount,
+        addInternalNote,
+        markNotificationRead,
         createProject,
         updateProjectProgress,
       }}

@@ -41,6 +41,12 @@ export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthShee
   }, [open]);
 
   React.useEffect(() => {
+    if (session.status === "authenticated") {
+      setNextPath(session.destinationPath);
+    }
+  }, [session]);
+
+  React.useEffect(() => {
     setMounted(true);
   }, []);
 

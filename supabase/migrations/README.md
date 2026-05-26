@@ -14,8 +14,17 @@ Exécuter **dans cet ordre** dans [Supabase Dashboard → SQL Editor](https://su
 | 8 | [008_profile_avatar.sql](./008_profile_avatar.sql) | Photos de profil (`profile-avatars`) |
 | 9 | [009_portal_documents_fix.sql](./009_portal_documents_fix.sql) | **Correctif** envoi pièces justificatives (bucket + droits Storage) |
 | 10 | [010_client_profile_save.sql](./010_client_profile_save.sql) | Sauvegarde profil client fiable (`update_my_client_account`) |
+| 11 | [011_admin_business_tools.sql](./011_admin_business_tools.sql) | **Outil métier admin** : leads site, notifications, CRUD clients, sécurité inscription |
 
 Voir aussi le flux **profil espace client** côté Next : [../docs-profil-espace-client.md](../docs-profil-espace-client.md).
+
+## Migration 011 (sprint livraison)
+
+Exécuter **`011_admin_business_tools.sql`** pour activer :
+- table `site_leads` + RPC `submit_site_lead` (formulaire `/demande`)
+- notifications admin, journal d'activité, notes internes (RLS admin)
+- RPC admin : création/mise à jour client, statut lead, messages portail
+- trigger `handle_new_user` : rôle **client** forcé (plus d'admin via inscription publique)
 
 ## Accès rapide dans le projet
 

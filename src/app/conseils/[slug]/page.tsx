@@ -1,55 +1,13 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { ArticleDetailPage } from "@/components/pages/article-detail-page";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
-import { getArticleBySlug, getAllArticleSlugs } from "@/lib/content/articles";
-import { CONSEILS_HREF, articleHref } from "@/lib/content/routes";
+import { permanentRedirect } from "next/navigation";
+import { CONSEILS_HREF } from "@/lib/content/routes";
 
-type Params = { slug: string };
+export const metadata: Metadata = {
+  title: "Conseils | Lefèvre Conseil",
+  robots: { index: false, follow: false },
+};
 
-export function generateStaticParams(): Params[] {
-  return getAllArticleSlugs().map((slug) => ({ slug }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
-  const { slug } = await params;
-  const article = getArticleBySlug(slug);
-  if (!article) return { title: "Article introuvable" };
-
-  const path = articleHref(slug);
-  return {
-    title: `${article.title} | Lefèvre Conseil`,
-    description: article.excerpt,
-    alternates: { canonical: path },
-    openGraph: { title: article.title, description: article.excerpt, url: path, type: "article" },
-  };
-}
-
-export default async function Page({ params }: { params: Promise<Params> }) {
-  const { slug } = await params;
-  const article = getArticleBySlug(slug);
-  if (!article) notFound();
-
-  const path = articleHref(slug);
-
-  return (
-    <>
-      <ArticleJsonLd
-        title={article.title}
-        description={article.excerpt}
-        path={path}
-        datePublished={article.date}
-        imageUrl={article.image}
-        category={article.category}
-      />
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Accueil", path: "/" },
-          { name: "Conseils", path: CONSEILS_HREF },
-          { name: article.category, path },
-        ]}
-      />
-      <ArticleDetailPage article={article} />
-    </>
-  );
+/** Articles non publiés : redirection vers la liste (évite l'indexation de contenu vide). */
+export default function ArticleSlugRedirectPage() {
+  permanentRedirect(CONSEILS_HREF);
 }

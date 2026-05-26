@@ -7,6 +7,53 @@ export type ClientStatus = "Actif" | "En attente" | "À relancer";
 export type Priority = "Normal" | "Important" | "Urgent";
 export type MessageStatus = "Envoyé" | "Lu" | "En attente";
 
+export type SiteLeadStatus = "Reçue" | "En cours" | "Traitée" | "Archivée";
+
+export type PortalSiteLead = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  currentSituation: string;
+  requestType: string;
+  patrimonialGoal: string;
+  approximateAmount: string;
+  message: string;
+  contactPreference: "email" | "phone" | "either";
+  status: SiteLeadStatus;
+  adminNotes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AdminNotification = {
+  id: string;
+  kind: string;
+  title: string;
+  body: string;
+  link: string;
+  readAt: string | null;
+  createdAt: string;
+};
+
+export type InternalNote = {
+  id: string;
+  clientId: string;
+  projectId: string | null;
+  note: string;
+  createdAt: string;
+};
+
+export type AdminActivityEntry = {
+  id: string;
+  action: string;
+  entityType: string;
+  entityId: string | null;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+};
+
 export type PortalClient = {
   id: string;
   companyName: string;

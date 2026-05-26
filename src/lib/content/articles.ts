@@ -31,6 +31,9 @@ export type Article = {
   featured?: boolean;
 };
 
+/** Articles complets non publiés — données conservées dans ALL_ARTICLES. */
+export const ARTICLES_PUBLISHED = false as const;
+
 export const ALL_ARTICLES: Article[] = [
   {
     slug: "loi-de-finances-2026-ce-qui-change",

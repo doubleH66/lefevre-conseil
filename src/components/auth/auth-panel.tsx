@@ -8,10 +8,9 @@ import {
   marketingProseClass,
 } from "@/components/marketing/marketing-styles";
 import { HeroCtaPrimaryButton } from "@/components/ui/hero-cta";
+import { resolvePostAuthRedirect } from "@/lib/portal/resolve-post-auth-redirect";
 import { cn } from "@/lib/utils";
 import * as React from "react";
-
-type AppRoleChoice = "client" | "admin";
 
 const labelClass = "mb-1.5 block text-sm font-medium text-[#1f2a7c]/80";
 
@@ -34,7 +33,6 @@ export function AuthPanel({
   const [mode, setMode] = React.useState<"login" | "register">(initialMode);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [role, setRole] = React.useState<AppRoleChoice>("client");
   const [msg, setMsg] = React.useState<string | null>(null);
   const [err, setErr] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -62,7 +60,8 @@ export function AuthPanel({
       if (error) setErr(error.message);
       else {
         onSuccess?.();
-        window.location.assign(nextPath);
+        const destination = await resolvePostAuthRedirect(supabase, nextPath);
+        window.location.assign(destination);
       }
     } catch {
       setErr("Impossible de contacter Supabase (variables d'environnement ou réseau).");
@@ -80,7 +79,7 @@ export function AuthPanel({
       return;
     }
     setLoading(true);
-    const nextAfter = role === "admin" ? "/espace-admin" : "/espace-client";
+    const nextAfter = nextPath;
     try {
       const supabase = createClient();
       const { data, error } = await supabase.auth.signUp({
@@ -89,14 +88,15 @@ export function AuthPanel({
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextAfter)}`,
           data: {
-            requested_role: role,
+            full_name: email.trim().split("@")[0],
           },
         },
       });
       if (error) setErr(error.message);
       else if (data.session) {
         onSuccess?.();
-        window.location.assign(nextAfter);
+        const destination = await resolvePostAuthRedirect(supabase, nextAfter);
+        window.location.assign(destination);
       } else
         setMsg(
           "Compte créé. Vérifiez votre boîte mail pour confirmer votre adresse avant la première connexion.",
@@ -235,30 +235,10 @@ export function AuthPanel({
                 />
               </div>
 
-              <fieldset>
-                <legend className={labelClass}>Type de compte</legend>
-                <p className="text-xs text-[#1f2a7c]/55">Sélectionnez le profil correspondant à votre usage.</p>
-                <div
-                  className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2"
-                  role="radiogroup"
-                  aria-label="Rôle du compte"
-                >
-                  <RoleCard
-                    id={`role-client${idSuffix}`}
-                    title="Client"
-                    description="Espace personnel et documents."
-                    selected={role === "client"}
-                    onSelect={() => setRole("client")}
-                  />
-                  <RoleCard
-                    id={`role-admin${idSuffix}`}
-                    title="Administrateur"
-                    description="Gestion et accès étendus."
-                    selected={role === "admin"}
-                    onSelect={() => setRole("admin")}
-                  />
-                </div>
-              </fieldset>
+              <p className="text-xs text-[#1f2a7c]/55">
+                L&apos;inscription ouvre un espace client. Les accès administrateur sont créés manuellement par le
+                cabinet.
+              </p>
 
               <HeroCtaPrimaryButton
                 type="submit"
@@ -309,34 +289,5 @@ export function AuthPanel({
         </section>
       )}
     </div>
-  );
-}
-
-function RoleCard({
-  id,
-  title,
-  description,
-  selected,
-  onSelect,
-}: {
-  id: string;
-  title: string;
-  description: string;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <label
-      className={cn(
-        "relative flex cursor-pointer flex-col rounded-xl border px-3.5 py-3 transition-colors duration-200",
-        selected
-          ? "border-[#1f2a7c] bg-[#1f2a7c]/[0.06] ring-1 ring-[#1f2a7c]/25"
-          : "border-[#1f2a7c]/12 bg-white hover:border-[#1f2a7c]/25 hover:bg-[#1f2a7c]/[0.02]",
-      )}
-    >
-      <input id={id} type="radio" name="account_role" className="sr-only" checked={selected} onChange={onSelect} />
-      <span className="text-sm font-semibold text-[#1f2a7c]">{title}</span>
-      <span className="mt-0.5 text-xs leading-snug text-[#1f2a7c]/65">{description}</span>
-    </label>
   );
 }

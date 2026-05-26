@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
 import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { heroCtaRowCompactClassName } from "@/lib/styles/cta";
-import { CONSEILS_HREF, CONTACT_HREF, SIMULATION_HREF, articleHref } from "@/lib/content/routes";
+import { CONSEILS_HREF, CONTACT_HREF, DEMANDE_HREF, SIMULATION_HREF, articleHref } from "@/lib/content/routes";
+import { ARTICLES_PUBLISHED } from "@/lib/content/articles";
 import { HOME_ARTICLES_TEASER } from "@/lib/content/articles";
 
 type CtaBandProps = {
@@ -205,17 +206,26 @@ export function CtaBand({
             <ul className="mt-4 max-w-2xl space-y-3">
               {HOME_ARTICLES_TEASER.map((article) => (
                 <li key={article.slug}>
-                  <Link
-                    href={articleHref(article.slug)}
-                    className="group block rounded-lg text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
-                  >
-                    <span className="line-clamp-2 text-sm font-medium leading-snug text-white transition-colors group-hover:text-white/90">
-                      {article.title}
-                    </span>
-                    <span className="mt-0.5 block text-xs text-white/50">
-                      {article.category} · {article.date}
-                    </span>
-                  </Link>
+                  {ARTICLES_PUBLISHED ? (
+                    <Link
+                      href={articleHref(article.slug)}
+                      className="group block rounded-lg text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
+                    >
+                      <span className="line-clamp-2 text-sm font-medium leading-snug text-white transition-colors group-hover:text-white/90">
+                        {article.title}
+                      </span>
+                      <span className="mt-0.5 block text-xs text-white/50">
+                        {article.category} · {article.date}
+                      </span>
+                    </Link>
+                  ) : (
+                    <div className="rounded-lg text-left">
+                      <span className="line-clamp-2 text-sm font-medium leading-snug text-white/90">{article.title}</span>
+                      <span className="mt-0.5 block text-xs text-white/50">
+                        {article.category} · {article.date}
+                      </span>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

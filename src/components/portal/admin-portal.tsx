@@ -6,6 +6,9 @@ import { AdminTable } from "@/components/portal/AdminTable";
 import { ClientCard } from "@/components/portal/ClientCard";
 import { DocumentCard } from "@/components/portal/DocumentCard";
 import { AdminPublicMediaPage } from "@/components/portal/AdminPublicMediaPage";
+import { AdminDemandesView } from "@/components/portal/admin/admin-demandes-view";
+import { AdminMessagesView } from "@/components/portal/admin/admin-messages-view";
+import { ClientFormModal } from "@/components/portal/admin/client-form-modal";
 import { DocumentRequestModal } from "@/components/portal/DocumentRequestModal";
 import { EmptyState } from "@/components/portal/EmptyState";
 import { StatCard } from "@/components/portal/StatCard";
@@ -15,7 +18,9 @@ import type { DocumentStatus } from "@/components/portal/types";
 export type AdminPageKey =
   | "admin-dashboard"
   | "admin-clients"
+  | "admin-demandes"
   | "admin-documents"
+  | "admin-messages"
   | "admin-settings";
 
 type AdminPortalProps = {
@@ -36,6 +41,10 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
     projects,
     documents,
     demands,
+    siteLeads,
+    notifications,
+    internalNotes,
+    activityLog,
     selectedClientId,
     setSelectedClientId,
     validateDocument,
@@ -43,15 +52,27 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
     downloadDocument,
     requestDocument,
     updateDemandStatus,
+    createClientAccount,
+    updateClientAccount,
+    addInternalNote,
+    markNotificationRead,
   } = usePortal();
 
   const [showRequestModal, setShowRequestModal] = React.useState(false);
+  const [showClientModal, setShowClientModal] = React.useState(false);
+  const [editingClientId, setEditingClientId] = React.useState<string | null>(null);
+  const [internalNoteDraft, setInternalNoteDraft] = React.useState("");
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<"" | DocumentStatus>("");
   const [clientFilter, setClientFilter] = React.useState("");
   const [refuseById, setRefuseById] = React.useState<Record<string, string>>({});
 
   const selectedClient = clients.find((c) => c.id === selectedClientId) ?? clients[0] ?? null;
+  const editingClient = editingClientId ? clients.find((c) => c.id === editingClientId) : null;
+  const clientNotes = selectedClient
+    ? internalNotes.filter((n) => n.clientId === selectedClient.id)
+    : [];
+  const unreadNotifications = notifications.filter((n) => !n.readAt);
 
   const filteredDocuments = React.useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -74,9 +95,11 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
       aDeposer: documents.filter((d) => d.status === "Demandé").length,
       aValider: documents.filter((d) => d.status === "Envoyé").length,
       aCorriger: documents.filter((d) => d.status === "À corriger").length,
-      demandesOuvertes: demands.filter((d) => d.status !== "Traitée").length,
+      demandesOuvertes:
+        demands.filter((d) => d.status !== "Traitée").length +
+        siteLeads.filter((l) => l.status !== "Traitée" && l.status !== "Archivée").length,
     }),
-    [clients, documents, demands],
+    [clients, documents, demands, siteLeads],
   );
 
   if (activePage === "admin-dashboard") {
@@ -100,6 +123,45 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
             <StatCard label="À corriger" value={stats.aCorriger} />
             <StatCard label="Demandes ouvertes" value={stats.demandesOuvertes} />
           </div>
+
+          {unreadNotifications.length > 0 ? (
+            <article className="rounded-2xl border border-[#1f2a7c]/15 bg-[#1f2a7c]/5 p-4">
+              <h2 className="text-sm font-semibold text-[#1f2a7c]">
+                Notifications ({unreadNotifications.length})
+              </h2>
+              <ul className="mt-3 space-y-2">
+                {unreadNotifications.slice(0, 5).map((n) => (
+                  <li key={n.id} className="flex items-start justify-between gap-3 rounded-xl bg-white px-3 py-2 text-sm">
+                    <div>
+                      <p className="font-medium text-neutral-900">{n.title}</p>
+                      {n.body ? <p className="text-xs text-neutral-600">{n.body}</p> : null}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => void markNotificationRead(n.id)}
+                      className="shrink-0 text-xs font-semibold text-[#1f2a7c]"
+                    >
+                      Lu
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ) : null}
+
+          {activityLog.length > 0 ? (
+            <article className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5">
+              <h2 className="text-sm font-semibold text-neutral-900">Activité récente</h2>
+              <ul className="mt-3 space-y-2 text-sm text-neutral-600">
+                {activityLog.slice(0, 8).map((entry) => (
+                  <li key={entry.id} className="flex justify-between gap-4 border-b border-neutral-100 pb-2 last:border-0">
+                    <span>{entry.action.replaceAll("_", " ")}</span>
+                    <span className="shrink-0 text-xs text-neutral-400">{entry.createdAt}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ) : null}
 
           <div className="flex flex-wrap gap-2">
             <button
@@ -194,14 +256,27 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
               <h1 className="text-2xl font-semibold text-neutral-900">Clients</h1>
               <p className="mt-1 text-sm text-neutral-600">{clients.length} compte(s) client</p>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowRequestModal(true)}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#1f2a7c] px-4 py-2.5 text-sm font-semibold text-white"
-            >
-              <Plus className="size-4" aria-hidden />
-              Demander une pièce
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingClientId(null);
+                  setShowClientModal(true);
+                }}
+                className="inline-flex items-center gap-2 rounded-xl border border-[#1f2a7c]/25 bg-white px-4 py-2.5 text-sm font-semibold text-[#1f2a7c]"
+              >
+                <Plus className="size-4" aria-hidden />
+                Nouveau client
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowRequestModal(true)}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#1f2a7c] px-4 py-2.5 text-sm font-semibold text-white"
+              >
+                <Plus className="size-4" aria-hidden />
+                Demander une pièce
+              </button>
+            </div>
           </header>
 
           <div className="grid gap-3 lg:grid-cols-2">
@@ -227,22 +302,99 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
                 </div>
                 <StatusBadge status={selectedClient.status} />
               </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingClientId(selectedClient.id);
+                    setShowClientModal(true);
+                  }}
+                  className="rounded-xl border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800"
+                >
+                  Modifier la fiche
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClientFilter(selectedClient.id);
+                    setShowRequestModal(true);
+                  }}
+                  className="rounded-xl border border-[#1f2a7c]/25 bg-[#1f2a7c]/5 px-4 py-2 text-sm font-semibold text-[#1f2a7c]"
+                >
+                  Demander une pièce
+                </button>
+              </div>
               <p className="mt-3 text-xs text-neutral-500">
                 {selectedClient.pendingDocuments} pièce(s) en attente côté client
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setClientFilter(selectedClient.id);
-                  setShowRequestModal(true);
-                }}
-                className="mt-4 rounded-xl border border-[#1f2a7c]/25 bg-[#1f2a7c]/5 px-4 py-2 text-sm font-semibold text-[#1f2a7c]"
-              >
-                Demander une pièce à ce client
-              </button>
+
+              <div className="mt-6 border-t border-neutral-100 pt-4">
+                <h3 className="text-sm font-semibold text-neutral-900">Notes internes</h3>
+                <ul className="mt-2 space-y-2">
+                  {clientNotes.length === 0 ? (
+                    <li className="text-xs text-neutral-500">Aucune note.</li>
+                  ) : (
+                    clientNotes.map((note) => (
+                      <li key={note.id} className="rounded-lg bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
+                        {note.note}
+                        <span className="mt-1 block text-[10px] text-neutral-400">{note.createdAt}</span>
+                      </li>
+                    ))
+                  )}
+                </ul>
+                <form
+                  className="mt-3 flex gap-2"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!internalNoteDraft.trim() || !selectedClient) return;
+                    void addInternalNote(selectedClient.id, internalNoteDraft.trim()).then(() =>
+                      setInternalNoteDraft(""),
+                    );
+                  }}
+                >
+                  <input
+                    value={internalNoteDraft}
+                    onChange={(e) => setInternalNoteDraft(e.target.value)}
+                    placeholder="Ajouter une note interne…"
+                    className="h-10 flex-1 rounded-xl border border-neutral-200 px-3 text-sm"
+                  />
+                  <button type="submit" className="rounded-xl bg-neutral-900 px-3 py-2 text-sm font-semibold text-white">
+                    Ajouter
+                  </button>
+                </form>
+              </div>
             </article>
           ) : null}
         </section>
+
+        <ClientFormModal
+          open={showClientModal}
+          onClose={() => {
+            setShowClientModal(false);
+            setEditingClientId(null);
+          }}
+          initial={
+            editingClient
+              ? {
+                  clientId: editingClient.id,
+                  companyName: editingClient.companyName,
+                  contactName: editingClient.contactName,
+                  email: editingClient.email,
+                  phone: editingClient.phone,
+                  address: editingClient.address,
+                  website: editingClient.website,
+                  status: editingClient.status,
+                }
+              : undefined
+          }
+          onSubmit={async (payload) => {
+            if (payload.clientId) {
+              await updateClientAccount({ ...payload, clientId: payload.clientId });
+            } else {
+              await createClientAccount(payload);
+            }
+          }}
+        />
 
         <RequestModal
           open={showRequestModal}
@@ -250,10 +402,19 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
           clients={clients}
           projects={projects}
           selectedClientId={selectedClientId}
+          initialClientFilter={clientFilter}
           onSubmit={requestDocument}
         />
       </>
     );
+  }
+
+  if (activePage === "admin-demandes") {
+    return <AdminDemandesView />;
+  }
+
+  if (activePage === "admin-messages") {
+    return <AdminMessagesView />;
   }
 
   if (activePage === "admin-documents") {
@@ -394,9 +555,9 @@ export function AdminPortal({ activePage }: AdminPortalProps) {
     return (
       <section className="space-y-5">
         <header>
-          <h1 className="text-2xl font-semibold text-neutral-900">Médias du site</h1>
+          <h1 className="text-2xl font-semibold text-neutral-900">Réglages</h1>
           <p className="mt-1 text-sm text-neutral-600">
-            Fichiers publics (images, PDF) hébergés sur Supabase — migration 007 requise.
+            Médias publics du site et préférences d&apos;administration.
           </p>
         </header>
         <AdminPublicMediaPage />
