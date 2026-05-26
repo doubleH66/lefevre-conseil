@@ -20,7 +20,8 @@ import {
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { CABINET_CONTACT, CONTACT_SUBJECTS, formatAddressLine } from "@/lib/content/site";
 import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION } from "@/lib/site-brand";
-import { BILAN_PATRIMOINE_HREF } from "@/lib/content/routes";
+import { DEMANDE_HREF, ROUTES } from "@/lib/content/routes";
+import { splitFullName, submitSiteLead } from "@/lib/site-lead/submit-site-lead";
 import { CtaPrimaryLink } from "@/components/ui/cta-link";
 import { cn } from "@/lib/utils";
 
@@ -80,13 +81,13 @@ function resolveContactSubject(raw: string | null): string {
   return (CONTACT_SUBJECTS as readonly string[]).includes(decoded) ? decoded : "";
 }
 
-function ContactFormFromSearchParams({ email }: { email: string }) {
+function ContactFormFromSearchParams() {
   const searchParams = useSearchParams();
   const initialSubject = resolveContactSubject(searchParams.get("objet"));
-  return <ContactForm email={email} initialSubject={initialSubject} />;
+  return <ContactForm initialSubject={initialSubject} />;
 }
 
-function ContactForm({ email, initialSubject = "" }: { email: string; initialSubject?: string }) {
+function ContactForm({ initialSubject = "" }: { initialSubject?: string }) {
   const [step, setStep] = React.useState<1 | 2>(1);
   const [dir, setDir] = React.useState(1);
   const [values, setValues] = React.useState({
@@ -96,7 +97,10 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
     subject: initialSubject,
     message: "",
   });
+  const [gdprConsent, setGdprConsent] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   const set = (k: keyof typeof values, v: string) => {
     setValues((p) => ({ ...p, [k]: v }));
@@ -104,6 +108,10 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
   };
 
   const goNext = () => {
+    if (!values.name.trim()) {
+      setError("Veuillez indiquer votre nom.");
+      return;
+    }
     if (!isValidEmail(values.email)) {
       setError("Veuillez saisir une adresse e-mail valide.");
       return;
@@ -119,28 +127,57 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
     setStep(1);
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!values.message.trim()) {
       setError("Veuillez décrire votre demande.");
       return;
     }
-    const subject = encodeURIComponent(
-      `Contact site${values.subject ? ` — ${values.subject}` : ""}${values.name ? ` — ${values.name}` : ""}`,
-    );
-    const body = encodeURIComponent(
-      [
-        `Nom : ${values.name || "—"}`,
-        `Email : ${values.email}`,
-        values.phone ? `Tél : ${values.phone}` : "",
-        values.subject ? `Objet : ${values.subject}` : "",
-        "",
-        values.message,
-      ]
-        .filter((l) => l !== undefined && l !== null)
-        .join("\n"),
-    );
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    if (!gdprConsent) {
+      setError("Veuillez accepter la politique de confidentialité.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const { firstName, lastName } = splitFullName(values.name);
+    const result = await submitSiteLead({
+      firstName,
+      lastName,
+      email: values.email.trim(),
+      phone: values.phone.trim() || undefined,
+      requestType: values.subject.trim() || "Contact site",
+      message: values.message.trim(),
+      contactPreference: "either",
+      gdprConsent: true,
+    });
+
+    setLoading(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    setSuccess(true);
   };
+
+  if (success) {
+    return (
+      <section className={cn(marketingCardClass, "overflow-hidden px-6 py-12 text-center sm:px-8")}>
+        <h2 className="text-xl font-semibold text-[#1f2a7c]">Message envoyé</h2>
+        <p className="mt-3 text-sm leading-relaxed text-[#1f2a7c]/70">
+          Merci pour votre message. Vous recevrez une confirmation par e-mail et le cabinet vous recontactera rapidement.
+        </p>
+        <Link
+          href={ROUTES.home}
+          className="mt-6 inline-block text-sm font-semibold text-[#1f2a7c] underline-offset-2 hover:underline"
+        >
+          Retour à l&apos;accueil
+        </Link>
+      </section>
+    );
+  }
 
   return (
     <section aria-labelledby="form-title" className={cn(marketingCardClass, "overflow-hidden")}>
@@ -184,12 +221,13 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="c-name" className="mb-1.5 block text-sm font-medium text-[#1f2a7c]/80">
-                    Prénom NOM
+                    Prénom NOM <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="c-name"
                     type="text"
                     autoComplete="name"
+                    required
                     placeholder="Jean Dupont"
                     value={values.name}
                     onChange={(e) => set("name", e.target.value)}
@@ -312,11 +350,28 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
                 />
               </div>
 
+              <label className="flex items-start gap-2 text-sm text-[#1f2a7c]/75">
+                <input
+                  type="checkbox"
+                  checked={gdprConsent}
+                  onChange={(e) => setGdprConsent(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  J&apos;accepte que mes données soient utilisées pour traiter ma demande, conformément à la{" "}
+                  <Link href={ROUTES.confidentialite} className="font-semibold text-[#1f2a7c] underline-offset-2 hover:underline">
+                    politique de confidentialité
+                  </Link>
+                  . *
+                </span>
+              </label>
+
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={goBack}
-                  className="inline-flex h-[2.625rem] items-center justify-center gap-1.5 rounded-full border border-[#1f2a7c]/15 px-4 text-sm font-semibold text-[#1f2a7c] transition-colors hover:bg-[#1f2a7c]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/30"
+                  disabled={loading}
+                  className="inline-flex h-[2.625rem] items-center justify-center gap-1.5 rounded-full border border-[#1f2a7c]/15 px-4 text-sm font-semibold text-[#1f2a7c] transition-colors hover:bg-[#1f2a7c]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/30 disabled:opacity-50"
                   aria-label="Retour à l'étape précédente"
                 >
                   <ArrowLeft aria-hidden className="size-4" />
@@ -324,14 +379,17 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
                 </button>
                 <button
                   type="button"
-                  onClick={submit}
-                  className="group inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#1f2a7c] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#182266] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/40 focus-visible:ring-offset-2 sm:flex-none"
+                  onClick={() => void submit()}
+                  disabled={loading}
+                  className="group inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#1f2a7c] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#182266] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/40 focus-visible:ring-offset-2 disabled:opacity-60 sm:flex-none"
                 >
-                  Envoyer
-                  <ArrowUpRight
-                    aria-hidden
-                    className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
+                  {loading ? "Envoi en cours…" : "Envoyer"}
+                  {!loading ? (
+                    <ArrowUpRight
+                      aria-hidden
+                      className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    />
+                  ) : null}
                 </button>
               </div>
             </motion.div>
@@ -341,13 +399,10 @@ function ContactForm({ email, initialSubject = "" }: { email: string; initialSub
 
       <div className="border-t border-neutral-100 bg-[#1f2a7c]/[0.03] px-6 py-3.5 sm:px-8">
         <p className="text-xs leading-relaxed text-[#1f2a7c]/55">
-          En cliquant sur « Envoyer », votre messagerie s'ouvre avec un brouillon pré-rempli à destination de{" "}
-          <a
-            href={`mailto:${email}`}
-            className="font-medium text-[#1f2a7c] underline decoration-[#1f2a7c]/25 underline-offset-2"
-          >
-            {email}
-          </a>
+          Votre demande est enregistrée directement par le cabinet. Réponse sous 24 h ouvrées. Pour un formulaire détaillé,{" "}
+          <Link href={DEMANDE_HREF} className="font-medium text-[#1f2a7c] underline decoration-[#1f2a7c]/25 underline-offset-2">
+            utilisez la page Demande
+          </Link>
           .
         </p>
       </div>
@@ -408,7 +463,7 @@ export function ContactPage() {
                 <div className="px-6 py-12 text-center text-sm text-[#1f2a7c]/55 sm:px-8">Chargement du formulaire…</div>
               }
             >
-              <ContactFormFromSearchParams email={email} />
+              <ContactFormFromSearchParams />
             </Suspense>
 
             <div className="flex flex-col gap-5">
@@ -466,10 +521,7 @@ export function ContactPage() {
                   Analyse complète, indépendante, sans engagement — en cabinet ou à distance.
                 </p>
                 <div className="mt-5">
-                  <CtaPrimaryLink
-                    href={BILAN_PATRIMOINE_HREF}
-                    className="!h-11 !min-h-11 w-full !min-w-0 sm:w-auto"
-                  >
+                  <CtaPrimaryLink href={DEMANDE_HREF} className="!h-11 !min-h-11 w-full !min-w-0 sm:w-auto">
                     Démarrer mon bilan
                     <ArrowUpRight aria-hidden className="size-4 shrink-0" />
                   </CtaPrimaryLink>

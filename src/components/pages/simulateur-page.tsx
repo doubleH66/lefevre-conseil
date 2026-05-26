@@ -9,8 +9,8 @@ import { MutuelleEmbed } from "@/components/marketing/comparateur-embed";
 import { HeroCtaPrimaryButton, HeroCtaSecondaryLink } from "@/components/marketing/hero-site-cta";
 import { SERVICE_CATALOG, serviceDetailHref } from "@/lib/content/services";
 import type { ServiceSlug } from "@/lib/content/services";
-import { CABINET_CONTACT } from "@/lib/content/site";
-import { CONTACT_HREF, EXPERTISES_BASE_HREF } from "@/lib/content/routes";
+import { CONTACT_HREF, DEMANDE_HREF, EXPERTISES_BASE_HREF, ROUTES } from "@/lib/content/routes";
+import { splitFullName, submitSiteLead } from "@/lib/site-lead/submit-site-lead";
 import { cn } from "@/lib/utils";
 
 const SIMULATEUR_BREADCRUMBS = [
@@ -36,23 +36,57 @@ export function SimulateurPage() {
   const [mode, setMode] = React.useState<SimulateurMode>("patrimoine");
   const [domain, setDomain] = React.useState<ServiceSlug | "">("");
   const [submitted, setSubmitted] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [gdprConsent, setGdprConsent] = React.useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError(null);
+
+    if (!gdprConsent) {
+      setSubmitError("Veuillez accepter la politique de confidentialité.");
+      return;
+    }
+
     const data = new FormData(e.currentTarget);
-    const lines = [
-      `Domaine : ${domain || "Non précisé"}`,
-      `Nom : ${data.get("name")}`,
-      `E-mail : ${data.get("email")}`,
-      `Téléphone : ${data.get("phone") || "—"}`,
-      `Situation : ${data.get("situation")}`,
-      `Objectifs : ${data.get("objectifs") || "—"}`,
-      "",
-      String(data.get("message") ?? ""),
-    ];
-    const mailto = `mailto:${CABINET_CONTACT.email}?subject=${encodeURIComponent("[Simulateur] Demande de simulation")}&body=${encodeURIComponent(lines.join("\n"))}`;
-    window.location.href = mailto;
+    const name = String(data.get("name") ?? "");
+    const email = String(data.get("email") ?? "");
+    const { firstName, lastName } = splitFullName(name);
+    const objectifs = data
+      .getAll("objectifs")
+      .map((v) => String(v))
+      .join(", ");
+
+    setLoading(true);
+    const result = await submitSiteLead({
+      firstName,
+      lastName,
+      email,
+      phone: String(data.get("phone") ?? "") || undefined,
+      currentSituation: String(data.get("situation") ?? "") || undefined,
+      requestType: "[Simulateur] Demande de simulation",
+      patrimonialGoal: objectifs || undefined,
+      message: [
+        domain ? `Domaine : ${domain}` : null,
+        objectifs ? `Objectifs : ${objectifs}` : null,
+        "",
+        String(data.get("message") ?? ""),
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      gdprConsent: true,
+    });
+    setLoading(false);
+
+    if (!result.ok) {
+      setSubmitError(result.error);
+      return;
+    }
+
     setSubmitted(true);
+    e.currentTarget.reset();
+    setGdprConsent(false);
   };
 
   return (
@@ -114,7 +148,7 @@ export function SimulateurPage() {
               Partagez votre situation : un conseiller vous répond sous 48 h avec une piste chiffrée.
             </p>
 
-            <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-3xl space-y-8" noValidate>
+            <form onSubmit={(e) => void handleSubmit(e)} className="mx-auto mt-10 max-w-3xl space-y-8" noValidate>
               <section className="overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-sm">
                 <div className="border-b border-neutral-100 bg-neutral-50/60 px-5 py-4 sm:px-6">
                   <h2 className="text-sm font-semibold text-neutral-900">Domaine prioritaire</h2>
@@ -190,21 +224,41 @@ export function SimulateurPage() {
                     Précisions
                     <textarea name="message" rows={4} className={cn(fieldClass, "mt-1.5 resize-y")} />
                   </label>
+                  <label className="flex items-start gap-2 text-sm text-neutral-700">
+                    <input
+                      type="checkbox"
+                      checked={gdprConsent}
+                      onChange={(e) => setGdprConsent(e.target.checked)}
+                      className="mt-1 accent-[#1f2a7c]"
+                    />
+                    <span>
+                      J&apos;accepte le traitement de mes données conformément à la{" "}
+                      <Link href={ROUTES.confidentialite} className="font-semibold text-[#1f2a7c] underline-offset-2 hover:underline">
+                        politique de confidentialité
+                      </Link>
+                      . *
+                    </span>
+                  </label>
+                  {submitError ? (
+                    <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-800">
+                      {submitError}
+                    </p>
+                  ) : null}
                   <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                    <HeroCtaPrimaryButton type="submit" className="sm:min-w-[14rem]">
+                    <HeroCtaPrimaryButton type="submit" disabled={loading} className="sm:min-w-[14rem]">
                       <span className="inline-flex items-center gap-2">
                         <Send className="size-4" aria-hidden />
-                        Recevoir ma simulation
+                        {loading ? "Envoi en cours…" : "Recevoir ma simulation"}
                       </span>
                     </HeroCtaPrimaryButton>
-                    <HeroCtaSecondaryLink href={CONTACT_HREF} surface="light">
-                      Me faire rappeler
+                    <HeroCtaSecondaryLink href={DEMANDE_HREF} surface="light">
+                      Formulaire complet
                     </HeroCtaSecondaryLink>
                   </div>
                   {submitted ? (
                     <p className="flex items-center gap-2 text-sm text-emerald-800">
                       <CheckCircle2 className="size-4 shrink-0" aria-hidden />
-                      Brouillon prêt dans votre messagerie.
+                      Demande enregistrée. Vous recevrez une confirmation par e-mail.
                     </p>
                   ) : null}
                 </div>

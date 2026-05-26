@@ -13,7 +13,7 @@ import { marketingCardClass, marketingPageShellClass } from "@/components/market
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
 import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
-import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
+import { CONTACT_HREF, DEMANDE_HREF, ROUTES } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 
 type BilanPatrimonialPageProps = {
@@ -110,14 +110,14 @@ export function BilanPatrimonialPage({ faq }: BilanPatrimonialPageProps) {
             </p>
             <div className={cn("mt-8 flex flex-wrap justify-center gap-3", heroCtaRowClassName)}>
               <CtaPrimaryLink
-                href={ROUTES.simulateur}
+                href={DEMANDE_HREF}
                 className="group border-white/20 bg-white text-[#1f2a7c] hover:bg-white/95"
               >
                 Commencer mon pré-bilan
                 <ArrowUpRight aria-hidden className="size-4 shrink-0" />
               </CtaPrimaryLink>
-              <ContactGlassLink href={CONTACT_HREF} light>
-                Prendre rendez-vous
+              <ContactGlassLink href={DEMANDE_HREF} light>
+                Formulaire de demande
               </ContactGlassLink>
             </div>
           </div>

@@ -6,6 +6,7 @@ import { fieldClass, marketingCardClass, marketingProseClass } from "@/component
 import { HeroCtaPrimaryButton } from "@/components/ui/hero-cta";
 import { ROUTES } from "@/lib/content/routes";
 import { CONTACT_SUBJECTS } from "@/lib/content/site";
+import { submitSiteLead } from "@/lib/site-lead/submit-site-lead";
 
 const SITUATIONS = [
   "Salarié / cadre",
@@ -31,39 +32,32 @@ export function DemandePageClient() {
     setError(null);
     setLoading(true);
 
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-
     try {
-      const res = await fetch("/api/site-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: fd.get("firstName"),
-          lastName: fd.get("lastName"),
-          email: fd.get("email"),
-          phone: fd.get("phone"),
-          currentSituation: fd.get("currentSituation"),
-          requestType: fd.get("requestType"),
-          patrimonialGoal: fd.get("patrimonialGoal"),
-          approximateAmount: fd.get("approximateAmount"),
-          message: fd.get("message"),
-          contactPreference: fd.get("contactPreference"),
-          gdprConsent: fd.get("gdprConsent") === "on",
-          website: fd.get("website"),
-        }),
+      const form = e.currentTarget;
+      const fd = new FormData(form);
+
+      const result = await submitSiteLead({
+        firstName: String(fd.get("firstName") ?? ""),
+        lastName: String(fd.get("lastName") ?? ""),
+        email: String(fd.get("email") ?? ""),
+        phone: String(fd.get("phone") ?? "") || undefined,
+        currentSituation: String(fd.get("currentSituation") ?? "") || undefined,
+        requestType: String(fd.get("requestType") ?? ""),
+        patrimonialGoal: String(fd.get("patrimonialGoal") ?? "") || undefined,
+        approximateAmount: String(fd.get("approximateAmount") ?? "") || undefined,
+        message: String(fd.get("message") ?? "") || undefined,
+        contactPreference: (fd.get("contactPreference") as "email" | "phone" | "either") ?? "either",
+        gdprConsent: fd.get("gdprConsent") === "on",
+        website: String(fd.get("website") ?? ""),
       });
 
-      const data = (await res.json()) as { ok?: boolean; error?: string };
-      if (!res.ok || !data.ok) {
-        setError(data.error ?? "Envoi impossible. Réessayez ou contactez le cabinet.");
+      if (!result.ok) {
+        setError(result.error);
         return;
       }
 
       setSuccess(true);
       form.reset();
-    } catch {
-      setError("Connexion impossible. Vérifiez votre réseau et réessayez.");
     } finally {
       setLoading(false);
     }
