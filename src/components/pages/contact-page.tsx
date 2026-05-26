@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
@@ -72,10 +74,28 @@ const slideVariants = {
   exit: (dir: number) => ({ x: -dir * 36, opacity: 0 }),
 };
 
-function ContactForm({ email }: { email: string }) {
+function resolveContactSubject(raw: string | null): string {
+  if (!raw) return "";
+  const decoded = decodeURIComponent(raw).trim();
+  return (CONTACT_SUBJECTS as readonly string[]).includes(decoded) ? decoded : "";
+}
+
+function ContactFormFromSearchParams({ email }: { email: string }) {
+  const searchParams = useSearchParams();
+  const initialSubject = resolveContactSubject(searchParams.get("objet"));
+  return <ContactForm email={email} initialSubject={initialSubject} />;
+}
+
+function ContactForm({ email, initialSubject = "" }: { email: string; initialSubject?: string }) {
   const [step, setStep] = React.useState<1 | 2>(1);
   const [dir, setDir] = React.useState(1);
-  const [values, setValues] = React.useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [values, setValues] = React.useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: initialSubject,
+    message: "",
+  });
   const [error, setError] = React.useState<string | null>(null);
 
   const set = (k: keyof typeof values, v: string) => {
@@ -383,7 +403,13 @@ export function ContactPage() {
       <MarketingPageStack className={marketingPageShellClass}>
         <div className={cn(marketingInnerClass, "max-w-6xl")}>
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8">
-            <ContactForm email={email} />
+            <Suspense
+              fallback={
+                <div className="px-6 py-12 text-center text-sm text-[#1f2a7c]/55 sm:px-8">Chargement du formulaire…</div>
+              }
+            >
+              <ContactFormFromSearchParams email={email} />
+            </Suspense>
 
             <div className="flex flex-col gap-5">
               <section

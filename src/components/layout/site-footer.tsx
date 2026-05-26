@@ -8,6 +8,7 @@ import {
   FAQ_HREF,
   INSTALLATION_HREF,
   NOTRE_CABINET_HREF,
+  ROUTES,
 } from "@/lib/content/routes";
 import { NewsletterSignup } from "@/components/client/newsletter-signup";
 import { AURENIS_LOGO_URL, CABINET_CONTACT, SITE_LOGO_URL } from "@/lib/content/site";
@@ -20,10 +21,11 @@ const footerGlassBtnClass = cn(
 );
 
 const legalLinks = [
-  { href: "/mentions-legales", label: "Mentions légales" },
-  { href: "/confidentialite", label: "Confidentialité" },
-  { href: "/cookies", label: "Cookies" },
-  { href: "/conditions-utilisation", label: "Conditions d’utilisation" },
+  { href: ROUTES.mentionsLegales, label: "Mentions légales" },
+  { href: ROUTES.confidentialite, label: "Confidentialité" },
+  { href: ROUTES.cookies, label: "Cookies" },
+  { href: ROUTES.conditionsUtilisation, label: "Conditions d’utilisation" },
+  { href: ROUTES.reclamations, label: "Réclamations clients" },
 ] as const;
 
 const navigationLinks = [

@@ -1,5 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { RichText } from "@/components/ui/rich-text";
+import { ServiceRichText } from "@/components/services/service-rich-text";
 
 export type ComparisonTableData = {
   title: string;
@@ -43,7 +45,7 @@ export function ComparisonTable({ data, className }: { data: ComparisonTableData
                   key={ci}
                   className="border-t border-[#1f2a7c]/08 px-4 py-3 text-center text-[13px] leading-snug text-[#1f2a7c]/80 sm:px-5"
                 >
-                  <RichText as="span">{cell}</RichText>
+                  <ServiceRichText as="span">{cell}</ServiceRichText>
                 </td>
               ))}
             </tr>

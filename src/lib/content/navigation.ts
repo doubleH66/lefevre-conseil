@@ -49,6 +49,7 @@ export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
   ROUTES.mentionsLegales,
   ROUTES.confidentialite,
   ROUTES.conditionsUtilisation,
+  ROUTES.reclamations,
   ...SERVICE_CATALOG.map((s) => serviceHref(s.slug)),
 ]);
 

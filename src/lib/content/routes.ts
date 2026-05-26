@@ -19,6 +19,7 @@ export const ROUTES = {
   mentionsLegales: "/mentions-legales",
   confidentialite: "/confidentialite",
   conditionsUtilisation: "/conditions-utilisation",
+  reclamations: "/reclamations",
 } as const;
 
 export const SIMULATION_ANCHOR_ID = "simulation" as const;

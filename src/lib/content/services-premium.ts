@@ -18,14 +18,36 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       subtitle: "Un bilan complet, une stratégie cohérente — sans produit imposé ni conflit d'intérêt.",
       taglineHighlightAfter: ", une stratégie cohérente",
       intro:
-        "La gestion de patrimoine, c'est d'abord une question de **cohérence** : vos placements, votre retraite, votre fiscalité et votre famille doivent former un tout logique. Lefèvre Conseil vous accompagne depuis Perpignan, en cabinet ou à distance, avec une approche **indépendante**.",
+        "La gestion de patrimoine, c'est d'abord une question de ^^cohérence^^ : vos placements, votre retraite, votre fiscalité et votre famille doivent former un tout logique. Lefèvre Conseil vous accompagne depuis Perpignan, en cabinet ou à distance, avec une approche **indépendante**.",
     },
     whyImportant: {
-      title: "Pourquoi une vision d'ensemble change tout",
+      title: "Pourquoi une ^^vision d'ensemble^^ change tout",
       paragraphs: [
         "Beaucoup de personnes accumulent des contrats — un **PER** ici, une **assurance-vie** là, un crédit immobilier ailleurs — sans jamais vérifier si l'ensemble est cohérent. Résultat : trop de risque, pas assez de liquidité, une fiscalité non optimisée, une transmission non préparée.",
         "Le rôle d'un **conseiller en gestion de patrimoine indépendant**, c'est justement de faire cette synthèse. Il part de votre situation réelle (revenus, dépenses, famille, horizon, projets) pour identifier vos *priorités* — et seulement ensuite, propose des solutions.",
         "Cette démarche n'est pas réservée aux grandes fortunes. Elle est utile dès que vous avez des objectifs clairs : constituer une épargne, préparer votre retraite, protéger votre famille ou réduire votre impôt.",
+      ],
+    },
+    beforeAfter: {
+      title: "Avant / après un bilan patrimonial",
+      columns: ["Avant", "Après accompagnement"],
+      rows: [
+        {
+          label: "Vision globale",
+          cells: ["Contrats *éparpillés*, peu de lisibilité", "^^Cartographie^^ claire : patrimoine, dettes, objectifs"],
+        },
+        {
+          label: "Décisions",
+          cells: ["Produits choisis au *cas par cas*", "Arbitrages **comparés** et chiffrés"],
+        },
+        {
+          label: "Fiscalité & transmission",
+          cells: ["Peu anticipées", "Intégrées dans la **stratégie**"],
+        },
+        {
+          label: "Suivi",
+          cells: ["Rarement revu", "Points d'étape **réguliers**"],
+        },
       ],
     },
     accompaniment: { title: "", steps: [] },
@@ -98,11 +120,21 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Il existe des dizaines de façons d'épargner. **Assurance-vie**, **PER**, **PEA**, compte-titres, SCPI… Chaque support a ses règles fiscales, ses contraintes de liquidité et son niveau de risque. Nous vous aidons à comprendre les différences et à choisir selon *votre situation* — pas selon la mode.",
     },
     whyImportant: {
-      title: "Le bon placement dépend de vous, pas d'un classement",
+      title: "Le bon placement dépend de ^^vous^^, pas d'un classement",
       paragraphs: [
         "Un placement « populaire » peut être mauvais pour vous. Ce qui compte : votre **horizon** *(dans combien de temps aurez-vous besoin de cet argent ?)*, votre **fiscalité** *(quel est votre taux marginal d'imposition ?)* et votre **tolérance au risque** *(dormez-vous bien si votre capital peut temporairement baisser ?).*",
         "L'autre piège : mettre tous ses œufs dans le même panier. Un livret A seul *ne protège pas de l'inflation* sur 20 ans. Une seule assurance-vie en fonds euros ne fait pas une stratégie patrimoniale. La **diversification** réduit le risque sans forcément réduire le rendement attendu.",
         "Notre rôle : vous expliquer chaque enveloppe en langage clair, comparer les contrats de notre réseau de partenaires, et proposer une allocation cohérente avec ce que vous souhaitez accomplir.",
+      ],
+    },
+    beforeAfter: {
+      title: "Avant / après structuration de l'épargne",
+      columns: ["Avant", "Après accompagnement"],
+      rows: [
+        { label: "Enveloppes", cells: ["*Une* assurance-vie « par défaut »", "^^Mix^^ adapté : AV, PER, PEA selon profil"] },
+        { label: "Risque", cells: ["Mal identifié ou ignoré", "**Profil** et horizon formalisés"] },
+        { label: "Fiscalité", cells: ["Peu comparée entre supports", "Entrée / sortie **expliquées**"] },
+        { label: "Liquidité", cells: ["Argent bloqué ou trop disponible", "Répartition **équilibrée**"] },
       ],
     },
     accompaniment: { title: "", steps: [] },
@@ -186,11 +218,21 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "La retraite et la transmission sont les deux sujets qu'on reporte toujours à plus tard — jusqu'au jour où on n'a plus le temps de faire les *bons choix*. Lefèvre Conseil vous aide à **anticiper**, avec des projections concrètes et des solutions adaptées à votre situation.",
     },
     whyImportant: {
-      title: "Anticiper, c'est garder le choix",
+      title: "Anticiper, c'est ^^garder le choix^^",
       paragraphs: [
         "À la retraite, la baisse des revenus est souvent *plus forte qu'anticipé* : régimes obligatoires en baisse tendancielle, dernières années de carrière pas toujours au maximum. Plus vous commencez tôt à constituer une **épargne retraite**, plus les versements peuvent être modestes et l'effort supportable.",
         "La transmission pose des questions délicates : protéger son conjoint, équilibrer les parts entre enfants, limiter la facture fiscale. *Plus on attend, moins on a d'options.* Une donation faite **15 ans avant** un décès n'a pas le même coût fiscal qu'une succession improvisée.",
         "Notre approche est **pédagogique et structurante** : on commence par vous expliquer comment ça fonctionne, on fait des projections, puis on étudie les solutions adaptées à votre famille et à vos objectifs.",
+      ],
+    },
+    beforeAfter: {
+      title: "Avant / après anticipation retraite & transmission",
+      columns: ["Avant", "Après accompagnement"],
+      rows: [
+        { label: "Retraite", cells: ["Revenus futurs *flous*", "^^Projection^^ chiffrée + leviers PER / épargne"] },
+        { label: "Transmission", cells: ["Succession *improvisée*", "Donations, clauses AV, **démembrement** étudiés"] },
+        { label: "Famille", cells: ["Peu de dialogue", "Scénarios **équilibrés** entre héritiers"] },
+        { label: "Fiscalité", cells: ["Abattements *non utilisés*", "Calendrier sur **15 ans**"] },
       ],
     },
     accompaniment: { title: "", steps: [] },
@@ -274,11 +316,21 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Un **avantage fiscal ne fait pas un bon investissement**. Lefèvre Conseil commence toujours par analyser votre situation fiscale réelle avant de comparer les leviers disponibles. L'objectif : cohérence patrimoniale, *pas défiscalisation à tout prix*.",
     },
     whyImportant: {
-      title: "Comprendre avant d'investir pour réduire ses impôts",
+      title: "Comprendre ^^avant d'investir^^ pour réduire ses impôts",
       paragraphs: [
         "Il existe **trois mécanismes fiscaux principaux** : la __déduction__ *(réduit le revenu imposable, donc l'impôt calculé dessus)*, la __réduction d'impôt__ *(s'applique directement sur le montant dû)* et le __crédit d'impôt__ *(peut être remboursé si supérieur à l'impôt)*. Ces trois notions sont souvent confondues, avec des conséquences *très différentes* selon votre **taux marginal d'imposition (TMI)**.",
         "Le deuxième point essentiel : **la fiscalité de sortie compte autant que l'avantage à l'entrée**. Un dispositif qui réduit vos impôts aujourd'hui peut générer une imposition importante dans 10 ans, ou *bloquer votre capital* dans un actif difficile à revendre.",
         "Notre méthode : analyser votre **feuille d'imposition**, simuler plusieurs scénarios, comparer les options en intégrant risque, liquidité et horizon — et *seulement ensuite*, proposer.",
+      ],
+    },
+    beforeAfter: {
+      title: "Avant / après analyse fiscale",
+      columns: ["Avant", "Après accompagnement"],
+      rows: [
+        { label: "Lecture fiscale", cells: ["Feuille d'impôt *peu lue*", "^^TMI^^ et leviers identifiés"] },
+        { label: "Choix d'investissement", cells: ["Guidé par la *défiscalisation*", "**Rentabilité nette** en priorité"] },
+        { label: "Scénarios", cells: ["Un seul produit proposé", "Plusieurs pistes **chiffrées**"] },
+        { label: "Sortie", cells: ["Peu anticipée", "Fiscalité de sortie **intégrée**"] },
       ],
     },
     accompaniment: { title: "", steps: [] },
@@ -361,11 +413,21 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Un arrêt de travail prolongé, un décès ou une invalidité peuvent fragiliser un foyer *bien plus vite* qu'une mauvaise année boursière. Pourtant, la **prévoyance** reste souvent le parent pauvre de la stratégie patrimoniale. Nous l'intégrons dès le départ.",
     },
     whyImportant: {
-      title: "La protection : le fondement avant l'investissement",
+      title: "La protection : le ^^fondement^^ avant l'investissement",
       paragraphs: [
         "Avant d'investir, il faut **sécuriser** : ses revenus en cas d'aléa *(arrêt maladie, accident, décès)*, sa santé pour ne pas se retrouver exposé à des dépenses imprévues, et son emprunt pour que le projet immobilier ne devienne pas un risque pour sa famille.",
         "Beaucoup de personnes disposent déjà de contrats — via leur employeur, leur banque ou leur mutuelle — mais sans vraiment savoir *ce qu'ils couvrent*, à quel niveau et à quel prix. Une révision régulière est souvent source d'**économies et d'amélioration des garanties**.",
         "Pour les **indépendants**, les **dirigeants** et les **professions libérales**, la situation est encore plus critique : sans protection adaptée, un arrêt de travail peut remettre en cause *toute l'activité*.",
+      ],
+    },
+    beforeAfter: {
+      title: "Avant / après audit prévoyance",
+      columns: ["Avant", "Après accompagnement"],
+      rows: [
+        { label: "Garanties", cells: ["Contrats *mal connus*", "^^Cartographie^^ des lacunes et doublons"] },
+        { label: "Emprunt", cells: ["Assurance *banque* souvent chère", "Comparatif **loi Lemoine**"] },
+        { label: "Santé", cells: ["Remboursements *insuffisants*", "Mutuelle **calibrée** aux besoins"] },
+        { label: "Revenus", cells: ["Peu protégés en cas d'arrêt", "Prévoyance **dimensionnée**"] },
       ],
     },
     accompaniment: { title: "", steps: [] },
@@ -440,18 +502,28 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Leasing d'œuvres d'art pour entreprises : valorisez vos locaux, étudiez le cadre fiscal et constituez un patrimoine artistique. Accompagnement clé en main à Perpignan.",
     },
     hero: {
-      h1: "Investir dans l'art en entreprise",
-      subtitle: "Valoriser ses locaux, développer son image et étudier un avantage fiscal méconnu.",
-      taglineHighlightAfter: ", développer son image",
+      h1: "Investir dans l'art",
+      subtitle: "Découvrez comment investir dans l'art — valorisez vos locaux, votre image et votre fiscalité.",
+      taglineHighlightAfter: " — valorisez vos locaux",
       intro:
-        "Une entreprise peut acquérir ou louer des œuvres d'art — et dans certains cas, **déduire les dépenses de son résultat imposable**. Lefèvre Conseil accompagne les entreprises dans cette démarche : sélection des œuvres, montage du leasing et analyse du cadre fiscal *avec vos conseils habituels*.",
+        "Leasing d'œuvres, sélection sur-mesure et accompagnement clé en main pour les entreprises. **Réservez votre rendez-vous** pour construire un projet cohérent avec vos objectifs.",
     },
     whyImportant: {
-      title: "L'art en entreprise : esthétique, image et fiscalité",
+      title: "Pourquoi investir dans l'^^art^^ en entreprise ?",
       paragraphs: [
         "Exposer une œuvre d'art dans ses locaux professionnels n'est pas réservé aux grandes entreprises. Une TPE, un cabinet médical ou un commerce peuvent **valoriser leur espace d'accueil**, créer une atmosphère distinctive et signaler une attention portée à la qualité — des éléments qui pèsent dans la perception *clients et collaborateurs*.",
         "Du côté fiscal, les entreprises soumises à l'IS peuvent, sous conditions, déduire les achats ou loyers d'œuvres d'**artistes vivants** de leur bénéfice imposable. Ce mécanisme est encadré *(plafonds, obligations d'exposition)* et nécessite une vérification avec votre expert-comptable. *Nous ne promettons pas une déductibilité systématique : nous l'étudions au cas par cas.*",
         "Le **leasing d'œuvres d'art** est une alternative à l'achat : vous exposez des pièces sélectionnées avec des partenaires spécialisés, sur des *mensualités maîtrisées*, sans immobiliser votre trésorerie.",
+      ],
+    },
+    beforeAfter: {
+      title: "Avant / après projet art en entreprise",
+      columns: ["Avant", "Après accompagnement"],
+      rows: [
+        { label: "Locaux", cells: ["Espaces *neutres*", "^^Valorisation^^ par des œuvres ciblées"] },
+        { label: "Trésorerie", cells: ["Achat *lourd* envisagé", "Leasing ou achat **structuré**"] },
+        { label: "Fiscalité", cells: ["Mécanisme *inconnu*", "Montage validé avec **l'expert-comptable**"] },
+        { label: "Image", cells: ["Peu différenciante", "Signal **qualité** auprès des clients"] },
       ],
     },
     accompaniment: { title: "", steps: [] },

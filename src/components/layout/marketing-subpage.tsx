@@ -1,4 +1,8 @@
-import { SubpageShell, type SubpageBreadcrumb } from "@/components/layout/subpage-shell";
+import {
+  SubpageShell,
+  type SubpageBreadcrumb,
+  type SubpageHeroLead,
+} from "@/components/layout/subpage-shell";
 import type { PageHeroConfig } from "@/lib/content/page-heroes";
 import { SUBPAGE_DEFISCAL_HERO_MIN_CLASS } from "@/lib/content/page-heroes";
 
@@ -7,12 +11,19 @@ type MarketingSubpageProps = {
   hero: PageHeroConfig;
   children: React.ReactNode;
   hideBilanCta?: boolean;
+  heroCtas?: SubpageHeroLead["heroCtas"];
 };
 
 /**
  * Gabarit pages intérieures : bandeau photo défiscalisation (titre + accroche animée + fil d’Ariane).
  */
-export function MarketingSubpage({ breadcrumbs, hero, children, hideBilanCta }: MarketingSubpageProps) {
+export function MarketingSubpage({
+  breadcrumbs,
+  hero,
+  children,
+  hideBilanCta,
+  heroCtas,
+}: MarketingSubpageProps) {
   return (
     <SubpageShell
       heroMinHeightClass={SUBPAGE_DEFISCAL_HERO_MIN_CLASS}
@@ -22,6 +33,7 @@ export function MarketingSubpage({ breadcrumbs, hero, children, hideBilanCta }: 
         tagline: hero.tagline,
         titleId: hero.titleId,
         taglineHighlightAfter: hero.taglineHighlightAfter,
+        heroCtas,
       }}
       breadcrumbs={breadcrumbs}
     >

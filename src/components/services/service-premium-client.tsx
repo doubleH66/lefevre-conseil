@@ -5,7 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 import { FaqAccordion } from "@/components/client/faq-accordion";
 import { ServiceActionBand } from "@/components/services/service-action-band";
 import { ServiceComparateurBlock } from "@/components/services/service-comparateur-block";
-import { RichText } from "@/components/ui/rich-text";
+import { ServiceRichText } from "@/components/services/service-rich-text";
+import { BeforeAfterTable } from "@/components/ui/before-after-table";
 import { ComparisonTable } from "@/components/ui/comparison-table";
 import type { ServicePremiumContent } from "@/lib/content/service-premium-types";
 import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
@@ -29,37 +30,48 @@ export function ServicePremiumClient({
       <Block>
         <div className="mx-auto max-w-3xl text-center">
           {content.hero.intro ? (
-            <RichText
-              className="text-[15px] leading-relaxed text-neutral-600 sm:text-base"
-            >
+            <ServiceRichText className="text-[15px] leading-relaxed text-neutral-600 sm:text-base">
               {content.hero.intro}
-            </RichText>
+            </ServiceRichText>
           ) : null}
           <h2 className={cn("mt-8 text-left sm:text-center", marketingTitleClass, marketingProseClass)}>
-            {content.whyImportant.title}
+            <ServiceRichText as="span">{content.whyImportant.title}</ServiceRichText>
           </h2>
-          <div className={cn("mt-5 space-y-3 text-left sm:text-center text-[15px] leading-relaxed", marketingProseClass)}>
+          <div
+            className={cn(
+              "mt-5 space-y-3 text-left sm:text-center text-[15px] leading-relaxed",
+              marketingProseClass,
+            )}
+          >
             {content.whyImportant.paragraphs.map((p) => (
-              <RichText key={p.slice(0, 40)} className="text-[15px] leading-relaxed">
+              <ServiceRichText key={p.slice(0, 40)} className="text-[15px] leading-relaxed">
                 {p}
-              </RichText>
+              </ServiceRichText>
             ))}
           </div>
         </div>
       </Block>
 
+      {/* Avant / Après */}
+      {content.beforeAfter ? (
+        <Block>
+          <BeforeAfterTable data={content.beforeAfter} />
+        </Block>
+      ) : null}
+
       {/* Solutions + tableau de comparaison */}
       <Block>
-        <SectionKicker>{content.solutions.title}</SectionKicker>
+        <SectionKicker>
+          <ServiceRichText as="span">{content.solutions.title}</ServiceRichText>
+        </SectionKicker>
         {content.solutions.intro ? (
-          <RichText
+          <ServiceRichText
             className={cn("mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed", marketingProseClass)}
           >
             {content.solutions.intro}
-          </RichText>
+          </ServiceRichText>
         ) : null}
 
-        {/* Tableau de comparaison si présent */}
         {content.comparison ? (
           <div className="mt-8">
             <ComparisonTable data={content.comparison} />
@@ -73,15 +85,15 @@ export function ServicePremiumClient({
               className="rounded-2xl border border-[#1f2a7c]/10 bg-white px-5 py-4 text-left shadow-sm"
             >
               <p className="text-[14px] font-semibold text-[#1f2a7c] sm:text-[15px]">{item.title}</p>
-              <RichText className="mt-1.5 text-[13px] leading-relaxed text-[#1f2a7c]/60 sm:text-sm">
+              <ServiceRichText className="mt-1.5 text-[13px] leading-relaxed text-[#1f2a7c]/60 sm:text-sm">
                 {item.description}
-              </RichText>
+              </ServiceRichText>
             </li>
           ))}
         </ul>
 
         {content.forWho.profiles.length > 0 ? (
-          <ul className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-2 pt-4 border-t border-[#1f2a7c]/08">
+          <ul className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-2 border-t border-[#1f2a7c]/08 pt-4">
             {content.forWho.profiles.map((profile) => (
               <li
                 key={profile}
@@ -96,18 +108,16 @@ export function ServicePremiumClient({
         {content.slug === "prevoyance-sante-assurance-pret" ? <ServiceComparateurBlock /> : null}
       </Block>
 
-      {/* Bandeau CTA */}
       <ServiceActionBand
         imageSrc={heroImage}
         title="Passer à l'action avec le cabinet"
         description="Un premier échange pour cadrer votre situation, vos priorités et les prochaines étapes — sans engagement."
       />
 
-      {/* FAQ + Voir aussi */}
       <Block>
         <SectionKicker>Questions fréquentes</SectionKicker>
         <div className="mx-auto mt-8 max-w-3xl">
-          <FaqAccordion items={content.faq} />
+          <FaqAccordion items={content.faq} questionEmphasis="highlight" />
         </div>
 
         {otherServices.length > 0 ? (
@@ -121,7 +131,10 @@ export function ServicePremiumClient({
                     className="group flex items-center justify-between gap-3 rounded-xl border border-[#1f2a7c]/10 bg-white px-4 py-3 text-[14px] font-medium text-[#1f2a7c] transition-colors hover:border-[#1f2a7c]/25"
                   >
                     {service.name}
-                    <ArrowUpRight className="size-4 shrink-0 text-[#1f2a7c]/30 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1f2a7c]/55" aria-hidden />
+                    <ArrowUpRight
+                      className="size-4 shrink-0 text-[#1f2a7c]/30 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1f2a7c]/55"
+                      aria-hidden
+                    />
                   </Link>
                 </li>
               ))}
@@ -135,7 +148,10 @@ export function ServicePremiumClient({
             className="group inline-flex items-center gap-2 rounded-full border border-[#1f2a7c]/20 bg-white px-6 py-3 text-sm font-semibold text-[#1f2a7c] shadow-sm transition-colors hover:bg-[#1f2a7c]/[0.04]"
           >
             Toute la FAQ
-            <ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+            <ArrowUpRight
+              className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
           </Link>
         </div>
       </Block>

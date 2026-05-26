@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import {
   MarketingHeading,
@@ -8,28 +9,49 @@ import { marketingCardClass, marketingPageShellClass } from "@/components/market
 import type { PageHeroConfig } from "@/lib/content/page-heroes";
 import { cn } from "@/lib/utils";
 
-/** Remplace les e-mails bruts par des liens mailto pour éviter le scraping. */
-function renderLegalBody(text: string): React.ReactNode {
-  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
-  const parts = text.split(emailRegex);
-  return parts.map((part, i) =>
-    emailRegex.test(part) ? (
-      <a
-        key={i}
-        href={`mailto:${part}`}
-        className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline"
-      >
-        {part}
-      </a>
-    ) : (
-      part
-    ),
-  );
+const INLINE_LINK_REGEX =
+  /(https?:\/\/[^\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+
+function renderLegalInline(text: string): React.ReactNode {
+  const parts = text.split(INLINE_LINK_REGEX);
+  return parts.map((part, i) => {
+    if (/^https?:\/\//.test(part)) {
+      const href = part.replace(/[.,;:!?)]+$/, "");
+      const trailing = part.slice(href.length);
+      return (
+        <span key={i}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline"
+          >
+            {href}
+          </a>
+          {trailing}
+        </span>
+      );
+    }
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(part)) {
+      return (
+        <a
+          key={i}
+          href={`mailto:${part}`}
+          className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline"
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
 }
 
-type LegalSection = {
+export type LegalSection = {
   title: string;
-  body: string[];
+  body?: string[];
+  items?: string[];
+  subsections?: { title: string; body: string[] }[];
 };
 
 type LegalPageProps = {
@@ -37,9 +59,41 @@ type LegalPageProps = {
   breadcrumbLabel: string;
   updatedAt: string;
   sections: LegalSection[];
+  intro?: ReactNode;
 };
 
-export function LegalPage({ hero, breadcrumbLabel, updatedAt, sections }: LegalPageProps) {
+function LegalSectionCard({ section }: { section: LegalSection }) {
+  return (
+    <div className={cn(marketingCardClass, "mt-6 space-y-4 p-5 sm:p-6")}>
+      {section.body?.map((paragraph) => (
+        <p key={paragraph} className="text-sm leading-relaxed text-[#1f2a7c]/78">
+          {renderLegalInline(paragraph)}
+        </p>
+      ))}
+      {section.items && section.items.length > 0 ? (
+        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-[#1f2a7c]/78">
+          {section.items.map((item) => (
+            <li key={item}>{renderLegalInline(item)}</li>
+          ))}
+        </ul>
+      ) : null}
+      {section.subsections?.map((sub) => (
+        <div key={sub.title} className="border-t border-[#1f2a7c]/8 pt-4 first:border-0 first:pt-0">
+          <h3 className="text-sm font-semibold text-[#1f2a7c]">{sub.title}</h3>
+          <div className="mt-2 space-y-2">
+            {sub.body.map((paragraph) => (
+              <p key={paragraph} className="text-sm leading-relaxed text-[#1f2a7c]/78">
+                {renderLegalInline(paragraph)}
+              </p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function LegalPage({ hero, breadcrumbLabel, updatedAt, sections, intro }: LegalPageProps) {
   return (
     <MarketingSubpage
       hero={hero}
@@ -51,17 +105,16 @@ export function LegalPage({ hero, breadcrumbLabel, updatedAt, sections }: LegalP
       <MarketingPageStack className={marketingPageShellClass}>
         <MarketingSection labelledBy="legal-updated">
           <p className="text-center text-xs text-[#1f2a7c]/55">Dernière mise à jour : {updatedAt}</p>
+          {intro ? (
+            <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-relaxed text-[#1f2a7c]/70">
+              {intro}
+            </p>
+          ) : null}
         </MarketingSection>
         {sections.map((section, index) => (
           <MarketingSection key={section.title} labelledBy={`legal-section-${index}`}>
             <MarketingHeading titleId={`legal-section-${index}`} title={section.title} align="left" />
-            <div className={cn(marketingCardClass, "mt-6 space-y-3 p-5 sm:p-6")}>
-              {section.body.map((paragraph) => (
-                <p key={paragraph} className="text-sm leading-relaxed text-[#1f2a7c]/78">
-                  {renderLegalBody(paragraph)}
-                </p>
-              ))}
-            </div>
+            <LegalSectionCard section={section} />
           </MarketingSection>
         ))}
       </MarketingPageStack>

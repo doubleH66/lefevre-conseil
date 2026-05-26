@@ -102,6 +102,13 @@ export const PAGE_HEROES = {
     taglineHighlightAfter: " et limites",
     titleId: "cgu-hero-title",
   },
+  reclamations: {
+    title: "Réclamations clients",
+    tagline:
+      "Une procédure claire en trois niveaux, puis médiation gratuite si votre réclamation reste sans réponse satisfaisante.",
+    taglineHighlightAfter: " en trois niveaux",
+    titleId: "reclamations-hero-title",
+  },
   login: {
     title: "Espace client",
     tagline:

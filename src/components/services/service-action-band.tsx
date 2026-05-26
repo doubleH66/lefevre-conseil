@@ -15,10 +15,18 @@ export function ServiceActionBand({
   imageSrc,
   title,
   description,
+  primaryHref = ROUTES.bilanPatrimonial,
+  primaryLabel = "Réaliser mon bilan",
+  secondaryHref = CONTACT_HREF,
+  secondaryLabel = "Nous écrire",
 }: {
   imageSrc: string;
   title: string;
   description: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
 }) {
   return (
     <section aria-labelledby="service-action-band-title" className="mx-2.5 mt-3 scroll-mt-28 lg:mx-4 lg:mt-4">
@@ -43,15 +51,15 @@ export function ServiceActionBand({
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-white/85 lg:mx-0">{description}</p>
           <div className={cn("mx-auto mt-9 flex w-full max-w-md flex-col justify-center gap-3 sm:flex-row lg:mx-0", heroCtaRowCompactClassName)}>
-            <Link href={ROUTES.bilanPatrimonial} className={cn(heroCtaPrimaryCompactClassName, "group w-full sm:w-auto")}>
-              <span>Réaliser mon bilan</span>
+            <Link href={primaryHref} className={cn(heroCtaPrimaryCompactClassName, "group w-full sm:w-auto")}>
+              <span>{primaryLabel}</span>
               <ArrowUpRight
                 aria-hidden
                 className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               />
             </Link>
-            <Link href={CONTACT_HREF} className={cn(heroCtaSecondaryOnDarkClassName, "w-full sm:w-auto")}>
-              Nous écrire
+            <Link href={secondaryHref} className={cn(heroCtaSecondaryOnDarkClassName, "w-full sm:w-auto")}>
+              {secondaryLabel}
             </Link>
           </div>
         </div>

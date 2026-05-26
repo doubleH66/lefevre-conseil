@@ -19,6 +19,12 @@ export type SubpageBreadcrumb = {
   href?: string;
 };
 
+export type SubpageHeroCta = {
+  href: string;
+  label: string;
+  shortLabel?: string;
+};
+
 export type SubpageHeroLead = {
   title: string;
   tagline: string;
@@ -28,6 +34,10 @@ export type SubpageHeroLead = {
   intro?: string;
   showGoogleBadge?: boolean;
   showHeroCtas?: boolean;
+  heroCtas?: {
+    primary: SubpageHeroCta;
+    secondary?: SubpageHeroCta;
+  };
   heroStyle?: "service" | "editorial";
 };
 
@@ -73,7 +83,8 @@ export function SubpageShell({
       heroLead.category ||
       heroLead.intro ||
       heroLead.showGoogleBadge ||
-      heroLead.showHeroCtas);
+      heroLead.showHeroCtas ||
+      heroLead.heroCtas);
   const editorial = heroLead?.heroStyle === "editorial";
 
   return (
@@ -147,7 +158,7 @@ export function SubpageShell({
                         {heroLead.intro}
                       </p>
                     ) : null}
-                    {heroLead.showHeroCtas ? (
+                    {heroLead.showHeroCtas || heroLead.heroCtas ? (
                       <div
                         id={SIMULATION_ANCHOR_ID}
                         className={cn(
@@ -156,22 +167,56 @@ export function SubpageShell({
                           editorial && "max-sm:gap-2 xl:justify-start",
                         )}
                       >
-                        <CtaPrimaryLink
-                          href={BILAN_PATRIMOINE_HREF}
-                          className="group max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:gap-2 max-sm:!px-5 max-sm:!text-sm"
-                        >
-                          <span className="md:hidden">Bilan</span>
-                          <span className="hidden md:inline">Réaliser mon bilan patrimonial</span>
-                          <ArrowUpRight
-                            aria-hidden
-                            className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                          />
-                        </CtaPrimaryLink>
-                        <ContactGlassLink
-                          light
-                          layout="hero"
-                          className="max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:px-5 max-sm:!text-sm"
-                        />
+                        {heroLead.heroCtas ? (
+                          <>
+                            <CtaPrimaryLink
+                              href={heroLead.heroCtas.primary.href}
+                              className="group max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:gap-2 max-sm:!px-5 max-sm:!text-sm"
+                            >
+                              <span className="md:hidden">
+                                {heroLead.heroCtas.primary.shortLabel ?? heroLead.heroCtas.primary.label}
+                              </span>
+                              <span className="hidden md:inline">{heroLead.heroCtas.primary.label}</span>
+                              <ArrowUpRight
+                                aria-hidden
+                                className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                              />
+                            </CtaPrimaryLink>
+                            {heroLead.heroCtas.secondary ? (
+                              <Link
+                                href={heroLead.heroCtas.secondary.href}
+                                className={cn(
+                                  "inline-flex h-12 min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:w-auto",
+                                )}
+                              >
+                                <span className="md:hidden">
+                                  {heroLead.heroCtas.secondary.shortLabel ??
+                                    heroLead.heroCtas.secondary.label}
+                                </span>
+                                <span className="hidden md:inline">{heroLead.heroCtas.secondary.label}</span>
+                              </Link>
+                            ) : null}
+                          </>
+                        ) : (
+                          <>
+                            <CtaPrimaryLink
+                              href={BILAN_PATRIMOINE_HREF}
+                              className="group max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:gap-2 max-sm:!px-5 max-sm:!text-sm"
+                            >
+                              <span className="md:hidden">Bilan</span>
+                              <span className="hidden md:inline">Réaliser mon bilan patrimonial</span>
+                              <ArrowUpRight
+                                aria-hidden
+                                className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                              />
+                            </CtaPrimaryLink>
+                            <ContactGlassLink
+                              light
+                              layout="hero"
+                              className="max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:px-5 max-sm:!text-sm"
+                            />
+                          </>
+                        )}
                       </div>
                     ) : null}
                   </div>

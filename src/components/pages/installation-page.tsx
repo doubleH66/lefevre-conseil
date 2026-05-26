@@ -14,9 +14,10 @@ import { FAQ_HREF, ROUTES } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-const steps = [
+const PLATFORM_TABS = [
   {
     id: "ios",
+    label: "iPhone / iPad",
     icon: Smartphone,
     title: "iPhone et iPad",
     subtitle: "Safari uniquement",
@@ -29,6 +30,7 @@ const steps = [
   },
   {
     id: "android",
+    label: "Android",
     icon: MonitorSmartphone,
     title: "Android",
     subtitle: "Chrome · Firefox · Edge",
@@ -40,6 +42,7 @@ const steps = [
   },
   {
     id: "desktop",
+    label: "Ordinateur",
     icon: Monitor,
     title: "Ordinateur",
     subtitle: "Chrome · Edge · Safari macOS",
@@ -49,6 +52,24 @@ const steps = [
     ],
   },
 ] as const;
+
+type PlatformTabId = (typeof PLATFORM_TABS)[number]["id"];
+
+const PLATFORM_TAB_IDS = new Set<string>(PLATFORM_TABS.map((t) => t.id));
+
+function parsePlatformTab(hash: string): PlatformTabId | null {
+  const id = hash.replace(/^#/, "");
+  return PLATFORM_TAB_IDS.has(id) ? (id as PlatformTabId) : null;
+}
+
+function detectDefaultPlatformTab(): PlatformTabId {
+  if (typeof navigator === "undefined") return "ios";
+  const ua = navigator.userAgent;
+  if (/android/i.test(ua)) return "android";
+  if (/iPad|iPhone|iPod/i.test(ua)) return "ios";
+  if (/Macintosh|Windows|Linux/i.test(ua) && !/Mobile/i.test(ua)) return "desktop";
+  return "ios";
+}
 
 const benefits = [
   "Accès en un clic, sans passer par le navigateur",
@@ -60,6 +81,31 @@ const benefits = [
 export function InstallationPage() {
   const [installable, setInstallable] = React.useState(false);
   const [installed, setInstalled] = React.useState(false);
+  const [platformTab, setPlatformTab] = React.useState<PlatformTabId>("ios");
+
+  React.useEffect(() => {
+    const fromHash = parsePlatformTab(window.location.hash);
+    setPlatformTab(fromHash ?? detectDefaultPlatformTab());
+  }, []);
+
+  React.useEffect(() => {
+    const onHashChange = () => {
+      const fromHash = parsePlatformTab(window.location.hash);
+      if (fromHash) setPlatformTab(fromHash);
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  function selectPlatformTab(id: PlatformTabId) {
+    setPlatformTab(id);
+    const next = `${window.location.pathname}${window.location.search}#${id}`;
+    window.history.replaceState(null, "", next);
+  }
+
+  const activePlatform =
+    PLATFORM_TABS.find((t) => t.id === platformTab) ?? PLATFORM_TABS[0];
+  const ActivePlatformIcon = activePlatform.icon;
 
   React.useEffect(() => {
     const check = () => {
@@ -145,35 +191,74 @@ export function InstallationPage() {
           </ul>
         </MarketingSection>
 
-        {/* Guide par plateforme */}
-        {steps.map((block) => {
-          const Icon = block.icon;
-          return (
-            <MarketingSection key={block.id} labelledBy={`${block.id}-title`}>
-              <div className="flex items-center gap-3">
-                <div className="flex size-9 items-center justify-center rounded-xl bg-[#1f2a7c]/8">
-                  <Icon className="size-4.5 text-[#1f2a7c]" aria-hidden />
-                </div>
-                <div>
-                  <h2 id={`${block.id}-title`} className="text-base font-semibold text-[#1f2a7c]">
-                    {block.title}
-                  </h2>
-                  <p className="text-xs text-[#1f2a7c]/55">{block.subtitle}</p>
-                </div>
+        {/* Guide par plateforme — onglets */}
+        <MarketingSection labelledBy="install-guide-title">
+          <MarketingHeading
+            titleId="install-guide-title"
+            title="Comment installer ?"
+            lead="Choisissez votre appareil pour suivre les étapes adaptées."
+            align="left"
+          />
+
+          <div
+            className="mt-6 flex gap-1 overflow-x-auto rounded-2xl border border-[#1f2a7c]/10 bg-[#1f2a7c]/[0.04] p-1"
+            role="tablist"
+            aria-label="Plateforme d'installation"
+          >
+            {PLATFORM_TABS.map((tab) => {
+              const TabIcon = tab.icon;
+              const selected = platformTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  id={`install-tab-${tab.id}`}
+                  aria-selected={selected}
+                  aria-controls={`install-panel-${tab.id}`}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => selectPlatformTab(tab.id)}
+                  className={cn(
+                    "flex min-w-[7.5rem] shrink-0 items-center justify-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors sm:min-w-0 sm:flex-1 sm:px-4",
+                    selected
+                      ? "bg-white text-[#1f2a7c] shadow-sm"
+                      : "text-[#1f2a7c]/65 hover:bg-white/60 hover:text-[#1f2a7c]",
+                  )}
+                >
+                  <TabIcon className="size-4 shrink-0" aria-hidden />
+                  <span className="whitespace-nowrap">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            role="tabpanel"
+            id={`install-panel-${activePlatform.id}`}
+            aria-labelledby={`install-tab-${activePlatform.id}`}
+            className="mt-4"
+          >
+            <div className="flex items-center gap-3 px-0.5">
+              <div className="flex size-9 items-center justify-center rounded-xl bg-[#1f2a7c]/8">
+                <ActivePlatformIcon className="size-4.5 text-[#1f2a7c]" aria-hidden />
               </div>
-              <ol className={cn(marketingCardClass, "mt-4 list-none space-y-0 divide-y divide-[#1f2a7c]/6 p-0")}>
-                {block.items.map((item, i) => (
-                  <li key={item} className="flex gap-3 px-5 py-3.5">
-                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#1f2a7c]/8 text-[11px] font-semibold text-[#1f2a7c]">
-                      {i + 1}
-                    </span>
-                    <span className="text-sm leading-relaxed text-[#1f2a7c]/80">{item}</span>
-                  </li>
-                ))}
-              </ol>
-            </MarketingSection>
-          );
-        })}
+              <div>
+                <p className="text-base font-semibold text-[#1f2a7c]">{activePlatform.title}</p>
+                <p className="text-xs text-[#1f2a7c]/55">{activePlatform.subtitle}</p>
+              </div>
+            </div>
+            <ol className={cn(marketingCardClass, "mt-4 list-none space-y-0 divide-y divide-[#1f2a7c]/6 p-0")}>
+              {activePlatform.items.map((item, i) => (
+                <li key={item} className="flex gap-3 px-5 py-3.5">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#1f2a7c]/8 text-[11px] font-semibold text-[#1f2a7c]">
+                    {i + 1}
+                  </span>
+                  <span className="text-sm leading-relaxed text-[#1f2a7c]/80">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </MarketingSection>
 
         {/* À savoir */}
         <MarketingSection labelledBy="limits-title">

@@ -316,29 +316,12 @@ export function NotreCabinetPage() {
                   id="experience-title"
                   className="text-2xl font-semibold tracking-tight text-[#1f2a7c] sm:text-3xl lg:mt-2"
                 >
-                  Une expertise construite{" "}
-                  <HighlightReveal variant="light" className={experienceHighlightClassName()}>
-                    étape par étape
-                  </HighlightReveal>
+                  Une expertise construite étape par étape
                 </h2>
                 <p className={cn("mt-3 text-pretty text-sm leading-relaxed sm:text-[15px]", aboutProse)}>
-                  Du{" "}
-                  <HighlightReveal variant="light" className={experienceHighlightClassName()}>
-                    financement de l'immobilier patrimonial
-                  </HighlightReveal>{" "}
-                  à l'
-                  <HighlightReveal variant="light" delay="hero" className={experienceHighlightClassName()}>
-                    ingénierie globale
-                  </HighlightReveal>{" "}
-                  : épargne, assurance-vie, prévoyance, structuration sociétaire, puis{" "}
-                  <HighlightReveal variant="light" className={experienceHighlightClassName()}>
-                    conseil en gestion de patrimoine et gestion privée
-                  </HighlightReveal>
-                  . Même exigence de{" "}
-                  <HighlightReveal variant="light" delay="hero" className={experienceHighlightClassName()}>
-                    clarté et de suivi dans la durée
-                  </HighlightReveal>
-                  .
+                  Du financement de l&apos;immobilier patrimonial à l&apos;ingénierie globale : épargne,
+                  assurance-vie, prévoyance, structuration sociétaire, puis conseil en gestion de patrimoine et
+                  gestion privée. Même exigence de clarté et de suivi dans la durée.
                 </p>
               </div>
               <dl

@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.dasbatiment.fr", pathname: "/**" },
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
       { protocol: "https", hostname: "api.qrserver.com", pathname: "/**" },
+      { protocol: "https", hostname: "lefevre-conseil.fr", pathname: "/**" },
+      { protocol: "https", hostname: "www.lefevre-conseil.fr", pathname: "/**" },
     ],
   },
   async redirects() {

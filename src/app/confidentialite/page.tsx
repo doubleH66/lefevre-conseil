@@ -1,57 +1,33 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/pages/legal-page";
+import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
+import { CONFIDENTIALITE_SECTIONS, LEGAL_UPDATED_AT } from "@/lib/content/legal-content";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { ROUTES } from "@/lib/content/routes";
 
 export const metadata: Metadata = {
-  title: "Confidentialité | Lefèvre Conseil",
-  description: "Politique de confidentialité et protection des données personnelles.",
+  title: "Confidentialité & RGPD | Lefèvre Conseil",
+  description:
+    "Politique de confidentialité, protection des données personnelles et exercice de vos droits RGPD.",
   alternates: { canonical: ROUTES.confidentialite },
 };
 
 export default function Page() {
   return (
-    <LegalPage
-      hero={PAGE_HEROES.confidentialite}
-      breadcrumbLabel="Confidentialité"
-      updatedAt="20 mai 2026"
-      sections={[
-        {
-          title: "Données collectées",
-          body: [
-            "Identité, coordonnées, données patrimoniales et fiscales transmises via les formulaires ou lors des rendez-vous.",
-          ],
-        },
-        {
-          title: "Finalités",
-          body: [
-            "Réponse aux demandes, préparation des rendez-vous, suivi de la relation client et obligations légales du cabinet.",
-          ],
-        },
-        {
-          title: "Base légale",
-          body: [
-            "Exécution de mesures précontractuelles, intérêt légitime du cabinet et, le cas échéant, consentement pour certains traceurs.",
-          ],
-        },
-        {
-          title: "Conservation",
-          body: [
-            "Durées adaptées à la finalité et aux obligations légales (comptables, réglementaires, prescription).",
-          ],
-        },
-        {
-          title: "Vos droits",
-          body: [
-            "Accès, rectification, effacement, limitation, opposition et portabilité : contact@lefevre-conseil.fr.",
-            "Réclamation possible auprès de la CNIL.",
-          ],
-        },
-        {
-          title: "Sécurité",
-          body: ["Mesures techniques et organisationnelles pour protéger vos données contre l’accès non autorisé."],
-        },
-      ]}
-    />
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", path: "/" },
+          { name: "Confidentialité", path: ROUTES.confidentialite },
+        ]}
+      />
+      <LegalPage
+        hero={PAGE_HEROES.confidentialite}
+        breadcrumbLabel="Confidentialité"
+        updatedAt={LEGAL_UPDATED_AT}
+        intro="Lefèvre Conseil s'engage à protéger vos données personnelles conformément au RGPD et à la loi Informatique et Libertés."
+        sections={CONFIDENTIALITE_SECTIONS}
+      />
+    </>
   );
 }

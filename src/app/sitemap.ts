@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}${ROUTES.confidentialite}`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${SITE_URL}${ROUTES.conditionsUtilisation}`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${SITE_URL}${ROUTES.cookies}`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
+    { url: `${SITE_URL}${ROUTES.reclamations}`, lastModified: now, changeFrequency: "yearly", priority: 0.25 },
   ];
 
   const serviceRoutes: MetadataRoute.Sitemap = SERVICE_CATALOG.map((s) => ({

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DefiscalisationServicePage } from "@/components/pages/defiscalisation-service-page";
+import { InvestissementArtServicePage } from "@/components/pages/investissement-art-service-page";
 import { ServiceMarketingPage } from "@/components/services/service-marketing-page";
 import {
   BreadcrumbJsonLd,
@@ -86,6 +87,15 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
       <>
         {jsonLd}
         <DefiscalisationServicePage />
+      </>
+    );
+  }
+
+  if (slug === "investissement-art") {
+    return (
+      <>
+        {jsonLd}
+        <InvestissementArtServicePage />
       </>
     );
   }
