@@ -44,8 +44,6 @@ export function Sidebar({
   mobileOpen,
   setMobileOpen,
   connectedUser,
-  onOpenSettings,
-  showSettingsLink = true,
   hidePortalBranding = false,
 }: {
   mode: ViewMode;
@@ -56,13 +54,19 @@ export function Sidebar({
   mobileOpen: boolean;
   setMobileOpen: (value: boolean) => void;
   connectedUser: PortalConnectedUser;
+  /** @deprecated Réglages via la navigation latérale */
   onOpenSettings?: () => void;
+  /** @deprecated */
   showSettingsLink?: boolean;
   hidePortalBranding?: boolean;
 }) {
-  const [accountOpen, setAccountOpen] = React.useState(false);
   const isClient = mode === "client";
+  const isAdmin = mode === "admin";
   const navSections = sections ?? (items ? [{ title: "", items }] : []);
+  const activeNavClass = isAdmin
+    ? "bg-amber-800 text-white shadow-sm"
+    : "bg-[#1f2a7c] text-white shadow-sm";
+  const inactiveNavIconClass = isAdmin ? "bg-amber-800/10 text-amber-900" : "bg-[#1f2a7c]/8 text-[#1f2a7c]";
 
   return (
     <>
@@ -81,75 +85,75 @@ export function Sidebar({
           mobileOpen ? "translate-x-0" : "-translate-x-[120%] lg:translate-x-0",
         )}
       >
-        {!hidePortalBranding ? (
-          <div className="shrink-0 rounded-2xl border border-[#1f2a7c]/12 bg-gradient-to-br from-[#1f2a7c]/[0.08] to-white p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/65">
-              {isClient ? "Espace client" : "Administration"}
+        {isAdmin ? (
+          <div className="shrink-0 rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/90 to-white p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-900/70">
+              Administration
             </p>
-            <p className="mt-0.5 text-sm font-semibold text-neutral-900">Lefèvre Conseil</p>
-          </div>
-        ) : null}
-
-        <div
-          className={cn(
-            "shrink-0 rounded-2xl border border-neutral-200 bg-neutral-50/80 p-2.5",
-            !hidePortalBranding && "mt-3",
-          )}
-        >
-          <div className="flex items-center gap-2.5">
-            {connectedUser.avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element -- avatar Supabase
-              <img
-                src={connectedUser.avatarUrl}
-                alt=""
-                className="size-10 shrink-0 rounded-xl border border-neutral-200 object-cover shadow-sm"
-              />
-            ) : (
-              <div
-                className={cn(
-                  "grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-xs font-bold text-white shadow-sm",
-                  mode === "admin" ? "from-amber-600 to-amber-900" : "from-[#1f2a7c] to-[#0f164a]",
-                )}
-                aria-hidden
-              >
-                {initials(connectedUser.name, connectedUser.email)}
+            <p className="text-sm font-semibold text-neutral-900">Lefèvre Conseil</p>
+            <div className="mt-2.5 flex items-center gap-2 border-t border-amber-200/60 pt-2.5">
+              {connectedUser.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- avatar Supabase
+                <img
+                  src={connectedUser.avatarUrl}
+                  alt=""
+                  className="size-8 shrink-0 rounded-lg border border-amber-200/80 object-cover"
+                />
+              ) : (
+                <div
+                  className="grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-amber-600 to-amber-900 text-[10px] font-bold text-white"
+                  aria-hidden
+                >
+                  {initials(connectedUser.name, connectedUser.email)}
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold text-neutral-900">{connectedUser.name}</p>
+                <p className="truncate text-[10px] text-neutral-500">{connectedUser.email}</p>
               </div>
-            )}
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-neutral-900">{connectedUser.name}</p>
-              <p className="truncate text-[11px] text-neutral-500">{connectedUser.email}</p>
             </div>
           </div>
+        ) : (
+          <>
+            {!hidePortalBranding ? (
+              <div className="shrink-0 rounded-2xl border border-[#1f2a7c]/12 bg-gradient-to-br from-[#1f2a7c]/[0.08] to-white p-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/65">
+                  Espace client
+                </p>
+                <p className="mt-0.5 text-sm font-semibold text-neutral-900">Lefèvre Conseil</p>
+              </div>
+            ) : null}
 
-          {!isClient && showSettingsLink ? (
-            <>
-              <button
-                type="button"
-                onClick={() => setAccountOpen((o) => !o)}
-                className="mt-2 flex w-full items-center justify-center rounded-lg py-1 text-[11px] font-medium text-neutral-500 hover:bg-white"
-                aria-expanded={accountOpen}
-              >
-                Compte {accountOpen ? "▴" : "▾"}
-              </button>
-              {accountOpen ? (
-                <div className="mt-2 space-y-1.5 border-t border-neutral-200/80 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onOpenSettings?.();
-                      setMobileOpen(false);
-                      setAccountOpen(false);
-                    }}
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white text-xs font-semibold text-neutral-800 hover:bg-neutral-50"
+            <div
+              className={cn(
+                "shrink-0 rounded-2xl border border-neutral-200 bg-neutral-50/80 p-2.5",
+                !hidePortalBranding && "mt-3",
+              )}
+            >
+              <div className="flex items-center gap-2.5">
+                {connectedUser.avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- avatar Supabase
+                  <img
+                    src={connectedUser.avatarUrl}
+                    alt=""
+                    className="size-10 shrink-0 rounded-xl border border-neutral-200 object-cover shadow-sm"
+                  />
+                ) : (
+                  <div
+                    className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#1f2a7c] to-[#0f164a] text-xs font-bold text-white shadow-sm"
+                    aria-hidden
                   >
-                    Réglages
-                  </button>
-                  <SignOutButton />
+                    {initials(connectedUser.name, connectedUser.email)}
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-neutral-900">{connectedUser.name}</p>
+                  <p className="truncate text-[11px] text-neutral-500">{connectedUser.email}</p>
                 </div>
-              ) : null}
-            </>
-          ) : null}
-        </div>
+              </div>
+            </div>
+          </>
+        )}
 
         <nav className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pr-0.5">
           {navSections.map((section) => (
@@ -170,16 +174,14 @@ export function Sidebar({
                       }}
                       className={cn(
                         "flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-colors",
-                        active === item.key
-                          ? "bg-[#1f2a7c] text-white shadow-sm"
-                          : "text-neutral-700 hover:bg-neutral-100",
+                        active === item.key ? activeNavClass : "text-neutral-700 hover:bg-neutral-100",
                       )}
                     >
                       {item.icon ? (
                         <span
                           className={cn(
                             "grid size-8 shrink-0 place-items-center rounded-lg",
-                            active === item.key ? "bg-white/15" : "bg-[#1f2a7c]/8 text-[#1f2a7c]",
+                            active === item.key ? "bg-white/15" : inactiveNavIconClass,
                           )}
                         >
                           {item.icon}

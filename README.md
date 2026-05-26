@@ -36,6 +36,20 @@ Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md
 | `/espace-admin/messages` | Messages portail |
 | `/espace-admin/reglages` | Médias publics |
 
+## Déploiement Vercel (production)
+
+En local, `.env.local` fournit Supabase. **Sur Vercel, les mêmes variables doivent être définies** (Settings → Environment Variables → **Production**), puis **redéployer** sans cache si besoin.
+
+| Variable | Valeur attendue |
+|----------|-----------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://qhiyxnbcegbxtvydcjhf.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé **anon** (JWT `role: anon`) — Supabase → Project Settings → API |
+| `NEXT_PUBLIC_SITE_URL` | URL du site (ex. `https://lefevre-conseil.fr`) |
+
+Si ces clés manquent en prod, le menu **Compte** affiche *« Connexion indisponible sur cet environnement »* et `/espace-admin` ne peut pas charger la session — alors qu’en localhost tout fonctionne avec `.env.local`.
+
+Optionnel : `CABINET_NOTIFY_EMAIL` pour les e-mails de nouvelles demandes.
+
 ## E-mails (Resend)
 
 Edge Function `supabase/functions/portal-notify` — voir [README](./supabase/functions/portal-notify/README.md).

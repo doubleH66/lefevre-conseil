@@ -90,6 +90,11 @@ export function AppLayout({
       key: "admin-messages",
       label: "Messages",
     },
+    {
+      key: "admin-settings",
+      label: "Réglages",
+      icon: <Settings className={iconClass} aria-hidden />,
+    },
   ];
 
   return (
@@ -103,8 +108,6 @@ export function AppLayout({
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
         connectedUser={connectedUser}
-        onOpenSettings={() => onChangePage(mode === "admin" ? "admin-settings" : "client-settings")}
-        showSettingsLink={mode === "admin"}
         hidePortalBranding={mode === "client"}
       />
 

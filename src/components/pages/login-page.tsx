@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { SupabaseConfigNotice } from "@/components/auth/supabase-config-notice";
 import { LoginAccountSection } from "@/components/auth/login-account-section";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { MarketingPageStack } from "@/components/marketing/marketing-section";
@@ -28,15 +29,7 @@ export function LoginPage({ nextPath, initialMode, configured, error }: LoginPag
       <MarketingPageStack className={marketingPageShellClass}>
         <div className={cn(marketingInnerClass, "max-w-md")}>
           {!configured ? (
-            <div className="space-y-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-950">
-              <p className="font-semibold">Supabase n'est pas configuré sur ce déploiement.</p>
-              <p>
-                Ajoutez{" "}
-                <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">NEXT_PUBLIC_SUPABASE_URL</code> et{" "}
-                <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>,
-                puis redéployez.
-              </p>
-            </div>
+            <SupabaseConfigNotice />
           ) : (
             <LoginAccountSection nextPath={nextPath} initialMode={initialMode} />
           )}
