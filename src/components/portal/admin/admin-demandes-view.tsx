@@ -1,116 +1,140 @@
 "use client";
 
 import * as React from "react";
-import { AdminTable } from "@/components/portal/AdminTable";
+import { AdminLeadDetailModal } from "@/components/portal/admin/admin-lead-detail-modal";
+import {
+  AdminBtn,
+  AdminDataTable,
+  AdminModal,
+  AdminDetailRow,
+  AdminPageHeader,
+  AdminPanel,
+  AdminStatStrip,
+} from "@/components/portal/admin/admin-ui";
 import { StatusBadge } from "@/components/portal/StatusBadge";
 import { usePortal } from "@/components/portal/portal-provider";
-import type { SiteLeadStatus } from "@/components/portal/types";
-
-const STATUS_OPTIONS: SiteLeadStatus[] = ["Reçue", "En cours", "Traitée", "Archivée"];
+import type { PortalDemand, PortalSiteLead } from "@/components/portal/types";
 
 export function AdminDemandesView() {
   const { siteLeads, demands, clients, updateSiteLeadStatus, updateDemandStatus } = usePortal();
-  const [leadNotes, setLeadNotes] = React.useState<Record<string, string>>({});
+  const [detailLead, setDetailLead] = React.useState<PortalSiteLead | null>(null);
+  const [detailDemand, setDetailDemand] = React.useState<PortalDemand | null>(null);
 
   const openLeads = siteLeads.filter((l) => l.status !== "Traitée" && l.status !== "Archivée");
+  const openPortal = demands.filter((d) => d.status !== "Traitée");
 
   return (
-    <section className="space-y-8">
-      <header>
-        <h1 className="text-2xl font-semibold text-neutral-900">Demandes</h1>
-        <p className="mt-1 text-sm text-neutral-600">
-          Prospects depuis le site ({openLeads.length} ouverte{openLeads.length > 1 ? "s" : ""}) et demandes portail client (
-          {demands.filter((d) => d.status !== "Traitée").length} ouverte
-          {demands.filter((d) => d.status !== "Traitée").length > 1 ? "s" : ""}).
-        </p>
-      </header>
+    <>
+      <AdminPageHeader
+        title="Demandes"
+        description="Site public et portail client — cliquez sur une ligne"
+      />
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5">
-        <h2 className="text-sm font-semibold text-neutral-900">Demandes site public</h2>
-        {siteLeads.length === 0 ? (
-          <p className="mt-3 text-sm text-neutral-500">Aucune demande reçue via le formulaire /demande.</p>
-        ) : (
-          <div className="mt-4 overflow-x-auto">
-            <AdminTable
-              headers={["Contact", "Type", "Date", "Statut", "Actions"]}
-              rows={siteLeads.map((lead) => [
-                <div key={`${lead.id}-c`} className="min-w-[160px]">
-                  <p className="font-medium text-neutral-900">
-                    {lead.firstName} {lead.lastName}
-                  </p>
-                  <p className="text-xs text-neutral-500">{lead.email}</p>
-                  {lead.phone ? <p className="text-xs text-neutral-500">{lead.phone}</p> : null}
-                </div>,
-                <span key={`${lead.id}-t`} className="max-w-[140px] block text-sm">
-                  {lead.requestType}
-                </span>,
-                lead.createdAt,
-                <StatusBadge key={`${lead.id}-s`} status={lead.status} />,
-                <div key={`${lead.id}-a`} className="flex min-w-[220px] flex-col gap-2">
-                  <select
-                    value={lead.status}
-                    onChange={(e) =>
-                      void updateSiteLeadStatus(lead.id, e.target.value as SiteLeadStatus, leadNotes[lead.id])
-                    }
-                    className="h-9 rounded-lg border border-neutral-200 px-2 text-xs"
-                  >
-                    {STATUS_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    value={leadNotes[lead.id] ?? lead.adminNotes}
-                    onChange={(e) => setLeadNotes((prev) => ({ ...prev, [lead.id]: e.target.value }))}
-                    placeholder="Note interne…"
-                    className="h-9 rounded-lg border border-neutral-200 px-2 text-xs"
-                  />
-                  {lead.message ? (
-                    <p className="text-xs text-neutral-600 line-clamp-2">{lead.message}</p>
-                  ) : null}
-                </div>,
-              ])}
-            />
-          </div>
-        )}
-      </article>
+      <AdminStatStrip
+        items={[
+          { label: "Site ouvertes", value: openLeads.length },
+          { label: "Portail ouvertes", value: openPortal.length },
+        ]}
+      />
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5">
-        <h2 className="text-sm font-semibold text-neutral-900">Demandes espace client</h2>
-        {demands.length === 0 ? (
-          <p className="mt-3 text-sm text-neutral-500">Aucune demande depuis le portail client.</p>
-        ) : (
-          <div className="mt-4 overflow-x-auto">
-            <AdminTable
-              headers={["Client", "Message", "Date", "Statut", "Action"]}
-              rows={demands.map((demand) => {
-                const client = clients.find((c) => c.id === demand.clientId);
-                return [
-                  client?.companyName ?? "-",
-                  <span key={`${demand.id}-m`} className="max-w-xs truncate block">
-                    {demand.content}
-                  </span>,
-                  demand.createdAt,
-                  <StatusBadge key={`${demand.id}-s`} status={demand.status} />,
-                  demand.status !== "Traitée" ? (
-                    <button
-                      key={`${demand.id}-b`}
-                      type="button"
-                      onClick={() => void updateDemandStatus(demand.id, "Traitée")}
-                      className="rounded-lg border border-neutral-300 px-2 py-1 text-xs font-medium hover:bg-neutral-50"
-                    >
-                      Marquer traitée
-                    </button>
-                  ) : (
-                    "—"
+      <div className="mt-4 space-y-4">
+        <AdminPanel title="Demandes site (/demande, contact…)">
+          {siteLeads.length === 0 ? (
+            <p className="px-3 py-6 text-center text-sm text-neutral-500">Aucune demande site.</p>
+          ) : (
+            <AdminDataTable
+              data={siteLeads}
+              getRowKey={(l) => l.id}
+              onRowClick={setDetailLead}
+              columns={[
+                {
+                  key: "contact",
+                  header: "Contact",
+                  cell: (l) => (
+                    <div>
+                      <p className="font-medium text-neutral-900">
+                        {l.firstName} {l.lastName}
+                      </p>
+                      <p className="text-xs text-neutral-500">{l.email}</p>
+                    </div>
                   ),
-                ];
-              })}
+                },
+                { key: "type", header: "Type", cell: (l) => l.requestType },
+                { key: "date", header: "Date", cell: (l) => l.createdAt },
+                { key: "status", header: "Statut", cell: (l) => <StatusBadge status={l.status} /> },
+              ]}
             />
-          </div>
-        )}
-      </article>
-    </section>
+          )}
+        </AdminPanel>
+
+        <AdminPanel title="Demandes espace client">
+          {demands.length === 0 ? (
+            <p className="px-3 py-6 text-center text-sm text-neutral-500">Aucune demande portail.</p>
+          ) : (
+            <AdminDataTable
+              data={demands}
+              getRowKey={(d) => d.id}
+              onRowClick={setDetailDemand}
+              columns={[
+                {
+                  key: "client",
+                  header: "Client",
+                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "—",
+                },
+                {
+                  key: "msg",
+                  header: "Message",
+                  cell: (d) => <span className="line-clamp-1 max-w-[240px]">{d.content}</span>,
+                },
+                { key: "date", header: "Date", cell: (d) => d.createdAt },
+                { key: "status", header: "Statut", cell: (d) => <StatusBadge status={d.status} /> },
+              ]}
+            />
+          )}
+        </AdminPanel>
+      </div>
+
+      <AdminLeadDetailModal
+        open={!!detailLead}
+        lead={detailLead}
+        onClose={() => setDetailLead(null)}
+        onUpdateStatus={(status, adminNotes) =>
+          detailLead ? updateSiteLeadStatus(detailLead.id, status, adminNotes) : Promise.resolve()
+        }
+      />
+
+      <AdminModal
+        open={!!detailDemand}
+        onClose={() => setDetailDemand(null)}
+        title="Demande portail"
+        subtitle={detailDemand ? clients.find((c) => c.id === detailDemand.clientId)?.companyName : undefined}
+        footer={
+          detailDemand && detailDemand.status !== "Traitée" ? (
+            <div className="flex justify-end">
+              <AdminBtn
+                variant="primary"
+                onClick={() => {
+                  void updateDemandStatus(detailDemand.id, "Traitée").then(() => setDetailDemand(null));
+                }}
+              >
+                Marquer comme traitée
+              </AdminBtn>
+            </div>
+          ) : null
+        }
+      >
+        {detailDemand ? (
+          <>
+            <AdminDetailRow label="Statut">
+              <StatusBadge status={detailDemand.status} />
+            </AdminDetailRow>
+            <AdminDetailRow label="Date">{detailDemand.createdAt}</AdminDetailRow>
+            <AdminDetailRow label="Message">
+              <p className="whitespace-pre-wrap text-sm">{detailDemand.content}</p>
+            </AdminDetailRow>
+          </>
+        ) : null}
+      </AdminModal>
+    </>
   );
 }

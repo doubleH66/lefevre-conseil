@@ -1,10 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { AdminBtn, AdminModal, adminFieldClass, adminSelectClass } from "@/components/portal/admin/admin-ui";
 import type { ClientStatus } from "@/components/portal/types";
-
-const fieldClass =
-  "h-11 w-full rounded-xl border border-neutral-200 px-3 text-sm outline-none focus:border-[#1f2a7c]/40 focus:ring-2 focus:ring-[#1f2a7c]/15";
 
 export function ClientFormModal({
   open,
@@ -55,8 +53,6 @@ export function ClientFormModal({
     setStatus(initial?.status ?? "Actif");
   }, [open, initial]);
 
-  if (!open) return null;
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -78,63 +74,56 @@ export function ClientFormModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="client-form-title"
-        className="max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-5 shadow-xl"
-      >
-        <h2 id="client-form-title" className="text-lg font-semibold text-neutral-900">
-          {initial?.clientId ? "Modifier le client" : "Nouveau client"}
-        </h2>
-        <form onSubmit={(e) => void handleSubmit(e)} className="mt-4 space-y-3">
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Raison sociale / nom</span>
-            <input required value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Contact principal</span>
-            <input required value={contactName} onChange={(e) => setContactName(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">E-mail</span>
-            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Téléphone</span>
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Adresse</span>
-            <input value={address} onChange={(e) => setAddress(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Site web</span>
-            <input value={website} onChange={(e) => setWebsite(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Statut dossier</span>
-            <select value={status} onChange={(e) => setStatus(e.target.value as ClientStatus)} className={fieldClass}>
-              <option value="Actif">Actif</option>
-              <option value="En attente">En attente</option>
-              <option value="À relancer">À relancer</option>
-            </select>
-          </label>
-          <div className="flex justify-end gap-2 pt-2">
-            <button type="button" onClick={onClose} className="rounded-xl border border-neutral-300 px-4 py-2 text-sm font-medium">
-              Annuler
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-xl bg-[#1f2a7c] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-            >
-              {loading ? "Enregistrement…" : "Enregistrer"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <AdminModal
+      open={open}
+      onClose={onClose}
+      title={initial?.clientId ? "Modifier le client" : "Nouveau client"}
+      size="md"
+      footer={
+        <div className="flex justify-end gap-2">
+          <AdminBtn variant="secondary" onClick={onClose}>
+            Annuler
+          </AdminBtn>
+          <AdminBtn type="submit" form="client-form" variant="primary" disabled={loading}>
+            {loading ? "Enregistrement…" : "Enregistrer"}
+          </AdminBtn>
+        </div>
+      }
+    >
+      <form id="client-form" onSubmit={(e) => void handleSubmit(e)} className="grid gap-3 sm:grid-cols-2">
+        <label className="block text-xs font-medium text-neutral-600 sm:col-span-2">
+          Raison sociale *
+          <input required value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={`${adminFieldClass} mt-1`} />
+        </label>
+        <label className="block text-xs font-medium text-neutral-600">
+          Contact *
+          <input required value={contactName} onChange={(e) => setContactName(e.target.value)} className={`${adminFieldClass} mt-1`} />
+        </label>
+        <label className="block text-xs font-medium text-neutral-600">
+          E-mail *
+          <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={`${adminFieldClass} mt-1`} />
+        </label>
+        <label className="block text-xs font-medium text-neutral-600">
+          Téléphone
+          <input value={phone} onChange={(e) => setPhone(e.target.value)} className={`${adminFieldClass} mt-1`} />
+        </label>
+        <label className="block text-xs font-medium text-neutral-600">
+          Statut
+          <select value={status} onChange={(e) => setStatus(e.target.value as ClientStatus)} className={`${adminSelectClass} mt-1 w-full`}>
+            <option value="Actif">Actif</option>
+            <option value="En attente">En attente</option>
+            <option value="À relancer">À relancer</option>
+          </select>
+        </label>
+        <label className="block text-xs font-medium text-neutral-600 sm:col-span-2">
+          Adresse
+          <input value={address} onChange={(e) => setAddress(e.target.value)} className={`${adminFieldClass} mt-1`} />
+        </label>
+        <label className="block text-xs font-medium text-neutral-600 sm:col-span-2">
+          Site web
+          <input value={website} onChange={(e) => setWebsite(e.target.value)} className={`${adminFieldClass} mt-1`} />
+        </label>
+      </form>
+    </AdminModal>
   );
 }

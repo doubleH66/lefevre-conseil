@@ -1,21 +1,52 @@
 "use client";
 
 import * as React from "react";
+import {
+  AdminBtn,
+  AdminDataTable,
+  AdminModal,
+  AdminPageHeader,
+  AdminPanel,
+  AdminSearchInput,
+  AdminToolbar,
+  adminFieldClass,
+} from "@/components/portal/admin/admin-ui";
 import { usePortal } from "@/components/portal/portal-provider";
+import type { PortalClient } from "@/components/portal/types";
 
 export function AdminMessagesView() {
-  const { clients, messages, selectedClientId, setSelectedClientId, sendMessage } = usePortal();
+  const { clients, messages, sendMessage, setSelectedClientId } = usePortal();
+  const [search, setSearch] = React.useState("");
+  const [activeClient, setActiveClient] = React.useState<PortalClient | null>(null);
   const [draft, setDraft] = React.useState("");
   const [sending, setSending] = React.useState(false);
 
-  const selectedClient = clients.find((c) => c.id === selectedClientId) ?? clients[0] ?? null;
-  const thread = selectedClient
-    ? messages.filter((m) => m.clientId === selectedClient.id).sort((a, b) => a.at.localeCompare(b.at))
+  const filtered = React.useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return clients;
+    return clients.filter(
+      (c) =>
+        c.companyName.toLowerCase().includes(q) ||
+        c.contactName.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q),
+    );
+  }, [clients, search]);
+
+  const thread = activeClient
+    ? messages.filter((m) => m.clientId === activeClient.id).sort((a, b) => a.at.localeCompare(b.at))
     : [];
+
+  const lastByClient = React.useMemo(() => {
+    const map = new Map<string, string>();
+    for (const m of messages) {
+      map.set(m.clientId, m.text);
+    }
+    return map;
+  }, [messages]);
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
-    if (!draft.trim() || !selectedClient) return;
+    if (!draft.trim() || !activeClient) return;
     setSending(true);
     try {
       await sendMessage(draft.trim());
@@ -26,87 +57,84 @@ export function AdminMessagesView() {
   }
 
   return (
-    <section className="space-y-5">
-      <header>
-        <h1 className="text-2xl font-semibold text-neutral-900">Messages portail</h1>
-        <p className="mt-1 text-sm text-neutral-600">Échanges avec les clients connectés à leur espace.</p>
-      </header>
+    <>
+      <AdminPageHeader title="Messages" description="Cliquez sur un client pour ouvrir la conversation" />
 
-      <div className="grid gap-4 lg:grid-cols-[240px_1fr]">
-        <aside className="rounded-2xl border border-neutral-200 bg-neutral-50 p-3">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">Clients</p>
-          <ul className="space-y-1">
-            {clients.map((client) => {
-              const count = messages.filter((m) => m.clientId === client.id && m.from === "client").length;
-              return (
-                <li key={client.id}>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedClientId(client.id)}
-                    className={`w-full rounded-xl px-3 py-2 text-left text-sm ${
-                      selectedClient?.id === client.id
-                        ? "bg-[#1f2a7c] font-semibold text-white"
-                        : "text-neutral-800 hover:bg-white"
-                    }`}
-                  >
-                    {client.companyName}
-                    {count > 0 ? <span className="ml-1 text-xs opacity-70">({count})</span> : null}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </aside>
+      <AdminToolbar>
+        <AdminSearchInput value={search} onChange={setSearch} placeholder="Filtrer les clients…" />
+      </AdminToolbar>
 
-        <article className="flex min-h-[420px] flex-col rounded-2xl border border-neutral-200 bg-white">
-          {selectedClient ? (
-            <>
-              <div className="border-b border-neutral-100 px-4 py-3">
-                <p className="font-semibold text-neutral-900">{selectedClient.companyName}</p>
-                <p className="text-xs text-neutral-500">{selectedClient.email}</p>
-              </div>
-              <div className="flex-1 space-y-3 overflow-y-auto p-4">
-                {thread.length === 0 ? (
-                  <p className="text-sm text-neutral-500">Aucun message pour ce client.</p>
-                ) : (
-                  thread.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
-                        msg.from === "team"
-                          ? "ml-auto bg-[#1f2a7c] text-white"
-                          : "bg-neutral-100 text-neutral-900"
-                      }`}
-                    >
-                      <p>{msg.text}</p>
-                      <p className={`mt-1 text-[10px] ${msg.from === "team" ? "text-white/70" : "text-neutral-500"}`}>
-                        {msg.at}
-                      </p>
-                    </div>
-                  ))
-                )}
-              </div>
-              <form onSubmit={(e) => void handleSend(e)} className="flex gap-2 border-t border-neutral-100 p-4">
-                <input
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Votre message au client…"
-                  className="h-11 flex-1 rounded-xl border border-neutral-200 px-3 text-sm outline-none focus:border-[#1f2a7c]/40"
-                />
-                <button
-                  type="submit"
-                  disabled={sending || !draft.trim()}
-                  className="rounded-xl bg-[#1f2a7c] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-                >
-                  Envoyer
-                </button>
-              </form>
-            </>
+      <AdminPanel>
+        <AdminDataTable
+          data={filtered}
+          getRowKey={(c) => c.id}
+          onRowClick={(c) => {
+            setSelectedClientId(c.id);
+            setActiveClient(c);
+          }}
+          emptyMessage="Aucun client."
+          columns={[
+            { key: "company", header: "Client", cell: (c) => <span className="font-medium">{c.companyName}</span> },
+            { key: "contact", header: "Contact", cell: (c) => c.contactName },
+            {
+              key: "last",
+              header: "Dernier message",
+              cell: (c) => (
+                <span className="line-clamp-1 max-w-[280px] text-xs text-neutral-500">
+                  {lastByClient.get(c.id) ?? "—"}
+                </span>
+              ),
+            },
+            {
+              key: "count",
+              header: "Msgs",
+              className: "text-right",
+              cell: (c) => messages.filter((m) => m.clientId === c.id).length,
+            },
+          ]}
+        />
+      </AdminPanel>
+
+      <AdminModal
+        open={!!activeClient}
+        onClose={() => setActiveClient(null)}
+        title={activeClient?.companyName ?? "Messages"}
+        subtitle={activeClient?.email}
+        size="lg"
+        footer={
+          <form onSubmit={(e) => void handleSend(e)} className="flex w-full gap-2">
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder="Votre message…"
+              className={adminFieldClass}
+            />
+            <AdminBtn type="submit" variant="primary" disabled={sending || !draft.trim()}>
+              {sending ? "…" : "Envoyer"}
+            </AdminBtn>
+          </form>
+        }
+      >
+        <div className="max-h-[50vh] space-y-2 overflow-y-auto pr-1">
+          {thread.length === 0 ? (
+            <p className="py-8 text-center text-sm text-neutral-500">Aucun message.</p>
           ) : (
-            <p className="p-6 text-sm text-neutral-500">Créez ou sélectionnez un client pour envoyer un message.</p>
+            thread.map((msg) => (
+              <div
+                key={msg.id}
+                className={`max-w-[88%] rounded-xl px-3 py-2 text-sm ${
+                  msg.from === "team" ? "ml-auto bg-[#1f2a7c] text-white" : "bg-neutral-100 text-neutral-900"
+                }`}
+              >
+                <p>{msg.text}</p>
+                <p className={`mt-0.5 text-[10px] ${msg.from === "team" ? "text-white/70" : "text-neutral-500"}`}>
+                  {msg.at}
+                </p>
+              </div>
+            ))
           )}
-        </article>
-      </div>
-    </section>
+        </div>
+      </AdminModal>
+    </>
   );
 }
