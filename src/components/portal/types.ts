@@ -9,6 +9,33 @@ export type MessageStatus = "Envoyé" | "Lu" | "En attente";
 
 export type SiteLeadStatus = "Reçue" | "En cours" | "Traitée" | "Archivée";
 
+export type MutuelleLeadStatus = SiteLeadStatus | "draft";
+
+export type PortalMutuelleLead = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  postalCode: string;
+  birthDate: string;
+  profileType: string;
+  professionalStatus: string;
+  hasCurrentMutuelle: boolean | null;
+  desiredChangeDate: string;
+  coverageLevel: string;
+  healthPriorities: string[];
+  monthlyBudgetRange: string;
+  childrenCount: number;
+  summary: string;
+  sourcePage: string;
+  status: MutuelleLeadStatus;
+  adminNotes: string;
+  apiStatus: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type PortalSiteLead = {
   id: string;
   firstName: string;

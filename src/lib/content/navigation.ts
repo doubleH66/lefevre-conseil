@@ -43,6 +43,7 @@ export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
   ROUTES.faq,
   ROUTES.installation,
   ROUTES.simulateur,
+  ROUTES.simulateurMutuelle,
   ROUTES.comparateur,
   ROUTES.login,
   ROUTES.cookies,

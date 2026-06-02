@@ -75,6 +75,13 @@ export const PAGE_HEROES = {
     taglineHighlightAfter: " — pour préparer",
     titleId: "simulateur-hero-title",
   },
+  simulateurMutuelle: {
+    title: "Proposition mutuelle santé",
+    tagline:
+      "Une demande simple en quelques minutes — Philippe Lefèvre vous recontacte pour une offre adaptée, sans souscription en ligne.",
+    taglineHighlightAfter: " — Philippe Lefèvre",
+    titleId: "simulateur-mutuelle-hero-title",
+  },
   comparateur: {
     title: "Comparateur assurance",
     tagline:

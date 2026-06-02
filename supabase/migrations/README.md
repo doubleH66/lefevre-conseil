@@ -15,6 +15,15 @@ Exécuter **dans cet ordre** dans [Supabase Dashboard → SQL Editor](https://su
 | 9 | [009_portal_documents_fix.sql](./009_portal_documents_fix.sql) | **Correctif** envoi pièces justificatives (bucket + droits Storage) |
 | 10 | [010_client_profile_save.sql](./010_client_profile_save.sql) | Sauvegarde profil client fiable (`update_my_client_account`) |
 | 11 | [011_admin_business_tools.sql](./011_admin_business_tools.sql) | **Outil métier admin** : leads site, notifications, CRUD clients, sécurité inscription |
+| 12 | [012_mutuelle_simulator.sql](./012_mutuelle_simulator.sql) | **Simulateur mutuelle** : `mutuelle_leads`, logs API Alptis, RPC brouillon/soumission |
+| 13 | [013_mutuelle_admin_tools.sql](./013_mutuelle_admin_tools.sql) | **Admin** : statuts et notes sur les leads mutuelle |
+| 14 | [014_fix_submit_mutuelle_lead_params.sql](./014_fix_submit_mutuelle_lead_params.sql) | **Correctif** RPC seulement (nécessite tables 012/015) |
+| 15 | [015_mutuelle_install.sql](./015_mutuelle_install.sql) | **Recommandé** : installation complète mutuelle en un fichier (012+013+correctifs) |
+
+### Simulateur mutuelle — démarrage rapide
+
+Si les tables n’existent pas encore, exécutez **uniquement** `015_mutuelle_install.sql` (après la 011).  
+Ne pas exécuter la 014 seule sans tables.
 
 Voir aussi le flux **profil espace client** côté Next : [../docs-profil-espace-client.md](../docs-profil-espace-client.md).
 

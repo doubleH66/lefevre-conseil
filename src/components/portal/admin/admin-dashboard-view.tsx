@@ -23,6 +23,7 @@ export function AdminDashboardView() {
     documents,
     demands,
     siteLeads,
+    mutuelleLeads,
     notifications,
     activityLog,
     selectedClientId,
@@ -47,9 +48,13 @@ export function AdminDashboardView() {
       aCorriger: documents.filter((d) => d.status === "À corriger").length,
       demandesOuvertes:
         demands.filter((d) => d.status !== "Traitée").length +
-        siteLeads.filter((l) => l.status !== "Traitée" && l.status !== "Archivée").length,
+        siteLeads.filter((l) => l.status !== "Traitée" && l.status !== "Archivée").length +
+        mutuelleLeads.filter(
+          (l) =>
+            l.status !== "draft" && l.status !== "Traitée" && l.status !== "Archivée",
+        ).length,
     }),
-    [clients, documents, demands, siteLeads],
+    [clients, documents, demands, siteLeads, mutuelleLeads],
   );
 
   const priorityDocs = documents.filter((d) => d.status === "Envoyé" || d.status === "À corriger").slice(0, 8);

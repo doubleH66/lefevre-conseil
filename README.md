@@ -14,7 +14,7 @@ npm run dev -- -p 8089
 
 ## Supabase
 
-Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md) (ordre 001 → **011**).
+Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md) (ordre 001 → **013**).
 
 **Important :** exécuter `011_admin_business_tools.sql` pour :
 - formulaire de demande `/demande` (leads en base)
@@ -27,6 +27,8 @@ Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md
 |-------|-------------|
 | `/` | Site public |
 | `/demande` | Formulaire prospect (API + Supabase + e-mails) |
+| `/simulateur-mutuelle` | Simulateur mutuelle (lead qualifié, e-mail cabinet, sans souscription en ligne) |
+| `/simulateur` | Simulation patrimoniale + onglet mutuelle intégré |
 | `/login` | Connexion / inscription client |
 | `/espace-client` | Dépôt de pièces justificatives |
 | `/espace-admin` | Pilotage cabinet (clients, demandes, docs, messages) |
@@ -48,7 +50,24 @@ En local, `.env.local` fournit Supabase. **Sur Vercel, les mêmes variables doiv
 
 Si ces clés manquent en prod, le menu **Compte** affiche *« Connexion indisponible sur cet environnement »* et `/espace-admin` ne peut pas charger la session — alors qu’en localhost tout fonctionne avec `.env.local`.
 
-Optionnel : `CABINET_NOTIFY_EMAIL` pour les e-mails de nouvelles demandes.
+Optionnel : `CABINET_NOTIFY_EMAIL` ou `PHILIPPE_NOTIFICATION_EMAIL` pour les e-mails de nouvelles demandes.
+
+### Simulateur mutuelle (V1)
+
+Exécuter **`015_mutuelle_install.sql`** dans Supabase (tout-en-un, recommandé).  
+Alternative : `012` puis `013`. Ne pas lancer `014` seul sans les tables.
+
+Variables optionnelles (`.env.local` / Vercel) :
+
+| Variable | Rôle |
+|----------|------|
+| `PHILIPPE_NOTIFICATION_EMAIL` | Destinataire des demandes mutuelle (sinon `CABINET_NOTIFY_EMAIL` ou e-mail cabinet) |
+| `ALPTIS_API_ENABLED` | `false` par défaut — tarification serveur sans bloquer le parcours |
+| `ALPTIS_API_KEY` | Clé API (serveur uniquement, jamais côté client) |
+| `ALPTIS_CODE_DISTRIBUTEUR` | Code distributeur Alptis |
+| `ALPTIS_API_BASE_URL` | Ex. `https://api.recette.alptis.org` |
+
+Les e-mails passent par la Edge Function `portal-notify` (secret Supabase `RESEND_API_KEY`).
 
 ## E-mails (Resend)
 

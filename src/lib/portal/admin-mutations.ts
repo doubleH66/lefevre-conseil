@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { ClientStatus, SiteLeadStatus } from "@/components/portal/types";
+import type { ClientStatus, MutuelleLeadStatus, SiteLeadStatus } from "@/components/portal/types";
 import { formatPortalError } from "@/lib/portal/errors";
 
 function rpcError(error: { message: string } | null, context: string): void {
@@ -55,6 +55,21 @@ export async function adminUpdateClientAccount(
     p_status: input.status ?? "Actif",
   });
   rpcError(error, "Mise à jour client");
+  return data;
+}
+
+export async function adminUpdateMutuelleLeadStatus(
+  supabase: SupabaseClient,
+  leadId: string,
+  status: MutuelleLeadStatus,
+  adminNotes?: string,
+) {
+  const { data, error } = await supabase.rpc("admin_update_mutuelle_lead_status", {
+    p_lead_id: leadId,
+    p_status: status,
+    p_admin_notes: adminNotes ?? null,
+  });
+  rpcError(error, "Mise à jour demande mutuelle");
   return data;
 }
 

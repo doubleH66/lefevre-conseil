@@ -12,8 +12,10 @@ import type {
   PortalDocument,
   PortalMessage,
   PortalProject,
+  PortalMutuelleLead,
   PortalSiteLead,
   Priority,
+  MutuelleLeadStatus,
   SiteLeadStatus,
   ViewMode,
 } from "@/components/portal/types";
@@ -39,6 +41,7 @@ import {
   adminCreateClientAccount,
   adminSendPortalMessage,
   adminUpdateClientAccount,
+  adminUpdateMutuelleLeadStatus,
   adminUpdateSiteLeadStatus,
   markAdminNotificationRead,
 } from "@/lib/portal/admin-mutations";
@@ -99,6 +102,7 @@ type PortalStore = {
   demands: PortalDemand[];
   messages: PortalMessage[];
   siteLeads: PortalSiteLead[];
+  mutuelleLeads: PortalMutuelleLead[];
   notifications: AdminNotification[];
   internalNotes: InternalNote[];
   activityLog: AdminActivityEntry[];
@@ -123,6 +127,7 @@ type PortalStore = {
   refuseDocument: (id: string, comment: string) => Promise<void>;
   updateDemandStatus: (id: string, status: "Reçue" | "En cours" | "Traitée") => Promise<void>;
   updateSiteLeadStatus: (id: string, status: SiteLeadStatus, adminNotes?: string) => Promise<void>;
+  updateMutuelleLeadStatus: (id: string, status: MutuelleLeadStatus, adminNotes?: string) => Promise<void>;
   createClientAccount: (payload: {
     companyName: string;
     contactName: string;
@@ -171,6 +176,7 @@ export function PortalProvider({
   const [demands, setDemands] = React.useState<PortalDemand[]>([]);
   const [messages, setMessages] = React.useState<PortalMessage[]>([]);
   const [siteLeads, setSiteLeads] = React.useState<PortalSiteLead[]>([]);
+  const [mutuelleLeads, setMutuelleLeads] = React.useState<PortalMutuelleLead[]>([]);
   const [notifications, setNotifications] = React.useState<AdminNotification[]>([]);
   const [internalNotes, setInternalNotes] = React.useState<InternalNote[]>([]);
   const [activityLog, setActivityLog] = React.useState<AdminActivityEntry[]>([]);
@@ -259,6 +265,7 @@ export function PortalProvider({
         setDemands(data.demands);
         setMessages(data.messages);
         setSiteLeads(data.siteLeads);
+        setMutuelleLeads(data.mutuelleLeads);
         setNotifications(data.notifications);
         setInternalNotes(data.internalNotes);
         setActivityLog(data.activityLog);
@@ -279,6 +286,7 @@ export function PortalProvider({
           setDemands([]);
           setMessages([]);
           setSiteLeads([]);
+          setMutuelleLeads([]);
           setNotifications([]);
           setInternalNotes([]);
           setActivityLog([]);
@@ -529,6 +537,21 @@ export function PortalProvider({
     [pushToast, refresh],
   );
 
+  const updateMutuelleLeadStatus = React.useCallback(
+    async (id: string, status: MutuelleLeadStatus, adminNotes?: string) => {
+      try {
+        const supabase = createClient();
+        await adminUpdateMutuelleLeadStatus(supabase, id, status, adminNotes);
+        pushToast("Demande mutuelle mise à jour.", "success");
+        await refresh();
+      } catch (e) {
+        pushToast(formatPortalError(e), "warning");
+        throw e;
+      }
+    },
+    [pushToast, refresh],
+  );
+
   const createClientAccount = React.useCallback(
     async (payload: {
       companyName: string;
@@ -689,6 +712,7 @@ export function PortalProvider({
         demands,
         messages,
         siteLeads,
+        mutuelleLeads,
         notifications,
         internalNotes,
         activityLog,
@@ -705,6 +729,7 @@ export function PortalProvider({
         refuseDocument,
         updateDemandStatus,
         updateSiteLeadStatus,
+        updateMutuelleLeadStatus,
         createClientAccount,
         updateClientAccount,
         addInternalNote,

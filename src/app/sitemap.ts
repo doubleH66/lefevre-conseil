@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}${ROUTES.notreCabinet}`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${SITE_URL}${ROUTES.faq}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}${ROUTES.simulateur}`, lastModified: now, changeFrequency: "monthly", priority: 0.65 },
+    { url: `${SITE_URL}${ROUTES.simulateurMutuelle}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}${ROUTES.comparateur}`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE_URL}${ROUTES.mentionsLegales}`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${SITE_URL}${ROUTES.confidentialite}`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },

@@ -11,10 +11,13 @@ import type {
   PortalDocument,
   PortalMessage,
   PortalProject,
+  PortalMutuelleLead,
   PortalSiteLead,
   ProjectStatus,
   SiteLeadStatus,
+  MutuelleLeadStatus,
 } from "@/components/portal/types";
+import { formatMutuelleLeadSummary } from "@/lib/mutuelle/labels-map";
 import { formatDateFr, formatDateTimeFr } from "@/lib/portal/format";
 import { formatPortalError } from "@/lib/portal/errors";
 
@@ -87,6 +90,30 @@ type MessageRow = {
   created_at: string;
 };
 
+type MutuelleLeadRow = {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  phone: string | null;
+  postal_code: string | null;
+  birth_date: string | null;
+  profile_type: string | null;
+  professional_status: string | null;
+  has_current_mutuelle: boolean | null;
+  desired_change_date: string | null;
+  coverage_level: string | null;
+  health_priorities: string[] | null;
+  monthly_budget_range: string | null;
+  children_count: number | null;
+  source_page: string | null;
+  status: string;
+  admin_notes: string | null;
+  api_status: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 type SiteLeadRow = {
   id: string;
   first_name: string;
@@ -131,6 +158,57 @@ type AdminActivityRow = {
   metadata: Record<string, unknown> | null;
   created_at: string;
 };
+
+function normalizeMutuelleStatus(status: string): MutuelleLeadStatus {
+  if (status === "new") return "Reçue";
+  if (status === "draft") return "draft";
+  if (
+    status === "Reçue" ||
+    status === "En cours" ||
+    status === "Traitée" ||
+    status === "Archivée"
+  ) {
+    return status;
+  }
+  return "Reçue";
+}
+
+function mapMutuelleLead(row: MutuelleLeadRow): PortalMutuelleLead {
+  const priorities = Array.isArray(row.health_priorities) ? row.health_priorities : [];
+  return {
+    id: row.id,
+    firstName: row.first_name ?? "",
+    lastName: row.last_name ?? "",
+    email: row.email ?? "",
+    phone: row.phone ?? "",
+    postalCode: row.postal_code ?? "",
+    birthDate: row.birth_date ? formatDateFr(row.birth_date) : "",
+    profileType: row.profile_type ?? "",
+    professionalStatus: row.professional_status ?? "",
+    hasCurrentMutuelle: row.has_current_mutuelle,
+    desiredChangeDate: row.desired_change_date ?? "",
+    coverageLevel: row.coverage_level ?? "",
+    healthPriorities: priorities,
+    monthlyBudgetRange: row.monthly_budget_range ?? "",
+    childrenCount: row.children_count ?? 0,
+    summary: formatMutuelleLeadSummary({
+      profileType: row.profile_type,
+      professionalStatus: row.professional_status,
+      coverageLevel: row.coverage_level,
+      monthlyBudgetRange: row.monthly_budget_range,
+      desiredChangeDate: row.desired_change_date,
+      hasCurrentMutuelle: row.has_current_mutuelle,
+      healthPriorities: priorities,
+      childrenCount: row.children_count,
+    }),
+    sourcePage: row.source_page ?? "",
+    status: normalizeMutuelleStatus(row.status),
+    adminNotes: row.admin_notes ?? "",
+    apiStatus: row.api_status ?? "",
+    createdAt: formatDateTimeFr(row.created_at),
+    updatedAt: formatDateTimeFr(row.updated_at),
+  };
+}
 
 function mapSiteLead(row: SiteLeadRow): PortalSiteLead {
   return {
@@ -351,6 +429,7 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
   demands: PortalDemand[];
   messages: PortalMessage[];
   siteLeads: PortalSiteLead[];
+  mutuelleLeads: PortalMutuelleLead[];
   notifications: AdminNotification[];
   internalNotes: InternalNote[];
   activityLog: AdminActivityEntry[];
@@ -363,6 +442,7 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
     demandsRes,
     messagesRes,
     siteLeadsRes,
+    mutuelleLeadsRes,
     notificationsRes,
     notesRes,
     activityRes,
@@ -377,6 +457,7 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
     supabase.from("client_demands").select("*").order("created_at", { ascending: false }),
     supabase.from("portal_messages").select("*").order("created_at", { ascending: false }),
     supabase.from("site_leads").select("*").order("created_at", { ascending: false }),
+    supabase.from("mutuelle_leads").select("*").order("created_at", { ascending: false }),
     supabase.from("admin_notifications").select("*").order("created_at", { ascending: false }).limit(50),
     supabase.from("internal_notes").select("*").order("created_at", { ascending: false }),
     supabase.from("admin_activity_log").select("*").order("created_at", { ascending: false }).limit(100),
@@ -390,6 +471,9 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
   assertNoError(messagesRes.error, "Chargement des messages");
   if (siteLeadsRes.error && !siteLeadsRes.error.message.includes("site_leads")) {
     assertNoError(siteLeadsRes.error, "Chargement des demandes site");
+  }
+  if (mutuelleLeadsRes.error && !mutuelleLeadsRes.error.message.includes("mutuelle_leads")) {
+    assertNoError(mutuelleLeadsRes.error, "Chargement des demandes mutuelle");
   }
   if (notificationsRes.error && !notificationsRes.error.message.includes("admin_notifications")) {
     assertNoError(notificationsRes.error, "Chargement des notifications");
@@ -445,6 +529,7 @@ export async function loadAdminPortalData(supabase: SupabaseClient): Promise<{
     demands: demandRows.map(mapDemand),
     messages: ((messagesRes.data ?? []) as MessageRow[]).map(mapMessage),
     siteLeads: ((siteLeadsRes.data ?? []) as SiteLeadRow[]).map(mapSiteLead),
+    mutuelleLeads: ((mutuelleLeadsRes.data ?? []) as MutuelleLeadRow[]).map(mapMutuelleLead),
     notifications: ((notificationsRes.data ?? []) as AdminNotificationRow[]).map(mapAdminNotification),
     internalNotes: ((notesRes.data ?? []) as InternalNoteRow[]).map(mapInternalNote),
     activityLog: ((activityRes.data ?? []) as AdminActivityRow[]).map(mapAdminActivity),

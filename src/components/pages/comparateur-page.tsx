@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { ComparateurEmbed } from "@/components/marketing/comparateur-embed";
-import { CONTACT_HREF } from "@/lib/content/routes";
+import { CONTACT_HREF, SIMULATEUR_MUTUELLE_HREF } from "@/lib/content/routes";
 
 export function ComparateurPage() {
   return (
@@ -22,8 +22,15 @@ export function ComparateurPage() {
           <ComparateurEmbed />
         </section>
 
-        <p className="mt-6 text-sm text-neutral-500 text-center">
-          Pour un accompagnement personnalisé,{" "}
+        <p className="mt-6 text-center text-sm text-neutral-500">
+          Besoin d&apos;une mutuelle santé ?{" "}
+          <Link
+            href={SIMULATEUR_MUTUELLE_HREF}
+            className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline"
+          >
+            Obtenir ma proposition mutuelle
+          </Link>
+          . Pour un accompagnement personnalisé,{" "}
           <Link href={CONTACT_HREF} className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline">
             contactez le cabinet
           </Link>

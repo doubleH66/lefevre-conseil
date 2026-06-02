@@ -21,6 +21,7 @@ export const ROUTES = {
   espaceAdminReglages: "/espace-admin/reglages",
   cookies: "/cookies",
   simulateur: "/simulateur",
+  simulateurMutuelle: "/simulateur-mutuelle",
   comparateur: "/comparateur",
   mentionsLegales: "/mentions-legales",
   confidentialite: "/confidentialite",
@@ -34,6 +35,7 @@ export const BILAN_PATRIMOINE_HREF = ROUTES.bilanPatrimonial;
 export const DEMANDE_HREF = ROUTES.demande;
 export const SIMULATION_HREF = ROUTES.bilanPatrimonial;
 export const SIMULATEUR_HREF = ROUTES.simulateur;
+export const SIMULATEUR_MUTUELLE_HREF = ROUTES.simulateurMutuelle;
 export const CONTACT_HREF = ROUTES.contact;
 export const CONSEILS_HREF = ROUTES.conseils;
 /** @deprecated Utiliser `CONSEILS_HREF`. */

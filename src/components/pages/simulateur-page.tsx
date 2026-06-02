@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, HeartPulse, Send, Sparkles } from "lucide-react";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
-import { MutuelleEmbed } from "@/components/marketing/comparateur-embed";
+import { MutuelleSimulator } from "@/components/mutuelle/MutuelleSimulator";
 import { HeroCtaPrimaryButton, HeroCtaSecondaryLink } from "@/components/marketing/hero-site-cta";
 import { SERVICE_CATALOG, serviceDetailHref } from "@/lib/content/services";
 import type { ServiceSlug } from "@/lib/content/services";
@@ -116,21 +116,7 @@ export function SimulateurPage() {
             aria-labelledby="mutuelle-embed-title"
             className="mx-auto mt-10 max-w-5xl"
           >
-            <div className="mb-6 text-center sm:text-left">
-              <h2 id="mutuelle-embed-title" className="text-xl font-semibold tracking-tight text-neutral-900 sm:text-2xl">
-                Obtenir ma mutuelle
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-[15px]">
-                Comparez les offres de mutuelle santé en quelques clics. Pour un conseil sur mesure,{" "}
-                <Link href={CONTACT_HREF} className="font-medium text-[#1f2a7c] underline-offset-2 hover:underline">
-                  contactez le cabinet
-                </Link>
-                .
-              </p>
-            </div>
-            <div className="overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-[0_18px_50px_rgba(23,33,59,0.06)]">
-              <MutuelleEmbed />
-            </div>
+            <MutuelleSimulator sourcePage={ROUTES.simulateur} />
             <p className="mt-6 text-center text-sm text-neutral-500">
               Vous préférez un bilan global ?{" "}
               <button
@@ -272,7 +258,7 @@ export function SimulateurPage() {
                 onClick={() => setMode("mutuelle")}
                 className="font-semibold text-[#1f2a7c] underline-offset-2 hover:underline"
               >
-                Obtenir ma mutuelle en ligne
+                Obtenir ma proposition mutuelle
               </button>
             </p>
           </>
