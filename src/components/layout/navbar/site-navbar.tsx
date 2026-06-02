@@ -54,7 +54,7 @@ export function SiteNavbar({ hero: heroProp }: SiteNavbarProps = {}) {
 
   const shellClass = mobileOpen
     ? navGlassWhite
-    : docked
+    : docked || desktopOpen
       ? glassSurfaceClass
       : NAV_SHELL_TRANSPARENT;
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { BilanCtaSection } from "@/components/landing/bilan-cta-section";
+import { LatestConseilsSection } from "@/components/landing/latest-conseils-section";
 import { SubpageHeaderBackground } from "@/components/layout/subpage-header-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SubpageHeroTagline } from "@/components/layout/subpage-hero-tagline";
@@ -270,9 +271,14 @@ export function SubpageShell({
       </div>
 
       {hideBilanCta ? null : (
-        <div data-nav-theme="dark">
-          <BilanCtaSection className="mx-2.5 mb-12 mt-10 sm:mt-12 lg:mx-4 lg:mb-16" />
-        </div>
+        <>
+          <div data-nav-theme="dark">
+            <BilanCtaSection className="mx-2.5 mb-6 mt-10 sm:mt-12 lg:mx-4" />
+          </div>
+          <div data-nav-theme="light">
+            <LatestConseilsSection className="mb-12 lg:mb-16" />
+          </div>
+        </>
       )}
 
       <div data-nav-theme="dark">

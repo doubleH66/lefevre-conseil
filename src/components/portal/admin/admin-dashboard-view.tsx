@@ -196,9 +196,15 @@ export function AdminDashboardView() {
         document={detailDoc}
         client={detailDoc ? clients.find((c) => c.id === detailDoc.clientId) : undefined}
         onClose={() => setDetailDoc(null)}
-        onValidate={async () => detailDoc && (await validateDocument(detailDoc.id))}
-        onRefuse={async (c) => detailDoc && (await refuseDocument(detailDoc.id, c))}
-        onDownload={async () => detailDoc?.storagePath && (await downloadDocument(detailDoc.storagePath))}
+        onValidate={async () => {
+          if (detailDoc) await validateDocument(detailDoc.id);
+        }}
+        onRefuse={async (c) => {
+          if (detailDoc) await refuseDocument(detailDoc.id, c);
+        }}
+        onDownload={async () => {
+          if (detailDoc?.storagePath) await downloadDocument(detailDoc.storagePath);
+        }}
       />
 
       <AdminLeadDetailModal

@@ -49,7 +49,23 @@ describe("ClientProfileForm", () => {
     saveClientProfile.mockReset();
   });
 
-  it("synchronise les champs quand le client portail change", () => {
+  it("affiche la fiche profil en lecture depuis le client portail", () => {
+    const client: PortalClient = {
+      ...baseClient,
+      phone: "0752052934",
+      address: "21 rue rem",
+    };
+
+    render(<ClientProfileForm client={client} />);
+
+    expect(screen.getByText("Ancienne entreprise")).toBeInTheDocument();
+    expect(screen.getByText("0752052934")).toBeInTheDocument();
+    expect(screen.getByText("21 rue rem")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /modifier mes informations/i })).toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: /entreprise/i })).not.toBeInTheDocument();
+  });
+
+  it("met à jour la fiche quand le client portail change", () => {
     const nextClient: PortalClient = {
       ...baseClient,
       phone: "0752052934",
@@ -58,14 +74,15 @@ describe("ClientProfileForm", () => {
     };
 
     const { rerender } = render(<ClientProfileForm client={baseClient} />);
-    expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("");
+    expect(screen.queryByText("0752052934")).not.toBeInTheDocument();
 
     rerender(<ClientProfileForm client={nextClient} />);
 
-    expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("0752052934");
+    expect(screen.getByText("0752052934")).toBeInTheDocument();
+    expect(screen.getByText("21 rue rem")).toBeInTheDocument();
   });
 
-  it("applique la réponse RPC au store et au formulaire", async () => {
+  it("enregistre via RPC, met à jour le store et revient en mode lecture", async () => {
     const user = userEvent.setup();
     saveClientProfile.mockResolvedValue({
       ok: true,
@@ -82,19 +99,59 @@ describe("ClientProfileForm", () => {
       },
     });
 
-    render(<ClientProfileForm client={baseClient} />);
+    const { rerender } = render(<ClientProfileForm client={baseClient} />);
+
+    await user.click(screen.getByRole("button", { name: /modifier mes informations/i }));
 
     const companyInput = screen.getByRole("textbox", { name: /entreprise/i });
     await user.clear(companyInput);
     await user.type(companyInput, "Nouvelle SA");
-    await user.click(screen.getByRole("button", { name: /enregistrer/i }));
+    await user.click(screen.getByRole("button", { name: /^enregistrer$/i }));
 
     expect(saveClientProfile).toHaveBeenCalled();
     expect(patchClient).toHaveBeenCalledWith(
       "client-1",
       expect.objectContaining({ companyName: "Nouvelle SA", phone: "0700000000" }),
     );
+
     expect(await screen.findByText("Profil enregistré.")).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: /téléphone/i })).toHaveValue("0700000000");
+    expect(screen.queryByRole("textbox", { name: /entreprise/i })).not.toBeInTheDocument();
+
+    rerender(
+      <ClientProfileForm
+        client={{
+          ...baseClient,
+          companyName: "Nouvelle SA",
+          contactName: "Jean Dupont",
+          phone: "0700000000",
+          address: "21 rue test",
+          updatedAtIso: "2026-05-22T14:00:00.000Z",
+        }}
+      />,
+    );
+
+    expect(screen.getByText("Nouvelle SA")).toBeInTheDocument();
+    expect(screen.getByText("0700000000")).toBeInTheDocument();
+  });
+
+  it("annule l’édition sans perdre les valeurs affichées", async () => {
+    const user = userEvent.setup();
+    const client: PortalClient = {
+      ...baseClient,
+      phone: "0752052934",
+      address: "21 rue rem",
+    };
+
+    render(<ClientProfileForm client={client} />);
+
+    await user.click(screen.getByRole("button", { name: /modifier mes informations/i }));
+    const phoneInput = screen.getByRole("textbox", { name: /téléphone/i });
+    await user.clear(phoneInput);
+    await user.type(phoneInput, "0000000000");
+    await user.click(screen.getByRole("button", { name: /annuler/i }));
+
+    expect(screen.queryByRole("textbox", { name: /téléphone/i })).not.toBeInTheDocument();
+    expect(screen.getByText("0752052934")).toBeInTheDocument();
+    expect(screen.getByText("21 rue rem")).toBeInTheDocument();
   });
 });

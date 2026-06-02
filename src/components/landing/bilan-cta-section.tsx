@@ -4,7 +4,8 @@ import { BILAN_CTA_BACKGROUND_IMAGE } from "@/lib/content/services";
 const sectionClassName = "mx-2.5 mb-12 mt-6 lg:mx-4 lg:mb-16";
 
 /**
- * Bandeau bilan unique (titre, CTA, derniers conseils) - utilisé sur l’accueil et dans `SubpageShell`.
+ * Bandeau bilan unique (titre + CTA) — utilisé sur l’accueil et dans `SubpageShell`.
+ * Les derniers conseils sont dans `LatestConseilsSection`, en section séparée.
  */
 export function BilanCtaSection({ className }: { className?: string }) {
   return (
@@ -18,9 +19,8 @@ export function BilanCtaSection({ className }: { className?: string }) {
         primaryWithSimulationArrow
         primaryLabel="Réaliser mon bilan patrimonial"
         secondaryLabel="Contact"
-        latestAdviceTeaser
         title="Bilan patrimonial, sans engagement."
-        description="Quelques questions pour une synthèse claire et des pistes adaptées - gratuit, sans engagement."
+        description="Quelques questions pour une synthèse claire et des pistes adaptées — gratuit, sans engagement."
       />
     </section>
   );

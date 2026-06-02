@@ -34,7 +34,6 @@ import {
   loadAdminPortalData,
   loadClientPortalData,
 } from "@/lib/portal/load-portal-data";
-import { profileClientSnapshot, profileDebugLog } from "@/lib/portal/profile-debug";
 import {
   adminAddInternalNote,
   adminCreateClientAccount,
@@ -202,13 +201,11 @@ export function PortalProvider({
   );
 
   const patchClient = React.useCallback((id: string, patch: Partial<PortalClient>) => {
-    profileDebugLog("patchClient", { id, patch, mergeOrder: "{ ...oldClient, ...patch }" });
     setClients((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
   }, []);
 
   const refresh = React.useCallback(async (options?: { silent?: boolean }) => {
     const silent = options?.silent ?? false;
-    profileDebugLog("refresh — début", { silent, mode });
 
     if (!isSupabasePublicConfigured()) {
       setError("Connexion Supabase non configurée. Ajoutez les variables d'environnement du projet.");
@@ -290,10 +287,6 @@ export function PortalProvider({
         }
 
         const data = await loadClientPortalData(supabase, clientId);
-        profileDebugLog("refresh — client chargé", {
-          clientId,
-          client: profileClientSnapshot(data.client),
-        });
         setClients([data.client]);
         setProjects(data.projects);
         setDocuments(data.documents);
@@ -303,9 +296,7 @@ export function PortalProvider({
       }
 
       hasLoadedOnceRef.current = true;
-      profileDebugLog("refresh — succès");
     } catch (e) {
-      profileDebugLog("refresh — erreur", { message: e instanceof Error ? e.message : String(e) });
       console.warn("portal refresh failed:", e);
       setError(formatPortalError(e));
     } finally {

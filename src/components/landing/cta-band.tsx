@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import {
   HERO_BACKGROUND_DESKTOP_SRC,
@@ -8,9 +7,7 @@ import { cn } from "@/lib/utils";
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
 import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { heroCtaRowCompactClassName } from "@/lib/styles/cta";
-import { CONSEILS_HREF, CONTACT_HREF, DEMANDE_HREF, SIMULATION_HREF, articleHref } from "@/lib/content/routes";
-import { ARTICLES_PUBLISHED } from "@/lib/content/articles";
-import { HOME_ARTICLES_TEASER } from "@/lib/content/articles";
+import { CONTACT_HREF, SIMULATION_HREF } from "@/lib/content/routes";
 
 type CtaBandProps = {
   /** Texte au-dessus du titre ; `false` masque la ligne (défaut : « Prochaine étape » si omis). */
@@ -36,8 +33,6 @@ type CtaBandProps = {
   heroTypography?: boolean;
   /** Libellés responsive + flèche comme le CTA simulation du hero. */
   primaryWithSimulationArrow?: boolean;
-  /** Sous les CTA : liens vers trois articles + page Conseils (accueil). */
-  latestAdviceTeaser?: boolean;
 };
 
 export function CtaBand({
@@ -54,7 +49,6 @@ export function CtaBand({
   showSecondaryCta = true,
   heroTypography = false,
   primaryWithSimulationArrow = false,
-  latestAdviceTeaser = false,
 }: CtaBandProps) {
   const eyebrowHidden = eyebrowProp === false;
   const eyebrowText = eyebrowHidden ? null : (eyebrowProp ?? "Prochaine étape");
@@ -193,51 +187,6 @@ export function CtaBand({
             </ContactGlassLink>
           ) : null}
         </div>
-        {latestAdviceTeaser ? (
-          <div
-            className={cn(
-              "border-t border-white/15 pt-8",
-              heroTypography ? "mt-10 sm:mt-12" : "mt-8 sm:mt-10",
-            )}
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/65">
-              Nos derniers conseils
-            </p>
-            <ul className="mt-4 max-w-2xl space-y-3">
-              {HOME_ARTICLES_TEASER.map((article) => (
-                <li key={article.slug}>
-                  {ARTICLES_PUBLISHED ? (
-                    <Link
-                      href={articleHref(article.slug)}
-                      className="group block rounded-lg text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
-                    >
-                      <span className="line-clamp-2 text-sm font-medium leading-snug text-white transition-colors group-hover:text-white/90">
-                        {article.title}
-                      </span>
-                      <span className="mt-0.5 block text-xs text-white/50">
-                        {article.category} · {article.date}
-                      </span>
-                    </Link>
-                  ) : (
-                    <div className="rounded-lg text-left">
-                      <span className="line-clamp-2 text-sm font-medium leading-snug text-white/90">{article.title}</span>
-                      <span className="mt-0.5 block text-xs text-white/50">
-                        {article.category} · {article.date}
-                      </span>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href={CONSEILS_HREF}
-              className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 outline-none transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
-            >
-              Tous les conseils
-              <ArrowUpRight aria-hidden className="size-3.5 shrink-0 opacity-90" />
-            </Link>
-          </div>
-        ) : null}
       </div>
     </section>
   );

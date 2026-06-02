@@ -29,10 +29,10 @@ export function HeroSection() {
       >
         <HeroBackground />
 
-        <div className="relative z-10 py-20 pt-20 md:pb-16 lg:pb-16 lg:pt-28">
+        <div className="relative z-10 py-20 max-md:pt-24 md:pb-16 lg:pb-16 lg:pt-28">
           <div className="mx-auto flex w-full max-w-none flex-col px-4 sm:px-7 xl:block xl:px-11">
             <div className="mx-auto w-full max-w-5xl text-center xl:mx-0 xl:text-left">
-              <div className="mb-2 mt-6 flex justify-center sm:mt-8 xl:justify-start">
+              <div className="mb-2 mt-6 flex justify-center max-md:mt-8 sm:mt-8 xl:justify-start">
                 <GoogleBadge />
               </div>
 

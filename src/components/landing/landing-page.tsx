@@ -1,4 +1,5 @@
 import { BilanCtaSection } from "@/components/landing/bilan-cta-section";
+import { LatestConseilsSection } from "@/components/landing/latest-conseils-section";
 import { CabinetIntro } from "@/components/landing/cabinet-intro";
 import ExpertisesCarousel from "@/components/client/expertises-carousel";
 import { HeroSection } from "@/components/landing/hero-section";
@@ -29,6 +30,9 @@ export function LandingPage() {
         </div>
         <div data-nav-theme="dark">
           <BilanCtaSection />
+        </div>
+        <div data-nav-theme="light">
+          <LatestConseilsSection />
         </div>
         <div data-nav-theme="dark">
           <SiteFooter />

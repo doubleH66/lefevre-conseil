@@ -1,6 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { formatDateTimeFr } from "@/lib/portal/format";
-import { profileDebugLog } from "@/lib/portal/profile-debug";
 import {
   parseClientProfileFormData,
   type ClientProfileFields,
@@ -61,13 +60,10 @@ export async function saveClientProfile(
     return { ok: false, error: fields.error };
   }
 
-  profileDebugLog("save payload", fields);
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    profileDebugLog("save error", { reason: "no_session" });
     return { ok: false, error: "Session expirée. Reconnectez-vous." };
   }
 
@@ -79,15 +75,12 @@ export async function saveClientProfile(
     p_website: fields.website || null,
   });
 
-  profileDebugLog("rpc response", { error: error?.message ?? null, rows });
-
   if (error) {
     return { ok: false, error: error.message };
   }
 
   const row = (Array.isArray(rows) ? rows[0] : rows) as RpcRow | null;
   if (!row?.id) {
-    profileDebugLog("save error", { reason: "empty_rpc_row" });
     return { ok: false, error: "Enregistrement impossible. Réessayez." };
   }
 
@@ -97,11 +90,9 @@ export async function saveClientProfile(
     .eq("id", user.id);
 
   if (profileError) {
-    profileDebugLog("profiles.update error", { message: profileError.message });
     return { ok: false, error: profileError.message };
   }
 
   const saved = mapRpcRow(row);
-  profileDebugLog("save OK", saved);
   return { ok: true, saved };
 }

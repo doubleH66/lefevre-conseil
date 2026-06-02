@@ -40,8 +40,8 @@ export type ServicePremiumContent = {
   };
   faq: ServiceFaqItem[];
   internalLinks: { slug: ServiceSlug; label: string }[];
-  /** Tableau de comparaison optionnel, affiché dans le bloc solutions */
-  comparison?: ComparisonTableData;
   /** Tableau avant / après accompagnement cabinet */
   beforeAfter?: ComparisonTableData;
+  /** Tableau de comparaison optionnel, affiché dans le bloc solutions */
+  comparison?: ComparisonTableData;
 };
