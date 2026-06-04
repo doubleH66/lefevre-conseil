@@ -5,6 +5,63 @@ type BreadcrumbItem = {
   path: string;
 };
 
+export function WebPageJsonLd({
+  name,
+  description,
+  path,
+}: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  const url = `${SITE_URL}${path}`;
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name,
+    description,
+    inLanguage: "fr-FR",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#cabinet` },
+  } as const;
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
+export function PersonJsonLd({
+  name,
+  jobTitle,
+  path,
+}: {
+  name: string;
+  jobTitle: string;
+  path: string;
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/#philippe-lefevre`,
+    name,
+    jobTitle,
+    worksFor: { "@id": `${SITE_URL}/#cabinet` },
+    url: `${SITE_URL}${path}`,
+  } as const;
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
 export function BreadcrumbJsonLd({ items }: { items: BreadcrumbItem[] }) {
   const data = {
     "@context": "https://schema.org",

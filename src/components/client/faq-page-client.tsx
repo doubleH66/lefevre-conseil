@@ -8,22 +8,18 @@ import {
   Calendar,
   HelpCircle,
   MessageCircle,
-  Tag,
   UserCircle,
   Wrench,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FaqAccordion } from "@/components/client/faq-accordion";
-import { CategoryFilterPanel } from "@/components/marketing/category-filter-panel";
-import { FilterChip } from "@/components/marketing/filter-chip";
+import { CategorySearchToolbar } from "@/components/marketing/category-search-toolbar";
 import {
   hubEmptyStateClass,
   hubInnerNarrowClass,
   hubIntroClass,
   hubSectionClass,
 } from "@/components/marketing/hub-styles";
-import { SearchFilterBar } from "@/components/marketing/search-filter-bar";
-import { useHubFilters } from "@/components/marketing/use-hub-filters";
 import {
   FAQ_CATEGORIES,
   FAQ_PUBLIC_ITEMS,
@@ -31,12 +27,9 @@ import {
 } from "@/lib/content/site-faq-public";
 import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
 
-type Filter = "Tous" | FaqCategory;
+const ALL_CATEGORY = "Tous";
 
-const FILTER_OPTIONS: { value: Filter; label: string }[] = [
-  { value: "Tous", label: "Tous" },
-  ...FAQ_CATEGORIES.map((category) => ({ value: category, label: category })),
-];
+const CATEGORIES = [ALL_CATEGORY, ...FAQ_CATEGORIES] as const;
 
 function pickFaqIcon(category: FaqCategory): LucideIcon {
   switch (category) {
@@ -54,26 +47,13 @@ function pickFaqIcon(category: FaqCategory): LucideIcon {
 }
 
 export function FaqPageClient() {
-  const {
-    search,
-    setSearch,
-    activeFilter,
-    setActiveFilter,
-    draftFilter,
-    setDraftFilter,
-    filterOpen,
-    setFilterOpen,
-    activeFilterCount,
-    hasActiveFilters,
-    resetFilters,
-    applyFilter,
-    clearSearch,
-  } = useHubFilters<Filter>("Tous");
+  const [search, setSearch] = React.useState("");
+  const [category, setCategory] = React.useState<string>(ALL_CATEGORY);
 
   const filtered = React.useMemo(() => {
     const q = search.trim().toLowerCase();
     return FAQ_PUBLIC_ITEMS.filter((item) => {
-      const matchesCat = activeFilter === "Tous" || item.category === activeFilter;
+      const matchesCat = category === ALL_CATEGORY || item.category === category;
       const matchesSearch =
         !q ||
         item.q.toLowerCase().includes(q) ||
@@ -81,18 +61,20 @@ export function FaqPageClient() {
         item.category.toLowerCase().includes(q);
       return matchesCat && matchesSearch;
     });
-  }, [search, activeFilter]);
+  }, [search, category]);
 
   const grouped = React.useMemo(() => {
-    const showGroups = activeFilter === "Tous" && !search.trim();
+    const showGroups = category === ALL_CATEGORY && !search.trim();
     if (!showGroups) {
       return [{ category: null as FaqCategory | null, items: filtered }];
     }
-    return FAQ_CATEGORIES.map((category) => ({
-      category,
-      items: filtered.filter((item) => item.category === category),
+    return FAQ_CATEGORIES.map((cat) => ({
+      category: cat,
+      items: filtered.filter((item) => item.category === cat),
     })).filter((group) => group.items.length > 0);
-  }, [activeFilter, filtered, search]);
+  }, [category, filtered, search]);
+
+  const hasActiveSearchOrFilters = Boolean(search.trim()) || category !== ALL_CATEGORY;
 
   return (
     <section className={hubSectionClass}>
@@ -101,55 +83,45 @@ export function FaqPageClient() {
           Trouvez rapidement les réponses à vos questions sur le cabinet, les rendez-vous et vos outils en ligne.
         </p>
 
-        <SearchFilterBar
+        <CategorySearchToolbar
           className="mt-8"
           searchTerm={search}
           onSearchChange={setSearch}
-          onSearchClear={clearSearch}
+          onSearchClear={() => setSearch("")}
           searchPlaceholder="Rechercher (rendez-vous, honoraires, simulateur…)"
           searchAriaLabel="Rechercher dans la FAQ"
-          filterOpen={filterOpen}
-          onFilterOpenChange={setFilterOpen}
-          filterPanelTitle="Filtres"
-          activeFilterCount={activeFilterCount}
-          showFilterButton
-          showResultsSummary={hasActiveFilters}
-          resultCount={hasActiveFilters ? filtered.length : undefined}
+          category={category}
+          onCategoryChange={setCategory}
+          categories={CATEGORIES}
+          allCategoryValue={ALL_CATEGORY}
+          categoryFieldLabel="Sujet"
+          filterPanelDescription="Affinez par thématique de question."
+          resultCount={filtered.length}
+          hasActiveSearchOrFilters={hasActiveSearchOrFilters}
           resultLabel={(count) => `${count} question${count > 1 ? "s" : ""}`}
-          onClearAll={resetFilters}
-          activeChips={
-            activeFilter !== "Tous" ? (
-              <FilterChip label={activeFilter} icon={Tag} onRemove={() => setActiveFilter("Tous")} />
-            ) : null
-          }
-          filterPanel={
-            <CategoryFilterPanel
-              label="Sujet"
-              options={FILTER_OPTIONS}
-              value={draftFilter}
-              onChange={setDraftFilter}
-              onReset={() => setDraftFilter("Tous")}
-              onApply={applyFilter}
-            />
-          }
         />
 
-        <div className="mt-10 space-y-12 md:mt-12 md:space-y-14">
+        <div className="mt-8 space-y-10 sm:mt-10 md:space-y-12">
           {filtered.length === 0 ? (
             <div className={hubEmptyStateClass}>
-              <div className="mx-auto grid size-12 place-items-center rounded-full bg-white">
-                <HelpCircle className="size-5 text-[#1f2a7c]/35" aria-hidden />
+              <div className="mx-auto grid size-12 place-items-center rounded-full bg-zinc-100">
+                <HelpCircle className="size-5 text-zinc-400" aria-hidden />
               </div>
-              <p className="mt-4 text-sm text-[#1f2a7c]/65">
+              <p className="mt-4 text-sm text-zinc-600">
                 Aucune question ne correspond à votre recherche. Essayez « rendez-vous », « honoraires » ou « simulateur ».
               </p>
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="mt-4 text-sm font-semibold text-[#1f2a7c] underline-offset-4 hover:underline"
-              >
-                Réinitialiser
-              </button>
+              {hasActiveSearchOrFilters ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch("");
+                    setCategory(ALL_CATEGORY);
+                  }}
+                  className="mt-3 text-sm text-zinc-700 underline underline-offset-4 transition hover:text-zinc-900"
+                >
+                  Réinitialiser
+                </button>
+              ) : null}
             </div>
           ) : (
             grouped.map((group) => (
@@ -160,13 +132,13 @@ export function FaqPageClient() {
                 {group.category ? (
                   <h2
                     id={`faq-cat-${group.category}`}
-                    className="text-xl font-semibold tracking-[-0.03em] text-[#1f2a7c] md:text-2xl"
+                    className="text-lg font-semibold tracking-tight text-zinc-900 md:text-xl"
                   >
                     {group.category}
                   </h2>
                 ) : null}
                 <FaqAccordion
-                  className={group.category ? "mt-6" : undefined}
+                  className={group.category ? "mt-5" : undefined}
                   items={group.items.map((item) => ({
                     q: item.q,
                     a: item.a,
@@ -179,7 +151,7 @@ export function FaqPageClient() {
           )}
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-xl border border-[#1f2a7c]/12 bg-[#1f2a7c] px-6 py-7 text-white shadow-[0_4px_24px_rgba(10,20,40,0.12)] sm:px-8 sm:py-8">
+        <div className="mt-12 overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900 px-6 py-7 text-white shadow-[0_4px_24px_rgba(0,0,0,0.12)] sm:px-8 sm:py-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-4">
               <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white/10">
@@ -195,7 +167,7 @@ export function FaqPageClient() {
             <div className="flex flex-wrap gap-2">
               <Link
                 href={CONTACT_HREF}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#1f2a7c] transition-colors hover:bg-white/90"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 transition-colors hover:bg-white/90"
               >
                 Nous contacter
                 <ArrowUpRight className="size-4" aria-hidden />

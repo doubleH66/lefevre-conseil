@@ -13,6 +13,7 @@ import { NavMobileMenu } from "@/components/layout/navbar/nav-mobile-menu";
 import {
   NAV_SHELL_TRANSPARENT,
   navGlassSurfaceDocked,
+  navGlassSurfaceRest,
   navGlassWhite,
 } from "@/components/layout/navbar/styles";
 import { cn } from "@/lib/utils";
@@ -47,18 +48,26 @@ export function SiteNavbar({ hero: heroProp }: SiteNavbarProps = {}) {
     setDesktopOpen(null);
   }, []);
 
-  const controlsLight = mobileOpen ? false : !docked || navTheme === "dark";
+  /** Texte blanc uniquement sur fond sombre détecté sous la barre. */
+  const controlsLight = mobileOpen ? false : navTheme === "dark";
 
-  /** Verre flou unique : navbar + sous-menus (jamais fond blanc opaque). */
+  /** Verre flou : au scroll ou menu mobile — pas au hover d’un sous-menu desktop. */
   const glassSurfaceClass = navGlassSurfaceDocked;
 
   const shellClass = mobileOpen
     ? navGlassWhite
-    : docked || desktopOpen
+    : docked
       ? glassSurfaceClass
       : NAV_SHELL_TRANSPARENT;
 
-  const dropdownSurfaceClass = mobileOpen ? navGlassWhite : glassSurfaceClass;
+  /** Même surface verre que la navbar (repos = verre léger, scroll = verre docké). */
+  const dropdownSurfaceClass = mobileOpen
+    ? navGlassWhite
+    : docked
+      ? navGlassSurfaceDocked
+      : controlsLight
+        ? navGlassSurfaceRest
+        : navGlassWhite;
 
   useEffect(() => {
     setMobileOpen(false);

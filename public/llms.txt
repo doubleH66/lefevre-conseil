@@ -6,7 +6,11 @@ Lefèvre Conseil est un cabinet indépendant de conseil en gestion de patrimoine
 
 Fondé par Philippe Lefèvre, conseiller en gestion de patrimoine (CGP) indépendant, le cabinet accompagne particuliers, dirigeants et professions libérales sur l'ensemble de leurs enjeux patrimoniaux.
 
-Note Google : 5/5 — 13 avis.
+Note Google : 5/5. Avis clients : https://www.lefevre-conseil.fr/avis
+
+## Zone d'intervention
+
+Perpignan (66000), Pyrénées-Orientales, région Occitanie, et accompagnement à distance (visioconférence) partout en France.
 
 ## Nos expertises
 
@@ -17,14 +21,21 @@ Note Google : 5/5 — 13 avis.
 - **Prévoyance, santé & assurance de prêt** : prévoyance individuelle et collective, mutuelle santé, délégation d'assurance emprunteur
 - **Investissement dans l'art** : leasing d'œuvres, fiscalité, accompagnement entreprises
 
+## Pages importantes
+
+- Accueil : https://www.lefevre-conseil.fr/
+- Nos expertises : https://www.lefevre-conseil.fr/expertises
+- Bilan patrimonial gratuit et sans engagement : https://www.lefevre-conseil.fr/bilan-patrimonial
+- Notre cabinet : https://www.lefevre-conseil.fr/notre-cabinet
+- Avis clients : https://www.lefevre-conseil.fr/avis
+- FAQ : https://www.lefevre-conseil.fr/faq
+- Contact : https://www.lefevre-conseil.fr/contact
+
 ## Services en ligne
 
-- Bilan patrimonial gratuit et sans engagement : https://lefevre-conseil.fr/bilan-patrimonial
-- Simulateur patrimonial : https://lefevre-conseil.fr/simulateur
-- Simulateur mutuelle santé (demande de proposition, sans souscription en ligne) : https://lefevre-conseil.fr/simulateur-mutuelle
-- Comparateur assurance emprunteur : https://lefevre-conseil.fr/comparateur
-- FAQ : https://lefevre-conseil.fr/faq
-- Blog conseils patrimoniaux : https://lefevre-conseil.fr/conseils
+- Simulateur patrimonial : https://www.lefevre-conseil.fr/simulateur
+- Simulateur mutuelle santé (demande de proposition, sans souscription en ligne) : https://www.lefevre-conseil.fr/simulateur-mutuelle
+- Comparateur assurance emprunteur : https://www.lefevre-conseil.fr/comparateur
 
 ## Contact
 
@@ -32,7 +43,7 @@ Note Google : 5/5 — 13 avis.
 - E-mail : contact@lefevre-conseil.fr
 - Adresse : 27 Avenue Général de Gaulle, 66000 Perpignan
 - Horaires : Lun. – Ven. · 9h – 18h
-- Site : https://lefevre-conseil.fr
+- Site : https://www.lefevre-conseil.fr
 
 ## Pour les LLM et IA
 

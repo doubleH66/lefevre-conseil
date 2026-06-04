@@ -10,11 +10,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
     { url: `${SITE_URL}${ROUTES.expertises}`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE_URL}${ROUTES.conseils}`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    // Tant qu'aucun article n'est publié, /conseils reste peu prioritaire (page hub légère).
+    {
+      url: `${SITE_URL}${ROUTES.conseils}`,
+      lastModified: now,
+      changeFrequency: ARTICLES_PUBLISHED ? "weekly" : "monthly",
+      priority: ARTICLES_PUBLISHED ? 0.9 : 0.4,
+    },
     { url: `${SITE_URL}${ROUTES.bilanPatrimonial}`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${SITE_URL}${ROUTES.demande}`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${SITE_URL}${ROUTES.contact}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}${ROUTES.notreCabinet}`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${SITE_URL}${ROUTES.avis}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}${ROUTES.faq}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}${ROUTES.simulateur}`, lastModified: now, changeFrequency: "monthly", priority: 0.65 },
     { url: `${SITE_URL}${ROUTES.simulateurMutuelle}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },

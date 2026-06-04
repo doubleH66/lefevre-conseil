@@ -8,7 +8,7 @@ import {
 import { ROUTES } from "@/lib/content/routes";
 
 const PATH = ROUTES.bilanPatrimonial;
-const TITLE = "Bilan patrimonial à Perpignan | Lefèvre Conseil";
+const TITLE = "Bilan patrimonial à Perpignan";
 const DESCRIPTION =
   "Réalisez un bilan patrimonial avec Lefèvre Conseil pour faire le point sur votre épargne, votre retraite, votre fiscalité et vos projets.";
 

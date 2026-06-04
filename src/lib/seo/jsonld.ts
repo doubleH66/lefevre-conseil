@@ -1,10 +1,16 @@
 import { SERVICE_CATALOG, serviceDetailHref } from "@/lib/content/services";
-import { SITE_URL, aggregatedRating, CABINET_CONTACT, SITE_NAME } from "@/lib/content/site";
+import { SITE_URL, CABINET_CONTACT, SITE_NAME } from "@/lib/content/site";
+import { CLIENT_REVIEWS, GOOGLE_RATING } from "@/lib/content/reviews";
 
+/**
+ * Schéma principal du cabinet (`FinancialService` — sous-type de `LocalBusiness`).
+ *
+ * NOTE : aucun `aggregateRating` ni `review` n'est déclaré ici tant que les avis
+ * Google réels (note exacte + nombre exact) ne sont pas confirmés. La preuve
+ * sociale reste visible sur le site (/avis, témoignages) ; on n'inscrit pas de
+ * données d'avis non vérifiées dans le schéma.
+ */
 export function financialServiceJsonLd() {
-  const aggregate = aggregatedRating();
-  const { google, infobel } = CABINET_CONTACT.ratings;
-
   return {
     "@context": "https://schema.org",
     "@type": "FinancialService",
@@ -40,6 +46,13 @@ export function financialServiceJsonLd() {
         closes: "18:00",
       },
     ],
+    founder: {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#philippe-lefevre`,
+      name: "Philippe Lefèvre",
+      jobTitle: "Conseiller en gestion de patrimoine (CGP) indépendant",
+      worksFor: { "@id": `${SITE_URL}/#cabinet` },
+    },
     sameAs: [
       CABINET_CONTACT.social.facebook,
       CABINET_CONTACT.social.linkedin,
@@ -48,6 +61,8 @@ export function financialServiceJsonLd() {
     areaServed: [
       { "@type": "Country", name: "France" },
       { "@type": "City", name: "Perpignan" },
+      { "@type": "AdministrativeArea", name: "Pyrénées-Orientales" },
+      { "@type": "AdministrativeArea", name: "Occitanie" },
     ],
     knowsAbout: [
       "Gestion de patrimoine",
@@ -70,31 +85,34 @@ export function financialServiceJsonLd() {
         itemOffered: { "@type": "Service", name: s.title },
       })),
     },
+  };
+}
+
+/**
+ * Avis + note agrégée — à inclure UNIQUEMENT sur /avis, où les avis sont
+ * réellement visibles. Données réelles issues de la fiche Google (5,0 / 13 avis).
+ * Rattaché au cabinet via `@id` (pas de note auto-déclarée sur les autres pages).
+ */
+export function reviewsJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    "@id": `${SITE_URL}/#cabinet`,
+    name: CABINET_CONTACT.name,
     aggregateRating: {
       "@type": "AggregateRating",
-      ratingValue: aggregate.value,
+      ratingValue: GOOGLE_RATING.value,
       bestRating: 5,
       worstRating: 1,
-      reviewCount: aggregate.count,
+      reviewCount: GOOGLE_RATING.count,
     },
-    review: [
-      {
-        "@type": "Review",
-        author: { "@type": "Person", name: "Laurent Blasco" },
-        reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
-        reviewBody:
-          "Excellent conseiller en gestion de patrimoine à Perpignan : approche humaine et conseils techniques très précis.",
-        publisher: { "@type": "Organization", name: google.source },
-      },
-      {
-        "@type": "Review",
-        author: { "@type": "Person", name: "Charlotte Voltz" },
-        reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
-        reviewBody:
-          "Depuis 8 ans mon conseiller financier : confiance rapide, large éventail d'optimisation fiscale. Je recommande vivement.",
-        publisher: { "@type": "Organization", name: infobel.source },
-      },
-    ],
+    review: CLIENT_REVIEWS.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.author },
+      reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5, worstRating: 1 },
+      reviewBody: r.quote,
+      publisher: { "@type": "Organization", name: "Google" },
+    })),
   };
 }
 

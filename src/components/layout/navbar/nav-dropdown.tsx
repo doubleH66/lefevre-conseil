@@ -14,8 +14,7 @@ const PANEL_WIDTH = 288;
 type NavDropdownProps = {
   id: NavDropdownId;
   light: boolean;
-  /** @deprecated Le panneau utilise sa propre surface (portal). */
-  surfaceClass?: string;
+  surfaceClass: string;
   open: NavDropdownId | null;
   setOpen: React.Dispatch<React.SetStateAction<NavDropdownId | null>>;
 };
@@ -34,7 +33,7 @@ function readMenuPosition(anchor: HTMLDivElement | null): MenuPosition | null {
   return { top: rect.bottom, left };
 }
 
-export function NavDropdown({ id, light, open, setOpen }: NavDropdownProps) {
+export function NavDropdown({ id, light, surfaceClass, open, setOpen }: NavDropdownProps) {
   const item = NAV_DROPDOWNS[id];
   const anchorRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -123,10 +122,6 @@ export function NavDropdown({ id, light, open, setOpen }: NavDropdownProps) {
     };
   }, [closeNow, isOpen]);
 
-  const panelSurfaceClass = light
-    ? "border border-white/35 bg-[#0f164a]/92 text-white shadow-[0_16px_48px_rgba(0,0,0,0.35)] backdrop-blur-xl"
-    : "border border-neutral-200/90 bg-white text-[#1f2a7c] shadow-[0_20px_50px_-12px_rgba(15,23,42,0.28)]";
-
   const linkClass = light
     ? "text-white hover:bg-white/10"
     : "text-[#1f2a7c] hover:bg-[#1f2a7c]/[0.06]";
@@ -147,18 +142,8 @@ export function NavDropdown({ id, light, open, setOpen }: NavDropdownProps) {
             >
               {/* Pont invisible : recouvre l'espace entre le bouton et le panneau */}
               <div aria-hidden className="-mt-3 h-3" />
-              <div className={cn("overflow-hidden rounded-2xl", panelSurfaceClass)}>
-                <div className="border-b border-current/10 px-4 py-3">
-                  <p
-                    className={cn(
-                      "text-[11px] font-semibold uppercase tracking-[0.14em]",
-                      light ? "text-white/60" : "text-[#1f2a7c]/60",
-                    )}
-                  >
-                    {item.label}
-                  </p>
-                </div>
-                <ul className="max-h-[min(20rem,58vh)] overflow-y-auto overscroll-contain p-2">
+              <div className={cn("overflow-hidden rounded-[1.75rem] p-2", surfaceClass)}>
+                <ul className="max-h-[min(20rem,58vh)] overflow-y-auto overscroll-contain">
                   {item.links.map((link) => (
                     <li key={`${link.href}-${link.label}`}>
                       <Link
@@ -196,8 +181,16 @@ export function NavDropdown({ id, light, open, setOpen }: NavDropdownProps) {
           aria-haspopup="menu"
           onClick={toggleMenu}
           className={cn(
-            "inline-flex h-10 items-center gap-1 rounded-full px-3.5 text-[15px] font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/25",
-            light ? "text-white focus-visible:ring-white/35" : "text-[#1f2a7c]",
+            "inline-flex h-10 items-center gap-1 rounded-full px-3.5 text-[15px] font-semibold tracking-tight outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-[#1f2a7c]/25",
+            light
+              ? cn(
+                  "text-white focus-visible:ring-white/35",
+                  isOpen ? "bg-white/10" : "hover:bg-white/10",
+                )
+              : cn(
+                  "text-[#1f2a7c]",
+                  isOpen ? "bg-[#1f2a7c]/5" : "hover:bg-[#1f2a7c]/5",
+                ),
           )}
         >
           {item.label}

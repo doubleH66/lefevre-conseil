@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PwaRegister } from "@/components/client/pwa-register";
 import { defaultMetadata, SITE_NAME, SITE_URL } from "@/lib/seo/metadata";
+import { IS_INDEXABLE } from "@/lib/content/site";
 import { financialServiceJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import "./globals.css";
 
@@ -37,7 +38,9 @@ export const metadata: Metadata = {
     title: defaultMetadata.title,
     description: defaultMetadata.description,
   },
-  robots: { index: true, follow: true },
+  robots: IS_INDEXABLE
+    ? { index: true, follow: true, googleBot: { index: true, follow: true } }
+    : { index: false, follow: false, googleBot: { index: false, follow: false } },
 };
 
 export const viewport: Viewport = {

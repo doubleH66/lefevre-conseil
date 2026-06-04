@@ -5,7 +5,7 @@ import { FAQ_HREF } from "@/lib/content/routes";
 import { FAQ_PUBLIC_ITEMS } from "@/lib/content/site-faq-public";
 
 const PATH = FAQ_HREF;
-const TITLE = "FAQ | Lefèvre Conseil";
+const TITLE = "FAQ gestion de patrimoine";
 const DESCRIPTION = "Questions fréquentes sur le cabinet, les rendez-vous et l’accompagnement patrimonial.";
 
 export const metadata: Metadata = {

@@ -7,6 +7,7 @@ export const ROUTES = {
   notreCabinet: "/notre-cabinet",
   expertises: "/expertises",
   conseils: "/conseils",
+  avis: "/avis",
   faq: "/faq",
   installation: "/installation",
   login: "/login",
@@ -38,6 +39,7 @@ export const SIMULATEUR_HREF = ROUTES.simulateur;
 export const SIMULATEUR_MUTUELLE_HREF = ROUTES.simulateurMutuelle;
 export const CONTACT_HREF = ROUTES.contact;
 export const CONSEILS_HREF = ROUTES.conseils;
+export const AVIS_HREF = ROUTES.avis;
 /** @deprecated Utiliser `CONSEILS_HREF`. */
 export const ACTUALITES_HREF = CONSEILS_HREF;
 export const NOTRE_CABINET_HREF = ROUTES.notreCabinet;

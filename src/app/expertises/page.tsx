@@ -6,7 +6,7 @@ import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
 
 const PATH = EXPERTISES_BASE_HREF;
-const TITLE = "Nos expertises | Lefèvre Conseil";
+const TITLE = "Expertises patrimoniales";
 const DESCRIPTION =
   "Six expertises pour structurer, protéger et transmettre votre patrimoine : gestion de patrimoine, épargne, retraite, fiscalité, prévoyance et investissement dans l’art.";
 

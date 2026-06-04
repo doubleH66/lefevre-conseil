@@ -26,6 +26,13 @@ export const PAGE_HEROES = {
     taglineHighlightAfter: "cabinet indépendant",
     titleId: "notre-cabinet-hero-title",
   },
+  avis: {
+    title: "Avis clients et retours d’expérience",
+    tagline:
+      "Bilan patrimonial, retraite, transmission, fiscalité, structuration du patrimoine : ce que disent les clients accompagnés par Lefèvre Conseil.",
+    taglineHighlightAfter: " : ce que disent",
+    titleId: "avis-hero-title",
+  },
   conseils: {
     title: "Conseils & actualités",
     tagline:

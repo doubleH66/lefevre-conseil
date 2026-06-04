@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { cn } from "@/lib/utils";
 
 export type SearchFilterBarProps = {
@@ -14,6 +15,7 @@ export type SearchFilterBarProps = {
   onFilterOpenChange: (open: boolean) => void;
   filterPanel?: ReactNode;
   filterPanelTitle?: string;
+  filterPanelDescription?: string;
   activeFilterCount?: number;
   activeChips?: ReactNode;
   resultCount?: number;
@@ -25,10 +27,10 @@ export type SearchFilterBarProps = {
 };
 
 const searchInputClass =
-  "h-11 w-full rounded-xl border border-neutral-200 bg-white py-0 pl-12 pr-11 text-sm text-[#1f2a7c] shadow-[0_2px_12px_rgba(10,20,40,0.06)] outline-none transition placeholder:text-[#1f2a7c]/35 focus:border-[#1f2a7c]/25 focus:ring-2 focus:ring-[#1f2a7c]/10 [&::-webkit-search-cancel-button]:hidden";
+  "h-11 w-full rounded-xl border border-zinc-200 bg-white py-0 pl-12 pr-11 text-sm text-zinc-950 shadow-[0_2px_12px_rgba(0,0,0,0.06)] outline-none transition placeholder:text-zinc-400 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-200 [&::-webkit-search-cancel-button]:hidden";
 
 const filterButtonClass =
-  "relative inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-3.5 text-sm font-semibold text-[#1f2a7c] shadow-[0_2px_12px_rgba(10,20,40,0.06)] transition hover:bg-neutral-50 sm:px-4";
+  "relative inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-3.5 text-sm font-semibold text-zinc-900 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition hover:bg-zinc-50 sm:px-4";
 
 export function SearchFilterBar({
   searchTerm,
@@ -40,6 +42,7 @@ export function SearchFilterBar({
   onFilterOpenChange,
   filterPanel,
   filterPanelTitle = "Filtres",
+  filterPanelDescription,
   activeFilterCount = 0,
   activeChips,
   resultCount,
@@ -54,11 +57,11 @@ export function SearchFilterBar({
     showResultsSummary && (searchTerm.trim() || filtersActive || resultCount != null);
 
   return (
-    <div className={cn("w-full min-w-0 space-y-3", className)}>
+    <div className={cn("mx-auto w-full min-w-0 max-w-4xl space-y-3", className)}>
       <div className="flex min-w-0 gap-2">
         <div className="relative min-w-0 flex-1">
           <Search
-            className="pointer-events-none absolute left-4 top-1/2 z-10 size-5 -translate-y-1/2 text-[#1f2a7c]/35"
+            className="pointer-events-none absolute left-4 top-1/2 z-10 size-5 -translate-y-1/2 text-zinc-400"
             aria-hidden
           />
           <input
@@ -74,7 +77,7 @@ export function SearchFilterBar({
             <button
               type="button"
               onClick={onSearchClear}
-              className="absolute right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-[#1f2a7c]/45 transition hover:bg-neutral-100 hover:text-[#1f2a7c]"
+              className="absolute right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
               aria-label="Effacer la recherche"
             >
               <X className="size-4" aria-hidden />
@@ -85,8 +88,8 @@ export function SearchFilterBar({
         {showFilterButton && filterPanel ? (
           <button
             type="button"
-            onClick={() => onFilterOpenChange(!filterOpen)}
-            className={cn(filterButtonClass, filtersActive && "border-[#1f2a7c]/25 bg-[#1f2a7c]/[0.04]")}
+            onClick={() => onFilterOpenChange(true)}
+            className={cn(filterButtonClass, filtersActive && "border-zinc-400 bg-zinc-50")}
             aria-expanded={filterOpen}
             aria-label={
               filtersActive
@@ -97,7 +100,7 @@ export function SearchFilterBar({
             <SlidersHorizontal className="size-[18px] shrink-0" aria-hidden />
             <span className="hidden sm:inline">{filterPanelTitle}</span>
             {filtersActive ? (
-              <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-[#1f2a7c] px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
+              <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-zinc-900 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
                 {activeFilterCount}
               </span>
             ) : null}
@@ -105,36 +108,41 @@ export function SearchFilterBar({
         ) : null}
       </div>
 
-      {filterOpen && filterPanel ? (
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white p-4 shadow-[0_4px_24px_rgba(10,20,40,0.06)] sm:p-5">
-          {filterPanel}
-        </div>
-      ) : null}
-
       {activeChips ? <div className="flex flex-wrap items-center gap-2">{activeChips}</div> : null}
 
       {hasSummary ? (
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm sm:justify-start">
           {resultCount != null ? (
-            <span className="text-[#1f2a7c]/55">{resultLabel(resultCount)}</span>
+            <span className="text-zinc-500">{resultLabel(resultCount)}</span>
           ) : null}
           {onClearAll && (searchTerm.trim() || filtersActive) ? (
             <>
               {resultCount != null ? (
-                <span className="text-neutral-300" aria-hidden>
+                <span className="text-zinc-300" aria-hidden>
                   ·
                 </span>
               ) : null}
               <button
                 type="button"
                 onClick={onClearAll}
-                className="font-medium text-[#1f2a7c] underline-offset-4 transition hover:underline"
+                className="font-medium text-zinc-700 underline-offset-4 transition hover:text-zinc-950 hover:underline"
               >
                 Tout effacer
               </button>
             </>
           ) : null}
         </div>
+      ) : null}
+
+      {filterPanel ? (
+        <BottomSheet
+          open={filterOpen}
+          onOpenChange={onFilterOpenChange}
+          title={filterPanelTitle}
+          description={filterPanelDescription}
+        >
+          {filterPanel}
+        </BottomSheet>
       ) : null}
     </div>
   );

@@ -1,5 +1,17 @@
-export const SITE_URL = "https://lefevre-conseil.fr";
+/**
+ * URL canonique du site. Pilotée par `NEXT_PUBLIC_SITE_URL` ; par défaut le
+ * domaine final de production. Sur une preview Vercel, définir
+ * `NEXT_PUBLIC_SITE_URL=https://<preview>.vercel.app` pour bloquer l'indexation.
+ */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.lefevre-conseil.fr").replace(/\/+$/, "");
+
 export const SITE_NAME = "Lefèvre Conseil";
+
+/** `true` uniquement en production sur le domaine final — sinon `noindex`. */
+export const IS_INDEXABLE =
+  !SITE_URL.includes("vercel.app") &&
+  process.env.VERCEL_ENV !== "preview" &&
+  process.env.NEXT_PUBLIC_NOINDEX !== "1";
 
 export const SITE_LOGO_URL =
   "https://cdn.helloklik.com/uploads/1777451639858-Capture_d_e_cran_2026-04-29_a__10.33.44-removebg-preview.png";

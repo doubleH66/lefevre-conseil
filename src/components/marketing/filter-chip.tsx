@@ -13,13 +13,13 @@ export function FilterChip({
   onRemove: () => void;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1f2a7c]/15 bg-[#1f2a7c]/[0.05] py-1 pl-2.5 pr-1.5 text-xs font-medium text-[#1f2a7c]">
-      <Icon className="size-3.5 opacity-60" aria-hidden />
-      {label}
+    <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-700">
+      <Icon className="size-3 shrink-0 opacity-70" aria-hidden />
+      <span className="truncate">{label}</span>
       <button
         type="button"
         onClick={onRemove}
-        className="grid size-5 place-items-center rounded-full text-[#1f2a7c]/55 transition hover:bg-[#1f2a7c]/10 hover:text-[#1f2a7c]"
+        className="ml-0.5 shrink-0 rounded-full p-0.5 hover:bg-zinc-200/80"
         aria-label={`Retirer le filtre ${label}`}
       >
         <X className="size-3" aria-hidden />

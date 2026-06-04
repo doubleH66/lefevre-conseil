@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { ChevronDown } from "lucide-react";
 import { HighlightReveal } from "@/components/ui/highlight-reveal";
@@ -16,8 +15,6 @@ function stripInlineMarkdown(text: string): string {
     .replace(/__(.+?)__/g, "$1");
 }
 
-const questionHighlightPill = "rounded-lg px-1.5 pb-0.5";
-
 export type FaqItem = {
   q: string;
   a: string;
@@ -27,28 +24,19 @@ export type FaqItem = {
 export function FaqAccordion({
   items,
   className,
-  questionEmphasis = "none",
   searchQuery = "",
   singleOpen = true,
+  questionEmphasis = "none",
 }: {
   items: readonly FaqItem[];
   className?: string;
-  questionEmphasis?: "none" | "highlight";
   searchQuery?: string;
   singleOpen?: boolean;
+  questionEmphasis?: "none" | "highlight";
 }) {
   const hasSearch = searchQuery.trim().length > 0;
   const baseId = React.useId().replace(/:/g, "");
-  const reduceMotion = useReducedMotion();
   const [openSet, setOpenSet] = React.useState<Set<number>>(() => new Set());
-
-  const transition = React.useMemo(
-    () =>
-      reduceMotion
-        ? { duration: 0.15 }
-        : { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const },
-    [reduceMotion],
-  );
 
   const toggle = React.useCallback(
     (index: number) => {
@@ -76,29 +64,25 @@ export function FaqAccordion({
 
         return (
           <li key={`${item.q}-${index}`}>
-            <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0_4px_24px_rgba(10,20,40,0.08)]">
+            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
               <button
                 type="button"
                 id={triggerId}
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(index)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors duration-150 hover:bg-neutral-50/80 sm:px-5"
+                className="flex w-full items-center justify-between gap-4 bg-white px-5 py-4 text-left transition hover:bg-zinc-50"
               >
                 <span className="flex min-w-0 flex-1 items-center gap-3.5">
                   {Icon ? (
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#1f2a7c]/[0.07]">
-                      <Icon className="size-4 text-[#1f2a7c]/70" aria-hidden />
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-zinc-100">
+                      <Icon className="size-4 text-zinc-600" aria-hidden />
                     </span>
                   ) : null}
-                  <span className="text-sm font-medium leading-snug text-[#1f2a7c] sm:text-[15px]">
+                  <span className="text-sm font-medium text-zinc-950 md:text-base">
                     {questionEmphasis === "highlight" ? (
-                      <HighlightReveal variant="light" delay="none" className={questionHighlightPill}>
-                        {hasSearch ? (
-                          <SearchHighlight text={item.q} query={searchQuery} />
-                        ) : (
-                          item.q
-                        )}
+                      <HighlightReveal variant="light" delay="none" className="rounded-lg px-1.5 pb-0.5">
+                        {hasSearch ? <SearchHighlight text={item.q} query={searchQuery} /> : item.q}
                       </HighlightReveal>
                     ) : hasSearch ? (
                       <SearchHighlight text={item.q} query={searchQuery} />
@@ -107,14 +91,13 @@ export function FaqAccordion({
                     )}
                   </span>
                 </span>
-                <motion.span
+                <ChevronDown
+                  className={cn(
+                    "size-5 shrink-0 text-zinc-950/40 transition-transform duration-200",
+                    isOpen && "rotate-180",
+                  )}
                   aria-hidden
-                  className="shrink-0 text-[#1f2a7c]/35"
-                  animate={{ rotate: isOpen ? 180 : 0 }}
-                  transition={transition}
-                >
-                  <ChevronDown className="size-5" />
-                </motion.span>
+                />
               </button>
 
               <div
@@ -122,20 +105,18 @@ export function FaqAccordion({
                 role="region"
                 aria-labelledby={triggerId}
                 className={cn(
-                  "grid border-t border-neutral-200/80 bg-[#fafbfd] transition-[grid-template-rows] duration-200 ease-out",
+                  "grid bg-zinc-50 transition-[grid-template-rows] duration-200 ease-out",
                   isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
                 )}
               >
                 <div className="overflow-hidden">
-                  <div className="px-5 pb-4 pt-3 sm:px-5">
+                  <div className="border-t border-zinc-200/90 px-5 pb-4 pt-3 text-sm leading-7 text-zinc-700">
                     {hasSearch ? (
-                      <p className="text-sm leading-relaxed text-[#1f2a7c]/72 sm:text-[15px]">
+                      <p>
                         <SearchHighlight text={stripInlineMarkdown(item.a)} query={searchQuery} />
                       </p>
                     ) : (
-                      <RichText className="text-sm leading-relaxed text-[#1f2a7c]/72 sm:text-[15px]">
-                        {item.a}
-                      </RichText>
+                      <RichText>{item.a}</RichText>
                     )}
                   </div>
                 </div>

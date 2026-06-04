@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin } from "lucide-react";
 import {
+  AVIS_HREF,
   CONSEILS_HREF,
   CONTACT_HREF,
   EXPERTISES_BASE_HREF,
@@ -34,6 +35,7 @@ const navigationLinks = [
   { href: EXPERTISES_BASE_HREF, label: "Nos expertises" },
   { href: CONTACT_HREF, label: "Contact" },
   { href: NOTRE_CABINET_HREF, label: "À propos" },
+  { href: AVIS_HREF, label: "Avis clients" },
   { href: FAQ_HREF, label: "FAQ" },
   { href: INSTALLATION_HREF, label: "Installer l’app" },
 ] as const;

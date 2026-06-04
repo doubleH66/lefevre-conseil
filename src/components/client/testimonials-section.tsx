@@ -6,79 +6,31 @@ import { ArrowUpRight } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { GoogleLogo } from "@/components/ui/google-logo";
 import { Highlight } from "@/components/ui/highlight";
+import {
+  FEATURED_REVIEWS,
+  GOOGLE_REVIEWS_HREF,
+  splitQuoteByHighlights,
+  type ReviewQuotePart,
+} from "@/lib/content/reviews";
 import { cn } from "@/lib/utils";
 
-/** Fiche / avis Google Local (Perpignan). */
-const GOOGLE_REVIEWS_HREF =
-  "https://www.google.com/search?sa=X&sca_esv=0cc88c52acce4ba2&sxsrf=ANbL-n4YRVknCa2MuHG4WnBzzZ3gjC_slw:1778781310216&q=avis%20sur%20lefevre-conseil%20perpignan&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDM2NrQ0MzczN7a0sDQAYjPzDYyMrxiVEssyixWKS4sUclLTUsuKUnWT8_OKUzNzFApSiwoy0_MS8xaxEqEIAGy4T8hlAAAA&rldimm=16331967673989098967&tbm=lcl&hl=fr-FR&ved=0CBAQ5foLahcKEwj4-vbirLmUAxUAAAAAHQAAAAAQCQ&biw=2137&bih=1232&dpr=1.6#lkt=LocalPoiReviews&arid=ChZDSUhNMG9nS0VJQ0FnTUNRN1lxM2Z3EAE";
-
-type QuotePart = { text: string; strong?: boolean };
+type QuotePart = ReviewQuotePart;
 
 type ShowcaseTestimonial = {
   id: number;
-  /** Segments du témoignage ; `strong` = mise en avant en gras. */
   quoteParts: readonly QuotePart[];
   author: string;
-  /** Photo Google ; `null` = pastille initiales (`initials`). */
   avatar: string | null;
   initials?: string;
 };
 
-const showcaseTestimonials: ShowcaseTestimonial[] = [
-  {
-    id: 1,
-    quoteParts: [
-      { text: "Je travaille avec Philippe Lefevre depuis " },
-      { text: "10 ans", strong: true },
-      { text: ". Je l'ai toujours vu " },
-      { text: "investi et assurant le suivi de ses clients", strong: true },
-      { text: ". Un " },
-      { text: "vrai indépendant", strong: true },
-      {
-        text: " motivé par la satisfaction de ses clients. C'est probablement ce qui lui permet de ne travailler qu'en ",
-      },
-      { text: "recommandation", strong: true },
-      { text: "." },
-    ],
-    author: "Jean-Sébastien Maury",
-    avatar:
-      "https://lh3.googleusercontent.com/a-/ALV-UjXVNIYlruXRO89Vyix8M7iR3aDuVuBfyzCZFRrKxGUCGmdasw=w115-h115-p-rp-mo-br100",
-  },
-  {
-    id: 2,
-    quoteParts: [
-      { text: "Équipe professionnelle", strong: true },
-      {
-        text: " qui sait accompagner ses clients en tout point et à n'importe quel moment. Ce qui est super, c'est que nous pouvons bénéficier de leurs ",
-      },
-      { text: "expertises", strong: true },
-      { text: " dans les différents domaines. " },
-      { text: "Je recommande vivement !", strong: true },
-    ],
-    author: "Angélique Hirmance",
-    avatar:
-      "https://lh3.googleusercontent.com/a-/ALV-UjXqTFzbLVypqz1_U5-Hm0G1CxDbeOUgg7nBaDMCyKaMCM0zUas=w115-h115-p-rp-mo-ba12-br100",
-  },
-  {
-    id: 3,
-    quoteParts: [
-      { text: "Client de Lefèvre Conseil, je suis " },
-      { text: "très satisfait", strong: true },
-      { text: " des solutions de placement financier proposées. L'expertise sur les " },
-      { text: "contrats de capitalisation", strong: true },
-      {
-        text: " et la gestion de l'épargne est évidente. Une approche professionnelle qui apporte une ",
-      },
-      { text: "vraie valeur ajoutée", strong: true },
-      { text: " pour sécuriser son capital. Un " },
-      { text: "cabinet de gestion de patrimoine de confiance", strong: true },
-      { text: " que je recommande vivement." },
-    ],
-    author: "Alain PANTEL-RULI",
-    avatar: null,
-    initials: "AP",
-  },
-];
+const showcaseTestimonials: ShowcaseTestimonial[] = FEATURED_REVIEWS.map((review) => ({
+  id: review.id,
+  quoteParts: splitQuoteByHighlights(review.quote, review.highlights),
+  author: review.author,
+  avatar: review.avatar ?? null,
+  initials: review.initials,
+}));
 
 /** Badge type hero, lien vers les avis Google - flèche au survol. */
 function GoogleBadgeReviewsLink() {
@@ -117,15 +69,12 @@ export function LefevreUniqueTestimonials() {
   const [mobileQuoteExpanded, setMobileQuoteExpanded] = React.useState(false);
 
   const activeTestimonial = testimonials[activeIndex]!;
-  const isAlainReview = activeTestimonial.author === "Alain PANTEL-RULI";
-
-  React.useEffect(() => {
-    setMobileQuoteExpanded(false);
-  }, [activeIndex]);
+  const isAlainReview = activeTestimonial.author === "Alain Pantel-Ruli";
 
   const handleSelect = (index: number) => {
     if (index === activeIndex || isAnimating) return;
     setIsAnimating(true);
+    setMobileQuoteExpanded(false);
 
     window.setTimeout(() => {
       setDisplayedParts(testimonials[index]!.quoteParts);
