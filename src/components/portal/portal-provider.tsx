@@ -30,7 +30,6 @@ import {
   syncProjectCreation,
 } from "@/lib/portal/backend-sync";
 import { formatPortalError } from "@/lib/portal/errors";
-import { ROUTES } from "@/lib/content/routes";
 import {
   ensureClientMembership,
   loadAdminPortalData,
@@ -231,7 +230,6 @@ export function PortalProvider({
 
       if (!user) {
         setAuthUser(null);
-        setError("Session expirée. Reconnectez-vous.");
         if (showFullPageLoader) setLoading(false);
         return;
       }
@@ -251,11 +249,6 @@ export function PortalProvider({
       });
       const isAdmin = profile?.role === "admin";
       setCanSwitchMode(false);
-
-      if (isAdmin && lockClientMode) {
-        window.location.replace(ROUTES.espaceAdmin);
-        return;
-      }
 
       if (mode === "admin" && isAdmin) {
         const data = await loadAdminPortalData(supabase);
