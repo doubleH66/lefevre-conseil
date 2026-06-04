@@ -13,13 +13,13 @@ import {
 } from "@/components/client/about-experience-timeline";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { BILAN_PATRIMOINE_HREF, CONTACT_HREF } from "@/lib/content/routes";
-import { CABINET_CONTACT } from "@/lib/content/site";
 import {
   ADVISOR_ROUND_AVATAR_IMAGE_URL,
   ADVISOR_ROUND_AVATAR_OBJECT_POSITION,
+  CABINET_CONTACT,
   CABINET_PORTRAIT_IMAGE_URL,
   CABINET_PORTRAIT_OBJECT_POSITION,
-} from "@/lib/site-brand";
+} from "@/lib/content/site";
 import { cn } from "@/lib/utils";
 
 const aboutProse =

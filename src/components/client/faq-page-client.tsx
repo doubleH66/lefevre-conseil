@@ -8,23 +8,35 @@ import {
   Calendar,
   HelpCircle,
   MessageCircle,
-  Search,
+  Tag,
   UserCircle,
   Wrench,
-  X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FaqAccordion } from "@/components/client/faq-accordion";
+import { CategoryFilterPanel } from "@/components/marketing/category-filter-panel";
+import { FilterChip } from "@/components/marketing/filter-chip";
+import {
+  hubEmptyStateClass,
+  hubInnerNarrowClass,
+  hubIntroClass,
+  hubSectionClass,
+} from "@/components/marketing/hub-styles";
+import { SearchFilterBar } from "@/components/marketing/search-filter-bar";
+import { useHubFilters } from "@/components/marketing/use-hub-filters";
 import {
   FAQ_CATEGORIES,
   FAQ_PUBLIC_ITEMS,
   type FaqCategory,
 } from "@/lib/content/site-faq-public";
 import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
-import { cn } from "@/lib/utils";
 
 type Filter = "Tous" | FaqCategory;
-const FILTERS: Filter[] = ["Tous", ...FAQ_CATEGORIES];
+
+const FILTER_OPTIONS: { value: Filter; label: string }[] = [
+  { value: "Tous", label: "Tous" },
+  ...FAQ_CATEGORIES.map((category) => ({ value: category, label: category })),
+];
 
 function pickFaqIcon(category: FaqCategory): LucideIcon {
   switch (category) {
@@ -42,8 +54,21 @@ function pickFaqIcon(category: FaqCategory): LucideIcon {
 }
 
 export function FaqPageClient() {
-  const [search, setSearch] = React.useState("");
-  const [activeFilter, setActiveFilter] = React.useState<Filter>("Tous");
+  const {
+    search,
+    setSearch,
+    activeFilter,
+    setActiveFilter,
+    draftFilter,
+    setDraftFilter,
+    filterOpen,
+    setFilterOpen,
+    activeFilterCount,
+    hasActiveFilters,
+    resetFilters,
+    applyFilter,
+    clearSearch,
+  } = useHubFilters<Filter>("Tous");
 
   const filtered = React.useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -69,88 +94,49 @@ export function FaqPageClient() {
     })).filter((group) => group.items.length > 0);
   }, [activeFilter, filtered, search]);
 
-  const hasActiveFilters = Boolean(search.trim()) || activeFilter !== "Tous";
-
-  const resetFilters = () => {
-    setSearch("");
-    setActiveFilter("Tous");
-  };
-
   return (
-    <section className="border-t border-neutral-200 bg-white pb-14 pt-10 sm:pb-16 sm:pt-12 md:pt-14">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <p className="text-sm leading-relaxed text-[#1f2a7c]/65 sm:text-[15px]">
-            Trouvez rapidement les réponses à vos questions sur le cabinet, les rendez-vous et vos outils en ligne.
-          </p>
-        </div>
+    <section className={hubSectionClass}>
+      <div className={hubInnerNarrowClass}>
+        <p className={hubIntroClass}>
+          Trouvez rapidement les réponses à vos questions sur le cabinet, les rendez-vous et vos outils en ligne.
+        </p>
 
-        <div className="mt-8 space-y-3">
-          <div className="relative">
-            <Search
-              aria-hidden
-              className="pointer-events-none absolute left-4 top-1/2 z-10 size-5 -translate-y-1/2 text-[#1f2a7c]/35"
+        <SearchFilterBar
+          className="mt-8"
+          searchTerm={search}
+          onSearchChange={setSearch}
+          onSearchClear={clearSearch}
+          searchPlaceholder="Rechercher (rendez-vous, honoraires, simulateur…)"
+          searchAriaLabel="Rechercher dans la FAQ"
+          filterOpen={filterOpen}
+          onFilterOpenChange={setFilterOpen}
+          filterPanelTitle="Filtres"
+          activeFilterCount={activeFilterCount}
+          showFilterButton
+          showResultsSummary={hasActiveFilters}
+          resultCount={hasActiveFilters ? filtered.length : undefined}
+          resultLabel={(count) => `${count} question${count > 1 ? "s" : ""}`}
+          onClearAll={resetFilters}
+          activeChips={
+            activeFilter !== "Tous" ? (
+              <FilterChip label={activeFilter} icon={Tag} onRemove={() => setActiveFilter("Tous")} />
+            ) : null
+          }
+          filterPanel={
+            <CategoryFilterPanel
+              label="Sujet"
+              options={FILTER_OPTIONS}
+              value={draftFilter}
+              onChange={setDraftFilter}
+              onReset={() => setDraftFilter("Tous")}
+              onApply={applyFilter}
             />
-            <input
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher (rendez-vous, honoraires, simulateur…)"
-              autoComplete="off"
-              aria-label="Rechercher dans la FAQ"
-              className="h-11 w-full rounded-xl border border-neutral-200 bg-white py-0 pl-12 pr-11 text-sm text-[#1f2a7c] shadow-[0_2px_12px_rgba(10,20,40,0.06)] outline-none transition placeholder:text-[#1f2a7c]/35 focus:border-[#1f2a7c]/25 focus:ring-2 focus:ring-[#1f2a7c]/10 [&::-webkit-search-cancel-button]:hidden"
-            />
-            {search ? (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-[#1f2a7c]/45 transition hover:bg-neutral-100 hover:text-[#1f2a7c]"
-                aria-label="Effacer la recherche"
-              >
-                <X className="size-4" aria-hidden />
-              </button>
-            ) : null}
-          </div>
-
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {FILTERS.map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActiveFilter(filter)}
-                className={cn(
-                  "shrink-0 rounded-full px-3.5 py-2 text-[12px] font-semibold transition-colors duration-150",
-                  activeFilter === filter
-                    ? "bg-[#1f2a7c] text-white shadow-[0_4px_14px_-6px_rgba(31,42,124,0.55)]"
-                    : "border border-neutral-200 bg-white text-[#1f2a7c]/60 hover:border-[#1f2a7c]/20 hover:text-[#1f2a7c]",
-                )}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-
-          {hasActiveFilters ? (
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200/80 bg-[#fafbfd] px-4 py-3 text-sm">
-              <p className="text-[#1f2a7c]/65" role="status">
-                {filtered.length} question{filtered.length > 1 ? "s" : ""}
-                {activeFilter !== "Tous" ? ` · ${activeFilter}` : ""}
-                {search.trim() ? ` · « ${search.trim()} »` : ""}
-              </p>
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="text-sm font-medium text-[#1f2a7c] underline-offset-4 hover:underline"
-              >
-                Tout effacer
-              </button>
-            </div>
-          ) : null}
-        </div>
+          }
+        />
 
         <div className="mt-10 space-y-12 md:mt-12 md:space-y-14">
           {filtered.length === 0 ? (
-            <div className="overflow-hidden rounded-xl border border-neutral-200 bg-[#fafbfd] px-5 py-10 text-center">
+            <div className={hubEmptyStateClass}>
               <div className="mx-auto grid size-12 place-items-center rounded-full bg-white">
                 <HelpCircle className="size-5 text-[#1f2a7c]/35" aria-hidden />
               </div>
@@ -193,7 +179,7 @@ export function FaqPageClient() {
           )}
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-2xl border border-[#1f2a7c]/12 bg-[#1f2a7c] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="mt-12 overflow-hidden rounded-xl border border-[#1f2a7c]/12 bg-[#1f2a7c] px-6 py-7 text-white shadow-[0_4px_24px_rgba(10,20,40,0.12)] sm:px-8 sm:py-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-4">
               <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white/10">

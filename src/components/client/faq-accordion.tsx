@@ -76,7 +76,7 @@ export function FaqAccordion({
 
         return (
           <li key={`${item.q}-${index}`}>
-            <div className="overflow-hidden rounded-xl border border-neutral-200/90 bg-white shadow-[0_4px_24px_rgba(10,20,40,0.07)]">
+            <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0_4px_24px_rgba(10,20,40,0.08)]">
               <button
                 type="button"
                 id={triggerId}

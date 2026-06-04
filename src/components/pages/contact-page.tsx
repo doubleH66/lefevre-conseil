@@ -18,7 +18,7 @@ import {
 } from "@/components/marketing/marketing-styles";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { CABINET_CONTACT, CONTACT_SUBJECTS, formatAddressLine } from "@/lib/content/site";
-import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION } from "@/lib/site-brand";
+import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION } from "@/lib/content/site";
 import { DEMANDE_HREF, ROUTES } from "@/lib/content/routes";
 import { splitFullName, submitSiteLead } from "@/lib/site-lead/submit-site-lead";
 import { CtaPrimaryLink } from "@/components/ui/cta-link";

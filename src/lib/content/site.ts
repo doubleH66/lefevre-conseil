@@ -66,3 +66,17 @@ export function aggregatedRating() {
   const value = (google.value * google.count + infobel.value * infobel.count) / total;
   return { value: Math.round(value * 10) / 10, count: total };
 }
+
+/** Data URL du logo pour `/icon` et `/apple-icon`. */
+export async function fetchSiteLogoDataUrl(): Promise<string | null> {
+  try {
+    const res = await fetch(SITE_LOGO_URL, { next: { revalidate: 86_400 } });
+    if (!res.ok) return null;
+    const rawType = res.headers.get("content-type")?.split(";")[0]?.trim();
+    const mime = rawType?.startsWith("image/") ? rawType : "image/png";
+    const buf = Buffer.from(await res.arrayBuffer());
+    return `data:${mime};base64,${buf.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
