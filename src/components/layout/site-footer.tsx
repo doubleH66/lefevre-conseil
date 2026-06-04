@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import {
@@ -50,12 +49,13 @@ const footerHeroShellClass =
   "relative isolate overflow-hidden rounded-3xl border border-black/10 bg-black shadow-[0_24px_80px_-32px_rgba(0,0,0,0.55)] lg:rounded-[3rem]";
 
 const footerLinkClass =
-  "text-[15px] font-normal leading-snug text-white/80 transition-colors duration-200 hover:text-white sm:text-base";
+  "text-[15px] font-normal leading-relaxed text-white/80 transition-colors duration-200 hover:text-white sm:text-base";
 
-const footerColTitleClass = "text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55";
+const footerLegalLinkClass =
+  "text-[13px] leading-relaxed text-white/50 transition-colors duration-200 hover:text-white/75 sm:text-sm";
 
 const TAGLINE =
-  "Cabinet indépendant - gestion de patrimoine, courtage et conseils aux particuliers et professionnels.";
+  "Cabinet indépendant — gestion de patrimoine, courtage et conseils aux particuliers et professionnels.";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -80,13 +80,13 @@ export function SiteFooter() {
           className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/50 via-transparent to-transparent"
         />
 
-        <div className="relative z-[2] px-5 py-12 sm:px-8 sm:py-14 lg:px-12 lg:py-16">
+        <div className="relative z-[2] px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto max-w-6xl">
-            <div className="grid gap-10 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-0">
+            <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
               {/* Marque + newsletter + réseaux */}
               <section
                 aria-labelledby="footer-brand"
-                className="sm:col-span-2 lg:col-span-4"
+                className="sm:col-span-2 lg:col-span-5"
               >
                 <Link href="/" aria-label={`${CABINET_CONTACT.name} - accueil`} className="inline-flex">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -98,85 +98,73 @@ export function SiteFooter() {
                 </Link>
                 <p
                   id="footer-brand"
-                  className="mt-5 max-w-md text-left text-[15px] leading-[1.55] text-white/75 sm:text-base"
+                  className="mt-6 max-w-md text-left text-[15px] leading-[1.65] text-white/75 sm:text-base"
                 >
                   {TAGLINE}
                 </p>
 
-                <div className="mt-8" aria-labelledby="footer-newsletter-title">
-                  <p id="footer-newsletter-title" className={footerColTitleClass}>
-                    Newsletter
-                  </p>
-                  <p className="mt-2 text-sm leading-snug text-white/55">
-                    Environ une fois par mois, sans spam.
+                <div className="mt-10 max-w-sm">
+                  <p className="text-sm leading-relaxed text-white/70">
+                    Recevez nos actualités patrimoniales, environ une fois par mois.
                   </p>
                   <NewsletterSignup
                     presentation="dialog-trigger"
                     variant="compact"
                     idSuffix="footer"
                     footerOnDark
-                    className="mt-3 !justify-start"
+                    className="mt-4 !justify-start"
                   />
                 </div>
 
                 {socialLinksActive.length > 0 ? (
-                  <div className="mt-8" aria-labelledby="footer-social-title">
-                    <p id="footer-social-title" className={footerColTitleClass}>
-                      Réseaux
-                    </p>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {socialLinksActive.map(({ href, label, Icon }) => (
-                        <li key={label}>
-                          <a
-                            href={href}
-                            aria-label={label}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={cn(footerGlassBtnClass, "size-12")}
-                          >
-                            <Icon className="size-4" aria-hidden />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <ul className="mt-8 flex flex-wrap gap-2.5" aria-label="Réseaux sociaux">
+                    {socialLinksActive.map(({ href, label, Icon }) => (
+                      <li key={label}>
+                        <a
+                          href={href}
+                          aria-label={label}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={cn(footerGlassBtnClass, "size-11")}
+                        >
+                          <Icon className="size-4" aria-hidden />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 ) : null}
               </section>
 
-              <FooterColumn className="lg:col-span-2" title="Navigation" titleId="footer-nav">
-                {navigationLinks.map((link) => (
-                  <FooterLink key={link.href} href={link.href}>
-                    {link.label}
-                  </FooterLink>
-                ))}
-              </FooterColumn>
+              <nav aria-label="Pages du site" className="lg:col-span-3">
+                <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-1">
+                  {navigationLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className={footerLinkClass}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-              <FooterColumn className="lg:col-span-3" title="Légal" titleId="footer-legal">
-                {legalLinks.map((link) => (
-                  <FooterLink key={link.href} href={link.href}>
-                    {link.label}
-                  </FooterLink>
-                ))}
-              </FooterColumn>
-
-              <section aria-labelledby="footer-coords-title" className="lg:col-span-3">
-                <p id="footer-coords-title" className={footerColTitleClass}>
-                  Coordonnées
-                </p>
-                <ul className="mt-4 space-y-3">
+              <section aria-label="Coordonnées du cabinet" className="lg:col-span-4">
+                <ul className="space-y-5">
                   <li>
                     <a
                       href={`tel:${phoneTel}`}
-                      className="group flex items-start gap-2.5 text-[15px] leading-snug text-white/85 transition-colors hover:text-white"
+                      className="group flex items-start gap-3 text-[15px] leading-relaxed text-white/85 transition-colors hover:text-white sm:text-base"
                     >
                       <Phone className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
-                      <span className="font-medium tabular-nums">{phone}</span>
+                      <span>
+                        <span className="block font-medium tabular-nums">{phone}</span>
+                        <span className="mt-0.5 block text-sm text-white/55">Du lundi au vendredi, 9h – 18h</span>
+                      </span>
                     </a>
                   </li>
                   <li>
                     <a
                       href={`mailto:${email}`}
-                      className="group flex items-start gap-2.5 text-[15px] leading-snug text-white/85 transition-colors hover:text-white"
+                      className="group flex items-start gap-3 text-[15px] leading-relaxed text-white/85 transition-colors hover:text-white sm:text-base"
                     >
                       <Mail className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
                       <span className="break-all">{email}</span>
@@ -187,10 +175,10 @@ export function SiteFooter() {
                       href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-2.5 text-[15px] leading-snug text-white/80 transition-colors hover:text-white"
+                      className="group flex items-start gap-3 text-[15px] leading-relaxed text-white/80 transition-colors hover:text-white sm:text-base"
                     >
                       <MapPin className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
-                      <address className="not-italic">
+                      <address className="not-italic leading-relaxed">
                         {address.street}
                         <br />
                         {address.postalCode} {address.city}
@@ -202,18 +190,30 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center gap-6 border-t border-white/10 pt-10 sm:mt-12 sm:pt-12">
-            <p className="text-center text-[13px] text-white/50 sm:text-sm">
-              © {year} {CABINET_CONTACT.name}
-            </p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={AURENIS_LOGO_URL}
-              alt="Aurenis"
-              width={120}
-              height={28}
-              className="h-6 w-auto brightness-0 invert opacity-80 sm:h-7"
-            />
+          <div className="mx-auto mt-12 max-w-6xl border-t border-white/10 pt-10 sm:mt-14 sm:pt-12">
+            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 sm:justify-start">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={footerLegalLinkClass}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-col items-center gap-5 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-center text-[13px] text-white/50 sm:text-left sm:text-sm">
+                © {year} {CABINET_CONTACT.name}
+              </p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={AURENIS_LOGO_URL}
+                alt="Aurenis"
+                width={120}
+                height={28}
+                className="h-6 w-auto brightness-0 invert opacity-80 sm:h-7"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -221,33 +221,3 @@ export function SiteFooter() {
   );
 }
 
-function FooterColumn({
-  title,
-  titleId,
-  children,
-  className,
-}: {
-  title: string;
-  titleId: string;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <nav aria-labelledby={titleId} className={cn("text-left", className)}>
-      <p id={titleId} className={footerColTitleClass}>
-        {title}
-      </p>
-      <ul className="mt-4 space-y-2.5">{children}</ul>
-    </nav>
-  );
-}
-
-function FooterLink({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <li>
-      <Link href={href} className={footerLinkClass}>
-        {children}
-      </Link>
-    </li>
-  );
-}

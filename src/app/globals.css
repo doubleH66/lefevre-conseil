@@ -181,3 +181,122 @@
   width: 100%;
   max-width: 1400px;
 }
+
+/* Carte Leaflet contact — fond clair (style CARTO light) */
+.contact-leaflet-map.leaflet-container,
+.leaflet-container.contact-leaflet-map {
+  background: #ffffff !important;
+  font-family: inherit;
+}
+
+.contact-leaflet-map .leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: rgba(10, 20, 40, 0.45) !important;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px 0 0 0;
+}
+
+.contact-leaflet-map .leaflet-control-attribution a {
+  color: rgba(10, 20, 40, 0.55) !important;
+}
+
+.contact-map-pin-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.contact-leaflet-map .leaflet-popup.contact-map-popup-shell .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 1rem;
+  border: 1px solid rgba(31, 42, 124, 0.1);
+  background: #ffffff;
+  box-shadow: 0 16px 40px -20px rgba(10, 20, 40, 0.35);
+}
+
+.contact-leaflet-map .leaflet-popup.contact-map-popup-shell .leaflet-popup-content {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.contact-leaflet-map .leaflet-popup.contact-map-popup-shell .leaflet-popup-tip {
+  background: #ffffff;
+  border: 1px solid rgba(31, 42, 124, 0.08);
+  box-shadow: none;
+}
+
+.contact-leaflet-map .leaflet-popup.contact-map-popup-shell .leaflet-popup-close-button {
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: rgba(31, 42, 124, 0.45);
+  font-size: 1.1rem;
+}
+
+.contact-leaflet-map .leaflet-popup.contact-map-popup-shell .leaflet-popup-close-button:hover {
+  color: #1f2a7c;
+}
+
+.contact-map-popup {
+  padding: 1rem 1.1rem 1.05rem;
+  color: #1f2a7c;
+}
+
+.contact-map-popup__name {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.contact-map-popup__address {
+  margin: 0.45rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: rgba(31, 42, 124, 0.72);
+}
+
+.contact-map-popup__hours {
+  margin: 0.55rem 0 0;
+  font-size: 0.75rem;
+  color: rgba(31, 42, 124, 0.55);
+}
+
+.contact-map-popup__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.contact-map-popup__links a {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #1f2a7c;
+  text-decoration: none;
+}
+
+.contact-map-popup__links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.contact-map-popup__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.85rem;
+  min-height: 2.25rem;
+  padding: 0 0.9rem;
+  border-radius: 9999px;
+  background: #1f2a7c;
+  color: #ffffff !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.contact-map-popup__cta:hover {
+  background: #182266;
+}

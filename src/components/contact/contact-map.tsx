@@ -11,7 +11,20 @@ function parseEnvCoord(value: string | undefined, fallback: number) {
   return Number.isFinite(n) ? n : fallback;
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 const BRAND = "#1f2a7c";
+
+const TILE_URL = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
 
 function createCustomIcon() {
   const svg = `
@@ -32,11 +45,30 @@ function createCustomIcon() {
 
   return L.divIcon({
     html: svg,
-    className: "",
+    className: "contact-map-pin-icon",
     iconSize: [36, 44],
     iconAnchor: [18, 44],
-    popupAnchor: [0, -46],
+    popupAnchor: [0, -44],
   });
+}
+
+function createPopupHtml() {
+  const { name, phone, phoneTel, email, address, openingHours } = CABINET_CONTACT;
+  const mapsQuery = encodeURIComponent(`${address.street} ${address.postalCode} ${address.city}`);
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery}`;
+
+  return `
+    <div class="contact-map-popup">
+      <p class="contact-map-popup__name">${escapeHtml(name)}</p>
+      <p class="contact-map-popup__address">${escapeHtml(formatAddressLine())}</p>
+      <p class="contact-map-popup__hours">${escapeHtml(openingHours.label)}</p>
+      <div class="contact-map-popup__links">
+        <a href="tel:${phoneTel}">${escapeHtml(phone)}</a>
+        <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>
+      </div>
+      <a class="contact-map-popup__cta" href="${directionsUrl}" target="_blank" rel="noopener noreferrer">Itinéraire Google Maps</a>
+    </div>
+  `.trim();
 }
 
 type ContactMapProps = {
@@ -53,20 +85,27 @@ export function ContactMap({ className }: ContactMapProps) {
     const lat = parseEnvCoord(process.env.NEXT_PUBLIC_CONTACT_MAP_LAT, CABINET_CONTACT.geo.lat);
     const lng = parseEnvCoord(process.env.NEXT_PUBLIC_CONTACT_MAP_LNG, CABINET_CONTACT.geo.lng);
 
-    const map = L.map(el, { scrollWheelZoom: false }).setView([lat, lng], 16);
+    const map = L.map(el, {
+      scrollWheelZoom: false,
+      zoomControl: true,
+      attributionControl: true,
+    }).setView([lat, lng], 17);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer(TILE_URL, {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      attribution: TILE_ATTRIBUTION,
     }).addTo(map);
 
-    L.marker([lat, lng], { icon: createCustomIcon() })
+    L.marker([lat, lng], { icon: createCustomIcon(), interactive: true })
       .addTo(map)
-      .bindPopup(
-        `<strong style="color:${BRAND}">${CABINET_CONTACT.name}</strong><br />${formatAddressLine()}<br /><a href="tel:${CABINET_CONTACT.phoneTel}" style="color:${BRAND}">${CABINET_CONTACT.phone}</a>`,
-        { maxWidth: 220 },
-      )
-      .openPopup();
+      .bindPopup(createPopupHtml(), {
+        maxWidth: 280,
+        minWidth: 220,
+        className: "contact-map-popup-shell",
+        closeButton: true,
+        autoPan: true,
+        autoPanPadding: [24, 24],
+      });
 
     const ro = new ResizeObserver(() => map.invalidateSize());
     ro.observe(el);
@@ -80,7 +119,7 @@ export function ContactMap({ className }: ContactMapProps) {
   return (
     <div
       ref={containerRef}
-      className={cn("absolute inset-0 z-0 h-full w-full", className)}
+      className={cn("contact-leaflet-map absolute inset-0 z-0 h-full w-full bg-white", className)}
       aria-label="Carte : localisation du cabinet Lefèvre Conseil"
     />
   );
