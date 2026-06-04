@@ -1,5 +1,6 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
 import {
   CONSEILS_HREF,
   CONTACT_HREF,
@@ -49,13 +50,33 @@ const footerHeroShellClass =
   "relative isolate overflow-hidden rounded-3xl border border-black/10 bg-black shadow-[0_24px_80px_-32px_rgba(0,0,0,0.55)] lg:rounded-[3rem]";
 
 const footerLinkClass =
-  "text-[15px] font-normal leading-relaxed text-white/80 transition-colors duration-200 hover:text-white sm:text-base";
+  "text-sm leading-snug text-white/75 transition-colors duration-150 hover:text-white sm:text-[15px]";
 
 const footerLegalLinkClass =
-  "text-[13px] leading-relaxed text-white/50 transition-colors duration-200 hover:text-white/75 sm:text-sm";
+  "text-xs text-white/48 transition-colors duration-150 hover:text-white/75 sm:text-sm";
+
+const footerColumnTitleClass =
+  "mb-4 text-base font-semibold tracking-[-0.03em] text-white lg:mb-5 lg:text-lg lg:leading-tight";
 
 const TAGLINE =
   "Cabinet indépendant — gestion de patrimoine, courtage et conseils aux particuliers et professionnels.";
+
+function FooterColumn({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("min-w-0", className)}>
+      <h3 className={footerColumnTitleClass}>{title}</h3>
+      {children}
+    </div>
+  );
+}
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -82,13 +103,9 @@ export function SiteFooter() {
 
         <div className="relative z-[2] px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto max-w-6xl">
-            <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
-              {/* Marque + newsletter + réseaux */}
-              <section
-                aria-labelledby="footer-brand"
-                className="sm:col-span-2 lg:col-span-5"
-              >
-                <Link href="/" aria-label={`${CABINET_CONTACT.name} - accueil`} className="inline-flex">
+            <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-x-10 xl:gap-x-12">
+              <section aria-labelledby="footer-brand" className="lg:col-span-5">
+                <Link href="/" aria-label={`${CABINET_CONTACT.name} — accueil`} className="inline-flex">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={SITE_LOGO_URL}
@@ -98,13 +115,13 @@ export function SiteFooter() {
                 </Link>
                 <p
                   id="footer-brand"
-                  className="mt-6 max-w-md text-left text-[15px] leading-[1.65] text-white/75 sm:text-base"
+                  className="mt-5 max-w-md text-sm leading-[1.7] text-white/72 sm:text-[15px]"
                 >
                   {TAGLINE}
                 </p>
 
-                <div className="mt-10 max-w-sm">
-                  <p className="text-sm leading-relaxed text-white/70">
+                <div className="mt-8 max-w-sm">
+                  <p className="text-sm leading-relaxed text-white/65">
                     Recevez nos actualités patrimoniales, environ une fois par mois.
                   </p>
                   <NewsletterSignup
@@ -117,7 +134,7 @@ export function SiteFooter() {
                 </div>
 
                 {socialLinksActive.length > 0 ? (
-                  <ul className="mt-8 flex flex-wrap gap-2.5" aria-label="Réseaux sociaux">
+                  <ul className="mt-7 flex flex-wrap gap-2.5" aria-label="Réseaux sociaux">
                     {socialLinksActive.map(({ href, label, Icon }) => (
                       <li key={label}>
                         <a
@@ -125,7 +142,7 @@ export function SiteFooter() {
                           aria-label={label}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={cn(footerGlassBtnClass, "size-11")}
+                          className={cn(footerGlassBtnClass, "size-10 sm:size-11")}
                         >
                           <Icon className="size-4" aria-hidden />
                         </a>
@@ -135,63 +152,60 @@ export function SiteFooter() {
                 ) : null}
               </section>
 
-              <nav aria-label="Pages du site" className="lg:col-span-3">
-                <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-1">
-                  {navigationLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href} className={footerLinkClass}>
-                        {link.label}
+              <div className="grid gap-10 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-2 lg:gap-x-8">
+                <FooterColumn title="Pages du site">
+                  <ul className="flex flex-col gap-2.5">
+                    {navigationLinks.map((link) => (
+                      <li key={link.href}>
+                        <Link href={link.href} className={footerLinkClass}>
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </FooterColumn>
+
+                <FooterColumn title="Coordonnées">
+                  <ul className="flex flex-col gap-3 text-sm leading-snug text-white/75 sm:text-[15px]">
+                    <li>
+                      <a href={`tel:${phoneTel}`} className="transition-colors hover:text-white">
+                        <span className="block font-medium tabular-nums text-white/90">{phone}</span>
+                        <span className="mt-1 block text-sm text-white/50">
+                          {CABINET_CONTACT.openingHours.label}
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href={`mailto:${email}`} className="break-all transition-colors hover:text-white">
+                        {email}
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="transition-colors hover:text-white"
+                      >
+                        <span className="block text-white/90">{address.street}</span>
+                        <span className="block">
+                          {address.postalCode} {address.city}
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <Link href={CONTACT_HREF} className={footerLinkClass}>
+                        Formulaire de contact
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              </nav>
-
-              <section aria-label="Coordonnées du cabinet" className="lg:col-span-4">
-                <ul className="space-y-5">
-                  <li>
-                    <a
-                      href={`tel:${phoneTel}`}
-                      className="group flex items-start gap-3 text-[15px] leading-relaxed text-white/85 transition-colors hover:text-white sm:text-base"
-                    >
-                      <Phone className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
-                      <span>
-                        <span className="block font-medium tabular-nums">{phone}</span>
-                        <span className="mt-0.5 block text-sm text-white/55">Du lundi au vendredi, 9h – 18h</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={`mailto:${email}`}
-                      className="group flex items-start gap-3 text-[15px] leading-relaxed text-white/85 transition-colors hover:text-white sm:text-base"
-                    >
-                      <Mail className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
-                      <span className="break-all">{email}</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-start gap-3 text-[15px] leading-relaxed text-white/80 transition-colors hover:text-white sm:text-base"
-                    >
-                      <MapPin className="mt-0.5 size-4 shrink-0 text-white/45 group-hover:text-white/70" aria-hidden />
-                      <address className="not-italic leading-relaxed">
-                        {address.street}
-                        <br />
-                        {address.postalCode} {address.city}
-                      </address>
-                    </a>
-                  </li>
-                </ul>
-              </section>
+                  </ul>
+                </FooterColumn>
+              </div>
             </div>
           </div>
 
-          <div className="mx-auto mt-12 max-w-6xl border-t border-white/10 pt-10 sm:mt-14 sm:pt-12">
-            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 sm:justify-start">
+          <div className="mx-auto mt-12 max-w-6xl border-t border-white/10 pt-8 sm:mt-14 sm:pt-10">
+            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-start">
               {legalLinks.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className={footerLegalLinkClass}>
@@ -201,8 +215,8 @@ export function SiteFooter() {
               ))}
             </ul>
 
-            <div className="mt-8 flex flex-col items-center gap-5 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-center text-[13px] text-white/50 sm:text-left sm:text-sm">
+            <div className="mt-6 flex flex-col items-center gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-center text-sm text-white/48 sm:text-left">
                 © {year} {CABINET_CONTACT.name}
               </p>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -220,4 +234,3 @@ export function SiteFooter() {
     </footer>
   );
 }
-
