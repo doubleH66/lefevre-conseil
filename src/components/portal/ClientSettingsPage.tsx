@@ -13,8 +13,8 @@ export function ClientSettingsPage({ client }: { client: PortalClient }) {
   const loginEmail = authUser?.email ?? client.email;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
+    <div className="space-y-5">
+      <section className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
         <h3 className="text-base font-semibold text-neutral-900">Compte de connexion</h3>
         <dl className="mt-4 space-y-3 text-sm">
           <div className="flex flex-col gap-0.5 sm:flex-row sm:justify-between">
@@ -27,7 +27,7 @@ export function ClientSettingsPage({ client }: { client: PortalClient }) {
         </p>
       </section>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
+      <section className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
         <h3 className="text-base font-semibold text-neutral-900">Mot de passe</h3>
         <p className="mt-1 text-sm text-neutral-600">
           Choisissez un mot de passe d’au moins 8 caractères. Vous devrez saisir l’ancien mot de passe pour confirmer.
@@ -35,7 +35,7 @@ export function ClientSettingsPage({ client }: { client: PortalClient }) {
         <ChangePasswordForm email={loginEmail} />
       </section>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
+      <section className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
         <h3 className="text-base font-semibold text-neutral-900">Session</h3>
         <p className="mt-1 text-sm text-neutral-600">Déconnectez-vous sur cet appareil.</p>
         <form action="/auth/signout" method="post" className="mt-4">
@@ -50,7 +50,7 @@ export function ClientSettingsPage({ client }: { client: PortalClient }) {
         </form>
       </section>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
+      <section className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
         <h3 className="text-base font-semibold text-neutral-900">Site & assistance</h3>
         <ul className="mt-4 space-y-2">
           <li>

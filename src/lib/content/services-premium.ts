@@ -25,7 +25,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       paragraphs: [
         "Beaucoup de personnes accumulent des contrats — un **PER** ici, une **assurance-vie** là, un crédit immobilier ailleurs — sans jamais vérifier si l'ensemble est cohérent. Résultat : trop de risque, pas assez de liquidité, une fiscalité non optimisée, une transmission non préparée.",
         "Le rôle d'un **conseiller en gestion de patrimoine indépendant**, c'est justement de faire cette synthèse. Il part de votre situation réelle (revenus, dépenses, famille, horizon, projets) pour identifier vos *priorités* — et seulement ensuite, propose des solutions.",
-        "Cette démarche n'est pas réservée aux grandes fortunes. Elle est utile dès que vous avez des objectifs clairs : constituer une épargne, préparer votre retraite, protéger votre famille ou réduire votre impôt.",
+        "Cette démarche n'est pas réservée aux grandes fortunes. Elle est utile dès que vous avez des objectifs clairs : constituer une épargne, préparer votre retraite, protéger votre famille ou optimiser votre fiscalité dans le respect du cadre légal.",
       ],
     },
     beforeAfter: {
@@ -57,7 +57,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       items: [
         { title: "Épargne & placements", description: "**Assurance-vie**, PER, PEA, contrat de capitalisation — choix des enveloppes adaptées à votre profil et votre horizon." },
         { title: "Retraite", description: "Estimation des revenus futurs, leviers complémentaires et mise en place progressive d'une **épargne retraite**." },
-        { title: "Fiscalité", description: "Réduction d'impôt via des dispositifs cohérents avec votre situation — *sans défiscalisation miracle*." },
+        { title: "Fiscalité", description: "Leviers fiscaux cohérents avec votre situation, dans le respect du cadre légal — *sans défiscalisation miracle*." },
         { title: "Immobilier patrimonial", description: "Investissement locatif, résidence principale, **démembrement** : intégration dans la stratégie globale." },
         { title: "Transmission", description: "**Clause bénéficiaire**, donation, organisation successorale pour protéger vos proches." },
         { title: "Prévoyance & protection", description: "Sécuriser vos revenus et votre famille en cas d'aléa de vie (arrêt, décès, invalidité)." },
@@ -113,11 +113,11 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Assurance-vie, PER, PEA, SCPI : comparez et choisissez les placements adaptés à votre profil de risque et vos objectifs avec un cabinet indépendant.",
     },
     hero: {
-      h1: "Placements et solutions d'épargne",
+      h1: "Placements et épargne patrimoniale",
       subtitle: "Faire fructifier son argent, c'est choisir la bonne enveloppe — pas juste le meilleur taux affiché.",
       taglineHighlightAfter: ", c'est choisir la bonne enveloppe",
       intro:
-        "Il existe des dizaines de façons d'épargner. **Assurance-vie**, **PER**, **PEA**, compte-titres, SCPI… Chaque support a ses règles fiscales, ses contraintes de liquidité et son niveau de risque. Nous vous aidons à comprendre les différences et à choisir selon *votre situation* — pas selon la mode.",
+        "Il existe des dizaines de façons d'épargner. **Assurance-vie**, **PER**, **PEA**, compte-titres, SCPI… Chaque support a ses règles fiscales, ses contraintes de liquidité et son niveau de risque. Nous vous aidons à comprendre les différences et à choisir selon *votre situation* — pas selon la mode. *Toute solution d'investissement comporte des risques : l'objectif est d'évaluer les options avec clarté avant toute décision.*",
     },
     whyImportant: {
       title: "Le bon placement dépend de ^^vous^^, pas d'un classement",
@@ -211,7 +211,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "PER, revenus complémentaires, donations, assurance-vie, démembrement : Lefèvre Conseil vous aide à préparer votre retraite et organiser la transmission de votre patrimoine à Perpignan.",
     },
     hero: {
-      h1: "Préparer sa retraite et organiser la transmission",
+      h1: "Préparer sa retraite et organiser la transmission de son patrimoine",
       subtitle: "Plus on anticipe, plus on a de choix. Moins on attend, moins on en a.",
       taglineHighlightAfter: ", plus on a de choix",
       intro:
@@ -304,19 +304,19 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
   "fiscalite-investissement": {
     slug: "fiscalite-investissement",
     meta: {
-      title: "Optimisation fiscale et investissement patrimonial | Lefèvre Conseil",
+      title: "Fiscalité patrimoniale et investissement | Lefèvre Conseil",
       description:
-        "Réduire ses impôts intelligemment : PER, assurance-vie, immobilier, SCPI, déficit foncier. Lefèvre Conseil analyse votre situation fiscale avant toute recommandation.",
+        "Optimiser votre fiscalité dans le respect du cadre légal : PER, assurance-vie, immobilier, SCPI, déficit foncier. Lefèvre Conseil analyse votre situation avant toute recommandation.",
     },
     hero: {
-      h1: "Fiscalité et investissement patrimonial",
-      subtitle: "Réduire ses impôts, oui — mais pas au prix d'un mauvais investissement.",
-      taglineHighlightAfter: ", oui — mais pas au prix",
+      h1: "Fiscalité patrimoniale et investissement",
+      subtitle: "Optimiser sa fiscalité, oui — mais jamais au prix d'un mauvais investissement.",
+      taglineHighlightAfter: ", oui — mais jamais au prix",
       intro:
         "Un **avantage fiscal ne fait pas un bon investissement**. Lefèvre Conseil commence toujours par analyser votre situation fiscale réelle avant de comparer les leviers disponibles. L'objectif : cohérence patrimoniale, *pas défiscalisation à tout prix*.",
     },
     whyImportant: {
-      title: "Comprendre ^^avant d'investir^^ pour réduire ses impôts",
+      title: "Comprendre ^^avant d'investir^^ pour optimiser sa fiscalité",
       paragraphs: [
         "Il existe **trois mécanismes fiscaux principaux** : la __déduction__ *(réduit le revenu imposable, donc l'impôt calculé dessus)*, la __réduction d'impôt__ *(s'applique directement sur le montant dû)* et le __crédit d'impôt__ *(peut être remboursé si supérieur à l'impôt)*. Ces trois notions sont souvent confondues, avec des conséquences *très différentes* selon votre **taux marginal d'imposition (TMI)**.",
         "Le deuxième point essentiel : **la fiscalité de sortie compte autant que l'avantage à l'entrée**. Un dispositif qui réduit vos impôts aujourd'hui peut générer une imposition importante dans 10 ans, ou *bloquer votre capital* dans un actif difficile à revendre.",
@@ -406,7 +406,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Protégez vos revenus et votre famille avec des garanties prévoyance, complémentaire santé et assurance de prêt adaptées. Comparatif indépendant à Perpignan.",
     },
     hero: {
-      h1: "Prévoyance, complémentaire santé et assurance de prêt",
+      h1: "Prévoyance, santé et assurance emprunteur",
       subtitle: "Se protéger, c'est protéger ce qu'on a construit — revenus, famille, projet immobilier.",
       taglineHighlightAfter: ", c'est protéger ce qu'on a construit",
       intro:
@@ -502,11 +502,11 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         "Leasing d'œuvres d'art pour entreprises : valorisez vos locaux, étudiez le cadre fiscal et constituez un patrimoine artistique. Accompagnement clé en main à Perpignan.",
     },
     hero: {
-      h1: "Investir dans l'art",
-      subtitle: "Découvrez comment investir dans l'art — valorisez vos locaux, votre image et votre fiscalité.",
-      taglineHighlightAfter: " — valorisez vos locaux",
+      h1: "Investissement dans l'art et accompagnement patrimonial",
+      subtitle: "Intégrer l'art dans une réflexion patrimoniale — vos locaux, votre image et votre fiscalité.",
+      taglineHighlightAfter: " — vos locaux",
       intro:
-        "Leasing d'œuvres, sélection sur-mesure et accompagnement clé en main pour les entreprises. **Réservez votre rendez-vous** pour construire un projet cohérent avec vos objectifs.",
+        "Leasing d'œuvres, sélection sur-mesure et accompagnement clé en main pour les entreprises et dirigeants qui souhaitent intégrer l'art dans une réflexion patrimoniale, fiscale ou d'image. *L'art n'est pas un placement garanti : l'accompagnement reste encadré et adapté à vos objectifs.* **Prenez rendez-vous** pour construire un projet cohérent.",
     },
     whyImportant: {
       title: "Pourquoi investir dans l'^^art^^ en entreprise ?",

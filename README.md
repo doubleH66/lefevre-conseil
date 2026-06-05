@@ -7,14 +7,16 @@ Site marketing Next.js + espace client / admin (Supabase).
 ```bash
 npm install
 cp .env.example .env.local   # renseigner Supabase
-npm run dev -- -p 8089
+npm run dev                  # http://localhost:9999
 ```
 
-→ [http://localhost:8089](http://localhost:8089)
+→ [http://localhost:9999](http://localhost:9999)
 
 ## Supabase
 
-Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md) (ordre 001 → **013**).
+Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md) (ordre 001 → **015**).
+
+**Projet Supabase actif :** `gyisrwfapphqqdbpujtb` — contexte complet : [supabase/CONTEXTE_DEV_SUPABASE.md](./supabase/CONTEXTE_DEV_SUPABASE.md).
 
 **Important :** exécuter `011_admin_business_tools.sql` pour :
 - formulaire de demande `/demande` (leads en base)
@@ -44,7 +46,7 @@ En local, `.env.local` fournit Supabase. **Sur Vercel, les mêmes variables doiv
 
 | Variable | Valeur attendue |
 |----------|-----------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://qhiyxnbcegbxtvydcjhf.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://gyisrwfapphqqdbpujtb.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé **anon** (JWT `role: anon`) — Supabase → Project Settings → API |
 | `NEXT_PUBLIC_SITE_URL` | URL du site (ex. `https://lefevre-conseil.fr`) |
 

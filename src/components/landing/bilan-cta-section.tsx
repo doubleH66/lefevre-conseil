@@ -1,26 +1,27 @@
 import { CtaBand } from "@/components/landing/cta-band";
+import { LANDING_CTA_SECTION_CLASS } from "@/lib/content/landing-layout";
 import { BILAN_CTA_BACKGROUND_IMAGE } from "@/lib/content/services";
+import { CONTACT_HREF } from "@/lib/content/routes";
 
-const sectionClassName = "mx-2.5 mb-12 mt-6 lg:mx-4 lg:mb-16";
+export const bilanCtaSectionClassName = LANDING_CTA_SECTION_CLASS;
 
 /**
- * Bandeau bilan unique (titre + CTA) — utilisé sur l’accueil et dans `SubpageShell`.
- * Les derniers conseils sont dans `LatestConseilsSection`, en section séparée.
+ * Bandeau CTA final avant le footer — utilisé sur l’accueil et dans `SubpageShell`.
  */
 export function BilanCtaSection({ className }: { className?: string }) {
   return (
-    <section className={className ?? sectionClassName}>
+    <section data-nav-theme="dark" className={className ?? bilanCtaSectionClassName}>
       <CtaBand
         eyebrow={false}
         backgroundImage
         backgroundImageSrc={BILAN_CTA_BACKGROUND_IMAGE}
         deepBlackOverlay
-        heroTypography
-        primaryWithSimulationArrow
-        primaryLabel="Réaliser mon bilan patrimonial"
-        secondaryLabel="Contact"
-        title="Bilan patrimonial, sans engagement."
-        description="Quelques questions pour une synthèse claire et des pistes adaptées — gratuit, sans engagement."
+        centered
+        showSecondaryCta={false}
+        primaryLabel="Prendre rendez-vous"
+        primaryHref={CONTACT_HREF}
+        title="Faisons le point sur votre situation patrimoniale."
+        description="Un premier échange pour comprendre vos objectifs et vous orienter vers les solutions adaptées."
       />
     </section>
   );

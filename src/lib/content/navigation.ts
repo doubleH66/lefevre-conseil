@@ -1,9 +1,8 @@
 import {
-  BILAN_PATRIMOINE_HREF,
+  AVIS_HREF,
   CONSEILS_HREF,
   CONTACT_HREF,
   EXPERTISES_BASE_HREF,
-  FAQ_HREF,
   INSTALLATION_HREF,
   NOTRE_CABINET_HREF,
   ROUTES,
@@ -16,7 +15,6 @@ export type NavLink = { label: string; href: string };
 
 export const NAV_CABINET_LINKS: NavLink[] = [
   { label: "Qui sommes-nous", href: NOTRE_CABINET_HREF },
-  { label: "FAQ", href: FAQ_HREF },
   { label: "Installer l’app", href: INSTALLATION_HREF },
 ];
 
@@ -36,7 +34,6 @@ export type NavDropdownId = keyof typeof NAV_DROPDOWNS;
 export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
   ROUTES.home,
   ROUTES.expertises,
-  ROUTES.bilanPatrimonial,
   ROUTES.contact,
   ROUTES.notreCabinet,
   ROUTES.conseils,
@@ -50,7 +47,7 @@ export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
   ROUTES.mentionsLegales,
   ROUTES.confidentialite,
   ROUTES.conditionsUtilisation,
-  ROUTES.reclamations,
+  ROUTES.avis,
   ...SERVICE_CATALOG.map((s) => serviceHref(s.slug)),
 ]);
 
@@ -62,13 +59,25 @@ export function pathnameHasHeroOverlay(pathname: string): boolean {
 }
 
 export const NAV_PRIMARY_CTA = {
-  label: "Réaliser mon bilan patrimonial",
-  href: BILAN_PATRIMOINE_HREF,
-  mobileLabel: "Bilan patrimonial",
+  label: "Prendre rendez-vous",
+  href: CONTACT_HREF,
+  mobileLabel: "Prendre rendez-vous",
 } as const;
 
 export const NAV_CONTACT = { label: "Contact", href: CONTACT_HREF } as const;
 export const NAV_CONSEILS = { label: "Conseils", href: CONSEILS_HREF } as const;
+export const NAV_AVIS = { label: "Avis clients", href: AVIS_HREF } as const;
 export const NAV_ACCOUNT = { label: "Compte", href: LOGIN_HREF } as const;
+
+export type NavAccountMenuItem =
+  | { id: string; label: string; kind: "login" }
+  | { id: string; label: string; kind: "link"; href: string };
+
+/** Menu du bouton compte (navbar) — style Hey Aurenis. */
+export const NAV_ACCOUNT_MENU: NavAccountMenuItem[] = [
+  { id: "login", label: "Connexion", kind: "login" },
+  { id: "app", label: "Téléchargez l'app", kind: "link", href: INSTALLATION_HREF },
+  { id: "contact", label: "Contact", kind: "link", href: CONTACT_HREF },
+];
 
 export { ROUTES };

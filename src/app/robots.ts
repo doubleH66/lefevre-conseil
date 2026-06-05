@@ -14,7 +14,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/espace-client/", "/espace-admin/", "/login", "/auth/", "/api/"],
+        disallow: [
+          "/api/",
+          "/login",
+          "/auth/",
+          "/espace-client/",
+          "/espace-admin/",
+          "/offline",
+          "/installation",
+        ],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

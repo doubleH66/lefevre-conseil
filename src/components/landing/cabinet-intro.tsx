@@ -7,8 +7,18 @@ import {
   CABINET_PORTRAIT_OBJECT_POSITION,
 } from "@/lib/content/site";
 import { CabinetIntroExpand } from "@/components/client/cabinet-intro-expand";
-import { Highlight } from "@/components/ui/highlight";
+import {
+  CabinetIntroExtraParagraphs,
+  CabinetIntroParagraph1,
+  CabinetIntroTitleHighlights,
+} from "@/components/landing/cabinet-intro-highlights";
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
+import {
+  LANDING_SCROLL_MARGIN,
+  LANDING_SECTION_INNER_Y,
+  LANDING_SECTION_INSET,
+  LANDING_SECTION_SHELL,
+} from "@/lib/content/landing-layout";
 import { cn } from "@/lib/utils";
 
 const cabinetIntroProseColor =
@@ -19,10 +29,6 @@ const stats = [
   { value: "100+", label: "Clients satisfaits" },
   { value: "40+", label: "Partenaires" },
 ] as const;
-
-function highlightPillClassName() {
-  return "rounded-lg px-1.5 pb-0.5";
-}
 
 function StatValue({ value, label }: { value: string; label: string }) {
   return (
@@ -41,10 +47,12 @@ function StatValue({ value, label }: { value: string; label: string }) {
 export function CabinetIntro() {
   return (
     <section
-      className="mx-2.5 mt-3 bg-white text-[#1f2a7c] lg:mx-4 lg:mt-4"
+      id="apres-hero"
+      data-nav-theme="light"
+      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN, "mt-2 bg-white text-[#1f2a7c] sm:mt-3")}
       aria-labelledby="cabinet-intro-title"
     >
-      <div className="px-4 py-10 sm:px-7 sm:py-12 xl:px-11 xl:py-14">
+      <div className={cn(LANDING_SECTION_INSET, LANDING_SECTION_INNER_Y)}>
         <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch lg:gap-6 xl:gap-10">
           <div className="flex min-w-0 flex-col justify-between lg:pr-2 xl:pr-6">
             <div className="mx-auto w-full max-w-none xl:mx-0">
@@ -55,8 +63,7 @@ export function CabinetIntro() {
                   cabinetIntroProseColor,
                 )}
               >
-                Patrimoine, fiscalité et transmission : conseil en gestion de patrimoine en Occitanie, ouvert sur la
-                France entière.
+                <CabinetIntroTitleHighlights />
               </h2>
 
               <div
@@ -65,49 +72,16 @@ export function CabinetIntro() {
                   cabinetIntroProseColor,
                 )}
               >
-                <p>
-                  {CABINET_CONTACT.name} structure des{" "}
-                  <Highlight variant="light" className={highlightPillClassName()}>
-                    parcours patrimoniaux
-                  </Highlight>{" "}
-                  depuis {`${CABINET_CONTACT.address.city} (${CABINET_CONTACT.address.postalCode})`}, en
-                  Pyrénées-Orientales. Nous accompagnons ménages, dirigeants et professions réglementées sur tout le{" "}
-                  <Highlight variant="light" delay="hero" className={highlightPillClassName()}>
-                    territoire national
-                  </Highlight>{" "}
-                  : entretiens au cabinet, visioconférence ou coordination avec vos autres interlocuteurs.
-                </p>
+                <CabinetIntroParagraph1 />
 
-                <div className="hidden lg:block">
-                  <p>
-                    En qualité d’
-                    <Highlight variant="light" delay="hero" className={highlightPillClassName()}>
-                      agent de l’épargne
-                    </Highlight>
-                    , nous articulons vos priorités : épargne longue durée, horizon retraite, prévoyance, arbitrage
-                    fiscal dans le respect du cadre légal, solutions d’investissement (assurance vie, PER) et
-                    stratégies de transmission. Une relation{" "}
-                    <Highlight variant="light" className={highlightPillClassName()}>
-                      indépendante et pédagogique
-                    </Highlight>
-                    , pour des décisions posées dans la durée.
-                  </p>
+                <div className="hidden space-y-4 lg:block">
+                  <CabinetIntroExtraParagraphs />
                 </div>
 
                 <CabinetIntroExpand>
-                  <p className="pt-4">
-                    En qualité d’
-                    <Highlight variant="light" delay="hero" className={highlightPillClassName()}>
-                      agent de l’épargne
-                    </Highlight>
-                    , nous articulons vos priorités : épargne longue durée, horizon retraite, prévoyance, arbitrage
-                    fiscal dans le respect du cadre légal, solutions d’investissement (assurance vie, PER) et
-                    stratégies de transmission. Une relation{" "}
-                    <Highlight variant="light" className={highlightPillClassName()}>
-                      indépendante et pédagogique
-                    </Highlight>
-                    , pour des décisions posées dans la durée.
-                  </p>
+                  <div className="space-y-4 pt-4">
+                    <CabinetIntroExtraParagraphs />
+                  </div>
                 </CabinetIntroExpand>
               </div>
 

@@ -1,5 +1,5 @@
 -- Vérification droits profil espace client (à coller dans Supabase → SQL Editor)
--- Projet attendu : qhiyxnbcegbxtvydcjhf
+-- Projet attendu : gyisrwfapphqqdbpujtb
 
 -- 1) GRANT table (rôle authenticated doit avoir SELECT + UPDATE minimum)
 select table_name, privilege_type

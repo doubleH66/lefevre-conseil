@@ -26,7 +26,7 @@ export function InvestissementArtServicePage() {
       heroCtas={{
         primary: {
           href: artContactHref,
-          label: "Réservez votre rendez-vous",
+          label: "Prendre rendez-vous",
           shortLabel: "Rendez-vous",
         },
         secondary: {

@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, ChevronDown, User } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import type { NavDropdownId } from "@/lib/content/navigation";
 import {
-  NAV_ACCOUNT,
+  NAV_AVIS,
   NAV_CONSEILS,
   NAV_DROPDOWNS,
   NAV_PRIMARY_CTA,
   ROUTES,
 } from "@/lib/content/navigation";
+import { FAQ_HREF } from "@/lib/content/routes";
+import { NavAccountButton } from "@/components/layout/navbar/nav-account-button";
 import { navGlassWhite } from "@/components/layout/navbar/styles";
 import { cn } from "@/lib/utils";
 
@@ -71,12 +73,13 @@ function MobileAccordion({
 export function NavMobileMenu({
   open,
   onClose,
-  onAccountClick,
+  onLoginClick,
+  surfaceClass,
 }: {
   open: boolean;
   onClose: () => void;
-  /** Ouvre la modale compte (tiroir bas) au lieu de naviguer vers /login. */
-  onAccountClick?: () => void;
+  onLoginClick?: () => void;
+  surfaceClass: string;
 }) {
   const [active, setActive] = useState<NavDropdownId | null>(null);
 
@@ -111,6 +114,20 @@ export function NavMobileMenu({
             >
               {NAV_CONSEILS.label}
             </Link>
+            <Link
+              href={NAV_AVIS.href}
+              onClick={onClose}
+              className="block rounded-xl px-3 py-3 text-[14px] font-semibold text-neutral-800 transition-colors hover:bg-[#1f2a7c]/[0.06]"
+            >
+              {NAV_AVIS.label}
+            </Link>
+            <Link
+              href={FAQ_HREF}
+              onClick={onClose}
+              className="block rounded-xl px-3 py-3 text-[14px] font-semibold text-neutral-800 transition-colors hover:bg-[#1f2a7c]/[0.06]"
+            >
+              FAQ
+            </Link>
 
             <div className="mt-2 flex items-center gap-3 border-t border-[#1f2a7c]/10 pt-3">
               <Link
@@ -121,28 +138,14 @@ export function NavMobileMenu({
                 {NAV_PRIMARY_CTA.mobileLabel}
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
-              {onAccountClick ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    onAccountClick();
-                  }}
-                  aria-label="Compte : connexion ou inscription"
-                  className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", navGlassWhite)}
-                >
-                  <User className="h-5 w-5" />
-                </button>
-              ) : (
-                <Link
-                  href={NAV_ACCOUNT.href}
-                  onClick={onClose}
-                  aria-label="Compte : connexion ou inscription"
-                  className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", navGlassWhite)}
-                >
-                  <User className="h-5 w-5" />
-                </Link>
-              )}
+              <NavAccountButton
+                light={false}
+                surfaceClass={surfaceClass}
+                compact
+                menuUp
+                onMenuAction={onClose}
+                onLoginClick={onLoginClick}
+              />
             </div>
           </div>
         </motion.div>

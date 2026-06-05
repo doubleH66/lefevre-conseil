@@ -1,6 +1,19 @@
 import { SERVICE_CATALOG, serviceDetailHref } from "@/lib/content/services";
-import { SITE_URL, CABINET_CONTACT, SITE_NAME } from "@/lib/content/site";
+import {
+  SITE_URL,
+  CABINET_CONTACT,
+  SITE_NAME,
+  GOOGLE_BUSINESS_PROFILE_URL,
+} from "@/lib/content/site";
 import { CLIENT_REVIEWS, GOOGLE_RATING } from "@/lib/content/reviews";
+
+/** Liens externes officiels — réseaux réels + fiche Google Business Profile si disponible. */
+const cabinetSameAs = [
+  CABINET_CONTACT.social.facebook,
+  CABINET_CONTACT.social.linkedin,
+  CABINET_CONTACT.social.instagram,
+  GOOGLE_BUSINESS_PROFILE_URL,
+].filter((url) => url.length > 0);
 
 /**
  * Schéma principal du cabinet (`FinancialService` — sous-type de `LocalBusiness`).
@@ -18,7 +31,7 @@ export function financialServiceJsonLd() {
     name: CABINET_CONTACT.name,
     legalName: "Lefèvre Conseil",
     description:
-      "Cabinet indépendant de conseil en gestion de patrimoine à Perpignan : épargne, retraite, défiscalisation, prévoyance, transmission. Accompagnement des particuliers et chefs d'entreprise dans toute la France.",
+      "Cabinet indépendant de conseil en gestion de patrimoine à Perpignan : placements, retraite, transmission, fiscalité patrimoniale et prévoyance. Accompagnement des particuliers, dirigeants et professions libérales au cabinet ou à distance partout en France.",
     url: SITE_URL,
     image: `${SITE_URL}/opengraph-image`,
     logo: `${SITE_URL}/icon`,
@@ -46,18 +59,22 @@ export function financialServiceJsonLd() {
         closes: "18:00",
       },
     ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: CABINET_CONTACT.phoneTel,
+      email: CABINET_CONTACT.email,
+      contactType: "customer service",
+      areaServed: "FR",
+      availableLanguage: ["fr"],
+    },
     founder: {
       "@type": "Person",
       "@id": `${SITE_URL}/#philippe-lefevre`,
       name: "Philippe Lefèvre",
-      jobTitle: "Conseiller en gestion de patrimoine (CGP) indépendant",
+      jobTitle: "Conseiller en gestion de patrimoine",
       worksFor: { "@id": `${SITE_URL}/#cabinet` },
     },
-    sameAs: [
-      CABINET_CONTACT.social.facebook,
-      CABINET_CONTACT.social.linkedin,
-      CABINET_CONTACT.social.instagram,
-    ],
+    ...(cabinetSameAs.length > 0 ? { sameAs: cabinetSameAs } : {}),
     areaServed: [
       { "@type": "Country", name: "France" },
       { "@type": "City", name: "Perpignan" },
@@ -69,7 +86,7 @@ export function financialServiceJsonLd() {
       "Conseil en investissements financiers",
       "Assurance-vie",
       "Préparation à la retraite",
-      "Défiscalisation",
+      "Optimisation fiscale patrimoniale",
       "Prévoyance",
       "Transmission de patrimoine",
       "Assurance de prêt",

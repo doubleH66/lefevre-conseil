@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { BookOpen } from "lucide-react";
 import { CategorySearchToolbar } from "@/components/marketing/category-search-toolbar";
 import { ConseilCard } from "@/components/marketing/conseil-card";
 import {
@@ -21,6 +19,8 @@ const CATEGORIES = [ALL_CATEGORY, ...ARTICLE_CATEGORIES] as const;
 export function ActualitesBlogClient() {
   const [search, setSearch] = React.useState("");
   const [category, setCategory] = React.useState<string>(ALL_CATEGORY);
+
+  const hasArticles = ALL_ARTICLES.length > 0;
 
   const filtered = React.useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -41,44 +41,39 @@ export function ActualitesBlogClient() {
     <section className={hubSectionClass}>
       <div className={hubInnerWideClass}>
         <p className={hubIntroClass}>
-          Articles patrimoniaux, fiscalité et épargne — des contenus pour mieux décider, sans jargon inutile.
+          Retrouvez prochainement des contenus pédagogiques pour mieux comprendre les sujets patrimoniaux :
+          assurance-vie, PER, retraite, transmission, fiscalité, prévoyance et organisation du patrimoine.
         </p>
 
-        <CategorySearchToolbar
-          className="mt-8"
-          searchTerm={search}
-          onSearchChange={setSearch}
-          onSearchClear={() => setSearch("")}
-          searchPlaceholder="Rechercher un article (retraite, PER, assurance-vie…)"
-          searchAriaLabel="Rechercher dans les conseils"
-          category={category}
-          onCategoryChange={setCategory}
-          categories={CATEGORIES}
-          allCategoryValue={ALL_CATEGORY}
-          categoryFieldLabel="Thématique"
-          filterPanelDescription="Affinez par thématique d'article."
-          resultCount={filtered.length}
-          hasActiveSearchOrFilters={hasActiveSearchOrFilters}
-          resultLabel={(count) => `${count} article${count > 1 ? "s" : ""}`}
-        />
+        {hasArticles ? (
+          <CategorySearchToolbar
+            className="mt-8"
+            searchTerm={search}
+            onSearchChange={setSearch}
+            onSearchClear={() => setSearch("")}
+            searchPlaceholder="Rechercher un article (retraite, PER, assurance-vie…)"
+            searchAriaLabel="Rechercher dans les conseils"
+            category={category}
+            onCategoryChange={setCategory}
+            categories={CATEGORIES}
+            allCategoryValue={ALL_CATEGORY}
+            categoryFieldLabel="Thématique"
+            filterPanelDescription="Affinez par thématique d'article."
+            resultCount={filtered.length}
+            hasActiveSearchOrFilters={hasActiveSearchOrFilters}
+            resultLabel={(count) => `${count} article${count > 1 ? "s" : ""}`}
+          />
+        ) : null}
 
         <div className="mt-8 sm:mt-10">
-          {!ARTICLES_PUBLISHED ? (
-            <p className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700">
-              Les articles complets seront publiés prochainement. Vous pouvez parcourir les thématiques ci-dessous ou{" "}
-              <Link href="/demande" className="font-semibold underline-offset-2 hover:underline">
-                nous contacter via le formulaire de demande
-              </Link>
-              .
-            </p>
-          ) : null}
-
           {filtered.length === 0 ? (
             <div className={hubEmptyStateClass}>
               <p className="text-sm text-zinc-600">
-                {search.trim()
-                  ? "Aucun article ne correspond à votre recherche."
-                  : "Aucun article dans cette catégorie pour le moment."}
+                {!hasArticles
+                  ? "Aucun article pour le moment."
+                  : search.trim()
+                    ? "Aucun article ne correspond à votre recherche."
+                    : "Aucun article dans cette catégorie pour le moment."}
               </p>
               {hasActiveSearchOrFilters ? (
                 <button

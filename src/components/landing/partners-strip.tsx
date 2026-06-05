@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
+import { HERO_SHELL_HORIZONTAL_CLASS, PARTNERS_HERO_STRIP_CLASS } from "@/lib/content/hero-shell";
 import { partners } from "@/lib/content/partners";
 import { cn } from "@/lib/utils";
 
@@ -73,7 +74,7 @@ function InfiniteSlider({ children }: { children: React.ReactNode }) {
       <div className="partner-mask overflow-hidden">
         <div className="infinite-slider-track flex w-max items-center gap-8 md:gap-10 lg:gap-12">
           {children}
-          <span aria-hidden className="contents">
+          <span aria-hidden className="partner-slider-clone contents">
             {children}
           </span>
         </div>
@@ -84,7 +85,7 @@ function InfiniteSlider({ children }: { children: React.ReactNode }) {
 
 type PartnersStripProps = {
   /**
-   * `hero` : chevauchement sous le hero arrondi (même offset que l'accueil).
+   * `hero` : sous le hero, remonte légèrement dans le bas arrondi (chevauchement visuel).
    * `page` : bandeau standard sous le contenu.
    */
   layout?: "hero" | "page";
@@ -105,16 +106,15 @@ export function PartnersStrip({ layout = "page", className }: PartnersStripProps
     <>
       <div
         className={cn(
-          "mx-2.5 px-4 sm:px-7 lg:mx-4 xl:px-11",
-          layout === "hero"
-            ? "pb-2 pt-7 sm:pb-3 sm:pt-8 lg:-mt-12 lg:pb-3 lg:pt-10"
-            : "pb-2 pt-6 sm:pb-3 sm:pt-8 lg:pt-10",
+          layout === "hero" ? PARTNERS_HERO_STRIP_CLASS : HERO_SHELL_HORIZONTAL_CLASS,
+          layout !== "hero" && "px-4 sm:px-7 xl:px-11",
+          layout === "page" && "pb-2 pt-6 sm:pb-3 sm:pt-8 lg:pt-10",
           className,
         )}
       >
         <div className="group relative z-10 m-auto w-full min-w-0 max-w-none">
           <div className="flex w-full min-w-0 flex-col items-stretch gap-3 sm:gap-5 xl:flex-row xl:items-center xl:gap-0">
-            <div className="hidden shrink-0 xl:block xl:max-w-44 xl:border-r xl:border-[#1f2a7c]/15 xl:pr-6">
+            <div className="hidden shrink-0 xl:block xl:max-w-44 xl:pr-6">
               <p className="text-center text-[13px] font-semibold leading-snug tracking-wide text-[#1f2a7c] sm:text-sm xl:text-end">
                 Partenaires de confiance
               </p>

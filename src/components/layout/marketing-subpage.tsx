@@ -3,8 +3,8 @@ import {
   type SubpageBreadcrumb,
   type SubpageHeroLead,
 } from "@/components/layout/subpage-shell";
+import { PAGE_HERO_MIN_HEIGHT_CLASS } from "@/lib/content/hero-shell";
 import type { PageHeroConfig } from "@/lib/content/page-heroes";
-import { SUBPAGE_DEFISCAL_HERO_MIN_CLASS } from "@/lib/content/page-heroes";
 
 type MarketingSubpageProps = {
   breadcrumbs: readonly SubpageBreadcrumb[];
@@ -26,7 +26,7 @@ export function MarketingSubpage({
 }: MarketingSubpageProps) {
   return (
     <SubpageShell
-      heroMinHeightClass={SUBPAGE_DEFISCAL_HERO_MIN_CLASS}
+      heroMinHeightClass={PAGE_HERO_MIN_HEIGHT_CLASS}
       hideBilanCta={hideBilanCta}
       heroLead={{
         title: hero.title,

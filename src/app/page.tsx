@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import { LandingPage } from "@/components/landing/landing-page";
+import { HOME_FAQ } from "@/components/landing/home-content-sections";
+import { FAQPageJsonLd, WebPageJsonLd } from "@/components/seo/page-jsonld";
 
+const TITLE = "Conseil en gestion de patrimoine à Perpignan | Lefèvre Conseil";
 const DESCRIPTION =
-  "Lefèvre Conseil, conseiller en gestion de patrimoine indépendant à Perpignan (Pyrénées-Orientales, Occitanie) : bilan patrimonial, épargne, retraite, fiscalité, prévoyance et transmission. Accompagnement au cabinet et à distance partout en France.";
+  "Lefèvre Conseil accompagne particuliers, dirigeants et professions libérales à Perpignan : placements, retraite, transmission, fiscalité patrimoniale et prévoyance. Au cabinet ou à distance partout en France.";
 
 export const metadata: Metadata = {
-  title: "Conseiller en gestion de patrimoine à Perpignan",
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Conseiller en gestion de patrimoine à Perpignan · Lefèvre Conseil",
+    title: TITLE,
     description: DESCRIPTION,
     url: "/",
     type: "website",
@@ -17,5 +20,11 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <LandingPage />;
+  return (
+    <>
+      <WebPageJsonLd name={TITLE} description={DESCRIPTION} path="/" />
+      <FAQPageJsonLd items={HOME_FAQ.map((item) => ({ q: item.q, a: item.a }))} path="/" />
+      <LandingPage />
+    </>
+  );
 }

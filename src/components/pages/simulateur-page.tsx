@@ -9,7 +9,7 @@ import { MutuelleSimulator } from "@/components/mutuelle/MutuelleSimulator";
 import { HeroCtaPrimaryButton, HeroCtaSecondaryLink } from "@/components/marketing/hero-site-cta";
 import { SERVICE_CATALOG, serviceDetailHref } from "@/lib/content/services";
 import type { ServiceSlug } from "@/lib/content/services";
-import { CONTACT_HREF, DEMANDE_HREF, EXPERTISES_BASE_HREF, ROUTES } from "@/lib/content/routes";
+import { CONTACT_HREF, EXPERTISES_BASE_HREF, ROUTES } from "@/lib/content/routes";
 import { splitFullName, submitSiteLead } from "@/lib/site-lead/submit-site-lead";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +22,7 @@ const fieldClass =
   "w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 outline-none transition-[border-color,box-shadow] placeholder:text-neutral-400 focus:border-[#1f2a7c]/40 focus:ring-2 focus:ring-[#1f2a7c]/15";
 
 const OBJECTIFS = [
-  "Réduire mes impôts",
+  "Optimiser ma fiscalité",
   "Préparer ma retraite",
   "Faire fructifier mon épargne",
   "Protéger mes proches",
@@ -237,8 +237,8 @@ export function SimulateurPage() {
                         {loading ? "Envoi en cours…" : "Recevoir ma simulation"}
                       </span>
                     </HeroCtaPrimaryButton>
-                    <HeroCtaSecondaryLink href={DEMANDE_HREF} surface="light">
-                      Formulaire complet
+                    <HeroCtaSecondaryLink href={CONTACT_HREF} surface="light">
+                      Prendre rendez-vous avec le cabinet
                     </HeroCtaSecondaryLink>
                   </div>
                   {submitted ? (

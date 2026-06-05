@@ -1,9 +1,9 @@
 /** Ref projet Supabase attendue en production (lefevre-conseil). */
-export const SUPABASE_PROJECT_REF = "qhiyxnbcegbxtvydcjhf";
+export const SUPABASE_PROJECT_REF = "gyisrwfapphqqdbpujtb";
 
 export const SUPABASE_PRODUCTION_URL = `https://${SUPABASE_PROJECT_REF}.supabase.co`;
 
-/** Extrait la ref depuis une URL Supabase (ex. qhiyxnbcegbxtvydcjhf). */
+/** Extrait la ref depuis une URL Supabase (ex. gyisrwfapphqqdbpujtb). */
 export function supabaseRefFromUrl(url: string): string | null {
   try {
     const host = new URL(url.replace(/\/+$/, "")).hostname;

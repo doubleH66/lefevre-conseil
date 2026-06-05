@@ -1,12 +1,15 @@
 import Image from "next/image";
 
-const INNER_PAGE_HEADER_IMAGE =
-  "https://cdn.helloklik.com/uploads/1778742468697-Capture_d_e_cran_2026-05-14_a__09.06.37.png";
+import { SUBPAGE_HEADER_IMAGE_URL } from "@/lib/content/media";
+import { HERO_SHELL_RADIUS_CLASS } from "@/lib/content/hero-shell";
+import { cn } from "@/lib/utils";
+
+const INNER_PAGE_HEADER_IMAGE = SUBPAGE_HEADER_IMAGE_URL;
 
 /** Visuel d’en-tête des pages intérieures (bandeau photo arrondi). */
 export function SubpageHeaderBackground() {
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden rounded-3xl lg:rounded-[3rem]">
+    <div className={cn("absolute inset-0 z-0 overflow-hidden", HERO_SHELL_RADIUS_CLASS)}>
       <Image
         src={INNER_PAGE_HEADER_IMAGE}
         alt=""

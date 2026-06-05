@@ -1,6 +1,7 @@
-/** Hauteur bandeau photo — gabarit défiscalisation / pages marketing. */
-export const SUBPAGE_DEFISCAL_HERO_MIN_CLASS =
-  "min-h-[22rem] sm:min-h-[26rem] lg:min-h-[29rem] xl:min-h-[32rem]";
+import { PAGE_HERO_MIN_HEIGHT_CLASS } from "@/lib/content/hero-shell";
+
+/** @deprecated Utiliser `PAGE_HERO_MIN_HEIGHT_CLASS`. */
+export const SUBPAGE_DEFISCAL_HERO_MIN_CLASS = PAGE_HERO_MIN_HEIGHT_CLASS;
 
 export type PageHeroConfig = {
   title: string;
@@ -13,31 +14,31 @@ export type PageHeroConfig = {
 
 export const PAGE_HEROES = {
   contact: {
-    title: "Contactez le cabinet",
+    title: "Prendre rendez-vous avec Lefèvre Conseil",
     tagline:
-      "Un conseiller vous répond sous 24 h, à Perpignan ou partout en France, en cabinet ou à distance.",
-    taglineHighlightAfter: ", à Perpignan",
+      "Expliquez-nous votre situation patrimoniale. Le cabinet vous recontacte pour organiser un premier échange clair, confidentiel et sans engagement.",
+    taglineHighlightAfter: "organiser un premier échange ",
     titleId: "contact-hero-title",
   },
   notreCabinet: {
-    title: "Qui sommes-nous ?",
+    title: "Un cabinet de conseil patrimonial indépendant à Perpignan",
     tagline:
-      "Lefèvre Conseil, conseil en gestion de patrimoine à Perpignan — cabinet indépendant, une même exigence pour toute la France.",
-    taglineHighlightAfter: "cabinet indépendant",
+      "Lefèvre Conseil accompagne les particuliers, dirigeants et professions libérales dans l’organisation, la protection et la transmission de leur patrimoine.",
+    taglineHighlightAfter: "dirigeants et professions libérales",
     titleId: "notre-cabinet-hero-title",
   },
   avis: {
-    title: "Avis clients et retours d’expérience",
+    title: "Avis clients Lefèvre Conseil",
     tagline:
-      "Bilan patrimonial, retraite, transmission, fiscalité, structuration du patrimoine : ce que disent les clients accompagnés par Lefèvre Conseil.",
-    taglineHighlightAfter: " : ce que disent",
+      "Les avis clients reflètent la qualité du suivi, la pédagogie et la relation de confiance construite avec le cabinet.",
+    taglineHighlightAfter: "la relation de confiance",
     titleId: "avis-hero-title",
   },
   conseils: {
-    title: "Conseils & actualités",
+    title: "Conseils patrimoniaux",
     tagline:
-      "Décryptages patrimoniaux, fiscalité et épargne — des articles pour mieux décider, sans jargon inutile.",
-    taglineHighlightAfter: " — des articles",
+      "Retrouvez prochainement des contenus pédagogiques pour mieux comprendre les sujets patrimoniaux : assurance-vie, PER, retraite, transmission, fiscalité, prévoyance et organisation du patrimoine.",
+    taglineHighlightAfter: " : assurance-vie",
     titleId: "conseils-hero-title",
   },
   faq: {
@@ -62,18 +63,11 @@ export const PAGE_HEROES = {
     titleId: "cookies-hero-title",
   },
   expertises: {
-    title: "Nos expertises",
+    title: "Expertises en gestion de patrimoine",
     tagline:
-      "Six domaines d’accompagnement pour structurer, développer et protéger votre patrimoine.",
-    taglineHighlightAfter: ", développer",
+      "Lefèvre Conseil accompagne ses clients sur les principaux sujets patrimoniaux : épargne, placements, retraite, transmission, fiscalité et prévoyance — au cabinet à Perpignan ou à distance partout en France.",
+    taglineHighlightAfter: " — au cabinet à Perpignan",
     titleId: "expertises-hero-title",
-  },
-  bilanPatrimonial: {
-    title: "Réalisez votre bilan patrimonial",
-    tagline:
-      "Faites le point sur votre situation, vos objectifs et vos priorités — sans engagement immédiat.",
-    taglineHighlightAfter: " — sans engagement",
-    titleId: "bilan-hero-title",
   },
   simulateur: {
     title: "Simulateur patrimonial",

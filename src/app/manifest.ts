@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Lefèvre Conseil — Gestion de patrimoine",
     short_name: "Lefèvre Conseil",
     description:
-      "Cabinet indépendant de conseil en gestion de patrimoine à Perpignan. Épargne, retraite, défiscalisation, prévoyance, transmission.",
+      "Cabinet indépendant de conseil en gestion de patrimoine à Perpignan. Placements, retraite, transmission, fiscalité patrimoniale et prévoyance.",
     start_url: "/",
     scope: "/",
     display: "standalone",
@@ -53,17 +53,17 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "Bilan patrimonial",
-        short_name: "Bilan",
-        description: "Réaliser mon bilan patrimonial gratuit",
-        url: "/bilan-patrimonial",
+        name: "Prendre rendez-vous",
+        short_name: "RDV",
+        description: "Prendre rendez-vous avec Lefèvre Conseil",
+        url: "/contact",
         icons: [{ src: "/pwa-icon-192", sizes: "192x192" }],
       },
       {
-        name: "Contact",
-        short_name: "Contact",
-        description: "Prendre contact avec le cabinet",
-        url: "/contact",
+        name: "Nos expertises",
+        short_name: "Expertises",
+        description: "Découvrir les domaines d’accompagnement",
+        url: "/expertises",
         icons: [{ src: "/pwa-icon-192", sizes: "192x192" }],
       },
       {

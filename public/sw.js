@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v4";
 const STATIC_CACHE = `lefevre-static-${CACHE_VERSION}`;
 const PAGES_CACHE = `lefevre-pages-${CACHE_VERSION}`;
 
@@ -8,7 +8,7 @@ const STATIC_ASSETS = [
   "/expertises",
   "/contact",
   "/faq",
-  "/bilan-patrimonial",
+  "/avis",
   "/notre-cabinet",
   "/offline",
 ];
@@ -16,7 +16,7 @@ const STATIC_ASSETS = [
 const CACHE_PATTERNS = {
   static: /\.(js|css|woff2?|ttf|otf)(\?.*)?$/,
   images: /\.(png|jpg|jpeg|webp|avif|svg|ico)(\?.*)?$/,
-  cdn: /^https:\/\/(cdn\.helloklik\.com|qhiyxnbcegbxtvydcjhf\.supabase\.co)/,
+  cdn: /^https:\/\/(cdn\.helloklik\.com|gyisrwfapphqqdbpujtb\.supabase\.co)/,
 };
 
 // ─── Install ───────────────────────────────────────────────────────────────────

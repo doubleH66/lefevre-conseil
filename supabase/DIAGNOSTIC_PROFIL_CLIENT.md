@@ -1,7 +1,7 @@
 # Diagnostic — profil client qui ne se sauvegarde pas
 
-**Projet Supabase :** `qhiyxnbcegbxtvydcjhf`  
-**URL :** `https://qhiyxnbcegbxtvydcjhf.supabase.co`
+**Projet Supabase :** `gyisrwfapphqqdbpujtb`  
+**URL :** `https://gyisrwfapphqqdbpujtb.supabase.co`
 
 > L’assistant IA / Cursor **n’a pas accès** au dashboard Supabase du client.  
 > Le correctif passe par l’exécution des migrations SQL et la vérification RLS ci-dessous.
@@ -127,7 +127,7 @@ select * from public.update_my_client_account(
 ## Variables d’environnement (Vercel / local)
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://qhiyxnbcegbxtvydcjhf.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://gyisrwfapphqqdbpujtb.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...  # clé anon uniquement, pas service_role
 ```
 
@@ -148,6 +148,6 @@ Après changement : redéployer le site.
 ## Résumé pour le chef de projet
 
 Le site est prêt côté code (branche `main`, commit `7669f3b+`).  
-**Le blocage est côté base Supabase** tant que les migrations **004, 005 et 010** ne sont pas appliquées sur le projet `qhiyxnbcegbxtvydcjhf`, et tant qu’il existe des **doublons** `client_accounts` pour le même e-mail.
+**Le blocage est côté base Supabase** tant que les migrations **004, 005 et 010** ne sont pas appliquées sur le projet `gyisrwfapphqqdbpujtb`, et tant qu’il existe des **doublons** `client_accounts` pour le même e-mail.
 
 **Temps estimé correctif :** 15–30 min (SQL + vérification données).

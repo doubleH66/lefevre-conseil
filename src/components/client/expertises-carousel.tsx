@@ -6,6 +6,11 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { SERVICE_CATALOG } from "@/lib/content/services";
 import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
 import { serviceDetailHref } from "@/lib/content/services";
+import {
+  LANDING_SCROLL_MARGIN,
+  LANDING_SECTION_INSET,
+  LANDING_SECTION_SHELL,
+} from "@/lib/content/landing-layout";
 import { cn } from "@/lib/utils";
 
 export type HomeServiceSlide = {
@@ -27,6 +32,8 @@ function buildHomeServiceSlides(): HomeServiceSlide[] {
 }
 
 const homeServiceSlides = buildHomeServiceSlides();
+
+const CAROUSEL_INSET = LANDING_SECTION_INSET;
 
 /** Même style de titre que « Nos expertises » (couleur selon le fond). */
 const CAROUSEL_RUBRIQUE_TYPO =
@@ -84,7 +91,7 @@ function ServiceCard({ service }: { service: HomeServiceSlide }) {
   return (
     <a
       href={service.href}
-      className="group relative h-[430px] w-[78vw] max-w-[430px] shrink-0 overflow-hidden rounded-[1.75rem] border-0 bg-neutral-900 text-white no-underline shadow-none outline-none ring-0 md:h-[560px] md:w-[430px] md:rounded-[2rem]"
+      className="group relative h-[430px] w-[min(430px,calc(100vw-3.25rem))] shrink-0 overflow-hidden rounded-[1.75rem] border-0 bg-neutral-900 text-white no-underline shadow-none outline-none ring-0 md:h-[560px] md:w-[430px] md:rounded-[2rem]"
       aria-label={`${service.title} - ${service.category}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- cartes plein format, assets CDN */}
@@ -223,16 +230,16 @@ function CarouselExpertisesBar({
   onNext: () => void;
 }) {
   return (
-    <div className="relative z-40 flex shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-white px-0 pb-3 pt-1 sm:gap-4 sm:px-7 sm:pb-4 sm:pt-2 xl:px-11">
+    <div className={cn("relative z-40 flex shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-white pb-3 pt-1 sm:gap-4 sm:pb-4 sm:pt-2", CAROUSEL_INSET)}>
       <h2
         className={cn(
           CAROUSEL_RUBRIQUE_TYPO,
-          "min-w-0 max-w-[min(100%,20rem)] shrink pl-2 text-neutral-900 sm:max-w-[min(100%,28rem)] sm:pl-0",
+          "min-w-0 max-w-[min(100%,20rem)] shrink text-neutral-900 sm:max-w-[min(100%,28rem)]",
         )}
       >
         Nos expertises
       </h2>
-      <div className="shrink-0 pr-2 sm:pr-0">
+      <div className="shrink-0">
         <CarouselButtons
           activeIndex={activeIndex}
           maxIndex={maxIndex}
@@ -262,20 +269,27 @@ function ArrowsCarousel() {
 
   return (
     <section
+      id="expertises-home"
+      data-nav-theme="light"
       aria-label="Nos expertises"
-      className="relative mt-0 w-full overflow-hidden bg-white pb-8 pt-0 text-white sm:pb-10 md:pb-12"
+      className={cn(
+        "relative mt-0 w-full overflow-hidden bg-white pb-8 pt-0 text-white sm:pb-10 md:pb-12",
+        LANDING_SCROLL_MARGIN,
+      )}
     >
-      <CarouselExpertisesBar
-        activeIndex={activeIndex}
-        maxIndex={maxIndex}
-        onPrevious={previous}
-        onNext={next}
-      />
+      <div className={LANDING_SECTION_SHELL}>
+        <CarouselExpertisesBar
+          activeIndex={activeIndex}
+          maxIndex={maxIndex}
+          onPrevious={previous}
+          onNext={next}
+        />
+      </div>
 
       <div className="relative min-h-[min(26rem,68svh)] overflow-hidden pt-1 md:min-h-[30rem] md:pt-2">
         <SideFades atStart={activeIndex === 0} atEnd={activeIndex === maxIndex} />
 
-        <div ref={viewportRef} className="overflow-hidden px-4 sm:px-7 xl:px-11">
+        <div ref={viewportRef} className={cn(LANDING_SECTION_SHELL, CAROUSEL_INSET, "overflow-hidden")}>
           <motion.div
             ref={trackRef}
             animate={{ x: targetX }}

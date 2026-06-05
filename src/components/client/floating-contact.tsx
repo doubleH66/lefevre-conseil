@@ -48,12 +48,12 @@ export function FloatingConsultButton({
   imageSize,
   imageSrc = ADVISOR_ROUND_AVATAR_IMAGE_URL,
   imageAlt = CABINET_CONTACT.name,
-  revolvingText = `ME CONTACTER - ${CABINET_CONTACT.name.toUpperCase()} - PATRIMOINE - `,
+  revolvingText = `PRENDRE RENDEZ-VOUS - ${CABINET_CONTACT.name.toUpperCase()} - PATRIMOINE - `,
   revolvingSpeed = 14,
-  popupHeading = "Contactez le cabinet",
+  popupHeading = "Prendre rendez-vous",
   popupDescription = `Un conseiller vous répond sous 24 h, en cabinet à ${CABINET_CONTACT.address.city} ou à distance partout en France. Premier échange confidentiel, sans engagement.`,
   popupBadgeText = "Réponse sous 24 h",
-  ctaButtonText = "Nous contacter",
+  ctaButtonText = "Prendre rendez-vous",
   ctaHref = CONTACT_HREF,
   position,
   cornerBadgeText,
@@ -165,7 +165,7 @@ export function FloatingConsultButton({
         ) : null}
       </AnimatePresence>
 
-      <div className={cn("pointer-events-none fixed z-[70]", className)} style={mergedPosition}>
+      <div className={cn("pointer-events-none fixed z-[70] site-chrome-method-shift-floating", className)} style={mergedPosition}>
         <div className="pointer-events-auto flex flex-col items-end">
           {cornerBadgeText ? (
             <span

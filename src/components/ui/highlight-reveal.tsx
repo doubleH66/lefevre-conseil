@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useInView } from "framer-motion";
+import { useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type HighlightRevealProps = {
@@ -9,11 +9,11 @@ type HighlightRevealProps = {
   variant: "dark" | "light";
   className?: string;
   delay?: "none" | "hero";
-  /** Pour les bandeaux hero toujours visibles au chargement. */
+  /** Révèle dès le montage (hero toujours visible). */
   triggerOnMount?: boolean;
 };
 
-/** Surlignage progressif au scroll (heritage — ex. « Réduisez votre fiscalité »). */
+/** Surlignage progressif au scroll. */
 export function HighlightReveal({
   children,
   variant,
@@ -21,41 +21,15 @@ export function HighlightReveal({
   delay = "none",
   triggerOnMount = false,
 }: HighlightRevealProps) {
+  const reduceMotion = useReducedMotion();
   const ref = React.useRef<HTMLSpanElement>(null);
   const inViewScroll = useInView(ref, {
     once: true,
-    amount: 0.08,
-    margin: "0px 0px -8% 0px",
+    amount: 0.2,
+    margin: "0px 0px -10% 0px",
   });
 
-  const [mountedVisible, setMountedVisible] = React.useState(triggerOnMount);
-
-  React.useEffect(() => {
-    if (triggerOnMount) {
-      setMountedVisible(true);
-      return;
-    }
-    const el = ref.current;
-    if (!el) return;
-
-    const revealIfVisible = () => {
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      if (rect.top < vh * 0.95 && rect.bottom > 0) {
-        setMountedVisible(true);
-      }
-    };
-
-    revealIfVisible();
-    const id = window.requestAnimationFrame(revealIfVisible);
-    return () => window.cancelAnimationFrame(id);
-  }, [triggerOnMount]);
-
-  React.useEffect(() => {
-    if (inViewScroll) setMountedVisible(true);
-  }, [inViewScroll]);
-
-  const inView = mountedVisible || inViewScroll;
+  const inView = triggerOnMount || inViewScroll;
 
   return (
     <span
@@ -64,7 +38,7 @@ export function HighlightReveal({
         "highlight-reveal-base",
         variant === "dark" ? "highlight-reveal--dark" : "highlight-reveal--light",
         inView && "highlight-reveal--animate",
-        delay === "hero" && inView && "highlight-reveal--animate-delayed",
+        delay === "hero" && inView && !reduceMotion && "highlight-reveal--animate-delayed",
         className,
       )}
     >

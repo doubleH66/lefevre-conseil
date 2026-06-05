@@ -17,14 +17,14 @@ supabase secrets set RESEND_FROM_EMAIL="Lefèvre Conseil <no-reply@votredomaine.
 ## Déploiement
 
 ```bash
-supabase link --project-ref qhiyxnbcegbxtvydcjhf
+supabase link --project-ref gyisrwfapphqqdbpujtb
 supabase functions deploy portal-notify
 ```
 
 ## Test
 
 ```bash
-curl -i "https://qhiyxnbcegbxtvydcjhf.supabase.co/functions/v1/portal-notify" \
+curl -i "https://gyisrwfapphqqdbpujtb.supabase.co/functions/v1/portal-notify" \
   -H "Authorization: Bearer VOTRE_ANON_KEY" \
   -H "Content-Type: application/json" \
   -d '{"to":"vous@example.com","subject":"Test portail","text":"Hello"}'

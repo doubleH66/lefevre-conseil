@@ -16,9 +16,9 @@ import { CtaPrimaryLink } from "@/components/ui/cta-link";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { GOOGLE_REVIEWS_HREF } from "@/lib/content/reviews";
 import {
-  BILAN_PATRIMOINE_HREF,
   CONTACT_HREF,
   EXPERTISES_BASE_HREF,
+  FAQ_HREF,
   NOTRE_CABINET_HREF,
 } from "@/lib/content/routes";
 
@@ -57,9 +57,9 @@ const APPRECIATED: { icon: LucideIcon; title: string; text: string }[] = [
 
 const INTERNAL_LINKS: { href: string; label: string; description: string }[] = [
   {
-    href: BILAN_PATRIMOINE_HREF,
-    label: "Bilan patrimonial",
-    description: "Faire le point sur votre situation, sans engagement.",
+    href: CONTACT_HREF,
+    label: "Prendre rendez-vous",
+    description: "Premier échange clair, confidentiel et sans engagement.",
   },
   {
     href: EXPERTISES_BASE_HREF,
@@ -72,9 +72,9 @@ const INTERNAL_LINKS: { href: string; label: string; description: string }[] = [
     description: "Qui est Lefèvre Conseil et comment nous travaillons.",
   },
   {
-    href: CONTACT_HREF,
-    label: "Nous contacter",
-    description: "Téléphone, e-mail ou rendez-vous au cabinet / à distance.",
+    href: FAQ_HREF,
+    label: "Questions fréquentes",
+    description: "Délais, rendez-vous, zone d’intervention et accompagnement à distance.",
   },
 ];
 
@@ -127,8 +127,8 @@ export function AvisPage() {
               Le premier échange est gratuit et sans engagement, à Perpignan ou à distance partout en France.
             </p>
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <CtaPrimaryLink href={BILAN_PATRIMOINE_HREF} className="group">
-                Demander un premier échange
+              <CtaPrimaryLink href={CONTACT_HREF} className="group">
+                Prendre rendez-vous
                 <ArrowUpRight
                   aria-hidden
                   className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

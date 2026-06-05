@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { ServicesHub } from "@/components/client/services-hub";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
+import { EXPERTISE_HERO_CTAS } from "@/components/services/service-marketing-page";
 import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
 
 const PATH = EXPERTISES_BASE_HREF;
-const TITLE = "Expertises patrimoniales";
+const TITLE = "Expertises en gestion de patrimoine";
 const DESCRIPTION =
-  "Six expertises pour structurer, protéger et transmettre votre patrimoine : gestion de patrimoine, épargne, retraite, fiscalité, prévoyance et investissement dans l’art.";
+  "Lefèvre Conseil accompagne ses clients à Perpignan et à distance : gestion de patrimoine, placements, retraite, transmission, fiscalité patrimoniale, prévoyance et protection familiale.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -28,6 +29,7 @@ export default function ServicesPage() {
       />
       <MarketingSubpage
         hero={PAGE_HEROES.expertises}
+        heroCtas={EXPERTISE_HERO_CTAS}
         breadcrumbs={[
           { label: "Accueil", href: "/" },
           { label: "Nos expertises" },

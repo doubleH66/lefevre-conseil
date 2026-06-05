@@ -1,1 +1,1 @@
-export { SiteNavbar, NavBar, type SiteNavbarProps } from "@/components/layout/navbar/site-navbar";
+export { SiteNavbar, NavBar } from "@/components/layout/navbar/site-navbar";

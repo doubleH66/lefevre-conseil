@@ -1,84 +1,87 @@
-import { ArrowUpRight } from "lucide-react";
 import { HeroBackground } from "@/components/landing/hero-background";
 import { Highlight } from "@/components/ui/highlight";
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
 import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { GoogleLogo } from "@/components/ui/google-logo";
-import { SIMULATION_ANCHOR_ID, SIMULATION_HREF } from "@/lib/content/routes";
+import { HERO_LANDING_CONTENT_CLASS, LANDING_HERO_SECTION_CLASS } from "@/lib/content/hero-shell";
+import { CONTACT_HREF, NOTRE_CABINET_HREF } from "@/lib/content/routes";
 import { googleBadgeClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
 
 function GoogleBadge() {
   return (
-    <div className={googleBadgeClassName} aria-label="Note Google : 5 sur 5 - 13 avis">
-      <span className="inline-flex size-6 items-center justify-center rounded-full bg-white shadow-sm">
-        <GoogleLogo className="size-3.5" />
+    <div
+      className={cn(googleBadgeClassName, "text-[11px] font-medium leading-none text-white/90")}
+      aria-label="Note Google 5 sur 5 — cabinet indépendant à Perpignan"
+    >
+      <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
+        <GoogleLogo className="size-3" aria-hidden />
       </span>
-      <span className="text-[15px] leading-none tracking-[0.08em] text-amber-300">★★★★★</span>
-      <span className="ml-0.5 text-[11px] font-medium leading-none text-white/85">5,0</span>
+      <span className="shrink-0 tracking-[0.05em] text-amber-300/95" aria-hidden>
+        ★★★★★
+      </span>
+      <span className="shrink-0 text-white/90">5,0 Google</span>
+      <span className="hidden shrink-0 text-white/35 sm:inline" aria-hidden>
+        ·
+      </span>
+      <span className="hidden min-w-0 truncate text-white/75 sm:inline">
+        Cabinet indépendant à Perpignan
+      </span>
     </div>
   );
 }
 
 export function HeroSection() {
   return (
-    <div className="relative z-20">
-      <section
-        id="accueil"
-        className="relative isolate mx-2.5 mt-3 min-h-[85vh] overflow-hidden rounded-3xl border border-black/10 bg-black pb-24 lg:mx-4 lg:mt-4 lg:rounded-[3rem]"
-      >
-        <HeroBackground />
+    <section id="accueil" className={LANDING_HERO_SECTION_CLASS}>
+      <HeroBackground />
 
-        <div className="relative z-10 py-20 max-md:pt-24 md:pb-16 lg:pb-16 lg:pt-28">
+        <div className={HERO_LANDING_CONTENT_CLASS}>
           <div className="mx-auto flex w-full max-w-none flex-col px-4 sm:px-7 xl:block xl:px-11">
             <div className="mx-auto w-full max-w-5xl text-center xl:mx-0 xl:text-left">
-              <div className="mb-2 mt-6 flex justify-center max-md:mt-8 sm:mt-8 xl:justify-start">
-                <GoogleBadge />
-              </div>
+              <div className="mt-8 sm:mt-10 xl:mt-52">
+                <div className="mb-4 flex justify-center sm:mb-5 xl:justify-start">
+                  <GoogleBadge />
+                </div>
 
-              <h1 className="mt-3 w-full max-w-5xl text-balance text-center text-[clamp(2.25rem,7vw,5.5rem)] font-normal leading-[1.05] tracking-[-0.045em] text-white sm:mt-6 md:mt-4 xl:mt-10 xl:text-left">
-                <span className="block sm:inline sm:whitespace-nowrap">Faites travailler votre argent.</span>{" "}
-                <span className="mt-1 block sm:mt-0 sm:inline">
-                  <Highlight variant="dark" delay="hero" className="rounded-xl px-2 pb-1">
-                    Réduisez vos impôts
-                  </Highlight>
-                  .
-                </span>
-              </h1>
+                <h1 className="w-full max-w-5xl text-balance text-center text-[clamp(2.125rem,5.75vw,4.875rem)] font-normal leading-[1.2] tracking-[-0.03em] text-white xl:text-left">
+                  <span className="block">Conseil en gestion de</span>
+                  <span className="mt-0 block">
+                    patrimoine à{" "}
+                    <Highlight variant="dark" delay="hero" className="rounded-xl px-3 pb-1.5">
+                      Perpignan
+                    </Highlight>
+                  </span>
+                </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-balance text-[15px] leading-[1.55] text-white/80 sm:mt-8 sm:text-lg sm:leading-8 md:hidden xl:mx-0">
-                Patrimoine, fiscalité, placements :{" "}
-                <strong className="font-semibold text-white">conseil indépendant</strong> à Perpignan, pour
-                toute la France.
-              </p>
-              <p className="mx-auto mt-6 hidden max-w-2xl text-balance text-[15px] leading-[1.55] text-white/80 sm:mt-8 sm:text-lg sm:leading-8 md:block xl:mx-0">
-                Particuliers ou dirigeants : un diagnostic clair pour{" "}
-                <strong className="font-semibold text-white">développer votre patrimoine</strong>,{" "}
-                <strong className="font-semibold text-white">alléger votre fiscalité</strong> et{" "}
-                <strong className="font-semibold text-white">sécuriser vos investissements</strong> - cabinet
-                indépendant, ancré à Perpignan, au service de toute la France.
-              </p>
+                <p className="mx-auto mt-10 max-w-2xl text-balance text-[15px] leading-[1.6] text-white/80 sm:mt-12 sm:text-lg sm:leading-[1.75] xl:mx-0 xl:mt-5">
+                  Lefèvre Conseil accompagne particuliers, dirigeants et professions libérales dans leurs
+                  décisions patrimoniales : placements, retraite, transmission, prévoyance et fiscalité, au
+                  cabinet à Perpignan ou à distance.
+                </p>
 
-              <div
-                id={SIMULATION_ANCHOR_ID}
-                className={cn("mt-10 sm:mt-12", heroCtaRowClassName, "max-sm:gap-2")}
-              >
-                <CtaPrimaryLink
-                  href={SIMULATION_HREF}
-                  className="group max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:gap-2 max-sm:!px-5 max-sm:!text-sm"
+                <div
+                  className={cn("mt-10 sm:mt-12 xl:mt-6", heroCtaRowClassName, "max-sm:gap-2 xl:justify-start")}
                 >
-                  <span className="md:hidden">Bilan</span>
-                  <span className="hidden md:inline">Réaliser mon bilan patrimonial</span>
-                  <ArrowUpRight
-                    aria-hidden
-                    className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
+                <CtaPrimaryLink
+                  href={CONTACT_HREF}
+                  className="max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:!px-5 max-sm:!text-sm"
+                >
+                  Prendre rendez-vous
                 </CtaPrimaryLink>
                 <ContactGlassLink
+                  href={NOTRE_CABINET_HREF}
                   light
                   layout="hero"
                   className="max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:!px-5 max-sm:!text-sm"
-                />
+                >
+                  Découvrir le cabinet
+                </ContactGlassLink>
+              </div>
+
+                <p className="mx-auto mt-4 max-w-md text-balance text-center text-[12px] leading-relaxed text-white/55 sm:mt-5 sm:text-[13px] xl:mx-0 xl:mt-3 xl:text-left">
+                  Premier échange offert · Sans engagement · Cabinet basé à Perpignan
+                </p>
               </div>
             </div>
           </div>
@@ -86,7 +89,7 @@ export function HeroSection() {
 
         <a
           href="#apres-hero"
-          className="pointer-events-auto absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center text-white/45 outline-none transition-colors hover:text-white/70 focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/25 xl:hidden"
+          className="pointer-events-auto absolute bottom-6 left-1/2 z-[15] flex -translate-x-1/2 flex-col items-center text-white/45 outline-none transition-colors hover:text-white/70 focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/25 sm:bottom-8 xl:hidden"
           aria-label="Continuer : voir la suite de la page"
         >
           <span className="flex flex-col items-center -space-y-3" aria-hidden>
@@ -95,6 +98,5 @@ export function HeroSection() {
           </span>
         </a>
       </section>
-    </div>
   );
 }

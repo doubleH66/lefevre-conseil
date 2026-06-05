@@ -10,6 +10,14 @@ export function PwaRegister() {
   useEffect(() => {
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
 
+    // Avoid stale Turbopack chunks in dev (cache-first SW + HMR = broken dynamic imports).
+    if (process.env.NODE_ENV !== "production") {
+      void navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => void registration.unregister());
+      });
+      return;
+    }
+
     navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
 
     const handler = (e: Event) => {

@@ -15,9 +15,10 @@ type NewsletterSignupProps = {
   idSuffix?: string;
   /**
    * `dialog-trigger` : un bouton ouvre une modale (centrée desktop, tiroir bas mobile).
+   * `inline` : titre + champ e-mail directement visible (footer).
    * `default` : formulaire inline (pages conseils, etc.).
    */
-  presentation?: "default" | "dialog-trigger";
+  presentation?: "default" | "dialog-trigger" | "inline";
   /**
    * Avec `presentation="dialog-trigger"` : déclencheur pour fond sombre (footer),
    * un bouton secondaire type hero - sans bloc titre bleu.
@@ -98,6 +99,46 @@ export function NewsletterSignup({
       </div>
     </form>
   );
+
+  if (presentation === "inline") {
+    return (
+      <section aria-labelledby={headingId} className={cn("w-full", className)}>
+        <h2 id={headingId} className="text-sm font-semibold tracking-tight text-[#1f2a7c] sm:text-[15px]">
+          Newsletter
+        </h2>
+        <form
+          className="mt-3 w-full"
+          action={`mailto:${CABINET_CONTACT.email}`}
+          method="post"
+          encType="text/plain"
+        >
+          <label htmlFor={inputId} className="sr-only">
+            E-mail
+          </label>
+          <div className="flex w-full items-center gap-1 rounded-full border border-[#1f2a7c]/15 bg-white p-1 shadow-sm focus-within:border-[#1f2a7c]/35 focus-within:ring-2 focus-within:ring-[#1f2a7c]/12">
+            <input
+              id={inputId}
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="exemple@email.fr"
+              className="min-h-10 min-w-0 flex-1 rounded-full border-0 bg-transparent px-3 text-sm text-neutral-900 outline-none placeholder:text-neutral-400"
+            />
+            <button
+              type="submit"
+              className="min-h-10 shrink-0 rounded-full bg-[#1f2a7c] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#18226b]"
+            >
+              S’inscrire
+            </button>
+          </div>
+          <p className="mt-1.5 text-[10px] leading-snug text-[#1f2a7c]/60 sm:text-[11px]">
+            Environ une fois par mois, sans spam.
+          </p>
+        </form>
+      </section>
+    );
+  }
 
   if (presentation === "dialog-trigger") {
     const modal = (

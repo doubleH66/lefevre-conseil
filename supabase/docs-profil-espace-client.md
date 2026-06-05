@@ -5,7 +5,7 @@ L’**écriture** passe par `saveClientProfile()` : RPC **`update_my_client_acco
 
 ## Projet Supabase attendu
 
-Production : **`qhiyxnbcegbxtvydcjhf`** → `https://qhiyxnbcegbxtvydcjhf.supabase.co`
+Production : **`gyisrwfapphqqdbpujtb`** → `https://gyisrwfapphqqdbpujtb.supabase.co`
 
 Vérification automatique : `src/lib/supabase/config.ts` — en production, toute autre URL lève une erreur explicite au démarrage des clients Supabase.
 

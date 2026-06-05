@@ -78,7 +78,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<Pa
           { name: catalog?.title ?? content.hero.h1, path },
         ]}
       />
-      <FAQPageJsonLd items={content.faq} />
+      <FAQPageJsonLd items={content.faq} path={path} />
     </>
   );
 

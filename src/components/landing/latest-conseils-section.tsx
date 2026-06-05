@@ -2,14 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, BookOpen, Calendar } from "lucide-react";
 import { HOME_ARTICLES_TEASER } from "@/lib/content/articles";
+import { LANDING_SECTION_SHELL } from "@/lib/content/landing-layout";
 import { CONSEILS_HREF, articleHref } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 
-const defaultClassName = "mx-2.5 mb-12 lg:mx-4 lg:mb-16";
+const defaultClassName = cn(LANDING_SECTION_SHELL, "mb-12 lg:mb-16");
 
 export function LatestConseilsSection({ className }: { className?: string }) {
+  if (HOME_ARTICLES_TEASER.length === 0) return null;
+
   return (
     <section
+      data-nav-theme="light"
       aria-labelledby="latest-conseils-title"
       className={cn(defaultClassName, className)}
     >

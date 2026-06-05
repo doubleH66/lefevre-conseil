@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { CookieConsentBanner } from "@/components/client/cookie-banner";
 import { FloatingConsultButton } from "@/components/client/floating-contact";
 import { SiteNavbar } from "@/components/layout/navbar";
+import { PremiumScrollProvider } from "@/components/layout/premium-scroll-provider";
 
 /** Pages portail : pas de navbar marketing ni bouton flottant contact. */
 function hidePublicChrome(pathname: string) {
@@ -19,11 +20,11 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const minimal = hidePublicChrome(pathname);
 
   return (
-    <>
+    <PremiumScrollProvider>
       {!minimal ? <SiteNavbar /> : null}
       {children}
       {!minimal ? <FloatingConsultButton /> : null}
       <CookieConsentBanner />
-    </>
+    </PremiumScrollProvider>
   );
 }

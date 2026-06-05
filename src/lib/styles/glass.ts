@@ -28,4 +28,8 @@ export const navGlassDropdownSurface =
 export const navGlassDropdownSurfaceDark =
   "border border-white/35 bg-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] backdrop-blur-2xl backdrop-saturate-150 supports-[backdrop-filter]:bg-white/[0.12]";
 
+/** Panneau portail sous-menu / compte — hero sombre, fond lisible (non transparent). */
+export const navGlassDropdownPanelDark =
+  "border border-white/20 bg-[#1f2a7c]/[0.96] shadow-[0_8px_32px_rgba(0,0,0,0.22)] backdrop-blur-sm backdrop-saturate-150";
+
 export const NAV_SHELL_TRANSPARENT = "bg-transparent shadow-none";

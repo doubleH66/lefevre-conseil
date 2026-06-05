@@ -6,7 +6,8 @@ import { FAQ_PUBLIC_ITEMS } from "@/lib/content/site-faq-public";
 
 const PATH = FAQ_HREF;
 const TITLE = "FAQ gestion de patrimoine";
-const DESCRIPTION = "Questions fréquentes sur le cabinet, les rendez-vous et l’accompagnement patrimonial.";
+const DESCRIPTION =
+  "Réponses aux questions fréquentes sur la gestion de patrimoine, les placements, la retraite, la transmission, la fiscalité et les rendez-vous à Perpignan.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <FAQPageJsonLd items={FAQ_PUBLIC_ITEMS} />
+      <FAQPageJsonLd items={FAQ_PUBLIC_ITEMS} path={PATH} />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", path: "/" },

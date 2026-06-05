@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, X } from "lucide-react";
+import { SITE_LOGO_URL, SITE_NAME } from "@/lib/content/site";
 import { cn } from "@/lib/utils";
 import type { ViewMode } from "@/components/portal/types";
 
@@ -35,6 +37,128 @@ function initials(name: string, email: string) {
   return local.slice(0, 2).toUpperCase();
 }
 
+function SidebarNav({
+  mode,
+  navSections,
+  active,
+  onSelect,
+  connectedUser,
+  onNavigate,
+}: {
+  mode: ViewMode;
+  navSections: NavSection[];
+  active: string;
+  onSelect: (key: string) => void;
+  connectedUser: PortalConnectedUser;
+  onNavigate?: () => void;
+}) {
+  const isAdmin = mode === "admin";
+
+  return (
+    <div className="flex h-full flex-col">
+      <div className="border-b border-neutral-100 px-5 py-5">
+        <Link href="/" className="inline-flex items-center" onClick={onNavigate}>
+          <Image
+            src={SITE_LOGO_URL}
+            alt={SITE_NAME}
+            width={132}
+            height={40}
+            className="h-9 w-auto object-contain"
+          />
+        </Link>
+        <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+          {isAdmin ? "Administration" : "Espace client"}
+        </p>
+      </div>
+
+      <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-4">
+        {navSections.map((section) => (
+          <div key={section.title || "default"}>
+            {section.title ? (
+              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+                {section.title}
+              </p>
+            ) : null}
+            <ul className="space-y-1">
+              {section.items.map((item) => {
+                const isActive = active === item.key;
+                return (
+                  <li key={item.key}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onSelect(item.key);
+                        onNavigate?.();
+                      }}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-[#1f2a7c]/[0.08] text-[#1f2a7c]"
+                          : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900",
+                      )}
+                    >
+                      {item.icon ? (
+                        <span
+                          className={cn(
+                            "grid size-8 shrink-0 place-items-center rounded-lg",
+                            isActive ? "bg-[#1f2a7c] text-white" : "bg-neutral-100 text-neutral-600",
+                          )}
+                        >
+                          {item.icon}
+                        </span>
+                      ) : null}
+                      <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                      {item.badge ? (
+                        <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-semibold tabular-nums text-rose-700">
+                          {item.badge}
+                        </span>
+                      ) : null}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </nav>
+
+      <div className="space-y-2 border-t border-neutral-100 px-3 py-4">
+        <div className="flex items-center gap-3 rounded-lg border border-neutral-100 bg-neutral-50/80 px-3 py-2.5">
+          {connectedUser.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- avatar Supabase
+            <img
+              src={connectedUser.avatarUrl}
+              alt=""
+              className="size-9 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div
+              className="grid size-9 shrink-0 place-items-center rounded-full bg-[#1f2a7c] text-[11px] font-bold text-white"
+              aria-hidden
+            >
+              {initials(connectedUser.name, connectedUser.email)}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-neutral-900">{connectedUser.name}</p>
+            <p className="truncate text-xs text-neutral-500">{connectedUser.email}</p>
+          </div>
+        </div>
+
+        <form action="/auth/signout" method="post">
+          <button
+            type="submit"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-200 px-3 py-2.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+          >
+            <LogOut className="size-4 shrink-0" aria-hidden />
+            Se déconnecter
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export function Sidebar({
   mode,
   items,
@@ -44,7 +168,6 @@ export function Sidebar({
   mobileOpen,
   setMobileOpen,
   connectedUser,
-  hidePortalBranding = false,
 }: {
   mode: ViewMode;
   items?: NavItem[];
@@ -54,185 +177,52 @@ export function Sidebar({
   mobileOpen: boolean;
   setMobileOpen: (value: boolean) => void;
   connectedUser: PortalConnectedUser;
-  /** @deprecated Réglages via la navigation latérale */
-  onOpenSettings?: () => void;
-  /** @deprecated */
-  showSettingsLink?: boolean;
   hidePortalBranding?: boolean;
+  onOpenSettings?: () => void;
+  showSettingsLink?: boolean;
 }) {
-  const isClient = mode === "client";
-  const isAdmin = mode === "admin";
   const navSections = sections ?? (items ? [{ title: "", items }] : []);
-  const activeNavClass = isAdmin
-    ? "bg-amber-800 text-white shadow-sm"
-    : "bg-[#1f2a7c] text-white shadow-sm";
-  const inactiveNavIconClass = isAdmin ? "bg-amber-800/10 text-amber-900" : "bg-[#1f2a7c]/8 text-[#1f2a7c]";
 
   return (
     <>
-      {mobileOpen ? (
-        <button
-          type="button"
-          className="fixed inset-0 z-app-drawer-backdrop bg-black/35 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-          aria-label="Fermer le menu"
+      <aside className="hidden w-64 shrink-0 border-r border-neutral-100 bg-white lg:sticky lg:top-0 lg:block lg:h-dvh">
+        <SidebarNav
+          mode={mode}
+          navSections={navSections}
+          active={active}
+          onSelect={onSelect}
+          connectedUser={connectedUser}
         />
-      ) : null}
-
-      <aside
-        className={cn(
-          "fixed bottom-4 left-4 top-4 z-app-drawer flex w-72 flex-col rounded-3xl border border-neutral-200 bg-white p-4 shadow-card transition-transform duration-300 lg:translate-x-0",
-          mobileOpen ? "translate-x-0" : "-translate-x-[120%] lg:translate-x-0",
-        )}
-      >
-        {isAdmin ? (
-          <div className="shrink-0 rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/90 to-white p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-900/70">
-              Administration
-            </p>
-            <p className="text-sm font-semibold text-neutral-900">Lefèvre Conseil</p>
-            <div className="mt-2.5 flex items-center gap-2 border-t border-amber-200/60 pt-2.5">
-              {connectedUser.avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element -- avatar Supabase
-                <img
-                  src={connectedUser.avatarUrl}
-                  alt=""
-                  className="size-8 shrink-0 rounded-lg border border-amber-200/80 object-cover"
-                />
-              ) : (
-                <div
-                  className="grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-amber-600 to-amber-900 text-[10px] font-bold text-white"
-                  aria-hidden
-                >
-                  {initials(connectedUser.name, connectedUser.email)}
-                </div>
-              )}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-neutral-900">{connectedUser.name}</p>
-                <p className="truncate text-[10px] text-neutral-500">{connectedUser.email}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            {!hidePortalBranding ? (
-              <div className="shrink-0 rounded-2xl border border-[#1f2a7c]/12 bg-gradient-to-br from-[#1f2a7c]/[0.08] to-white p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/65">
-                  Espace client
-                </p>
-                <p className="mt-0.5 text-sm font-semibold text-neutral-900">Lefèvre Conseil</p>
-              </div>
-            ) : null}
-
-            <div
-              className={cn(
-                "shrink-0 rounded-2xl border border-neutral-200 bg-neutral-50/80 p-2.5",
-                !hidePortalBranding && "mt-3",
-              )}
-            >
-              <div className="flex items-center gap-2.5">
-                {connectedUser.avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- avatar Supabase
-                  <img
-                    src={connectedUser.avatarUrl}
-                    alt=""
-                    className="size-10 shrink-0 rounded-xl border border-neutral-200 object-cover shadow-sm"
-                  />
-                ) : (
-                  <div
-                    className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#1f2a7c] to-[#0f164a] text-xs font-bold text-white shadow-sm"
-                    aria-hidden
-                  >
-                    {initials(connectedUser.name, connectedUser.email)}
-                  </div>
-                )}
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-neutral-900">{connectedUser.name}</p>
-                  <p className="truncate text-[11px] text-neutral-500">{connectedUser.email}</p>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        <nav className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pr-0.5">
-          {navSections.map((section) => (
-            <div key={section.title || "default"}>
-              {section.title ? (
-                <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
-                  {section.title}
-                </p>
-              ) : null}
-              <ul className="space-y-1">
-                {section.items.map((item) => (
-                  <li key={item.key}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onSelect(item.key);
-                        setMobileOpen(false);
-                      }}
-                      className={cn(
-                        "flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-colors",
-                        active === item.key ? activeNavClass : "text-neutral-700 hover:bg-neutral-100",
-                      )}
-                    >
-                      {item.icon ? (
-                        <span
-                          className={cn(
-                            "grid size-8 shrink-0 place-items-center rounded-lg",
-                            active === item.key ? "bg-white/15" : inactiveNavIconClass,
-                          )}
-                        >
-                          {item.icon}
-                        </span>
-                      ) : null}
-                      <span className="min-w-0 flex-1 truncate">{item.label}</span>
-                      {item.badge ? (
-                        <span
-                          className={cn(
-                            "rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
-                            active === item.key ? "bg-white/20 text-white" : "bg-rose-100 text-rose-800",
-                          )}
-                        >
-                          {item.badge}
-                        </span>
-                      ) : null}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </nav>
-
-        <div className="mt-3 shrink-0 space-y-1.5 border-t border-neutral-100 pt-3">
-          {isClient ? (
-            <Link
-              href="/"
-              className="flex w-full items-center justify-center rounded-xl border border-neutral-200 px-3 py-2.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
-              onClick={() => setMobileOpen(false)}
-            >
-              Retour au site
-            </Link>
-          ) : null}
-          <SignOutButton />
-        </div>
       </aside>
-    </>
-  );
-}
 
-function SignOutButton() {
-  return (
-    <form action="/auth/signout" method="post" className="w-full">
-      <button
-        type="submit"
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 px-3 py-2.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
-      >
-        <LogOut className="size-4 shrink-0" aria-hidden />
-        Se déconnecter
-      </button>
-    </form>
+      {mobileOpen ? (
+        <>
+          <button
+            type="button"
+            className="fixed inset-0 z-50 bg-black/20 lg:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Fermer le menu"
+          />
+          <aside className="fixed inset-y-0 left-0 z-50 w-[min(280px,88vw)] border-r border-neutral-100 bg-white shadow-xl lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              className="absolute right-3 top-3 grid size-9 place-items-center rounded-lg text-neutral-500 hover:bg-neutral-50"
+              aria-label="Fermer"
+            >
+              <X className="size-4" />
+            </button>
+            <SidebarNav
+              mode={mode}
+              navSections={navSections}
+              active={active}
+              onSelect={onSelect}
+              connectedUser={connectedUser}
+              onNavigate={() => setMobileOpen(false)}
+            />
+          </aside>
+        </>
+      ) : null}
+    </>
   );
 }

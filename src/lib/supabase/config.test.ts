@@ -8,7 +8,7 @@ import {
 
 describe("supabase config", () => {
   it("extrait la ref projet", () => {
-    expect(supabaseRefFromUrl("https://qhiyxnbcegbxtvydcjhf.supabase.co")).toBe(SUPABASE_PROJECT_REF);
+    expect(supabaseRefFromUrl("https://gyisrwfapphqqdbpujtb.supabase.co")).toBe(SUPABASE_PROJECT_REF);
   });
 
   it("accepte l’URL prod attendue", () => {
@@ -21,7 +21,7 @@ describe("supabase config", () => {
   it("refuse une autre ref en production", () => {
     const prev = process.env.NODE_ENV;
     process.env.NODE_ENV = "production";
-    expect(() => assertProductionSupabaseUrl("https://wrongref.supabase.co")).toThrow(/qhiyxnbcegbxtvydcjhf/);
+    expect(() => assertProductionSupabaseUrl("https://wrongref.supabase.co")).toThrow(/gyisrwfapphqqdbpujtb/);
     process.env.NODE_ENV = prev;
   });
 });

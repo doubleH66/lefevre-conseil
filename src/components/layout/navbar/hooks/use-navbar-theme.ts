@@ -2,10 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { SITE_NAV_BAR_HEIGHT } from "@/lib/nav-styles";
 
 export type NavbarTheme = "dark" | "light";
 
-const SAMPLE_Y = 84;
+function readSampleY() {
+  if (typeof document === "undefined") return 84;
+
+  const root = document.documentElement;
+  const navOffset = parseFloat(root.style.getPropertyValue("--site-nav-offset") || "0");
+  const cssNavOffset = parseFloat(getComputedStyle(root).getPropertyValue("--site-nav-offset") || "0");
+  const offset = navOffset || cssNavOffset || 0;
+  // Centre vertical de la pilule nav (pt-2 ≈ 8px sous le bandeau).
+  return offset + 8 + SITE_NAV_BAR_HEIGHT / 2;
+}
 
 /** Détecte la zone sous la navbar via `[data-nav-theme]` sur les sections. */
 export function useNavbarTheme() {
@@ -20,13 +30,14 @@ export function useNavbarTheme() {
 
       frame = requestAnimationFrame(() => {
         const sampleX = window.innerWidth / 2;
+        const sampleY = readSampleY();
         const sections = Array.from(document.querySelectorAll("[data-nav-theme]"));
 
         const active = sections.find((section) => {
           const rect = section.getBoundingClientRect();
           return (
-            rect.top <= SAMPLE_Y &&
-            rect.bottom >= SAMPLE_Y &&
+            rect.top <= sampleY &&
+            rect.bottom >= sampleY &&
             rect.left <= sampleX &&
             rect.right >= sampleX
           );

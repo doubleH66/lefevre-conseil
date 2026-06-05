@@ -49,8 +49,8 @@ const key = (env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? env.NEXT_PUBLIC_SUPABASE_PUBLI
 const issues = [];
 
 if (!url) issues.push("NEXT_PUBLIC_SUPABASE_URL manquante");
-else if (!/^https:\/\/qhiyxnbcegbxtvydcjhf\.supabase\.co\/?$/.test(url.replace(/\/+$/, ""))) {
-  issues.push("NEXT_PUBLIC_SUPABASE_URL doit être https://qhiyxnbcegbxtvydcjhf.supabase.co");
+else if (!/^https:\/\/gyisrwfapphqqdbpujtb\.supabase\.co\/?$/.test(url.replace(/\/+$/, ""))) {
+  issues.push("NEXT_PUBLIC_SUPABASE_URL doit être https://gyisrwfapphqqdbpujtb.supabase.co");
 }
 
 if (!key || key === "eyJ..." || key.length < 100) {
@@ -74,7 +74,7 @@ Créez ou complétez ${envPath} :
   cp .env.example .env.local
 
 Puis collez la clé anon depuis :
-  https://supabase.com/dashboard/project/qhiyxnbcegbxtvydcjhf/settings/api
+  https://supabase.com/dashboard/project/gyisrwfapphqqdbpujtb/settings/api
 
 Redémarrez le serveur : npm run dev -- -p 8089
 `);

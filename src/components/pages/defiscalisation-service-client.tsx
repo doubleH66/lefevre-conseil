@@ -211,20 +211,20 @@ function DefiscalMergedActionBand() {
               )}
             >
               <Link
-                href={ROUTES.simulateur}
+                href={CONTACT_HREF}
                 className={cn(heroCtaPrimaryCompactClassName, "group w-full sm:w-auto")}
               >
-                <span>Faire une simulation</span>
+                <span>Prendre rendez-vous</span>
                 <ArrowUpRight
                   aria-hidden
                   className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
               </Link>
               <Link
-                href={CONTACT_HREF}
+                href={ROUTES.simulateur}
                 className={cn(heroCtaSecondaryOnDarkClassName, "w-full sm:w-auto")}
               >
-                Nous écrire
+                Faire une simulation
               </Link>
             </div>
           </div>

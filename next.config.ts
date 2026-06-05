@@ -16,11 +16,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "cdn.helloklik.com", pathname: "/**" },
       {
         protocol: "https",
-        hostname: "qhiyxnbcegbxtvydcjhf.supabase.co",
+        hostname: "gyisrwfapphqqdbpujtb.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
       { protocol: "https", hostname: "lh3.googleusercontent.com", pathname: "/**" },
-      { protocol: "https", hostname: "www.dasbatiment.fr", pathname: "/**" },
+      { protocol: "https", hostname: "cdn.heyaurenis.com", pathname: "/**" },
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
       { protocol: "https", hostname: "api.qrserver.com", pathname: "/**" },
       { protocol: "https", hostname: "lefevre-conseil.fr", pathname: "/**" },
@@ -50,6 +50,16 @@ const nextConfig: NextConfig = {
       { source: "/actualites/:slug", destination: "/conseils/:slug", permanent: true },
       { source: "/services", destination: "/expertises", permanent: true },
       { source: "/services/:slug", destination: "/expertises/:slug", permanent: true },
+      // Parcours unifié : la prise de rendez-vous passe désormais par /contact.
+      { source: "/bilan-patrimonial", destination: "/contact", permanent: true },
+      { source: "/bilan-patrimonial/", destination: "/contact", permanent: true },
+      { source: "/demande", destination: "/contact", permanent: true },
+      { source: "/demande/", destination: "/contact", permanent: true },
+      {
+        source: "/defiscalisation",
+        destination: "/expertises/fiscalite-investissement",
+        permanent: true,
+      },
       {
         source: "/expertises/defiscalisation",
         destination: "/expertises/fiscalite-investissement",

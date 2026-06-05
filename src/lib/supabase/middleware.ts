@@ -34,7 +34,11 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getUser();
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // Projet Supabase injoignable (pause, réseau…) — ne pas bloquer la navigation.
+  }
 
   return supabaseResponse;
 }

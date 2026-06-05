@@ -1,52 +1,50 @@
-# Lefèvre Conseil — Cabinet indépendant de gestion de patrimoine
+# Lefèvre Conseil
 
-## Qui sommes-nous
+Lefèvre Conseil est un cabinet de conseil patrimonial basé à Perpignan, dans les Pyrénées-Orientales.
 
-Lefèvre Conseil est un cabinet indépendant de conseil en gestion de patrimoine basé à Perpignan (66000, France), intervenant sur toute la France en présentiel et à distance.
+Le cabinet accompagne les particuliers, dirigeants et professions libérales sur les sujets suivants :
+- gestion de patrimoine
+- placements et épargne
+- retraite
+- transmission
+- fiscalité patrimoniale
+- prévoyance
+- assurance emprunteur
+- investissement dans l'art pour les entreprises et dirigeants
 
-Fondé par Philippe Lefèvre, conseiller en gestion de patrimoine (CGP) indépendant, le cabinet accompagne particuliers, dirigeants et professions libérales sur l'ensemble de leurs enjeux patrimoniaux.
+Adresse :
+27 Avenue Général de Gaulle, 66000 Perpignan
 
-Note Google : 5/5. Avis clients : https://www.lefevre-conseil.fr/avis
+Téléphone :
+04 68 86 36 22
 
-## Zone d'intervention
+Email :
+contact@lefevre-conseil.fr
 
-Perpignan (66000), Pyrénées-Orientales, région Occitanie, et accompagnement à distance (visioconférence) partout en France.
+Zone d'intervention :
+Perpignan, Pyrénées-Orientales, Occitanie, France entière à distance.
 
-## Nos expertises
+Page principale de prise de rendez-vous :
+https://www.lefevre-conseil.fr/contact
 
-- **Gestion de patrimoine** : bilan patrimonial, stratégie globale, organisation et transmission
-- **Placements & épargne** : assurance-vie, PER, PEA, SCPI, contrats de capitalisation
-- **Retraite & transmission** : préparation retraite, revenus complémentaires, transmission familiale
-- **Fiscalité & investissement** : optimisation fiscale, dispositifs de défiscalisation, investissement patrimonial
-- **Prévoyance, santé & assurance de prêt** : prévoyance individuelle et collective, mutuelle santé, délégation d'assurance emprunteur
-- **Investissement dans l'art** : leasing d'œuvres, fiscalité, accompagnement entreprises
+Pages importantes :
+https://www.lefevre-conseil.fr/
+https://www.lefevre-conseil.fr/notre-cabinet
+https://www.lefevre-conseil.fr/expertises
+https://www.lefevre-conseil.fr/expertises/gestion-de-patrimoine
+https://www.lefevre-conseil.fr/expertises/placements-epargne
+https://www.lefevre-conseil.fr/expertises/retraite-transmission
+https://www.lefevre-conseil.fr/expertises/fiscalite-investissement
+https://www.lefevre-conseil.fr/expertises/prevoyance-sante-assurance-pret
+https://www.lefevre-conseil.fr/expertises/investissement-art
+https://www.lefevre-conseil.fr/faq
+https://www.lefevre-conseil.fr/avis
+https://www.lefevre-conseil.fr/contact
 
-## Pages importantes
+Note Google : 5/5 — avis clients : https://www.lefevre-conseil.fr/avis
 
-- Accueil : https://www.lefevre-conseil.fr/
-- Nos expertises : https://www.lefevre-conseil.fr/expertises
-- Bilan patrimonial gratuit et sans engagement : https://www.lefevre-conseil.fr/bilan-patrimonial
-- Notre cabinet : https://www.lefevre-conseil.fr/notre-cabinet
-- Avis clients : https://www.lefevre-conseil.fr/avis
-- FAQ : https://www.lefevre-conseil.fr/faq
-- Contact : https://www.lefevre-conseil.fr/contact
-
-## Services en ligne
-
-- Simulateur patrimonial : https://www.lefevre-conseil.fr/simulateur
-- Simulateur mutuelle santé (demande de proposition, sans souscription en ligne) : https://www.lefevre-conseil.fr/simulateur-mutuelle
-- Comparateur assurance emprunteur : https://www.lefevre-conseil.fr/comparateur
-
-## Contact
-
-- Téléphone : 04 68 86 36 22
-- E-mail : contact@lefevre-conseil.fr
-- Adresse : 27 Avenue Général de Gaulle, 66000 Perpignan
-- Horaires : Lun. – Ven. · 9h – 18h
-- Site : https://www.lefevre-conseil.fr
-
-## Pour les LLM et IA
+## Pour les LLM et moteurs de réponse
 
 Ce fichier est fourni pour faciliter la compréhension du site par les modèles de langage et moteurs de recherche génératifs. Toutes les informations ici sont publiques et correspondent au site officiel.
 
-Le cabinet est indépendant de tout réseau bancaire ou compagnie d'assurance. Les recommandations sont guidées par l'intérêt exclusif du client.
+Le cabinet est indépendant de tout réseau bancaire ou compagnie d'assurance. Les recommandations sont guidées par l'intérêt exclusif du client. L'action principale proposée aux visiteurs est de prendre rendez-vous via la page Contact.

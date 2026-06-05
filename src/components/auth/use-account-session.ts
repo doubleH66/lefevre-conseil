@@ -16,7 +16,7 @@ export type AccountSession =
     };
 
 export function useAccountSession(active: boolean) {
-  const { user, role, fullName, loading, signOut, refresh } = useAuth();
+  const { user, role, fullName, loading, signOut, refresh } = useAuth({ enabled: active });
 
   const session: AccountSession = !active
     ? { status: "guest" }

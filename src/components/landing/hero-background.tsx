@@ -1,10 +1,13 @@
+import { HERO_SHELL_RADIUS_CLASS } from "@/lib/content/hero-shell";
+import {
+  HERO_DESKTOP_IMAGE_URL,
+  HERO_MOBILE_IMAGE_URL,
+} from "@/lib/content/media";
 import { cn } from "@/lib/utils";
 
 /** Même visuel que le hero : réutilisable (bandeaux CTA, etc.). */
-export const HERO_BACKGROUND_DESKTOP_SRC =
-  "https://cdn.helloklik.com/uploads/1778596576110-philippe_le_fevre_desktop.webp";
-export const HERO_BACKGROUND_MOBILE_SRC =
-  "https://cdn.helloklik.com/uploads/1778596576981-philippe_le_fevre.webp";
+export const HERO_BACKGROUND_DESKTOP_SRC = HERO_DESKTOP_IMAGE_URL;
+export const HERO_BACKGROUND_MOBILE_SRC = HERO_MOBILE_IMAGE_URL;
 
 type HeroBackgroundProps = {
   /** Coins du masque (ex. hero page intérieure plus compact). */
@@ -13,9 +16,7 @@ type HeroBackgroundProps = {
 
 export function HeroBackground({ className }: HeroBackgroundProps) {
   return (
-    <div
-      className={cn("absolute inset-0 z-0 overflow-hidden rounded-3xl lg:rounded-[3rem]", className)}
-    >
+    <div className={cn("absolute inset-0 z-0 overflow-hidden", className ?? HERO_SHELL_RADIUS_CLASS)}>
       <picture className="absolute inset-0 block h-full w-full">
         <source media="(min-width: 1024px)" srcSet={HERO_BACKGROUND_DESKTOP_SRC} type="image/webp" />
         <img

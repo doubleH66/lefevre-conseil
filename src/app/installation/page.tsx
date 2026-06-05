@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PATH },
+  // Page utilitaire PWA : non indexée et absente du sitemap (Run 3).
+  robots: { index: false, follow: true },
   openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, type: "website" },
 };
 

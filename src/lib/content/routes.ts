@@ -1,8 +1,6 @@
 /** Routes et ancres — source unique pour tout le site. */
 export const ROUTES = {
   home: "/",
-  bilanPatrimonial: "/bilan-patrimonial",
-  demande: "/demande",
   contact: "/contact",
   notreCabinet: "/notre-cabinet",
   expertises: "/expertises",
@@ -32,9 +30,12 @@ export const ROUTES = {
 
 export const SIMULATION_ANCHOR_ID = "simulation" as const;
 
-export const BILAN_PATRIMOINE_HREF = ROUTES.bilanPatrimonial;
-export const DEMANDE_HREF = ROUTES.demande;
-export const SIMULATION_HREF = ROUTES.bilanPatrimonial;
+/** @deprecated Parcours unifié : la prise de rendez-vous passe par /contact. */
+export const BILAN_PATRIMOINE_HREF = ROUTES.contact;
+/** @deprecated Parcours unifié : la prise de rendez-vous passe par /contact. */
+export const DEMANDE_HREF = ROUTES.contact;
+/** @deprecated CTA principal unifié vers /contact (le simulateur reste un outil secondaire). */
+export const SIMULATION_HREF = ROUTES.contact;
 export const SIMULATEUR_HREF = ROUTES.simulateur;
 export const SIMULATEUR_MUTUELLE_HREF = ROUTES.simulateurMutuelle;
 export const CONTACT_HREF = ROUTES.contact;

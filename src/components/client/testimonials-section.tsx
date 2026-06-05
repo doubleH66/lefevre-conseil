@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { GoogleLogo } from "@/components/ui/google-logo";
@@ -12,6 +12,11 @@ import {
   splitQuoteByHighlights,
   type ReviewQuotePart,
 } from "@/lib/content/reviews";
+import {
+  LANDING_SCROLL_MARGIN,
+  LANDING_SECTION_INSET,
+  LANDING_SECTION_SHELL,
+} from "@/lib/content/landing-layout";
 import { cn } from "@/lib/utils";
 
 type QuotePart = ReviewQuotePart;
@@ -208,12 +213,18 @@ export function LefevreUniqueTestimonials() {
 }
 
 export function TestimonialsSection() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section id="avis-clients" className="relative my-10 scroll-mt-28 bg-white sm:my-14 md:my-20">
-      <div className="container z-10 mx-auto px-4 sm:px-6">
+    <section
+      id="avis-clients"
+      data-nav-theme="light"
+      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN, "relative my-10 bg-white sm:my-14 md:my-20")}
+    >
+      <div className={cn(LANDING_SECTION_INSET, "z-10")}>
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, margin: "-32px" }}
           className="mx-auto flex w-full max-w-[640px] flex-col items-center justify-center text-center lg:max-w-5xl xl:max-w-6xl"

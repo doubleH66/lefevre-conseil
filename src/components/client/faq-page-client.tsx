@@ -6,10 +6,14 @@ import {
   ArrowUpRight,
   Building2,
   Calendar,
+  Coins,
   HelpCircle,
+  Landmark,
+  MapPin,
   MessageCircle,
-  UserCircle,
-  Wrench,
+  PiggyBank,
+  ShieldCheck,
+  Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FaqAccordion } from "@/components/client/faq-accordion";
@@ -25,7 +29,7 @@ import {
   FAQ_PUBLIC_ITEMS,
   type FaqCategory,
 } from "@/lib/content/site-faq-public";
-import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
+import { CONTACT_HREF, EXPERTISES_BASE_HREF, ROUTES } from "@/lib/content/routes";
 
 const ALL_CATEGORY = "Tous";
 
@@ -33,14 +37,22 @@ const CATEGORIES = [ALL_CATEGORY, ...FAQ_CATEGORIES] as const;
 
 function pickFaqIcon(category: FaqCategory): LucideIcon {
   switch (category) {
-    case "Rendez-vous":
+    case "Gestion de patrimoine":
+      return Landmark;
+    case "Premier rendez-vous":
       return Calendar;
-    case "Cabinet":
+    case "Fiscalité patrimoniale":
+      return Coins;
+    case "Retraite et transmission":
+      return Users;
+    case "Placements et épargne":
+      return PiggyBank;
+    case "Prévoyance":
+      return ShieldCheck;
+    case "Perpignan et accompagnement à distance":
+      return MapPin;
+    case "Cabinet et cadre professionnel":
       return Building2;
-    case "Outils":
-      return Wrench;
-    case "Espace client":
-      return UserCircle;
     default:
       return HelpCircle;
   }
@@ -160,7 +172,7 @@ export function FaqPageClient() {
               <div>
                 <p className="text-[15px] font-semibold">Vous ne trouvez pas votre réponse ?</p>
                 <p className="mt-1 text-sm leading-relaxed text-white/70">
-                  Contactez le cabinet ou lancez une simulation patrimoniale en ligne.
+                  Prenez rendez-vous, découvrez nos expertises ou lancez une simulation patrimoniale en ligne.
                 </p>
               </div>
             </div>
@@ -169,8 +181,14 @@ export function FaqPageClient() {
                 href={CONTACT_HREF}
                 className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 transition-colors hover:bg-white/90"
               >
-                Nous contacter
+                Prendre rendez-vous
                 <ArrowUpRight className="size-4" aria-hidden />
+              </Link>
+              <Link
+                href={EXPERTISES_BASE_HREF}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                Nos expertises
               </Link>
               <Link
                 href={ROUTES.simulateur}

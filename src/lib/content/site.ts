@@ -13,19 +13,35 @@ export const IS_INDEXABLE =
   process.env.VERCEL_ENV !== "preview" &&
   process.env.NEXT_PUBLIC_NOINDEX !== "1";
 
+import {
+  HERO_DESKTOP_IMAGE_URL,
+  HERO_MOBILE_IMAGE_URL,
+} from "@/lib/content/media";
+
 export const SITE_LOGO_URL =
   "https://cdn.helloklik.com/uploads/1777451639858-Capture_d_e_cran_2026-04-29_a__10.33.44-removebg-preview.png";
 
-export const AURENIS_LOGO_URL =
-  "https://www.dasbatiment.fr/assets/logo-aurenis-Dj4kg5Th.webp";
+export const AURENIS_LOGO_URL = "https://cdn.heyaurenis.com/logo-hey-aurenis.png";
 
-export const CABINET_PORTRAIT_IMAGE_URL =
-  "https://qhiyxnbcegbxtvydcjhf.supabase.co/storage/v1/object/public/public-media/1a8c4232-58af-4b1b-9330-6055134a8829/1778837024290-c4ta4h-Philippe-le-fevre-qui-sommes-nous.webp";
+/**
+ * Lien direct vers la fiche Google Business Profile du cabinet.
+ * TODO: ajouter l'URL officielle Google Business Profile Lefèvre Conseil
+ * (format https://g.page/... ou https://maps.app.goo.gl/...). Tant qu'elle est
+ * vide, le site retombe sur la recherche d'avis Google existante.
+ */
+export const GOOGLE_BUSINESS_PROFILE_URL = "";
+
+/**
+ * Immatriculation ORIAS — courtier d'assurances (source : mentions légales).
+ * Seule donnée réglementaire confirmée ; ne pas ajouter CIF / AMF / ANACOFI sans validation.
+ */
+export const ORIAS_NUMBER = "25 001 948";
+
+export const CABINET_PORTRAIT_IMAGE_URL = HERO_DESKTOP_IMAGE_URL;
 
 export const CABINET_PORTRAIT_OBJECT_POSITION = "50% 20%";
 
-export const ADVISOR_ROUND_AVATAR_IMAGE_URL =
-  "https://qhiyxnbcegbxtvydcjhf.supabase.co/storage/v1/object/public/public-media/1a8c4232-58af-4b1b-9330-6055134a8829/1778842323653-oaodev-Philippe-le-fevre-photo-d-eprofil.webp";
+export const ADVISOR_ROUND_AVATAR_IMAGE_URL = HERO_MOBILE_IMAGE_URL;
 
 export const ADVISOR_ROUND_AVATAR_OBJECT_POSITION = "50% 45%";
 

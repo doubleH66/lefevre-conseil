@@ -8,14 +8,24 @@ import { cn } from "@/lib/utils";
 type SearchHighlightProps = {
   text: string;
   query: string;
-  /** `light` sur fond clair (FAQ, cartes) ; `dark` sur fond sombre (badges image). */
+  /**
+   * `slim` — pastille bleue fine (cabinet intro) ;
+   * `marketing` — surlignage léger pages hub / cartes.
+   */
+  pill?: "slim" | "marketing";
+  /** @deprecated Préférer `pill`. */
   variant?: "light" | "dark";
 };
 
 /**
- * Surligne les occurrences de la recherche — même effet que le bandeau hero (HighlightReveal).
+ * Surligne les occurrences de la recherche.
  */
-export function SearchHighlight({ text, query, variant = "light" }: SearchHighlightProps) {
+export function SearchHighlight({
+  text,
+  query,
+  pill = "marketing",
+  variant = "light",
+}: SearchHighlightProps) {
   const span = findSearchMatchSpan(text, query);
   if (!span) return text;
 
@@ -23,6 +33,18 @@ export function SearchHighlight({ text, query, variant = "light" }: SearchHighli
   const before = text.slice(0, start);
   const match = text.slice(start, end);
   const after = text.slice(end);
+
+  if (pill === "slim") {
+    return (
+      <>
+        {before}
+        <span className="highlight-reveal-base highlight-reveal--dark highlight-reveal--slim highlight-reveal--instant">
+          {match}
+        </span>
+        <SearchHighlight text={after} query={query} pill="slim" />
+      </>
+    );
+  }
 
   return (
     <>
@@ -37,7 +59,7 @@ export function SearchHighlight({ text, query, variant = "light" }: SearchHighli
       >
         {match}
       </HighlightReveal>
-      <SearchHighlight text={after} query={query} variant={variant} />
+      <SearchHighlight text={after} query={query} pill="marketing" variant={variant} />
     </>
   );
 }

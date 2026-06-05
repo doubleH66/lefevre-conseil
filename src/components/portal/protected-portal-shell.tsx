@@ -44,7 +44,7 @@ export function ProtectedPortalShell({ children, mode }: ProtectedPortalShellPro
 
   if (!isSupabasePublicConfigured()) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-neutral-50 p-6">
+      <div className="flex min-h-dvh items-center justify-center bg-white p-6">
         <SupabaseConfigNotice className="max-w-md" />
       </div>
     );
@@ -52,7 +52,7 @@ export function ProtectedPortalShell({ children, mode }: ProtectedPortalShellPro
 
   if (loading) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-[#f4f5f8]">
+      <div className="flex min-h-dvh items-center justify-center bg-white">
         <div
           className="size-8 animate-spin rounded-full border-2 border-[#1f2a7c]/20 border-t-[#1f2a7c]"
           aria-label="Chargement"

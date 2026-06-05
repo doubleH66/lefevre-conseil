@@ -15,10 +15,10 @@ export function ServiceActionBand({
   imageSrc,
   title,
   description,
-  primaryHref = ROUTES.bilanPatrimonial,
-  primaryLabel = "Réaliser mon bilan",
-  secondaryHref = CONTACT_HREF,
-  secondaryLabel = "Nous écrire",
+  primaryHref = CONTACT_HREF,
+  primaryLabel = "Prendre rendez-vous",
+  secondaryHref = ROUTES.notreCabinet,
+  secondaryLabel = "Découvrir le cabinet",
 }: {
   imageSrc: string;
   title: string;

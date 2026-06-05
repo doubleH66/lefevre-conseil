@@ -37,7 +37,7 @@ export function SupabaseConfigNotice({ loginHref = LOGIN_HREF, onNavigate, class
             <li>
               Collez la clé anon depuis{" "}
               <a
-                href="https://supabase.com/dashboard/project/qhiyxnbcegbxtvydcjhf/settings/api"
+                href="https://supabase.com/dashboard/project/gyisrwfapphqqdbpujtb/settings/api"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-amber-950 underline underline-offset-2"

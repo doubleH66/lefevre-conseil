@@ -1,15 +1,16 @@
 "use client";
 
 import * as React from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import {
+  CARTO_GL_STYLE_URL,
+  CONTACT_MAP_ZOOM,
+  contactMapPinSvg,
+  getContactMapCenter,
+} from "@/lib/contact/map-config";
 import { CABINET_CONTACT, formatAddressLine } from "@/lib/content/site";
 import { cn } from "@/lib/utils";
-
-function parseEnvCoord(value: string | undefined, fallback: number) {
-  const n = value ? Number.parseFloat(value) : Number.NaN;
-  return Number.isFinite(n) ? n : fallback;
-}
 
 function escapeHtml(value: string) {
   return value
@@ -20,41 +21,9 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-const BRAND = "#1f2a7c";
-
-const TILE_URL = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-const TILE_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
-
-function createCustomIcon() {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="44" viewBox="0 0 36 44">
-      <defs>
-        <filter id="shadow" x="-30%" y="-10%" width="160%" height="150%">
-          <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="rgba(0,0,0,0.28)" />
-        </filter>
-      </defs>
-      <g filter="url(#shadow)">
-        <path
-          d="M18 2C10.268 2 4 8.268 4 16c0 9.375 12.265 23.64 13.28 24.8a.97.97 0 0 0 1.44 0C19.735 39.64 32 25.375 32 16 32 8.268 25.732 2 18 2z"
-          fill="${BRAND}"
-        />
-        <circle cx="18" cy="16" r="6" fill="white" opacity="0.92" />
-      </g>
-    </svg>`.trim();
-
-  return L.divIcon({
-    html: svg,
-    className: "contact-map-pin-icon",
-    iconSize: [36, 44],
-    iconAnchor: [18, 44],
-    popupAnchor: [0, -44],
-  });
-}
-
 function createPopupHtml() {
-  const { name, phone, phoneTel, email, address, openingHours } = CABINET_CONTACT;
-  const mapsQuery = encodeURIComponent(`${address.street} ${address.postalCode} ${address.city}`);
+  const { name, phone, phoneTel, email, openingHours } = CABINET_CONTACT;
+  const mapsQuery = encodeURIComponent(`${CABINET_CONTACT.address.street} ${CABINET_CONTACT.address.postalCode} ${CABINET_CONTACT.address.city}`);
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery}`;
 
   return `
@@ -82,36 +51,42 @@ export function ContactMap({ className }: ContactMapProps) {
     const el = containerRef.current;
     if (!el) return;
 
-    const lat = parseEnvCoord(process.env.NEXT_PUBLIC_CONTACT_MAP_LAT, CABINET_CONTACT.geo.lat);
-    const lng = parseEnvCoord(process.env.NEXT_PUBLIC_CONTACT_MAP_LNG, CABINET_CONTACT.geo.lng);
+    const { lat, lng } = getContactMapCenter();
 
-    const map = L.map(el, {
-      scrollWheelZoom: false,
-      zoomControl: true,
-      attributionControl: true,
-    }).setView([lat, lng], 17);
+    const map = new maplibregl.Map({
+      container: el,
+      style: CARTO_GL_STYLE_URL,
+      center: [lng, lat],
+      zoom: CONTACT_MAP_ZOOM,
+      scrollZoom: false,
+    });
 
-    L.tileLayer(TILE_URL, {
-      maxZoom: 19,
-      attribution: TILE_ATTRIBUTION,
-    }).addTo(map);
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
 
-    L.marker([lat, lng], { icon: createCustomIcon(), interactive: true })
-      .addTo(map)
-      .bindPopup(createPopupHtml(), {
-        maxWidth: 280,
-        minWidth: 220,
-        className: "contact-map-popup-shell",
-        closeButton: true,
-        autoPan: true,
-        autoPanPadding: [24, 24],
-      });
+    const pin = document.createElement("button");
+    pin.type = "button";
+    pin.className = "contact-map-pin";
+    pin.innerHTML = contactMapPinSvg();
+    pin.setAttribute("aria-label", "Afficher les coordonnées du cabinet");
 
-    const ro = new ResizeObserver(() => map.invalidateSize());
+    const popup = new maplibregl.Popup({
+      offset: 44,
+      closeButton: true,
+      maxWidth: "280px",
+      className: "contact-map-popup-shell",
+    }).setHTML(createPopupHtml());
+
+    const marker = new maplibregl.Marker({ element: pin, anchor: "bottom" })
+      .setLngLat([lng, lat])
+      .setPopup(popup)
+      .addTo(map);
+
+    const ro = new ResizeObserver(() => map.resize());
     ro.observe(el);
 
     return () => {
       ro.disconnect();
+      marker.remove();
       map.remove();
     };
   }, []);
@@ -119,8 +94,8 @@ export function ContactMap({ className }: ContactMapProps) {
   return (
     <div
       ref={containerRef}
-      className={cn("contact-leaflet-map absolute inset-0 z-0 h-full w-full bg-white", className)}
-      aria-label="Carte : localisation du cabinet Lefèvre Conseil"
+      className={cn("contact-carto-map absolute inset-0 z-0 h-full w-full bg-white", className)}
+      aria-label="Carte CARTO : localisation du cabinet Lefèvre Conseil"
     />
   );
 }

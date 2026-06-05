@@ -5,6 +5,15 @@ type BreadcrumbItem = {
   path: string;
 };
 
+/** Retire le markdown inline (**, *, __, ^^) pour un texte JSON-LD propre. */
+function stripInlineMarkdown(text: string): string {
+  return text
+    .replace(/\^\^(.+?)\^\^/g, "$1")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1");
+}
+
 export function WebPageJsonLd({
   name,
   description,
@@ -51,6 +60,11 @@ export function PersonJsonLd({
     name,
     jobTitle,
     worksFor: { "@id": `${SITE_URL}/#cabinet` },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: CABINET_CONTACT.address.city,
+      addressCountry: "FR",
+    },
     url: `${SITE_URL}${path}`,
   } as const;
 
@@ -63,9 +77,11 @@ export function PersonJsonLd({
 }
 
 export function BreadcrumbJsonLd({ items }: { items: BreadcrumbItem[] }) {
+  const lastPath = items[items.length - 1]?.path ?? "/";
   const data = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${SITE_URL}${lastPath}#breadcrumb`,
     itemListElement: items.map((item, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
@@ -90,21 +106,25 @@ type ServiceJsonLdProps = {
 };
 
 export function ServiceJsonLd({ name, description, path, category }: ServiceJsonLdProps) {
+  const url = `${SITE_URL}${path}`;
   const data = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${url}#service`,
     name,
     description,
     serviceType: category,
-    url: `${SITE_URL}${path}`,
+    url,
     provider: { "@id": `${SITE_URL}/#cabinet` },
     areaServed: [
+      { "@type": "City", name: "Perpignan" },
+      { "@type": "AdministrativeArea", name: "Pyrénées-Orientales" },
+      { "@type": "AdministrativeArea", name: "Occitanie" },
       { "@type": "Country", name: "France" },
-      { "@type": "City", name: CABINET_CONTACT.address.city },
     ],
     audience: {
       "@type": "Audience",
-      audienceType: "Particuliers et chefs d'entreprise",
+      audienceType: "Particuliers, dirigeants et professions libérales",
     },
   } as const;
 
@@ -116,11 +136,23 @@ export function ServiceJsonLd({ name, description, path, category }: ServiceJson
   );
 }
 
-export function ContactPageJsonLd({ path }: { path: string }) {
+export function ContactPageJsonLd({
+  path,
+  name = "Prendre rendez-vous avec Lefèvre Conseil à Perpignan",
+}: {
+  path: string;
+  name?: string;
+}) {
+  const url = `${SITE_URL}${path}`;
   const data = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    url: `${SITE_URL}${path}`,
+    "@id": `${url}#webpage`,
+    url,
+    name,
+    inLanguage: "fr-FR",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#cabinet` },
     mainEntity: { "@id": `${SITE_URL}/#cabinet` },
   } as const;
 
@@ -170,18 +202,26 @@ export function ArticleJsonLd({
   );
 }
 
-export function FAQPageJsonLd({ items }: { items: readonly { q: string; a: string }[] }) {
+export function FAQPageJsonLd({
+  items,
+  path,
+}: {
+  items: readonly { q: string; a: string }[];
+  /** Permet d'attacher un `@id` unique à la FAQ de la page (ex. "/faq"). */
+  path?: string;
+}) {
   if (items.length === 0) return null;
 
   const data = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    ...(path ? { "@id": `${SITE_URL}${path}#faq` } : {}),
     mainEntity: items.map((item) => ({
       "@type": "Question",
-      name: item.q,
+      name: stripInlineMarkdown(item.q),
       acceptedAnswer: {
         "@type": "Answer",
-        text: item.a,
+        text: stripInlineMarkdown(item.a),
       },
     })),
   } as const;

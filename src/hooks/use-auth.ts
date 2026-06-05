@@ -31,8 +31,14 @@ async function loadRole(userId: string): Promise<{ role: AuthRole; fullName: str
   };
 }
 
+export type UseAuthOptions = {
+  /** Désactivé sur les pages marketing tant que le tiroir compte est fermé. */
+  enabled?: boolean;
+};
+
 /** Session Supabase — même logique que DAS Bâtiment (onAuthStateChange + getSession). */
-export function useAuth(): AuthState {
+export function useAuth(options?: UseAuthOptions): AuthState {
+  const enabled = options?.enabled ?? true;
   const [user, setUser] = React.useState<User | null>(null);
   const [session, setSession] = React.useState<Session | null>(null);
   const [role, setRole] = React.useState<AuthRole | null>(null);
@@ -64,20 +70,24 @@ export function useAuth(): AuthState {
   }, []);
 
   const refresh = React.useCallback(async () => {
-    if (!isSupabasePublicConfigured()) {
+    if (!enabled || !isSupabasePublicConfigured()) {
       setLoading(false);
       return;
     }
     setLoading(true);
-    const supabase = createClient();
-    const {
-      data: { session: existing },
-    } = await supabase.auth.getSession();
-    await applySession(existing);
-  }, [applySession]);
+    try {
+      const supabase = createClient();
+      const {
+        data: { session: existing },
+      } = await supabase.auth.getSession();
+      await applySession(existing);
+    } catch {
+      setLoading(false);
+    }
+  }, [applySession, enabled]);
 
   React.useEffect(() => {
-    if (!isSupabasePublicConfigured()) {
+    if (!enabled || !isSupabasePublicConfigured()) {
       setLoading(false);
       return;
     }
@@ -96,15 +106,20 @@ export function useAuth(): AuthState {
       sync(nextSession);
     });
 
-    supabase.auth.getSession().then(({ data: { session: existing } }) => {
-      sync(existing);
-    });
+    supabase.auth
+      .getSession()
+      .then(({ data: { session: existing } }) => {
+        sync(existing);
+      })
+      .catch(() => {
+        if (mounted) setLoading(false);
+      });
 
     return () => {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [applySession]);
+  }, [applySession, enabled]);
 
   const signOut = React.useCallback(async () => {
     const supabase = createClient();
