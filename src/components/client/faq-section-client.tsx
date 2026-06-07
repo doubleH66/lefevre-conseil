@@ -17,7 +17,6 @@ export type FaqSectionItem = {
 
 type FaqSectionClientProps = {
   items: readonly FaqSectionItem[];
-  kicker?: string;
   title?: string;
   titleId?: string;
   titleClassName?: string;
@@ -26,12 +25,13 @@ type FaqSectionClientProps = {
   allCategoryValue?: string;
   className?: string;
   showContactLink?: boolean;
+  /** Masquer le titre (ex. page /faq : le hero affiche déjà le H1). */
+  showTitle?: boolean;
 };
 
-/** Bloc FAQ — recherche, filtre optionnel, accordéon brand/divided (pattern /faq). */
+/** Bloc FAQ --- recherche, filtre optionnel, accordéon brand/divided (pattern /faq). */
 export function FaqSectionClient({
   items,
-  kicker,
   title = "Questions fréquentes",
   titleId = "faq-section-title",
   titleClassName,
@@ -40,6 +40,7 @@ export function FaqSectionClient({
   allCategoryValue = "Tous",
   className,
   showContactLink = true,
+  showTitle = true,
 }: FaqSectionClientProps) {
   const [search, setSearch] = React.useState("");
   const [category, setCategory] = React.useState<string>(allCategoryValue);
@@ -68,25 +69,21 @@ export function FaqSectionClient({
 
   return (
     <div className={cn("mx-auto w-full", contentClassName, className)}>
-      <div className="text-center">
-        {kicker ? (
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/70">
-            {kicker}
-          </p>
-        ) : null}
-        <h2
-          id={titleId}
-          className={cn(
-            kicker && !titleClassName ? "mt-3" : null,
-            titleClassName ??
-              "text-balance text-[clamp(1.5rem,3.2vw,2.125rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]",
-          )}
-        >
-          {title}
-        </h2>
-      </div>
+      {showTitle ? (
+        <div className="text-center">
+          <h2
+            id={titleId}
+            className={cn(
+              titleClassName ??
+                "text-balance text-[clamp(1.5rem,3.2vw,2.125rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]",
+            )}
+          >
+            {title}
+          </h2>
+        </div>
+      ) : null}
 
-      <div className={cn("mt-7 sm:mt-9", SEARCH_PILL_BAR_WIDTH_CLASS)}>
+      <div className={cn(showTitle ? "mt-7 sm:mt-9" : "mt-0", SEARCH_PILL_BAR_WIDTH_CLASS)}>
         <FaqSearchBar
           value={search}
           onChange={setSearch}

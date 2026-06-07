@@ -76,9 +76,9 @@ export function AdminDocumentDetailModal({
         <AdminDetailRow label="Statut">
           <StatusBadge status={document.status} />
         </AdminDetailRow>
-        <AdminDetailRow label="Client">{client?.companyName ?? "—"}</AdminDetailRow>
+        <AdminDetailRow label="Client">{client?.companyName ?? "-"}</AdminDetailRow>
         <AdminDetailRow label="Demandé le">{document.requestedAt}</AdminDetailRow>
-        <AdminDetailRow label="Échéance">{document.dueDate || "—"}</AdminDetailRow>
+        <AdminDetailRow label="Échéance">{document.dueDate || "-"}</AdminDetailRow>
         {document.comment ? <AdminDetailRow label="Commentaire">{document.comment}</AdminDetailRow> : null}
         {document.uploadedBy ? <AdminDetailRow label="Fichier">{document.uploadedBy}</AdminDetailRow> : null}
       </div>

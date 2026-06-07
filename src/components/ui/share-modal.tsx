@@ -79,9 +79,6 @@ export function ShareModal({ open, onClose, title, url }: ShareModalProps) {
       <QrCode url={url} />
 
       <div className="mt-5">
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/45">
-          Lien direct
-        </p>
         <div className="flex items-center gap-2 overflow-hidden rounded-xl border border-[#1f2a7c]/12 bg-[#1f2a7c]/[0.03] px-3 py-2">
           <span className="flex-1 truncate text-[12px] text-[#1f2a7c]/60">{url}</span>
           <button

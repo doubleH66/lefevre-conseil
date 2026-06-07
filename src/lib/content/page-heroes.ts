@@ -50,8 +50,8 @@ export const PAGE_HEROES = {
   installation: {
     title: "Installer l’application",
     tagline:
-      "Ajoutez Lefèvre Conseil sur votre écran d’accueil — accès rapide, icône dédiée, affichage plein écran.",
-    taglineHighlightAfter: " — accès rapide",
+      "Ajoutez Lefèvre Conseil sur votre écran d’accueil - accès rapide, icône dédiée, affichage plein écran.",
+    taglineHighlightAfter: " - accès rapide",
     titleId: "installation-hero-title",
   },
   cookies: {
@@ -64,29 +64,29 @@ export const PAGE_HEROES = {
   expertises: {
     title: "Expertises en gestion de patrimoine",
     tagline:
-      "Lefèvre Conseil accompagne ses clients sur les principaux sujets patrimoniaux : épargne, placements, retraite, transmission, fiscalité et prévoyance — au cabinet à Perpignan ou à distance partout en France.",
-    taglineHighlightAfter: " — au cabinet à Perpignan",
+      "Lefèvre Conseil accompagne ses clients sur les principaux sujets patrimoniaux : épargne, placements, retraite, transmission, fiscalité et prévoyance - au cabinet à Perpignan ou à distance partout en France.",
+    taglineHighlightAfter: " - au cabinet à Perpignan",
     titleId: "expertises-hero-title",
   },
   simulateur: {
     title: "Simulateur patrimonial",
     tagline:
-      "Une première piste en quelques minutes — pour préparer votre échange avec le cabinet.",
-    taglineHighlightAfter: " — pour préparer",
+      "Une première piste en quelques minutes - pour préparer votre échange avec le cabinet.",
+    taglineHighlightAfter: " - pour préparer",
     titleId: "simulateur-hero-title",
   },
   simulateurMutuelle: {
     title: "Proposition mutuelle santé",
     tagline:
-      "Une demande simple en quelques minutes — Philippe Lefèvre vous recontacte pour une offre adaptée, sans souscription en ligne.",
-    taglineHighlightAfter: " — Philippe Lefèvre",
+      "Une demande simple en quelques minutes - Philippe Lefèvre vous recontacte pour une offre adaptée, sans souscription en ligne.",
+    taglineHighlightAfter: " - Philippe Lefèvre",
     titleId: "simulateur-mutuelle-hero-title",
   },
   comparateur: {
     title: "Comparateur assurance",
     tagline:
-      "Comparez les offres en ligne — puis affinez avec un conseiller pour choisir la bonne protection.",
-    taglineHighlightAfter: " — puis affinez",
+      "Comparez les offres en ligne - puis affinez avec un conseiller pour choisir la bonne protection.",
+    taglineHighlightAfter: " - puis affinez",
     titleId: "comparateur-hero-title",
   },
   mentionsLegales: {
@@ -119,8 +119,8 @@ export const PAGE_HEROES = {
   login: {
     title: "Espace client",
     tagline:
-      "Connectez-vous pour suivre vos dossiers — accès sécurisé réservé aux clients du cabinet.",
-    taglineHighlightAfter: " — accès sécurisé",
+      "Connectez-vous pour suivre vos dossiers - accès sécurisé réservé aux clients du cabinet.",
+    taglineHighlightAfter: " - accès sécurisé",
     titleId: "login-hero-title",
   },
 } as const satisfies Record<string, PageHeroConfig>;

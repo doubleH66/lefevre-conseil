@@ -65,7 +65,7 @@ export function AdminDashboardView() {
     <>
       <AdminPageHeader
         title="Tableau de bord"
-        description="Vue d'ensemble — ouvrez une ligne pour le détail"
+        description="Vue d'ensemble - ouvrez une ligne pour le détail"
         actions={
           <AdminBtn variant="primary" onClick={() => setShowRequestModal(true)}>
             <Plus className="size-3.5" aria-hidden />
@@ -130,7 +130,7 @@ export function AdminDashboardView() {
                 {
                   key: "client",
                   header: "Client",
-                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "—",
+                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "-",
                 },
                 { key: "name", header: "Pièce", cell: (d) => d.name },
                 { key: "status", header: "Statut", cell: (d) => <StatusBadge status={d.status} /> },
@@ -172,7 +172,7 @@ export function AdminDashboardView() {
                 {
                   key: "client",
                   header: "Client",
-                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "—",
+                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "-",
                 },
                 {
                   key: "msg",

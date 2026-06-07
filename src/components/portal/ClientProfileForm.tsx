@@ -10,7 +10,7 @@ import type { SavedClientProfile } from "@/lib/portal/save-client-profile";
 import { usePortal } from "@/components/portal/portal-provider";
 
 /**
- * Page profil — fiche persistante (lecture depuis le store) + édition à la demande.
+ * Page profil - fiche persistante (lecture depuis le store) + édition à la demande.
  * L’affichage principal ne dépend jamais de states locaux du formulaire.
  */
 export function ClientProfileForm({ client }: { client: PortalClient }) {

@@ -1,4 +1,4 @@
-/** Routes et ancres — source unique pour tout le site. */
+/** Routes et ancres --- source unique pour tout le site. */
 export const ROUTES = {
   home: "/",
   contact: "/contact",

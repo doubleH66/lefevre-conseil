@@ -27,12 +27,12 @@ export const RECLAMATIONS_SECTIONS: LegalSection[] = [
         title: "Niveau 2",
         body: [
           "Auprès de notre service dédié aux coordonnées suivantes :",
-          "Par courrier : LEFÈVRE CONSEIL — service réclamation, 27 Avenue Général de Gaulle, 66000 PERPIGNAN.",
+          "Par courrier : LEFÈVRE CONSEIL - service réclamation, 27 Avenue Général de Gaulle, 66000 PERPIGNAN.",
           "Par e-mail : contact@lefevre-conseil.fr (objet : Réclamation).",
         ],
       },
       {
-        title: "Niveau 3 — Médiation",
+        title: "Niveau 3 - Médiation",
         body: [
           "Si la réponse apportée par notre service réclamation ne vous satisfait pas, vous pouvez librement et gratuitement saisir le médiateur :",
           "CNP MÉDIATION CONSOMMATION, 27 Avenue de la Libération, 42400 SAINT-CHAMOND.",
@@ -50,14 +50,14 @@ export const MENTIONS_LEGALES_SECTIONS: LegalSection[] = [
   {
     title: "Éditeur du site",
     body: [
-      "LEFÈVRE CONSEIL — Société par Actions Simplifiée Unipersonnelle de courtage en assurance à capital social de 1 000 euros (€).",
+      "LEFÈVRE CONSEIL - Société par Actions Simplifiée Unipersonnelle de courtage en assurance à capital social de 1 000 euros (€).",
       `Immatriculée à l'ORIAS dans la catégorie courtier d'assurances sous le numéro 25 001 948 (${ORIAS_URL}).`,
       "RCS Perpignan : 937 753 150.",
       "Siège social : 27 Avenue Général de Gaulle, 66000 PERPIGNAN.",
-      "Tél. 04 68 86 36 22 — www.lefevre-conseil.fr — contact@lefevre-conseil.fr",
-      `Responsabilité Civile Professionnelle et Garantie Financière conformes aux articles L 512-6 et L 512-7 du Code des assurances — sous le contrôle de l'ACPR, 4 place de Budapest CS 92459, 75436 Paris Cedex 09 (${ACPR_URL}).`,
+      "Tél. 04 68 86 36 22 - www.lefevre-conseil.fr - contact@lefevre-conseil.fr",
+      `Responsabilité Civile Professionnelle et Garantie Financière conformes aux articles L 512-6 et L 512-7 du Code des assurances - sous le contrôle de l'ACPR, 4 place de Budapest CS 92459, 75436 Paris Cedex 09 (${ACPR_URL}).`,
       "Votre courtier exerce son activité en application des dispositions de l'article L 520-1 II b du Code des assurances.",
-      `Réclamation : LEFÈVRE CONSEIL — Service Réclamation, 27 Avenue Général de Gaulle, 66000 PERPIGNAN. Médiation (seulement en cas d'échec de la réclamation) : CNP Médiation, 27 Avenue de la Libération, 42400 SAINT-CHAMOND (${MEDIATION_URL}).`,
+      `Réclamation : LEFÈVRE CONSEIL - Service Réclamation, 27 Avenue Général de Gaulle, 66000 PERPIGNAN. Médiation (seulement en cas d'échec de la réclamation) : CNP Médiation, 27 Avenue de la Libération, 42400 SAINT-CHAMOND (${MEDIATION_URL}).`,
       "La société ne détient aucun droit de vote ni participation, direct ou indirect, au capital d'une entreprise d'assurance. De même, aucune entreprise d'assurance ne détient de droit de vote ou participation, direct ou indirect, au capital de LEFÈVRE CONSEIL.",
       "LEFÈVRE CONSEIL tient à disposition, sur simple demande, les noms et coordonnées de toutes les entreprises d'assurance et autres partenaires avec lesquels il travaille.",
     ],
@@ -244,7 +244,7 @@ export const CONFIDENTIALITE_SECTIONS: LegalSection[] = [
     body: [
       "Conformément au RGPD, vous disposez des droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité.",
       "Pour toute question, renseignement ou pour faire valoir vos droits, adressez votre demande au service dédié :",
-      "LEFÈVRE CONSEIL — Service RGPD, 27 Avenue Général de Gaulle, 66000 PERPIGNAN.",
+      "LEFÈVRE CONSEIL - Service RGPD, 27 Avenue Général de Gaulle, 66000 PERPIGNAN.",
       "Par e-mail : contact@lefevre-conseil.fr.",
       "Vous pouvez également introduire une réclamation auprès de la CNIL (www.cnil.fr).",
     ],

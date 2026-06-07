@@ -58,7 +58,7 @@ export function AdminClientsView() {
     <>
       <AdminPageHeader
         title="Clients"
-        description={`${clients.length} compte(s) — cliquez sur une ligne pour la fiche`}
+        description={`${clients.length} compte(s) - cliquez sur une ligne pour la fiche`}
         actions={
           <>
             <AdminBtn
@@ -123,7 +123,7 @@ export function AdminClientsView() {
               header: "Pièces",
               className: "text-right",
               cell: (c) => (
-                <span className="tabular-nums">{c.pendingDocuments > 0 ? c.pendingDocuments : "—"}</span>
+                <span className="tabular-nums">{c.pendingDocuments > 0 ? c.pendingDocuments : "-"}</span>
               ),
             },
           ]}

@@ -6,7 +6,7 @@ import { ArrowRight, HeartPulse, Shield } from "lucide-react";
 import { ComparateurEmbed } from "@/components/marketing/comparateur-embed";
 import { HeroCtaPrimaryLink } from "@/components/marketing/hero-site-cta";
 import { CONTACT_HREF, ROUTES, SIMULATEUR_MUTUELLE_HREF } from "@/lib/content/routes";
-import { marketingKickerClass, marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
+import { marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
 import { cn } from "@/lib/utils";
 
 type Mode = "mutuelle" | "assurance-pret";
@@ -16,14 +16,13 @@ const MODES: { id: Mode; label: string; icon: React.ReactNode }[] = [
   { id: "assurance-pret", label: "Assurance de prêt", icon: <Shield className="size-4" aria-hidden /> },
 ];
 
-/** Comparateur / simulateur — page Prévoyance & assurance de prêt. */
+/** Comparateur / simulateur --- page Prévoyance & assurance de prêt. */
 export function ServiceComparateurBlock() {
   const [mode, setMode] = React.useState<Mode>("mutuelle");
 
   return (
     <div className="mt-10 border-t border-[#1f2a7c]/10 pt-10">
-      <p className={cn("text-center", marketingKickerClass)}>Outils en ligne</p>
-      <h2 className={cn("mt-2 text-center", marketingTitleClass, marketingProseClass)}>
+      <h2 className={cn("text-center", marketingTitleClass, marketingProseClass)}>
         Mutuelle santé et assurance emprunteur
       </h2>
       <p className="mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed text-[#1f2a7c]/70">
@@ -65,7 +64,7 @@ export function ServiceComparateurBlock() {
             <p className="text-sm font-semibold text-[#1f2a7c]">Proposition mutuelle personnalisée</p>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600">
               Parcours simple en 6 étapes : profil, coordonnées, besoins santé et budget. Philippe Lefèvre vous
-              recontacte pour une offre adaptée — sans souscription en ligne ni engagement.
+              recontacte pour une offre adaptée --- sans souscription en ligne ni engagement.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
               <HeroCtaPrimaryLink href={SIMULATEUR_MUTUELLE_HREF}>
@@ -87,7 +86,7 @@ export function ServiceComparateurBlock() {
             <div className="border-b border-neutral-100 px-5 py-4 sm:px-6">
               <p className="text-sm font-semibold text-[#1f2a7c]">Assurance emprunteur</p>
               <p className="mt-1 text-sm text-neutral-600">
-                Étude en ligne pour votre prêt immobilier ou professionnel — délégation d&apos;assurance possible
+                Étude en ligne pour votre prêt immobilier ou professionnel --- délégation d&apos;assurance possible
                 (loi Lemoine).
               </p>
             </div>

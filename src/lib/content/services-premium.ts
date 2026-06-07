@@ -15,7 +15,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     },
     hero: {
       h1: "Conseil en gestion de patrimoine à Perpignan",
-      subtitle: "Un bilan complet, une stratégie cohérente — sans produit imposé ni conflit d'intérêt.",
+      subtitle: "Un bilan complet, une stratégie cohérente - sans produit imposé ni conflit d'intérêt.",
       taglineHighlightAfter: ", une stratégie cohérente",
       intro:
         "La gestion de patrimoine, c'est d'abord une question de ^^cohérence^^ : vos placements, votre retraite, votre fiscalité et votre famille doivent former un tout logique. Lefèvre Conseil vous accompagne depuis Perpignan, en cabinet ou à distance, avec une approche **indépendante**.",
@@ -23,8 +23,8 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     whyImportant: {
       title: "Pourquoi une ^^vision d'ensemble^^ change tout",
       paragraphs: [
-        "Beaucoup de personnes accumulent des contrats — un **PER** ici, une **assurance-vie** là, un crédit immobilier ailleurs — sans jamais vérifier si l'ensemble est cohérent. Résultat : trop de risque, pas assez de liquidité, une fiscalité non optimisée, une transmission non préparée.",
-        "Le rôle d'un **conseiller en gestion de patrimoine indépendant**, c'est justement de faire cette synthèse. Il part de votre situation réelle (revenus, dépenses, famille, horizon, projets) pour identifier vos *priorités* — et seulement ensuite, propose des solutions.",
+        "Beaucoup de personnes accumulent des contrats - un **PER** ici, une **assurance-vie** là, un crédit immobilier ailleurs - sans jamais vérifier si l'ensemble est cohérent. Résultat : trop de risque, pas assez de liquidité, une fiscalité non optimisée, une transmission non préparée.",
+        "Le rôle d'un **conseiller en gestion de patrimoine indépendant**, c'est justement de faire cette synthèse. Il part de votre situation réelle (revenus, dépenses, famille, horizon, projets) pour identifier vos *priorités* - et seulement ensuite, propose des solutions.",
         "Cette démarche n'est pas réservée aux grandes fortunes. Elle est utile dès que vous avez des objectifs clairs : constituer une épargne, préparer votre retraite, protéger votre famille ou optimiser votre fiscalité dans le respect du cadre légal.",
       ],
     },
@@ -55,9 +55,9 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       title: "Ce que nous pouvons étudier ensemble",
       intro: "Selon votre situation et vos objectifs, le **bilan patrimonial** peut déboucher sur tout ou partie des sujets suivants.",
       items: [
-        { title: "Épargne & placements", description: "**Assurance-vie**, PER, PEA, contrat de capitalisation — choix des enveloppes adaptées à votre profil et votre horizon." },
+        { title: "Épargne & placements", description: "**Assurance-vie**, PER, PEA, contrat de capitalisation - choix des enveloppes adaptées à votre profil et votre horizon." },
         { title: "Retraite", description: "Estimation des revenus futurs, leviers complémentaires et mise en place progressive d'une **épargne retraite**." },
-        { title: "Fiscalité", description: "Leviers fiscaux cohérents avec votre situation, dans le respect du cadre légal — *sans défiscalisation miracle*." },
+        { title: "Fiscalité", description: "Leviers fiscaux cohérents avec votre situation, dans le respect du cadre légal - *sans défiscalisation miracle*." },
         { title: "Immobilier patrimonial", description: "Investissement locatif, résidence principale, **démembrement** : intégration dans la stratégie globale." },
         { title: "Transmission", description: "**Clause bénéficiaire**, donation, organisation successorale pour protéger vos proches." },
         { title: "Prévoyance & protection", description: "Sécuriser vos revenus et votre famille en cas d'aléa de vie (arrêt, décès, invalidité)." },
@@ -92,7 +92,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       },
       {
         q: "Comment sont rémunérés les conseillers ?",
-        a: "La rémunération est **transparente dès le premier échange**. Elle peut être sous forme d'honoraires, de commissions sur les produits souscrits, ou les deux — selon la mission.",
+        a: "La rémunération est **transparente dès le premier échange**. Elle peut être sous forme d'honoraires, de commissions sur les produits souscrits, ou les deux - selon la mission.",
       },
     ],
     internalLinks: [
@@ -114,10 +114,10 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     },
     hero: {
       h1: "Placements et épargne patrimoniale",
-      subtitle: "Faire fructifier son argent, c'est choisir la bonne enveloppe — pas juste le meilleur taux affiché.",
+      subtitle: "Faire fructifier son argent, c'est choisir la bonne enveloppe - pas juste le meilleur taux affiché.",
       taglineHighlightAfter: ", c'est choisir la bonne enveloppe",
       intro:
-        "Il existe des dizaines de façons d'épargner. **Assurance-vie**, **PER**, **PEA**, compte-titres, SCPI… Chaque support a ses règles fiscales, ses contraintes de liquidité et son niveau de risque. Nous vous aidons à comprendre les différences et à choisir selon *votre situation* — pas selon la mode. *Toute solution d'investissement comporte des risques : l'objectif est d'évaluer les options avec clarté avant toute décision.*",
+        "Il existe des dizaines de façons d'épargner. **Assurance-vie**, **PER**, **PEA**, compte-titres, SCPI… Chaque support a ses règles fiscales, ses contraintes de liquidité et son niveau de risque. Nous vous aidons à comprendre les différences et à choisir selon *votre situation* - pas selon la mode. *Toute solution d'investissement comporte des risques : l'objectif est d'évaluer les options avec clarté avant toute décision.*",
     },
     whyImportant: {
       title: "Le bon placement dépend de ^^vous^^, pas d'un classement",
@@ -178,7 +178,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       },
       {
         q: "Qu'est-ce qu'une unité de compte ?",
-        a: "C'est un support d'investissement dans une assurance-vie ou un PER qui investit dans des actions, de l'immobilier ou des obligations. La valeur **fluctue à la hausse comme à la baisse** — *le capital n'est pas garanti*.",
+        a: "C'est un support d'investissement dans une assurance-vie ou un PER qui investit dans des actions, de l'immobilier ou des obligations. La valeur **fluctue à la hausse comme à la baisse** - *le capital n'est pas garanti*.",
       },
       {
         q: "Peut-on investir sans risque et quand même mieux qu'un livret A ?",
@@ -215,7 +215,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       subtitle: "Plus on anticipe, plus on a de choix. Moins on attend, moins on en a.",
       taglineHighlightAfter: ", plus on a de choix",
       intro:
-        "La retraite et la transmission sont les deux sujets qu'on reporte toujours à plus tard — jusqu'au jour où on n'a plus le temps de faire les *bons choix*. Lefèvre Conseil vous aide à **anticiper**, avec des projections concrètes et des solutions adaptées à votre situation.",
+        "La retraite et la transmission sont les deux sujets qu'on reporte toujours à plus tard - jusqu'au jour où on n'a plus le temps de faire les *bons choix*. Lefèvre Conseil vous aide à **anticiper**, avec des projections concrètes et des solutions adaptées à votre situation.",
     },
     whyImportant: {
       title: "Anticiper, c'est ^^garder le choix^^",
@@ -245,7 +245,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         { title: "Revenus complémentaires", description: "SCPI, fonds diversifiés, immobilier locatif : construire un *flux de revenus* pour compléter la retraite obligatoire." },
         { title: "Donation", description: "Transmettre de son vivant pour profiter des **abattements fiscaux** : *100 000 € par enfant tous les 15 ans*." },
         { title: "Démembrement de propriété", description: "Séparer **nue-propriété** et **usufruit** pour transmettre un bien tout en conservant les revenus ou l'usage." },
-        { title: "Organisation successorale", description: "Révision des **clauses bénéficiaires**, testament, protection du conjoint survivant — *souvent négligé, pourtant essentiel*." },
+        { title: "Organisation successorale", description: "Révision des **clauses bénéficiaires**, testament, protection du conjoint survivant - *souvent négligé, pourtant essentiel*." },
       ],
     },
     comparison: {
@@ -256,7 +256,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         { label: "Donation / Succession", cells: ["Petit-enfant", "31 865 €", "*Tous les 15 ans*"] },
         { label: "Assurance-vie avant 70 ans", cells: ["**Tout bénéficiaire**", "**152 500 €**", "*Par bénéficiaire*"] },
         { label: "Assurance-vie après 70 ans", cells: ["Tout bénéficiaire", "30 500 € total", "*Une seule fois*"] },
-        { label: "Conjoint survivant", cells: ["**Conjoint / PACS**", "**Exonération totale**", "—"] },
+        { label: "Conjoint survivant", cells: ["**Conjoint / PACS**", "**Exonération totale**", "-"] },
       ],
     },
     forWho: {
@@ -276,7 +276,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       },
       {
         q: "Le PER vaut-il vraiment le coup ?",
-        a: "Pour un contribuable imposé à **30 % ou plus**, souvent oui : vous déduisez les versements de votre revenu imposable aujourd'hui et payez l'impôt à la sortie, *souvent dans une tranche plus basse*. Mais ce n'est pas automatique — cela dépend de votre situation.",
+        a: "Pour un contribuable imposé à **30 % ou plus**, souvent oui : vous déduisez les versements de votre revenu imposable aujourd'hui et payez l'impôt à la sortie, *souvent dans une tranche plus basse*. Mais ce n'est pas automatique - cela dépend de votre situation.",
       },
       {
         q: "Peut-on transmettre de son vivant sans s'appauvrir ?",
@@ -310,8 +310,8 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     },
     hero: {
       h1: "Fiscalité patrimoniale et investissement",
-      subtitle: "Optimiser sa fiscalité, oui — mais jamais au prix d'un mauvais investissement.",
-      taglineHighlightAfter: ", oui — mais jamais au prix",
+      subtitle: "Optimiser sa fiscalité, oui - mais jamais au prix d'un mauvais investissement.",
+      taglineHighlightAfter: ", oui - mais jamais au prix",
       intro:
         "Un **avantage fiscal ne fait pas un bon investissement**. Lefèvre Conseil commence toujours par analyser votre situation fiscale réelle avant de comparer les leviers disponibles. L'objectif : cohérence patrimoniale, *pas défiscalisation à tout prix*.",
     },
@@ -320,7 +320,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       paragraphs: [
         "Il existe **trois mécanismes fiscaux principaux** : la __déduction__ *(réduit le revenu imposable, donc l'impôt calculé dessus)*, la __réduction d'impôt__ *(s'applique directement sur le montant dû)* et le __crédit d'impôt__ *(peut être remboursé si supérieur à l'impôt)*. Ces trois notions sont souvent confondues, avec des conséquences *très différentes* selon votre **taux marginal d'imposition (TMI)**.",
         "Le deuxième point essentiel : **la fiscalité de sortie compte autant que l'avantage à l'entrée**. Un dispositif qui réduit vos impôts aujourd'hui peut générer une imposition importante dans 10 ans, ou *bloquer votre capital* dans un actif difficile à revendre.",
-        "Notre méthode : analyser votre **feuille d'imposition**, simuler plusieurs scénarios, comparer les options en intégrant risque, liquidité et horizon — et *seulement ensuite*, proposer.",
+        "Notre méthode : analyser votre **feuille d'imposition**, simuler plusieurs scénarios, comparer les options en intégrant risque, liquidité et horizon - et *seulement ensuite*, proposer.",
       ],
     },
     beforeAfter: {
@@ -341,9 +341,9 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
         { title: "PER", description: "Versements potentiellement **déductibles du revenu imposable** selon votre TMI et plafonds en vigueur. Particulièrement pertinent pour les contribuables *fortement imposés*." },
         { title: "Assurance-vie", description: "Pas d'avantage fiscal à l'entrée, mais **fiscalité allégée sur les gains après 8 ans** et transmission hors succession *sous conditions*." },
         { title: "Immobilier locatif", description: "**Déficit foncier**, LMNP *(amortissement)*, statut LMP : chaque régime a ses règles, ses plafonds et ses contraintes de gestion. *Étude au cas par cas indispensable.*" },
-        { title: "SCPI", description: "Pierre-papier avec revenus potentiellement réguliers. La **fiscalité des revenus fonciers** s'applique — à intégrer dans votre tranche." },
+        { title: "SCPI", description: "Pierre-papier avec revenus potentiellement réguliers. La **fiscalité des revenus fonciers** s'applique - à intégrer dans votre tranche." },
         { title: "Démembrement de propriété", description: "Acheter la **nue-propriété** d'un bien (moins cher) pour en récupérer la pleine propriété à terme. Intérêt fiscal et patrimonial *selon la situation*." },
-        { title: "FIP / FCPI", description: "**Réduction d'impôt** sur le revenu en échange d'un investissement dans des PME. *Risque élevé en capital*, horizon long — à étudier avec prudence." },
+        { title: "FIP / FCPI", description: "**Réduction d'impôt** sur le revenu en échange d'un investissement dans des PME. *Risque élevé en capital*, horizon long - à étudier avec prudence." },
       ],
     },
     comparison: {
@@ -352,7 +352,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       rows: [
         { label: "Comment ça marche ?", cells: ["Réduit le **revenu imposable**", "Enlève directement de **l'impôt dû**", "Enlève de l'impôt, *remboursé* si excédent"] },
         { label: "Exemple", cells: ["**PER** (versements)", "Don à une association", "Frais de garde d'enfant"] },
-        { label: "Dépend de votre TMI ?", cells: ["**Oui** — plus vous êtes imposé, plus c'est avantageux", "*Non* — identique quelle que soit la tranche", "*Non* — identique quelle que soit la tranche"] },
+        { label: "Dépend de votre TMI ?", cells: ["**Oui** - plus vous êtes imposé, plus c'est avantageux", "*Non* - identique quelle que soit la tranche", "*Non* - identique quelle que soit la tranche"] },
         { label: "Si impôt = 0 ?", cells: ["*Aucun effet*", "*Aucun effet*", "**Remboursé** par le fisc"] },
       ],
     },
@@ -365,11 +365,11 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     faq: [
       {
         q: "Quelle différence entre déduction et réduction d'impôt ?",
-        a: "Une **déduction** réduit votre *revenu imposable* (vous payez moins d'impôt selon votre taux marginal). Une **réduction** s'enlève directement de l'*impôt dû* — elle est donc identique quelle que soit votre tranche.",
+        a: "Une **déduction** réduit votre *revenu imposable* (vous payez moins d'impôt selon votre taux marginal). Une **réduction** s'enlève directement de l'*impôt dû* - elle est donc identique quelle que soit votre tranche.",
       },
       {
         q: "Le PER réduit-il vraiment les impôts ?",
-        a: "Potentiellement, oui. Si vous êtes imposé à **30 % ou plus**, chaque euro versé sur un PER peut *réduire votre impôt de 30 centimes*. Mais cette somme sera **imposée à la sortie** — d'où l'importance de simuler les deux côtés.",
+        a: "Potentiellement, oui. Si vous êtes imposé à **30 % ou plus**, chaque euro versé sur un PER peut *réduire votre impôt de 30 centimes*. Mais cette somme sera **imposée à la sortie** - d'où l'importance de simuler les deux côtés.",
       },
       {
         q: "Vaut-il mieux investir dans l'immobilier locatif ou les placements financiers ?",
@@ -407,7 +407,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     },
     hero: {
       h1: "Prévoyance, santé et assurance emprunteur",
-      subtitle: "Se protéger, c'est protéger ce qu'on a construit — revenus, famille, projet immobilier.",
+      subtitle: "Se protéger, c'est protéger ce qu'on a construit - revenus, famille, projet immobilier.",
       taglineHighlightAfter: ", c'est protéger ce qu'on a construit",
       intro:
         "Un arrêt de travail prolongé, un décès ou une invalidité peuvent fragiliser un foyer *bien plus vite* qu'une mauvaise année boursière. Pourtant, la **prévoyance** reste souvent le parent pauvre de la stratégie patrimoniale. Nous l'intégrons dès le départ.",
@@ -416,7 +416,7 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
       title: "La protection : le ^^fondement^^ avant l'investissement",
       paragraphs: [
         "Avant d'investir, il faut **sécuriser** : ses revenus en cas d'aléa *(arrêt maladie, accident, décès)*, sa santé pour ne pas se retrouver exposé à des dépenses imprévues, et son emprunt pour que le projet immobilier ne devienne pas un risque pour sa famille.",
-        "Beaucoup de personnes disposent déjà de contrats — via leur employeur, leur banque ou leur mutuelle — mais sans vraiment savoir *ce qu'ils couvrent*, à quel niveau et à quel prix. Une révision régulière est souvent source d'**économies et d'amélioration des garanties**.",
+        "Beaucoup de personnes disposent déjà de contrats - via leur employeur, leur banque ou leur mutuelle - mais sans vraiment savoir *ce qu'ils couvrent*, à quel niveau et à quel prix. Une révision régulière est souvent source d'**économies et d'amélioration des garanties**.",
         "Pour les **indépendants**, les **dirigeants** et les **professions libérales**, la situation est encore plus critique : sans protection adaptée, un arrêt de travail peut remettre en cause *toute l'activité*.",
       ],
     },
@@ -503,15 +503,15 @@ export const SERVICE_PREMIUM_CONTENTS: Record<ServiceSlug, ServicePremiumContent
     },
     hero: {
       h1: "Investissement dans l'art et accompagnement patrimonial",
-      subtitle: "Intégrer l'art dans une réflexion patrimoniale — vos locaux, votre image et votre fiscalité.",
-      taglineHighlightAfter: " — vos locaux",
+      subtitle: "Intégrer l'art dans une réflexion patrimoniale - vos locaux, votre image et votre fiscalité.",
+      taglineHighlightAfter: " - vos locaux",
       intro:
         "Leasing d'œuvres, sélection sur-mesure et accompagnement clé en main pour les entreprises et dirigeants qui souhaitent intégrer l'art dans une réflexion patrimoniale, fiscale ou d'image. *L'art n'est pas un placement garanti : l'accompagnement reste encadré et adapté à vos objectifs.* **Prenez rendez-vous** pour construire un projet cohérent.",
     },
     whyImportant: {
       title: "Pourquoi investir dans l'^^art^^ en entreprise ?",
       paragraphs: [
-        "Exposer une œuvre d'art dans ses locaux professionnels n'est pas réservé aux grandes entreprises. Une TPE, un cabinet médical ou un commerce peuvent **valoriser leur espace d'accueil**, créer une atmosphère distinctive et signaler une attention portée à la qualité — des éléments qui pèsent dans la perception *clients et collaborateurs*.",
+        "Exposer une œuvre d'art dans ses locaux professionnels n'est pas réservé aux grandes entreprises. Une TPE, un cabinet médical ou un commerce peuvent **valoriser leur espace d'accueil**, créer une atmosphère distinctive et signaler une attention portée à la qualité - des éléments qui pèsent dans la perception *clients et collaborateurs*.",
         "Du côté fiscal, les entreprises soumises à l'IS peuvent, sous conditions, déduire les achats ou loyers d'œuvres d'**artistes vivants** de leur bénéfice imposable. Ce mécanisme est encadré *(plafonds, obligations d'exposition)* et nécessite une vérification avec votre expert-comptable. *Nous ne promettons pas une déductibilité systématique : nous l'étudions au cas par cas.*",
         "Le **leasing d'œuvres d'art** est une alternative à l'achat : vous exposez des pièces sélectionnées avec des partenaires spécialisés, sur des *mensualités maîtrisées*, sans immobiliser votre trésorerie.",
       ],

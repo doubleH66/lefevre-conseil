@@ -112,7 +112,7 @@ export function ProfileAvatarField({
 
       <div className="min-w-0 flex-1 text-sm">
         <p className="font-medium text-neutral-900">Photo de profil</p>
-        <p className="mt-0.5 text-neutral-600">PNG, JPEG, WebP ou GIF — 5 Mo max.</p>
+        <p className="mt-0.5 text-neutral-600">PNG, JPEG, WebP ou GIF - 5 Mo max.</p>
         <div className="mt-2 flex flex-wrap gap-2">
           <button
             type="button"

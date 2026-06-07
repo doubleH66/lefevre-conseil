@@ -7,7 +7,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.lefevr
 
 export const SITE_NAME = "Lefèvre Conseil";
 
-/** `true` uniquement en production sur le domaine final — sinon `noindex`. */
+/** `true` uniquement en production sur le domaine final --- sinon `noindex`. */
 export const IS_INDEXABLE =
   !SITE_URL.includes("vercel.app") &&
   process.env.VERCEL_ENV !== "preview" &&
@@ -32,7 +32,7 @@ export const AURENIS_LOGO_URL = "https://cdn.heyaurenis.com/logo-hey-aurenis.png
 export const GOOGLE_BUSINESS_PROFILE_URL = "";
 
 /**
- * Immatriculation ORIAS — courtier d'assurances (source : mentions légales).
+ * Immatriculation ORIAS --- courtier d'assurances (source : mentions légales).
  * Seule donnée réglementaire confirmée ; ne pas ajouter CIF / AMF / ANACOFI sans validation.
  */
 export const ORIAS_NUMBER = "25 001 948";

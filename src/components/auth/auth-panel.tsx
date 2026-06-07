@@ -4,7 +4,6 @@ import { createClient } from "@/lib/supabase/client";
 import {
   fieldClass,
   marketingCardClass,
-  marketingKickerClass,
   marketingProseClass,
 } from "@/components/marketing/marketing-styles";
 import { HeroCtaPrimaryButton } from "@/components/ui/hero-cta";
@@ -275,8 +274,7 @@ export function AuthPanel({
         <section className={shellClass}>
           {!hideHeader ? (
             <div className="border-b border-neutral-100 px-6 py-5 sm:px-8 sm:py-6">
-              <p className={marketingKickerClass}>Compte</p>
-              <h2 className="mt-2 text-balance text-[clamp(1.2rem,2.8vw,1.65rem)] font-normal tracking-[-0.03em] text-[#1f2a7c]">
+              <h2 className="text-balance text-[clamp(1.2rem,2.8vw,1.65rem)] font-normal tracking-[-0.03em] text-[#1f2a7c]">
                 Connexion ou inscription
               </h2>
               <p className={cn("mt-2 text-sm leading-relaxed", marketingProseClass)}>

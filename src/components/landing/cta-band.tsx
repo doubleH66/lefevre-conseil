@@ -33,12 +33,12 @@ type CtaBandProps = {
   heroTypography?: boolean;
   /** Libellés responsive + flèche comme le CTA simulation du hero. */
   primaryWithSimulationArrow?: boolean;
-  /** Titre, texte et bouton centrés — bandeau final compact. */
+  /** Titre, texte et bouton centrés --- bandeau final compact. */
   centered?: boolean;
 };
 
 export function CtaBand({
-  eyebrow: eyebrowProp,
+  eyebrow: eyebrowProp = false,
   backgroundImage = false,
   backgroundImageSrc,
   deepBlackOverlay = false,
@@ -132,13 +132,11 @@ export function CtaBand({
         )}
       >
         <div className={cn(compactCentered && "w-full max-w-xl sm:max-w-2xl")}>
-          {eyebrowText ? (
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/65">{eyebrowText}</p>
-          ) : null}
+          {eyebrowText ? null : null}
           <h2
             id="cta-band-title"
             className={cn(
-              eyebrowText ? "mt-3" : "mt-0",
+              "mt-0",
               heroTypography
                 ? "w-full max-w-5xl text-balance text-[clamp(1.75rem,5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.045em] text-white"
                 : compactCentered

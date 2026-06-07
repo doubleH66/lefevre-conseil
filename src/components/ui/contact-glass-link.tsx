@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 type ContactGlassLinkProps = {
   href?: string;
   children?: React.ReactNode;
-  /** `true` sur fond sombre (hero, bandeaux) — même rendu que Contact dans la navbar. */
+  /** `true` sur fond sombre (hero, bandeaux) --- même rendu que Contact dans la navbar. */
   light?: boolean;
   /** `nav` = taille navbar ; `hero` = taille CTA hero / bandeaux. */
   layout?: "nav" | "hero";
@@ -14,7 +14,7 @@ type ContactGlassLinkProps = {
 };
 
 /**
- * Bouton Contact verre — style identique à la navbar (`NavLiquidButton`).
+ * Bouton Contact verre --- style identique à la navbar (`NavLiquidButton`).
  */
 export function ContactGlassLink({
   href = CONTACT_HREF,

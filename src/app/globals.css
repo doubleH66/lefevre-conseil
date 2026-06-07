@@ -36,7 +36,7 @@
   --site-promo-total-height: calc(var(--site-promo-bar-height) + env(safe-area-inset-top, 0px));
 }
 
-/** Hero accueil + sous-pages — haut collé sous le bandeau promo (tous appareils). */
+/** Hero accueil + sous-pages --- haut collé sous le bandeau promo (tous appareils). */
 .landing-hero-promo-offset {
   margin-top: var(--site-promo-total-height);
 }
@@ -101,7 +101,7 @@
   animation-delay: 0.45s;
 }
 
-/* Surlignage compact — section cabinet intro (moins épais en haut / bas). */
+/* Surlignage compact --- section cabinet intro (moins épais en haut / bas). */
 .highlight-reveal-base.highlight-reveal--slim-title {
   padding: 0.05rem 0.375rem 0.1rem;
   border-radius: 0.45rem;
@@ -112,7 +112,7 @@
   border-radius: 0.35rem;
 }
 
-/* Surlignage recherche — même pastille que cabinet intro, sans animation. */
+/* Surlignage recherche --- même pastille que cabinet intro, sans animation. */
 .highlight-reveal-base.highlight-reveal--instant {
   animation: none;
   background-size: 100% 100%;
@@ -185,7 +185,7 @@
   max-width: 1400px;
 }
 
-/* Carte CARTO contact — fond clair (Positron) */
+/* Carte CARTO contact --- fond clair (Positron) */
 .contact-carto-map.maplibregl-map {
   background: #ffffff;
   font-family: inherit;
@@ -302,7 +302,7 @@
   background: #182266;
 }
 
-/* Section « Notre méthode » — scroll multi-étapes (style Hey Aurenis). */
+/* Section « Notre méthode » --- scroll multi-étapes (style Hey Aurenis). */
 .method-sticky-tabs .method-sticky-tab-indicator {
   top: 6px;
   left: 6px;

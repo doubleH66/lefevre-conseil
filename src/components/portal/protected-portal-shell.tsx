@@ -15,7 +15,7 @@ type ProtectedPortalShellProps = {
 };
 
 /**
- * Garde d’accès côté client (modèle DAS Bâtiment) — pas de redirect middleware.
+ * Garde d’accès côté client (modèle DAS Bâtiment) - pas de redirect middleware.
  * Spinner pendant la session, puis redirection vers /login si non connecté.
  */
 export function ProtectedPortalShell({ children, mode }: ProtectedPortalShellProps) {

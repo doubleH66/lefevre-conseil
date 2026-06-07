@@ -2,7 +2,7 @@
 
 Envoie des e-mails transactionnels via [Resend](https://resend.com) pour le portail client/admin.
 
-**Sans configuration Resend**, la fonction répond `200` avec `{ skipped: true }` — le portail continue de fonctionner (pas d'erreur 500 dans la console).
+**Sans configuration Resend**, la fonction répond `200` avec `{ skipped: true }` - le portail continue de fonctionner (pas d'erreur 500 dans la console).
 
 ## Variables secrètes
 
@@ -10,7 +10,7 @@ Dans Supabase Dashboard → **Project Settings → Edge Functions → Secrets** 
 
 ```bash
 supabase secrets set RESEND_API_KEY=re_xxxxxxxx
-# Optionnel — domaine vérifié chez Resend (sinon onboarding@resend.dev en test)
+# Optionnel - domaine vérifié chez Resend (sinon onboarding@resend.dev en test)
 supabase secrets set RESEND_FROM_EMAIL="Lefèvre Conseil <no-reply@votredomaine.fr>"
 ```
 

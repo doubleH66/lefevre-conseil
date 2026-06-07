@@ -1,4 +1,4 @@
-# Contexte Supabase — reconfiguration (juin 2026)
+# Contexte Supabase - reconfiguration (juin 2026)
 
 Document à l’attention du **développeur** reprenant le projet Lefèvre Conseil.
 
@@ -8,12 +8,12 @@ Document à l’attention du **développeur** reprenant le projet Lefèvre Conse
 
 | Avant | Après |
 |-------|-------|
-| Projet `qhiyxnbcegbxtvydcjhf` (inaccessible / supprimé ou en pause) | Projet **`gyisrwfapphqqdbpujtb`** — nom dashboard **« LE ferre »** |
+| Projet `qhiyxnbcegbxtvydcjhf` (inaccessible / supprimé ou en pause) | Projet **`gyisrwfapphqqdbpujtb`** - nom dashboard **« LE ferre »** |
 | Base vide ou 503 | Schéma complet appliqué (migrations 001 → 015) |
 | `.env.local` + Vercel pointaient l’ancienne ref | Code + `.env.local` mis à jour |
 
 **Le site marketing** (pages statiques, images via `cdn.helloklik.com`) fonctionnait sans Supabase.  
-**Auth, formulaire contact, portail client/admin, simulateur mutuelle** dépendent de Supabase — ils étaient KO tant que le mauvais projet était configuré.
+**Auth, formulaire contact, portail client/admin, simulateur mutuelle** dépendent de Supabase - ils étaient KO tant que le mauvais projet était configuré.
 
 ---
 
@@ -47,21 +47,21 @@ Ne jamais committer `service_role` ni mettre de secrets dans `NEXT_PUBLIC_*`.
 
 ### RPC critiques vérifiées
 
-- `submit_site_lead` — formulaire contact / demande site  
-- `ensure_client_portal_access` — 1er login espace client  
-- `update_my_client_account` — sauvegarde profil client  
-- `submit_mutuelle_lead` — simulateur mutuelle  
+- `submit_site_lead` - formulaire contact / demande site  
+- `ensure_client_portal_access` - 1er login espace client  
+- `update_my_client_account` - sauvegarde profil client  
+- `submit_mutuelle_lead` - simulateur mutuelle  
 
 ### Storage buckets
 
-- `portal-documents` — pièces justificatives portail (privé)  
-- `public-media` — médias admin (migration 007)  
+- `portal-documents` - pièces justificatives portail (privé)  
+- `public-media` - médias admin (migration 007)  
 
 ---
 
 ## Actions restantes (dev / ops)
 
-### 1. Vercel — variables d’environnement (obligatoire)
+### 1. Vercel - variables d’environnement (obligatoire)
 
 Dans **Vercel → Project → Settings → Environment Variables** (Production + Preview) :
 
@@ -79,7 +79,7 @@ NEXT_PUBLIC_SITE_URL=https://www.lefevre-conseil.fr
 CABINET_NOTIFY_EMAIL=contact@...
 ```
 
-### 2. Supabase Auth — URLs de redirection
+### 2. Supabase Auth - URLs de redirection
 
 **Authentication → URL Configuration** :
 
@@ -92,7 +92,7 @@ CABINET_NOTIFY_EMAIL=contact@...
 
 Sans ces URLs, magic link / OAuth renvoie une erreur après clic e-mail.
 
-### 3. E-mails (Resend) — optionnel mais recommandé
+### 3. E-mails (Resend) - optionnel mais recommandé
 
 Dans **Supabase → Edge Functions → portal-notify → Secrets** :
 
@@ -101,7 +101,7 @@ RESEND_API_KEY=re_...
 RESEND_FROM_EMAIL="Lefèvre Conseil <no-reply@lefevre-conseil.fr>"
 ```
 
-Sans `RESEND_API_KEY`, la fonction répond `{ ok: false, skipped: true }` — les leads sont **quand même** en base, mais pas d’e-mail cabinet / accusé réception.
+Sans `RESEND_API_KEY`, la fonction répond `{ ok: false, skipped: true }` - les leads sont **quand même** en base, mais pas d’e-mail cabinet / accusé réception.
 
 ### 4. Créer le premier compte admin
 
@@ -118,7 +118,7 @@ where id = (
 );
 ```
 
-> **Sécurité :** la migration 002 permet `requested_role: admin` depuis le client à l’inscription — à durcir en prod (invite only, liste d’e-mails, Edge Function).
+> **Sécurité :** la migration 002 permet `requested_role: admin` depuis le client à l’inscription - à durcir en prod (invite only, liste d’e-mails, Edge Function).
 
 ### 5. Données de l’ancien projet
 
@@ -138,10 +138,10 @@ npm run dev                  # port 9999 (package.json)
 
 Tests rapides :
 
-- `/login` — connexion  
-- `/contact` ou `/demande` — envoi lead → table `site_leads`  
-- `/espace-client` — profil + documents (après compte client)  
-- `/espace-admin` — après promotion admin  
+- `/login` - connexion  
+- `/contact` ou `/demande` - envoi lead → table `site_leads`  
+- `/espace-client` - profil + documents (après compte client)  
+- `/espace-admin` - après promotion admin  
 
 ---
 
@@ -180,4 +180,4 @@ Tests rapides :
 
 ---
 
-*Dernière mise à jour : 4 juin 2026 — reconfiguration automatisée depuis Cursor.*
+*Dernière mise à jour : 4 juin 2026 - reconfiguration automatisée depuis Cursor.*

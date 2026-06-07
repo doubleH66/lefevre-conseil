@@ -12,9 +12,7 @@ export type ComparisonTableData = {
 export function ComparisonTable({ data, className }: { data: ComparisonTableData; className?: string }) {
   return (
     <div className={cn("overflow-x-auto", className)}>
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/45">
-        {data.title}
-      </p>
+      <p className="mb-3 text-[13px] font-semibold text-[#1f2a7c]/70">{data.title}</p>
       <table className="w-full min-w-[28rem] border-collapse overflow-hidden rounded-2xl border border-[#1f2a7c]/10 text-sm">
         <thead>
           <tr className="bg-[#1f2a7c]">

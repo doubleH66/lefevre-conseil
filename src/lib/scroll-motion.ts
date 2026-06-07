@@ -1,4 +1,4 @@
-/** Lissage scroll partagé — fluide sans à-coups. */
+/** Lissage scroll partagé --- fluide sans à-coups. */
 export const SCROLL_SPRING = {
   stiffness: 110,
   damping: 28,

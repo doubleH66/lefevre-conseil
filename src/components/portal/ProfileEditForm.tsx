@@ -13,7 +13,7 @@ type ProfileEditFormProps = {
   onSaved: (saved: SavedClientProfile) => void;
 };
 
-/** Formulaire d’édition — states locaux uniquement pendant la session d’édition. */
+/** Formulaire d’édition - states locaux uniquement pendant la session d’édition. */
 export function ProfileEditForm({ client, onCancel, onSaved }: ProfileEditFormProps) {
   const initial = profileFieldsFromClient(client);
   const [companyName, setCompanyName] = React.useState(initial.companyName);

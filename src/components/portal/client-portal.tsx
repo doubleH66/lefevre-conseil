@@ -142,7 +142,7 @@ export function ClientPortal({ activePage }: { activePage: ClientPageKey }) {
             <section className="rounded-xl border border-amber-200 bg-amber-50/30 p-4 sm:p-5">
               <h2 className="text-sm font-semibold text-amber-950">Action requise</h2>
               <p className="mt-1 text-sm text-amber-900/80">
-                {toUpload.length} pièce{toUpload.length > 1 ? "s" : ""} à déposer — onglet « À déposer ».
+                {toUpload.length} pièce{toUpload.length > 1 ? "s" : ""} à déposer - onglet « À déposer ».
               </p>
               <button
                 type="button"

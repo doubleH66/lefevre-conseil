@@ -7,7 +7,7 @@ import {
 } from "@/lib/content/site";
 import { CLIENT_REVIEWS, GOOGLE_RATING } from "@/lib/content/reviews";
 
-/** Liens externes officiels — réseaux réels + fiche Google Business Profile si disponible. */
+/** Liens externes officiels - réseaux réels + fiche Google Business Profile si disponible. */
 const cabinetSameAs = [
   CABINET_CONTACT.social.facebook,
   CABINET_CONTACT.social.linkedin,
@@ -16,7 +16,7 @@ const cabinetSameAs = [
 ].filter((url) => url.length > 0);
 
 /**
- * Schéma principal du cabinet (`FinancialService` — sous-type de `LocalBusiness`).
+ * Schéma principal du cabinet (`FinancialService` - sous-type de `LocalBusiness`).
  *
  * NOTE : aucun `aggregateRating` ni `review` n'est déclaré ici tant que les avis
  * Google réels (note exacte + nombre exact) ne sont pas confirmés. La preuve
@@ -106,7 +106,7 @@ export function financialServiceJsonLd() {
 }
 
 /**
- * Avis + note agrégée — à inclure UNIQUEMENT sur /avis, où les avis sont
+ * Avis + note agrégée - à inclure UNIQUEMENT sur /avis, où les avis sont
  * réellement visibles. Données réelles issues de la fiche Google (5,0 / 13 avis).
  * Rattaché au cabinet via `@id` (pas de note auto-déclarée sur les autres pages).
  */

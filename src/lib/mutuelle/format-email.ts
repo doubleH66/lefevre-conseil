@@ -19,7 +19,7 @@ export type ApiReport = {
 };
 
 function formatDateFr(iso: string | undefined): string {
-  if (!iso) return "—";
+  if (!iso) return "---";
   const [y, m, d] = iso.split("-");
   if (!y || !m || !d) return iso;
   return `${d}/${m}/${y}`;
@@ -34,7 +34,7 @@ function formatPersonnes(data: MutuelleSubmitInput): string[] {
   if (data.profileType === "couple" || data.profileType === "family") {
     lines.push(`Conjoint : né(e) le ${formatDateFr(data.spouseBirthDate)}`);
   } else {
-    lines.push("Conjoint : —");
+    lines.push("Conjoint : ---");
   }
 
   if (data.profileType === "family") {
@@ -45,7 +45,7 @@ function formatPersonnes(data: MutuelleSubmitInput): string[] {
       lines.push(`  - Enfant ${i + 1} : né(e) le ${formatDateFr(d)}`);
     });
   } else {
-    lines.push("Enfants : —");
+    lines.push("Enfants : ---");
   }
 
   return lines;
@@ -64,8 +64,8 @@ export function buildMutuelleLeadEmailText(
       ? [
           "",
           "## TNS / indépendant",
-          `- Type d'activité : ${data.tnsActivityType ? TNS_ACTIVITY_LABELS[data.tnsActivityType] : "—"}`,
-          `- Intérêt Loi Madelin : ${data.madelinInterest ? MADELIN_LABELS[data.madelinInterest] : "—"}`,
+          `- Type d'activité : ${data.tnsActivityType ? TNS_ACTIVITY_LABELS[data.tnsActivityType] : "---"}`,
+          `- Intérêt Loi Madelin : ${data.madelinInterest ? MADELIN_LABELS[data.madelinInterest] : "---"}`,
         ]
       : [];
 

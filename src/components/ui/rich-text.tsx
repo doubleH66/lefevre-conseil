@@ -24,7 +24,7 @@ export function RichText({
 function parseInline(text: string): React.ReactNode[] {
   /**
    * Ordre des alternatives (important) :
-   * 1. \*\*bold\*\*   — doit passer avant \*italic\*
+   * 1. \*\*bold\*\*   - doit passer avant \*italic\*
    * 2. __underline__
    * 3. \*italic\*
    */
@@ -40,21 +40,21 @@ function parseInline(text: string): React.ReactNode[] {
     }
 
     if (match[1]) {
-      // **bold** — poids semibold + couleur pleine pour ressortir sur fond atténué
+      // **bold** - poids semibold + couleur pleine pour ressortir sur fond atténué
       result.push(
         <strong key={key++} className="font-semibold text-[#1f2a7c]">
           {match[2]}
         </strong>,
       );
     } else if (match[3]) {
-      // __underline__ — même couleur que le contexte, juste soulignée
+      // __underline__ - même couleur que le contexte, juste soulignée
       result.push(
         <span key={key++} className="underline underline-offset-2 decoration-current/50">
           {match[4]}
         </span>,
       );
     } else if (match[5]) {
-      // *italic* — style italique, léger effacement pour ne pas écraser le gras
+      // *italic* - style italique, léger effacement pour ne pas écraser le gras
       result.push(
         <em key={key++} className="italic not-[strong]:opacity-80">
           {match[6]}

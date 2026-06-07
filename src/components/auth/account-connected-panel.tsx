@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 import type { AccountSession } from "@/components/auth/use-account-session";
-import { marketingCardClass, marketingKickerClass } from "@/components/marketing/marketing-styles";
+import { marketingCardClass } from "@/components/marketing/marketing-styles";
 import { heroCtaPrimaryCompactClassName } from "@/components/ui/hero-cta";
 import { navGlassBlue } from "@/lib/styles/glass";
 import { cn } from "@/lib/utils";
@@ -33,8 +33,7 @@ export function AccountConnectedPanel({
       )}
     >
       <div className={cn("border-b border-emerald-200/60 bg-emerald-50/50", embedded ? "px-4 py-4" : "px-6 py-5 sm:px-8")}>
-        <p className={marketingKickerClass}>Session active</p>
-        <p className="mt-2 text-lg font-semibold tracking-tight text-emerald-950">Déjà connecté</p>
+        <p className="text-lg font-semibold tracking-tight text-emerald-950">Déjà connecté</p>
         <p className="mt-1 text-sm text-emerald-900/85">
           Connecté en tant que <span className="font-medium text-[#1f2a7c]">{displayName}</span>
         </p>

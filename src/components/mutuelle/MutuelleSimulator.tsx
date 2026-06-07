@@ -670,7 +670,7 @@ function StepSummary({
   form: MutuelleFormState;
   patch: (p: Partial<MutuelleFormState>) => void;
 }) {
-  const profile = form.profileType ? PROFILE_TYPE_LABELS[form.profileType] : "—";
+  const profile = form.profileType ? PROFILE_TYPE_LABELS[form.profileType] : "-";
 
   return (
     <section className="space-y-4">
@@ -753,7 +753,7 @@ function ChoiceChip({
 }
 
 function formatDateFr(iso: string): string {
-  if (!iso) return "—";
+  if (!iso) return "-";
   const [y, m, d] = iso.split("-");
   if (!y || !m || !d) return iso;
   return `${d}/${m}/${y}`;

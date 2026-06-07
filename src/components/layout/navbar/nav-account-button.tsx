@@ -41,7 +41,7 @@ export function NavAccountButton({
   surfaceClass: string;
   compact?: boolean;
   menuUp?: boolean;
-  /** Panneau fixe porté au body (desktop) — suit le scroll comme les autres sous-menus. */
+  /** Panneau fixe porté au body (desktop) --- suit le scroll comme les autres sous-menus. */
   portalMenu?: boolean;
   onMenuAction?: () => void;
   onLoginClick?: () => void;

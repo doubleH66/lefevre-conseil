@@ -1,4 +1,4 @@
-# Lefèvre Conseil — site & portail client
+# Lefèvre Conseil - site & portail client
 
 Site marketing Next.js + espace client / admin (Supabase).
 
@@ -16,7 +16,7 @@ npm run dev                  # http://localhost:9999
 
 Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md) (ordre 001 → **015**).
 
-**Projet Supabase actif :** `gyisrwfapphqqdbpujtb` — contexte complet : [supabase/CONTEXTE_DEV_SUPABASE.md](./supabase/CONTEXTE_DEV_SUPABASE.md).
+**Projet Supabase actif :** `gyisrwfapphqqdbpujtb` - contexte complet : [supabase/CONTEXTE_DEV_SUPABASE.md](./supabase/CONTEXTE_DEV_SUPABASE.md).
 
 **Important :** exécuter `011_admin_business_tools.sql` pour :
 - formulaire de demande `/demande` (leads en base)
@@ -47,10 +47,10 @@ En local, `.env.local` fournit Supabase. **Sur Vercel, les mêmes variables doiv
 | Variable | Valeur attendue |
 |----------|-----------------|
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://gyisrwfapphqqdbpujtb.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé **anon** (JWT `role: anon`) — Supabase → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clé **anon** (JWT `role: anon`) - Supabase → Project Settings → API |
 | `NEXT_PUBLIC_SITE_URL` | URL du site (ex. `https://lefevre-conseil.fr`) |
 
-Si ces clés manquent en prod, le menu **Compte** affiche *« Connexion indisponible sur cet environnement »* et `/espace-admin` ne peut pas charger la session — alors qu’en localhost tout fonctionne avec `.env.local`.
+Si ces clés manquent en prod, le menu **Compte** affiche *« Connexion indisponible sur cet environnement »* et `/espace-admin` ne peut pas charger la session - alors qu’en localhost tout fonctionne avec `.env.local`.
 
 Optionnel : `CABINET_NOTIFY_EMAIL` ou `PHILIPPE_NOTIFICATION_EMAIL` pour les e-mails de nouvelles demandes.
 
@@ -64,7 +64,7 @@ Variables optionnelles (`.env.local` / Vercel) :
 | Variable | Rôle |
 |----------|------|
 | `PHILIPPE_NOTIFICATION_EMAIL` | Destinataire des demandes mutuelle (sinon `CABINET_NOTIFY_EMAIL` ou e-mail cabinet) |
-| `ALPTIS_API_ENABLED` | `false` par défaut — tarification serveur sans bloquer le parcours |
+| `ALPTIS_API_ENABLED` | `false` par défaut - tarification serveur sans bloquer le parcours |
 | `ALPTIS_API_KEY` | Clé API (serveur uniquement, jamais côté client) |
 | `ALPTIS_CODE_DISTRIBUTEUR` | Code distributeur Alptis |
 | `ALPTIS_API_BASE_URL` | Ex. `https://api.recette.alptis.org` |
@@ -73,7 +73,7 @@ Les e-mails passent par la Edge Function `portal-notify` (secret Supabase `RESEN
 
 ## E-mails (Resend)
 
-Edge Function `supabase/functions/portal-notify` — voir [README](./supabase/functions/portal-notify/README.md).
+Edge Function `supabase/functions/portal-notify` - voir [README](./supabase/functions/portal-notify/README.md).
 
 ## Articles / conseils
 

@@ -125,7 +125,7 @@ function ServiceCard({ service }: { service: HomeServiceSlide }) {
   );
 }
 
-/** Dégradés latéraux — pleine largeur section, fondu très doux. */
+/** Dégradés latéraux --- pleine largeur section, fondu très doux. */
 const SIDE_FADE_L =
   "linear-gradient(90deg, rgb(255 255 255) 0%, rgb(255 255 255 / 0.82) 18%, rgb(255 255 255 / 0.38) 48%, rgb(255 255 255 / 0.08) 78%, transparent 100%)";
 const SIDE_FADE_R =

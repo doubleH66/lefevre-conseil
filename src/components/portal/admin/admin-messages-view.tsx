@@ -81,7 +81,7 @@ export function AdminMessagesView() {
               header: "Dernier message",
               cell: (c) => (
                 <span className="line-clamp-1 max-w-[280px] text-xs text-neutral-500">
-                  {lastByClient.get(c.id) ?? "—"}
+                  {lastByClient.get(c.id) ?? "-"}
                 </span>
               ),
             },

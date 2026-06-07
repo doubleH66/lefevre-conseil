@@ -2,7 +2,7 @@
 
 Schéma complet pour le portail Lefèvre Conseil (001 → 015).
 
-**Projet actif :** `gyisrwfapphqqdbpujtb` — voir [CONTEXTE_DEV_SUPABASE.md](./CONTEXTE_DEV_SUPABASE.md).
+**Projet actif :** `gyisrwfapphqqdbpujtb` - voir [CONTEXTE_DEV_SUPABASE.md](./CONTEXTE_DEV_SUPABASE.md).
 
 ## Ordre d’application
 

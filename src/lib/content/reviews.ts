@@ -1,8 +1,8 @@
 /**
- * Avis clients réels — source unique (témoignages accueil + page /avis + JSON-LD).
+ * Avis clients réels --- source unique (témoignages accueil + page /avis + JSON-LD).
  *
  * Ces avis proviennent de la fiche Google du cabinet (Perpignan).
- * Note Google : 5,0 / 5 — 13 avis (tous 5 étoiles). 11 avis comportent un
+ * Note Google : 5,0 / 5 --- 13 avis (tous 5 étoiles). 11 avis comportent un
  * commentaire (listés ci-dessous) ; 2 sont des notes sans texte.
  *
  * IMPORTANT : uniquement des avis réels et publiquement vérifiables.
@@ -57,6 +57,9 @@ export type ClientReview = {
 /** Lien vers la fiche Google (avis du cabinet à Perpignan). */
 export const GOOGLE_REVIEWS_HREF =
   "https://www.google.com/search?sa=X&sca_esv=0cc88c52acce4ba2&sxsrf=ANbL-n4YRVknCa2MuHG4WnBzzZ3gjC_slw:1778781310216&q=avis%20sur%20lefevre-conseil%20perpignan&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDM2NrQ0MzczN7a0sDQAYjPzDYyMrxiVEssyixWKS4sUclLTUsuKUnWT8_OKUzNzFApSiwoy0_MS8xaxEqEIAGy4T8hlAAAA&rldimm=16331967673989098967&tbm=lcl&hl=fr-FR&ved=0CBAQ5foLahcKEwj4-vbirLmUAxUAAAAAHQAAAAAQCQ&biw=2137&bih=1232&dpr=1.6#lkt=LocalPoiReviews&arid=ChZDSUhNMG9nS0VJQ0FnTUNRN1lxM2Z3EAE";
+
+/** Plateforme de synchronisation des avis affichés sur le site. */
+export const HELLOKLIK_REVIEWS_URL = "https://helloklik.com";
 
 export const CLIENT_REVIEWS: readonly ClientReview[] = [
   {
@@ -197,7 +200,7 @@ export const CLIENT_REVIEWS: readonly ClientReview[] = [
 /** Avis détaillés mis en avant sur la page d'accueil. */
 export const FEATURED_REVIEWS = CLIENT_REVIEWS.filter((r) => r.featured);
 
-/** Nombre d'avis (avec commentaire) par thème — pour les filtres de /avis. */
+/** Nombre d'avis (avec commentaire) par thème --- pour les filtres de /avis. */
 export function reviewTopicCounts(): Record<ReviewTopic, number> {
   const counts = Object.fromEntries(REVIEW_TOPICS.map((t) => [t, 0])) as Record<ReviewTopic, number>;
   for (const review of CLIENT_REVIEWS) {

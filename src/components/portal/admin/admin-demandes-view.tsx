@@ -46,7 +46,7 @@ export function AdminDemandesView() {
     <>
       <AdminPageHeader
         title="Demandes"
-        description="Site public, simulateur mutuelle et portail client — cliquez sur une ligne"
+        description="Site public, simulateur mutuelle et portail client - cliquez sur une ligne"
       />
 
       <AdminStatStrip
@@ -146,7 +146,7 @@ export function AdminDemandesView() {
                 {
                   key: "client",
                   header: "Client",
-                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "—",
+                  cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "-",
                 },
                 {
                   key: "msg",

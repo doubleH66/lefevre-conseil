@@ -19,7 +19,7 @@ export type BrandDialogProps = {
   children: React.ReactNode;
 };
 
-/** Modale site — tiroir mobile, centrée desktop, croix blanche à l’extérieur (md+). */
+/** Modale site - tiroir mobile, centrée desktop, croix blanche à l’extérieur (md+). */
 export function BrandDialog({
   open,
   onOpenChange,

@@ -2,8 +2,7 @@ import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const filterLabelClass =
-  "mb-2 block text-xs font-medium uppercase tracking-[0.1em] text-white/55";
+export const filterLabelClass = "mb-2 block text-xs font-medium text-white/55";
 
 export const filterSelectClass = cn(
   "h-11 w-full appearance-none rounded-xl border border-white/10 bg-white/[0.06] px-3 pr-9 text-sm text-white",

@@ -27,7 +27,7 @@ export type Article = {
 
 export const ARTICLES_PUBLISHED = false as const;
 
-/** Aucun article publié pour le moment — ajouter les entrées ici à la mise en ligne. */
+/** Aucun article publié pour le moment --- ajouter les entrées ici à la mise en ligne. */
 export const ALL_ARTICLES: Article[] = [];
 
 export const HOME_ARTICLES_TEASER = ALL_ARTICLES.slice(0, 3);

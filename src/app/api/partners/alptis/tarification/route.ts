@@ -6,7 +6,7 @@ import { clientIpFromRequest, checkRateLimit } from "@/lib/mutuelle/rate-limit";
 
 export const runtime = "nodejs";
 
-/** Tarification interne — ne pas exposer au parcours prospect. */
+/** Tarification interne --- ne pas exposer au parcours prospect. */
 export async function POST(request: Request) {
   if (!isAlptisApiEnabled()) {
     return NextResponse.json({ error: "API Alptis désactivée" }, { status: 403 });

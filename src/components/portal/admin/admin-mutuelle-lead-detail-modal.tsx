@@ -78,8 +78,8 @@ export function AdminMutuelleLeadDetailModal({
         </AdminDetailRow>
         <AdminDetailRow label="E-mail">{lead.email}</AdminDetailRow>
         {lead.phone ? <AdminDetailRow label="Téléphone">{lead.phone}</AdminDetailRow> : null}
-        <AdminDetailRow label="Code postal">{lead.postalCode || "—"}</AdminDetailRow>
-        <AdminDetailRow label="Naissance">{lead.birthDate || "—"}</AdminDetailRow>
+        <AdminDetailRow label="Code postal">{lead.postalCode || "-"}</AdminDetailRow>
+        <AdminDetailRow label="Naissance">{lead.birthDate || "-"}</AdminDetailRow>
         <AdminDetailRow label="Profil">{profileTypeLabel(lead.profileType)}</AdminDetailRow>
         <AdminDetailRow label="Synthèse">
           <p className="text-sm text-neutral-800">{lead.summary}</p>
@@ -111,7 +111,7 @@ export function AdminMutuelleLeadDetailModal({
           </label>
         </div>
       ) : (
-        <p className="mt-4 text-sm text-amber-800">Brouillon — le prospect n&apos;a pas finalisé sa demande.</p>
+        <p className="mt-4 text-sm text-amber-800">Brouillon - le prospect n&apos;a pas finalisé sa demande.</p>
       )}
     </AdminModal>
   );

@@ -12,7 +12,7 @@ function GoogleBadge() {
   return (
     <div
       className={cn(googleBadgeClassName, "text-[11px] font-medium leading-none text-white/90")}
-      aria-label="Note Google 5 sur 5 — cabinet indépendant à Perpignan"
+      aria-label="Note Google 5 sur 5 - cabinet indépendant à Perpignan"
     >
       <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
         <GoogleLogo className="size-3" aria-hidden />

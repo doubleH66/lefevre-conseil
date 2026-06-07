@@ -2,7 +2,7 @@
 
 import { HighlightReveal } from "@/components/ui/highlight-reveal";
 
-/** Accent typographique sans pastille — même couleur pleine que le corps. */
+/** Accent typographique sans pastille - même couleur pleine que le corps. */
 function Strong({ children }: { children: React.ReactNode }) {
   return <span className="font-semibold text-[#1f2a7c]">{children}</span>;
 }

@@ -1,4 +1,4 @@
-/** Styles partagés — pages hub (FAQ, Conseils, Expertises), alignés DAS Batiment. */
+/** Styles partagés --- pages hub (FAQ, Conseils, Expertises), alignés DAS Batiment. */
 
 export const hubSectionClass = "border-t border-zinc-200 bg-white text-zinc-900";
 

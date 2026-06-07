@@ -8,34 +8,38 @@ const serviceShellTaglineClass =
 
 type SubpageHeroTaglineProps = {
   text: string;
+  /** Phrase exacte à surligner dans le texte (pas tout ce qui précède). */
   highlightAfter?: string;
   /** Bandeau visible au chargement : animation sans attendre le scroll. */
   animateOnMount?: boolean;
 };
 
 export function SubpageHeroTagline({ text, highlightAfter, animateOnMount }: SubpageHeroTaglineProps) {
-  const i = highlightAfter && highlightAfter.length > 0 ? text.indexOf(highlightAfter) : -1;
+  const phrase =
+    highlightAfter && highlightAfter.length > 0 ? highlightAfter.trim() : undefined;
+  const i = phrase ? text.indexOf(phrase) : -1;
 
-  if (i <= 0) {
+  if (i < 0) {
     return (
       <p className={cn(serviceShellTaglineClass, "mt-2 text-white/82 sm:mt-2.5 lg:mt-3")}>{text}</p>
     );
   }
 
-  const lead = text.slice(0, i);
-  const rest = text.slice(i);
+  const before = text.slice(0, i);
+  const after = text.slice(i + phrase!.length);
 
   return (
     <p className={cn(serviceShellTaglineClass, "mt-2 text-white/80 sm:mt-2.5 lg:mt-3")}>
+      {before}
       <HighlightReveal
         variant="dark"
         className="rounded-xl px-2 pb-1"
         triggerOnMount
         delay={animateOnMount ? "hero" : "none"}
       >
-        {lead}
+        {phrase}
       </HighlightReveal>
-      <span className="text-white/82">{rest}</span>
+      {after}
     </p>
   );
 }

@@ -128,7 +128,7 @@ export function DocumentRequestModal({
               onChange={(e) => setProjectId(e.target.value)}
               className="mt-1 w-full rounded-xl border border-neutral-200 px-3 py-2"
             >
-              <option value="">— Aucun dossier —</option>
+              <option value="">- Aucun dossier -</option>
               {filteredProjects.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}

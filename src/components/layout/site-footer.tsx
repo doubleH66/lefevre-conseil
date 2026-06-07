@@ -16,7 +16,7 @@ import {
 import { AURENIS_LOGO_URL, CABINET_CONTACT, SITE_LOGO_URL } from "@/lib/content/site";
 
 const TAGLINE =
-  "Cabinet indépendant — gestion de patrimoine, courtage et conseils aux particuliers et professionnels.";
+  "Cabinet indépendant - gestion de patrimoine, courtage et conseils aux particuliers et professionnels.";
 
 const socialLinks = [
   { href: CABINET_CONTACT.social.facebook, label: "Facebook", Icon: Facebook },
@@ -69,7 +69,7 @@ function FooterSocialLinks() {
   );
 }
 
-/** Pied de page — gabarit DAS Bâtiment / Aurenis (colonnes + grille flickering). */
+/** Pied de page - gabarit DAS Bâtiment / Aurenis (colonnes + grille flickering). */
 export function SiteFooter() {
   const year = new Date().getFullYear();
   const { phone, phoneTel, email, address } = CABINET_CONTACT;
@@ -80,7 +80,7 @@ export function SiteFooter() {
       brandName={CABINET_CONTACT.name}
       logoSrc={SITE_LOGO_URL}
       description={TAGLINE}
-      copyright={`© ${year} ${CABINET_CONTACT.name} — Tous droits réservés`}
+      copyright={`© ${year} ${CABINET_CONTACT.name} - Tous droits réservés`}
       creditLogoSrc={AURENIS_LOGO_URL}
       creditAlt="Aurenis"
       creditHref="https://heyaurenis.com"

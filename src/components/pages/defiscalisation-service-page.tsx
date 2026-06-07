@@ -1,10 +1,9 @@
 import { DefiscalisationServiceClient } from "@/components/pages/defiscalisation-service-client";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
-import { EXPERTISE_HERO_CTAS } from "@/components/services/service-marketing-page";
 import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
 import { getOtherServices, getServiceContent } from "@/lib/content/service-data";
 
-/** Page « Fiscalité & investissement » — même gabarit que heritage `DefiscalisationServicePage`. */
+/** Page « Fiscalité & investissement » --- même gabarit que heritage `DefiscalisationServicePage`. */
 export function DefiscalisationServicePage() {
   const content = getServiceContent("fiscalite-investissement");
   if (!content) return null;
@@ -19,7 +18,6 @@ export function DefiscalisationServicePage() {
         titleId: "defiscalisation-hero-title",
         taglineHighlightAfter: content.taglineHighlightAfter,
       }}
-      heroCtas={EXPERTISE_HERO_CTAS}
       breadcrumbs={[
         { label: "Accueil", href: "/" },
         { label: "Nos expertises", href: EXPERTISES_BASE_HREF },

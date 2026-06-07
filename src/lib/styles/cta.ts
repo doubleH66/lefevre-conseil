@@ -1,4 +1,4 @@
-/** Classes CTA partagées (sans React — utilisables en Server Components). */
+/** Classes CTA partagées (sans React --- utilisables en Server Components). */
 
 import { navGlassRest } from "@/lib/styles/glass";
 import { cn } from "@/lib/utils";

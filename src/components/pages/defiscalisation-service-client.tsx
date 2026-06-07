@@ -88,8 +88,6 @@ const contentMax = "mx-auto w-full max-w-5xl text-center";
 
 const prose = "text-[#1f2a7c]/78 max-lg:text-[#1f2a7c]/72 lg:text-[#1f2a7c]/88";
 
-const kicker = "text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f2a7c]/45";
-
 const pill = "rounded-lg px-1.5 pb-0.5";
 
 const tableShell =
@@ -150,7 +148,7 @@ const FOCUS_TABS = [
     label: "Scénarios",
     hint: "Chiffré",
     panelTitle: "Comparer",
-    body: "Plusieurs pistes côte à côte — fiscalité, liquidité, risque, horizon — pour mesurer l’écart avant signature.",
+    body: "Plusieurs pistes côte à côte - fiscalité, liquidité, risque, horizon - pour mesurer l’écart avant signature.",
   },
   {
     key: "suivi",
@@ -190,17 +188,14 @@ function DefiscalMergedActionBand() {
 
         <div className="relative z-[2] flex flex-col gap-10 px-6 py-12 sm:gap-12 sm:px-9 sm:py-14 lg:grid lg:min-h-[26rem] lg:grid-cols-12 lg:items-stretch lg:gap-0 lg:px-11 lg:py-16">
           <div className="flex flex-col justify-center text-center text-white lg:col-span-5 lg:border-r lg:border-white/10 lg:pr-10 lg:text-left">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/55">
-              Lecture & prochaine étape
-            </p>
             <h2
               id="defiscal-merged-title"
-              className="mt-3 text-balance text-[clamp(1.45rem,4.2vw,2rem)] font-normal leading-[1.1] tracking-[-0.035em]"
+              className="text-balance text-[clamp(1.45rem,4.2vw,2rem)] font-normal leading-[1.1] tracking-[-0.035em]"
             >
               Du bilan au levier, sans sauter d’étapes
             </h2>
             <p className="mx-auto mt-5 max-w-md text-pretty text-[15px] leading-relaxed text-white/85 lg:mx-0">
-              Chaque option se lit dans <span className="font-medium text-white">votre</span> situation — puis seulement
+              Chaque option se lit dans <span className="font-medium text-white">votre</span> situation - puis seulement
               on chiffre et on compare. Même fil conducteur pour l’épargne longue durée, l’immobilier ou le
               capital-investissement.
             </p>
@@ -231,11 +226,8 @@ function DefiscalMergedActionBand() {
 
           <div className="flex flex-col justify-center lg:col-span-7 lg:pl-10">
             <div className="rounded-2xl border border-white/25 bg-white/[0.12] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-md sm:p-6 lg:rounded-3xl lg:p-7">
-              <p className="text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-white/65 lg:text-left">
-                Avec le cabinet
-              </p>
-              <p className="mx-auto mt-2 max-w-lg text-center text-[13px] leading-snug text-white/70 lg:mx-0 lg:text-left">
-                Trois angles — transparence, chiffres, calendrier — dans un seul bloc.
+              <p className="mx-auto max-w-lg text-center text-[13px] leading-snug text-white/70 lg:mx-0 lg:text-left">
+                Trois angles - transparence, chiffres, calendrier - dans un seul bloc.
               </p>
               <div
                 role="tablist"
@@ -284,9 +276,7 @@ function DefiscalMergedActionBand() {
                     transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                     className="rounded-xl border border-white/30 bg-white/95 p-4 text-left shadow-lg sm:p-5"
                   >
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/45">
-                      {FOCUS_TABS[tab]!.panelTitle}
-                    </p>
+                    <p className="text-sm font-semibold text-[#1f2a7c]">{FOCUS_TABS[tab]!.panelTitle}</p>
                     <p className="mt-2 text-[15px] leading-relaxed text-[#1f2a7c]/88">{FOCUS_TABS[tab]!.body}</p>
                   </motion.div>
                 </AnimatePresence>
@@ -324,11 +314,10 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
 
         <Block labelledBy="defiscal-bases-title" className={content.intro ? "mt-10 sm:mt-12" : undefined}>
           <div className={contentMax}>
-            <p className={kicker}>Les bases</p>
             <h2
               id="defiscal-bases-title"
               className={cn(
-                "mt-3 text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em] sm:text-[clamp(1.35rem,2.9vw,2.2rem)]",
+                "text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em] sm:text-[clamp(1.35rem,2.9vw,2.2rem)]",
                 prose,
               )}
             >
@@ -337,7 +326,7 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
               de leviers possibles.
             </h2>
             <LeadParagraph>
-              Déduction, réduction, crédit : le vocabulaire revient souvent — ensuite on raisonne par familles
+              Déduction, réduction, crédit : le vocabulaire revient souvent - ensuite on raisonne par familles
               (épargne, capital-investissement, immobilier, cas particuliers), sans catalogue de produits.
             </LeadParagraph>
           </div>
@@ -387,11 +376,10 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
 
         <Block labelledBy="defiscal-methode-title">
           <div className={contentMax}>
-            <p className={kicker}>Notre méthode</p>
             <h2
               id="defiscal-methode-title"
               className={cn(
-                "mt-3 text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em]",
+                "text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em]",
                 prose,
               )}
             >
@@ -485,8 +473,7 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
             </Link>
           </div>
           <div className="mx-auto mt-12 max-w-3xl border-t border-[#1f2a7c]/10 pt-10 text-center">
-            <p className={kicker}>Sources officielles</p>
-            <ul className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-5">
+            <ul className="flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-5">
               {SOURCES_OFFICIELLES.map((src) => (
                 <li key={src.href}>
                   <a
@@ -505,8 +492,7 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
 
           {otherServices.length ? (
             <div className="mx-auto mt-10 max-w-5xl border-t border-[#1f2a7c]/10 pt-10 text-center">
-              <p className={kicker}>Voir aussi</p>
-              <ul className="mx-auto mt-5 grid max-w-3xl gap-2.5 sm:grid-cols-2 sm:gap-3">
+              <ul className="mx-auto grid max-w-3xl gap-2.5 sm:grid-cols-2 sm:gap-3">
                 {otherServices.map((service) => (
                   <li key={service.slug}>
                     <Link

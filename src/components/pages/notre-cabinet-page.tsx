@@ -48,10 +48,8 @@ const aboutProse = "text-[#1f2a7c]/78 max-lg:text-[#1f2a7c]/72 lg:text-[#1f2a7c]
 
 const sectionShell = "mx-2.5 lg:mx-4";
 const sectionInner = "px-4 py-12 sm:px-7 sm:py-14 xl:px-11 xl:py-16";
-const kickerClass =
-  "text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/70";
 const sectionTitleClass =
-  "mt-3 text-balance text-[clamp(1.45rem,3vw,2.25rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]";
+  "text-balance text-[clamp(1.45rem,3vw,2.25rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]";
 
 function highlightPillClassName() {
   return "rounded-lg px-1.5 pb-0.5";
@@ -214,9 +212,6 @@ export function NotreCabinetPage() {
     <MarketingSubpage
       hero={PAGE_HEROES.notreCabinet}
       hideBilanCta
-      heroCtas={{
-        primary: { href: CONTACT_HREF, label: "Prendre rendez-vous" },
-      }}
       breadcrumbs={[
         { label: "Accueil", href: "/" },
         { label: "Notre cabinet" },
@@ -353,7 +348,6 @@ export function NotreCabinetPage() {
               </div>
 
               <div className="order-1 px-4 py-10 sm:px-7 sm:py-12 lg:order-2 lg:py-14 xl:px-11 xl:py-16">
-                <p className={kickerClass}>Votre interlocuteur</p>
                 <h2 id="philippe-title" className={sectionTitleClass}>
                   Philippe Lefèvre, votre interlocuteur patrimonial
                 </h2>
@@ -405,7 +399,6 @@ export function NotreCabinetPage() {
         >
           <div className="px-4 pt-12 sm:px-7 sm:pt-14 xl:px-11 xl:pt-16">
             <div className="mx-auto max-w-3xl text-center">
-              <p className={kickerClass}>Notre parcours</p>
               <h2 id="parcours-title" className={sectionTitleClass}>
                 Un parcours construit dans la durée
               </h2>
@@ -438,7 +431,6 @@ export function NotreCabinetPage() {
         >
           <div className={cn(sectionInner)}>
             <div className="mx-auto max-w-3xl text-center">
-              <p className={kickerClass}>Notre méthode</p>
               <h2 id="methode-title" className={sectionTitleClass}>
                 Une méthode simple pour avancer avec clarté
               </h2>
@@ -471,7 +463,6 @@ export function NotreCabinetPage() {
         >
           <div className={cn(sectionInner, "pt-0 sm:pt-0 xl:pt-0")}>
             <div className="mx-auto max-w-3xl text-center">
-              <p className={kickerClass}>Nos engagements</p>
               <h2 id="valeurs-title" className={sectionTitleClass}>
                 Les engagements du cabinet
               </h2>
@@ -544,7 +535,6 @@ export function NotreCabinetPage() {
           className={cn(sectionShell, "scroll-mt-28")}
         >
           <div className="px-4 pt-14 text-center sm:px-7 sm:pt-16 xl:px-11">
-            <p className={kickerClass}>Réseau</p>
             <h2 id="partenaires-title" className={cn(sectionTitleClass, "mx-auto")}>
               Des partenaires de confiance
             </h2>
@@ -612,7 +602,6 @@ export function NotreCabinetPage() {
           <div className={cn(LANDING_SECTION_INSET, LANDING_SECTION_INNER_Y)}>
             <FaqSectionClient
               items={CABINET_FAQ}
-              kicker="Questions fréquentes"
               title="Vos questions sur le cabinet"
               titleId="faq-title"
               titleClassName={sectionTitleClass}

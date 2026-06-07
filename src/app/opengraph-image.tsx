@@ -3,7 +3,7 @@ import { SITE_LOGO_URL, CABINET_CONTACT } from "@/lib/content/site";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Lefèvre Conseil — Cabinet de gestion de patrimoine à Perpignan";
+export const alt = "Lefèvre Conseil - Cabinet de gestion de patrimoine à Perpignan";
 
 export default function OgImage() {
   return new ImageResponse(
@@ -50,7 +50,7 @@ export default function OgImage() {
             lineHeight: 1.4,
           }}
         >
-          Cabinet indépendant de gestion de patrimoine — Perpignan
+          Cabinet indépendant de gestion de patrimoine - Perpignan
         </div>
         <div
           style={{

@@ -1,18 +1,10 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { BilanCtaSection, bilanCtaSectionClassName } from "@/components/landing/bilan-cta-section";
 import { LatestConseilsSection } from "@/components/landing/latest-conseils-section";
 import { SubpageHeaderBackground } from "@/components/layout/subpage-header-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SubpageHeroTagline } from "@/components/layout/subpage-hero-tagline";
-import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
-import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { GoogleLogo } from "@/components/ui/google-logo";
-import {
-  CONTACT_HREF,
-  NOTRE_CABINET_HREF,
-  SIMULATION_ANCHOR_ID,
-} from "@/lib/content/routes";
 import { HERO_SHELL_OUTER_CLASS, HERO_SHELL_RADIUS_CLASS, PAGE_HERO_MIN_HEIGHT_CLASS } from "@/lib/content/hero-shell";
 import { googleBadgeClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
@@ -51,25 +43,13 @@ function SubpageBreadcrumbLink({ href, label }: { href: string; label: string })
   );
 }
 
-export type SubpageHeroCta = {
-  href: string;
-  label: string;
-  shortLabel?: string;
-};
-
 export type SubpageHeroLead = {
   title: string;
   tagline: string;
   titleId?: string;
   taglineHighlightAfter?: string;
-  category?: string;
   intro?: string;
   showGoogleBadge?: boolean;
-  showHeroCtas?: boolean;
-  heroCtas?: {
-    primary: SubpageHeroCta;
-    secondary?: SubpageHeroCta;
-  };
   heroStyle?: "service" | "editorial";
 };
 
@@ -113,12 +93,7 @@ export function SubpageShell({
 }: SubpageShellProps) {
   const richHero =
     !!heroLead &&
-    (heroLead.heroStyle === "editorial" ||
-      heroLead.category ||
-      heroLead.intro ||
-      heroLead.showGoogleBadge ||
-      heroLead.showHeroCtas ||
-      heroLead.heroCtas);
+    (heroLead.heroStyle === "editorial" || heroLead.intro || heroLead.showGoogleBadge);
   const editorial = heroLead?.heroStyle === "editorial";
 
   return (
@@ -157,16 +132,6 @@ export function SubpageShell({
                         <SubpageHeroGoogleBadge />
                       </div>
                     ) : null}
-                    {heroLead.category ? (
-                      <p
-                        className={cn(
-                          "mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55",
-                          editorial && "xl:text-left",
-                        )}
-                      >
-                        {heroLead.category}
-                      </p>
-                    ) : null}
                     <h1
                       id={heroLead.titleId ?? "subpage-hero-title"}
                       className={editorial ? editorialShellH1Class : serviceShellH1Class}
@@ -193,69 +158,6 @@ export function SubpageShell({
                       >
                         {heroLead.intro}
                       </p>
-                    ) : null}
-                    {heroLead.showHeroCtas || heroLead.heroCtas ? (
-                      <div
-                        id={SIMULATION_ANCHOR_ID}
-                        className={cn(
-                          "mt-8 sm:mt-10",
-                          heroCtaRowClassName,
-                          editorial && "max-sm:gap-2 xl:justify-start",
-                        )}
-                      >
-                        {heroLead.heroCtas ? (
-                          <>
-                            <CtaPrimaryLink
-                              href={heroLead.heroCtas.primary.href}
-                              className="group max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:gap-2 max-sm:!px-5 max-sm:!text-sm"
-                            >
-                              <span className="md:hidden">
-                                {heroLead.heroCtas.primary.shortLabel ?? heroLead.heroCtas.primary.label}
-                              </span>
-                              <span className="hidden md:inline">{heroLead.heroCtas.primary.label}</span>
-                              <ArrowUpRight
-                                aria-hidden
-                                className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                              />
-                            </CtaPrimaryLink>
-                            {heroLead.heroCtas.secondary ? (
-                              <Link
-                                href={heroLead.heroCtas.secondary.href}
-                                className={cn(
-                                  "inline-flex h-12 min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:w-auto",
-                                )}
-                              >
-                                <span className="md:hidden">
-                                  {heroLead.heroCtas.secondary.shortLabel ??
-                                    heroLead.heroCtas.secondary.label}
-                                </span>
-                                <span className="hidden md:inline">{heroLead.heroCtas.secondary.label}</span>
-                              </Link>
-                            ) : null}
-                          </>
-                        ) : (
-                          <>
-                            <CtaPrimaryLink
-                              href={CONTACT_HREF}
-                              className="group max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:gap-2 max-sm:!px-5 max-sm:!text-sm"
-                            >
-                              Prendre rendez-vous
-                              <ArrowUpRight
-                                aria-hidden
-                                className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                              />
-                            </CtaPrimaryLink>
-                            <ContactGlassLink
-                              href={NOTRE_CABINET_HREF}
-                              light
-                              layout="hero"
-                              className="max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:px-5 max-sm:!text-sm"
-                            >
-                              Découvrir le cabinet
-                            </ContactGlassLink>
-                          </>
-                        )}
-                      </div>
                     ) : null}
                   </div>
                 </div>

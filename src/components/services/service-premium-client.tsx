@@ -11,7 +11,7 @@ import { ComparisonTable } from "@/components/ui/comparison-table";
 import type { ServicePremiumContent } from "@/lib/content/service-premium-types";
 import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
 import { FAQ_HREF } from "@/lib/content/routes";
-import { marketingKickerClass, marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
+import { marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
 import { cn } from "@/lib/utils";
 
 export function ServicePremiumClient({
@@ -111,7 +111,7 @@ export function ServicePremiumClient({
       <ServiceActionBand
         imageSrc={heroImage}
         title="Passer à l'action avec le cabinet"
-        description="Un premier échange pour cadrer votre situation, vos priorités et les prochaines étapes — sans engagement."
+        description="Un premier échange pour cadrer votre situation, vos priorités et les prochaines étapes --- sans engagement."
       />
 
       <Block>
@@ -122,8 +122,7 @@ export function ServicePremiumClient({
 
         {otherServices.length > 0 ? (
           <div className="mx-auto mt-10 max-w-3xl border-t border-[#1f2a7c]/10 pt-8">
-            <p className={cn("text-center", marketingKickerClass)}>Voir aussi</p>
-            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+            <ul className="grid gap-2.5 sm:grid-cols-2">
               {otherServices.slice(0, 4).map((service) => (
                 <li key={service.slug}>
                   <Link

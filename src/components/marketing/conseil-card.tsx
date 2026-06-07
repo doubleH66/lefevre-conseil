@@ -33,7 +33,7 @@ export function ConseilCard({ article, searchTerm = "", published = true }: Cons
 
       <div className="flex flex-1 flex-col px-3.5 py-3 md:px-4 md:py-3.5">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-zinc-500">
+          <p className="text-[10px] font-medium text-zinc-500">
             {q ? <SearchHighlight text={article.category} query={searchTerm} /> : article.category}
           </p>
           <span className="inline-flex shrink-0 items-center gap-1 text-[10px] text-zinc-400">

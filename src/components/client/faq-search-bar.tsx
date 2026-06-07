@@ -10,7 +10,7 @@ type FaqSearchBarProps = Omit<
   ariaLabel?: string;
 };
 
-/** Barre recherche FAQ — alias du pattern pilule + modale filtre. */
+/** Barre recherche FAQ - alias du pattern pilule + modale filtre. */
 export function FaqSearchBar({
   placeholder = "Rechercher une question (rendez-vous, gratuit, distance…)",
   ariaLabel = "Rechercher dans les questions fréquentes",

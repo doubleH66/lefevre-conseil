@@ -1,4 +1,4 @@
-# Diagnostic — profil client qui ne se sauvegarde pas
+# Diagnostic - profil client qui ne se sauvegarde pas
 
 **Projet Supabase :** `gyisrwfapphqqdbpujtb`  
 **URL :** `https://gyisrwfapphqqdbpujtb.supabase.co`
@@ -88,7 +88,7 @@ where lower(u.email) = lower('VOTRE_EMAIL@example.com');
 
 ## Test manuel RPC (SQL Editor, connecté en tant que service role)
 
-En **SQL Editor** (rôle postgres), on peut simuler l’appel — en prod le client appelle via JWT :
+En **SQL Editor** (rôle postgres), on peut simuler l’appel - en prod le client appelle via JWT :
 
 ```sql
 -- Vérifier que la fonction s'exécute (remplacer les valeurs)
@@ -120,7 +120,7 @@ select * from public.update_my_client_account(
 | **404 / PGRST202** | RPC absente → migration **010** manquante |
 | **403 / 42501** | RLS ou GRANT → migrations **004** / **005** |
 | **200** avec body `[]` | RPC exécutée mais aucune ligne mise à jour (mauvais `client_id` / doublons) |
-| **200** avec JSON contenant `company_name`, `phone`, etc. | OK côté API — vérifier rechargement UI |
+| **200** avec JSON contenant `company_name`, `phone`, etc. | OK côté API - vérifier rechargement UI |
 
 ---
 
@@ -150,4 +150,4 @@ Après changement : redéployer le site.
 Le site est prêt côté code (branche `main`, commit `7669f3b+`).  
 **Le blocage est côté base Supabase** tant que les migrations **004, 005 et 010** ne sont pas appliquées sur le projet `gyisrwfapphqqdbpujtb`, et tant qu’il existe des **doublons** `client_accounts` pour le même e-mail.
 
-**Temps estimé correctif :** 15–30 min (SQL + vérification données).
+**Temps estimé correctif :** 15-30 min (SQL + vérification données).

@@ -3,7 +3,6 @@ import { HighlightReveal } from "@/components/ui/highlight-reveal";
 import {
   marketingHighlightPill,
   marketingInnerClass,
-  marketingKickerClass,
   marketingProseClass,
   marketingSectionClass,
   marketingTitleClass,
@@ -49,7 +48,6 @@ export function MarketingSection({
 }
 
 type MarketingHeadingProps = {
-  kicker?: string;
   title: ReactNode;
   titleId?: string;
   lead?: ReactNode;
@@ -58,7 +56,6 @@ type MarketingHeadingProps = {
 };
 
 export function MarketingHeading({
-  kicker,
   title,
   titleId,
   lead,
@@ -69,13 +66,7 @@ export function MarketingHeading({
 
   return (
     <header className={cn(centered ? "mx-auto max-w-3xl text-center" : "max-w-3xl", className)}>
-      {kicker ? (
-        <p className={cn(marketingKickerClass, centered && "inline-flex items-center justify-center gap-2")}>
-          {centered ? <span aria-hidden className="inline-block h-px w-5 bg-[#1f2a7c]/40" /> : null}
-          {kicker}
-        </p>
-      ) : null}
-      <h2 id={titleId} className={cn("mt-3", marketingTitleClass, marketingProseClass)}>
+      <h2 id={titleId} className={cn(marketingTitleClass, marketingProseClass)}>
         {title}
       </h2>
       {lead ? (

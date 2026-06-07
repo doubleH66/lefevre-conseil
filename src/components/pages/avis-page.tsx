@@ -46,7 +46,7 @@ const APPRECIATED: { icon: LucideIcon; title: string; text: string }[] = [
   {
     icon: Compass,
     title: "L’accompagnement sur mesure",
-    text: "Une stratégie adaptée à votre profil — particulier, dirigeant ou profession libérale.",
+    text: "Une stratégie adaptée à votre profil - particulier, dirigeant ou profession libérale.",
   },
   {
     icon: MessageSquareQuote,
@@ -81,24 +81,13 @@ const INTERNAL_LINKS: { href: string; label: string; description: string }[] = [
 export function AvisPage() {
   return (
     <MarketingSubpage hero={PAGE_HEROES.avis} breadcrumbs={BREADCRUMBS} hideBilanCta>
-      <div className="relative z-0 flex-1 bg-white pb-12 pt-8 text-neutral-950 sm:pb-16 sm:pt-10">
-        {/* Note réelle + filtres + grille d'avis Google */}
-        <MarketingSection
-          variant="flush"
-          labelledBy="avis-grille-title"
-          className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8"
-        >
-          <h2 id="avis-grille-title" className="sr-only">
-            Avis clients vérifiés sur Google
-          </h2>
-          <AvisReviewsBrowser />
-        </MarketingSection>
+      <div className="relative z-0 flex-1 bg-white pb-12 text-neutral-950 sm:pb-16">
+        <AvisReviewsBrowser />
 
         {/* Ce que nos clients apprécient */}
-        <MarketingSection labelledBy="avis-method-title" className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+        <MarketingSection labelledBy="avis-method-title" className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10">
           <MarketingHeading
             titleId="avis-method-title"
-            kicker="Notre approche"
             title="Ce que nos clients apprécient"
           />
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -149,7 +138,7 @@ export function AvisPage() {
 
         {/* Maillage interne */}
         <MarketingSection labelledBy="avis-links-title" className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
-          <MarketingHeading titleId="avis-links-title" kicker="Aller plus loin" title="Découvrir le cabinet" />
+          <MarketingHeading titleId="avis-links-title" title="Découvrir le cabinet" />
           <ul className="mt-8 grid gap-4 sm:grid-cols-2">
             {INTERNAL_LINKS.map((link) => (
               <li key={link.href} className="flex">

@@ -9,8 +9,8 @@ type SearchHighlightProps = {
   text: string;
   query: string;
   /**
-   * `slim` — pastille bleue fine (cabinet intro) ;
-   * `marketing` — surlignage léger pages hub / cartes.
+   * `slim` --- pastille bleue fine (cabinet intro) ;
+   * `marketing` --- surlignage léger pages hub / cartes.
    */
   pill?: "slim" | "marketing";
   /** @deprecated Préférer `pill`. */

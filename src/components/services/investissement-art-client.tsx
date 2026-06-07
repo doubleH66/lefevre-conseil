@@ -10,7 +10,7 @@ import type { ServicePremiumContent } from "@/lib/content/service-premium-types"
 import { ART_CONTACT_SUBJECT } from "@/lib/content/investissement-art-content";
 import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
 import { CONTACT_HREF, FAQ_HREF } from "@/lib/content/routes";
-import { marketingKickerClass, marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
+import { marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
 import { cn } from "@/lib/utils";
 
 const artContactHref = `${CONTACT_HREF}?objet=${encodeURIComponent(ART_CONTACT_SUBJECT)}`;
@@ -48,8 +48,7 @@ export function InvestissementArtClient({
 
         {otherServices.length > 0 ? (
           <div className="mx-auto mt-10 max-w-3xl border-t border-[#1f2a7c]/10 pt-8">
-            <p className={cn("text-center", marketingKickerClass)}>Voir aussi</p>
-            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+            <ul className="grid gap-2.5 sm:grid-cols-2">
               {otherServices.slice(0, 4).map((service) => (
                 <li key={service.slug}>
                   <Link

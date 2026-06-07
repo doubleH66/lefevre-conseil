@@ -1,7 +1,6 @@
 import {
   SubpageShell,
   type SubpageBreadcrumb,
-  type SubpageHeroLead,
 } from "@/components/layout/subpage-shell";
 import { PAGE_HERO_MIN_HEIGHT_CLASS } from "@/lib/content/hero-shell";
 import type { PageHeroConfig } from "@/lib/content/page-heroes";
@@ -11,7 +10,6 @@ type MarketingSubpageProps = {
   hero: PageHeroConfig;
   children: React.ReactNode;
   hideBilanCta?: boolean;
-  heroCtas?: SubpageHeroLead["heroCtas"];
 };
 
 /**
@@ -22,7 +20,6 @@ export function MarketingSubpage({
   hero,
   children,
   hideBilanCta,
-  heroCtas,
 }: MarketingSubpageProps) {
   return (
     <SubpageShell
@@ -33,7 +30,6 @@ export function MarketingSubpage({
         tagline: hero.tagline,
         titleId: hero.titleId,
         taglineHighlightAfter: hero.taglineHighlightAfter,
-        heroCtas,
       }}
       breadcrumbs={breadcrumbs}
     >

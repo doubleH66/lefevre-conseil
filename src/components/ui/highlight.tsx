@@ -8,7 +8,7 @@ type HighlightProps = {
   delay?: "none" | "hero";
 };
 
-/** Surlignage CSS pur — pas de Framer, compatible Server Component. */
+/** Surlignage CSS pur - pas de Framer, compatible Server Component. */
 export function Highlight({ children, variant, className, delay = "none" }: HighlightProps) {
   return (
     <span

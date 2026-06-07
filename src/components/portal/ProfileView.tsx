@@ -13,7 +13,7 @@ type ProfileViewProps = {
   notice?: string | null;
 };
 
-/** Fiche profil en lecture — source de vérité : le `client` du store portail. */
+/** Fiche profil en lecture --- source de vérité : le `client` du store portail. */
 export function ProfileView({ client, onEdit, notice }: ProfileViewProps) {
   const rows: { label: string; value: string; optional?: boolean }[] = [
     { label: "Entreprise", value: client.companyName },

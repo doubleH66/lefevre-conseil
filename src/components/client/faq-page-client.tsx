@@ -14,11 +14,13 @@ const FAQ_FILTER_CATEGORIES = [ALL_CATEGORY, ...FAQ_CATEGORIES] as const;
 
 export function FaqPageClient() {
   return (
-    <section aria-labelledby="faq-page-title" className={cn(LANDING_SECTION_SHELL, "border-t border-[#1f2a7c]/8")}>
+    <section aria-labelledby="faq-hero-title" className={cn(LANDING_SECTION_SHELL, "border-t border-[#1f2a7c]/8")}>
       <div className={cn(LANDING_SECTION_INSET, LANDING_SECTION_INNER_Y)}>
         <FaqSectionClient
           items={FAQ_PUBLIC_ITEMS}
-          titleId="faq-page-title"
+          titleId="faq-hero-title"
+          showTitle={false}
+          contentClassName="max-w-4xl"
           categories={FAQ_FILTER_CATEGORIES}
           allCategoryValue={ALL_CATEGORY}
         />

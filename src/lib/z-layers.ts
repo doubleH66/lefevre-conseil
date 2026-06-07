@@ -1,4 +1,4 @@
-/** Empilement global — classes Tailwind alignées sur `globals.css` (@theme z-index). */
+/** Empilement global --- classes Tailwind alignées sur `globals.css` (@theme z-index). */
 export const zLayerClass = {
   tooltip: "z-tooltip",
   cookie: "z-cookie",

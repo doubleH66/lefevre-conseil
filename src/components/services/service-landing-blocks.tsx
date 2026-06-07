@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import {
-  marketingKickerClass,
   marketingPageShellClass,
   marketingProseClass,
   marketingTitleClass,
@@ -53,19 +52,14 @@ export function ServiceLeadParagraph({ children, className }: { children: ReactN
 
 export function ServiceSectionTitle({
   id,
-  kicker,
   children,
 }: {
   id: string;
-  kicker: string;
   children: ReactNode;
 }) {
   return (
-    <>
-      <p className={marketingKickerClass}>{kicker}</p>
-      <h2 id={id} className={cn("mt-3", marketingTitleClass, marketingProseClass)}>
-        {children}
-      </h2>
-    </>
+    <h2 id={id} className={cn(marketingTitleClass, marketingProseClass)}>
+      {children}
+    </h2>
   );
 }

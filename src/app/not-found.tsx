@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <main className="flex min-h-[70vh] flex-col items-center justify-center bg-white px-6 py-20 text-center text-[#1f2a7c]">
-      <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-[#1f2a7c]/45">Erreur 404</p>
-      <h1 className="mt-4 text-balance text-[clamp(1.9rem,5vw,3rem)] font-normal leading-[1.05] tracking-[-0.035em]">
+      <h1 className="text-balance text-[clamp(1.9rem,5vw,3rem)] font-normal leading-[1.05] tracking-[-0.035em]">
         Page introuvable
       </h1>
       <p className="mx-auto mt-5 max-w-xl text-balance text-[15px] leading-relaxed text-[#1f2a7c]/70 sm:text-base">

@@ -35,9 +35,9 @@ export function FaqAccordion({
   searchQuery?: string;
   singleOpen?: boolean;
   questionEmphasis?: "none" | "highlight";
-  /** `brand` — bordures et texte Lefèvre (accueil). */
+  /** `brand` --- bordures et texte Lefèvre (accueil). */
   tone?: "neutral" | "brand";
-  /** `divided` — liste épurée avec séparateurs (sans encadrés). */
+  /** `divided` --- liste épurée avec séparateurs (sans encadrés). */
   layout?: "cards" | "divided";
 }) {
   const isBrand = tone === "brand";

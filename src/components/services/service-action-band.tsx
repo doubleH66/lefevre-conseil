@@ -41,8 +41,7 @@ export function ServiceActionBand({
           className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_55%)]"
         />
 
-        <div className="relative z-[2] flex flex-col justify-center px-6 py-12 text-center text-white sm:px-9 sm:py-14 lg:min-h-[22rem] lg:px-11 lg:py-16 lg:text-left">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/55">Prochaine étape</p>
+          <div className="relative z-[2] flex flex-col justify-center px-6 py-12 text-center text-white sm:px-9 sm:py-14 lg:min-h-[22rem] lg:px-11 lg:py-16 lg:text-left">
           <h2
             id="service-action-band-title"
             className="mx-auto mt-3 max-w-2xl text-balance text-[clamp(1.45rem,4.2vw,2rem)] font-normal leading-[1.1] tracking-[-0.035em] lg:mx-0"

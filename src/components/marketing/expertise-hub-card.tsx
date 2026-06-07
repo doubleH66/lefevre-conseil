@@ -33,7 +33,7 @@ export function ExpertiseHubCard({ slug, title, summary, searchTerm = "" }: Expe
       </div>
 
       <div className="flex flex-1 flex-col px-3.5 py-3 md:px-4 md:py-3.5">
-        <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-zinc-500">Expertise</p>
+        <p className="text-[10px] font-medium text-zinc-500">Expertise</p>
         <h2 className="mt-0.5 line-clamp-2 text-sm font-medium leading-snug text-zinc-900 transition group-hover:text-zinc-700">
           {q ? <SearchHighlight text={title} query={searchTerm} /> : title}
         </h2>

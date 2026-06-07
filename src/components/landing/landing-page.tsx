@@ -9,7 +9,7 @@ import { TestimonialsSection } from "@/components/client/testimonials-section";
 import { SiteFooter } from "@/components/layout/site-footer";
 
 /**
- * Page d’accueil — chaque bloc gère son layout via `landing-layout.ts`.
+ * Page d’accueil - chaque bloc gère son layout via `landing-layout.ts`.
  * Ordre : hero → cabinet → méthode → expertises → avis → FAQ → CTA → conseils → footer.
  */
 export function LandingPage() {

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ServicesHub } from "@/components/client/services-hub";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
-import { EXPERTISE_HERO_CTAS } from "@/components/services/service-marketing-page";
 import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
@@ -29,7 +28,6 @@ export default function ServicesPage() {
       />
       <MarketingSubpage
         hero={PAGE_HEROES.expertises}
-        heroCtas={EXPERTISE_HERO_CTAS}
         breadcrumbs={[
           { label: "Accueil", href: "/" },
           { label: "Nos expertises" },

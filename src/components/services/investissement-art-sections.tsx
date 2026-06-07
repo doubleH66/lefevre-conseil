@@ -20,7 +20,7 @@ import {
   ART_VISUAL_BENEFITS,
 } from "@/lib/content/investissement-art-content";
 import { CONTACT_HREF } from "@/lib/content/routes";
-import { marketingKickerClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
+import { marketingTitleClass } from "@/components/marketing/marketing-styles";
 import { cn } from "@/lib/utils";
 
 const artContactHref = `${CONTACT_HREF}?objet=${encodeURIComponent(ART_CONTACT_SUBJECT)}`;
@@ -29,7 +29,7 @@ const visualIcons = [Sparkles, Palette, Users] as const;
 const taxIcons = [TrendingDown, Unlock, Shield] as const;
 const stepIcons = [Frame, FileCheck, Truck] as const;
 
-/** Images WordPress externes — <img> natif pour éviter la config next/image. */
+/** Images WordPress externes - <img> natif pour éviter la config next/image. */
 function ArtRemoteImage({
   src,
   alt,
@@ -67,11 +67,10 @@ function ArtBlock({
   );
 }
 
-function SectionTitle({ kicker, title, id }: { kicker?: string; title: string; id: string }) {
+function SectionTitle({ title, id }: { title: string; id: string }) {
   return (
     <header className="text-center">
-      {kicker ? <p className={marketingKickerClass}>{kicker}</p> : null}
-      <h2 id={id} className={cn("mt-2", marketingTitleClass)}>
+      <h2 id={id} className={marketingTitleClass}>
         {title}
       </h2>
     </header>

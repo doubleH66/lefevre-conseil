@@ -145,7 +145,7 @@ export function InstallationPage() {
     >
       <MarketingPageStack className={marketingPageShellClass}>
 
-        {/* CTA natif — visible seulement si le navigateur supporte beforeinstallprompt */}
+        {/* CTA natif - visible seulement si le navigateur supporte beforeinstallprompt */}
         {(installable || installed) && (
           <MarketingSection labelledBy="install-native-title">
             <div className={cn(marketingCardClass, "flex flex-col items-center gap-5 bg-[#1f2a7c] p-8 text-center text-white sm:flex-row sm:text-left")}>
@@ -163,7 +163,7 @@ export function InstallationPage() {
                 <p className="mt-1 text-sm text-white/75">
                   {installed
                     ? "Vous pouvez accéder à Lefèvre Conseil directement depuis votre écran d'accueil."
-                    : "Votre navigateur propose l'installation native — ajoutez l'app en un clic."}
+                    : "Votre navigateur propose l'installation native - ajoutez l'app en un clic."}
                 </p>
               </div>
               {!installed && (
@@ -191,7 +191,7 @@ export function InstallationPage() {
           </ul>
         </MarketingSection>
 
-        {/* Guide par plateforme — onglets */}
+        {/* Guide par plateforme - onglets */}
         <MarketingSection labelledBy="install-guide-title">
           <MarketingHeading
             titleId="install-guide-title"
@@ -267,7 +267,7 @@ export function InstallationPage() {
               À savoir
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-[#1f2a7c]/75">
-              L'application web s'actualise automatiquement à chaque visite — pas besoin de mise à jour
+              L'application web s'actualise automatiquement à chaque visite - pas besoin de mise à jour
               manuelle. Elle fonctionne même avec une connexion dégradée grâce à un cache local.
             </p>
             <p className="mt-4 text-sm">

@@ -6,7 +6,7 @@ import { CONTACT_HREF } from "@/lib/content/routes";
 export const bilanCtaSectionClassName = LANDING_CTA_SECTION_CLASS;
 
 /**
- * Bandeau CTA final avant le footer — utilisé sur l’accueil et dans `SubpageShell`.
+ * Bandeau CTA final avant le footer - utilisé sur l’accueil et dans `SubpageShell`.
  */
 export function BilanCtaSection({ className }: { className?: string }) {
   return (

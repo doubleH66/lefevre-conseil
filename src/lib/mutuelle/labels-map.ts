@@ -11,7 +11,7 @@ import {
 import type { MutuelleSubmitInput } from "@/lib/mutuelle/schema";
 
 export function profileTypeLabel(value: string | null | undefined): string {
-  if (!value) return "—";
+  if (!value) return "---";
   return PROFILE_TYPE_LABELS[value as keyof typeof PROFILE_TYPE_LABELS] ?? value;
 }
 
@@ -55,5 +55,5 @@ export function formatMutuelleLeadSummary(data: {
       ? `Madelin : ${MADELIN_LABELS[data.madelinInterest as keyof typeof MADELIN_LABELS] ?? data.madelinInterest}`
       : null,
   ].filter(Boolean);
-  return lines.join(" · ") || "—";
+  return lines.join(" · ") || "---";
 }

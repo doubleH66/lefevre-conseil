@@ -112,16 +112,16 @@ export function AdminDocumentsView() {
               {
                 key: "client",
                 header: "Client",
-                cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "—",
+                cell: (d) => clients.find((c) => c.id === d.clientId)?.companyName ?? "-",
               },
               { key: "name", header: "Pièce", cell: (d) => <span className="font-medium">{d.name}</span> },
               { key: "status", header: "Statut", cell: (d) => <StatusBadge status={d.status} /> },
-              { key: "due", header: "Échéance", cell: (d) => d.dueDate || "—" },
+              { key: "due", header: "Échéance", cell: (d) => d.dueDate || "-" },
               {
                 key: "file",
                 header: "Fichier",
                 className: "text-right",
-                cell: (d) => (d.storagePath ? "Reçu" : "—"),
+                cell: (d) => (d.storagePath ? "Reçu" : "-"),
               },
             ]}
           />

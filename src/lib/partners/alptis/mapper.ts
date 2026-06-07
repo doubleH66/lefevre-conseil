@@ -1,7 +1,7 @@
 import type { MutuelleSubmitInput } from "@/lib/mutuelle/schema";
 import type { CoverageLevel } from "@/lib/mutuelle/types";
 
-/** Niveau global Santé Select (1–5) selon le choix prospect. */
+/** Niveau global Santé Select (1-5) selon le choix prospect. */
 export function mapCoverageToNiveau(level: CoverageLevel): number {
   const map: Record<CoverageLevel, number> = {
     economic: 2,

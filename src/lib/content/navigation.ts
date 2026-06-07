@@ -73,7 +73,7 @@ export type NavAccountMenuItem =
   | { id: string; label: string; kind: "login" }
   | { id: string; label: string; kind: "link"; href: string };
 
-/** Menu du bouton compte (navbar) — style Hey Aurenis. */
+/** Menu du bouton compte (navbar) - style Hey Aurenis. */
 export const NAV_ACCOUNT_MENU: NavAccountMenuItem[] = [
   { id: "login", label: "Connexion", kind: "login" },
   { id: "app", label: "Téléchargez l'app", kind: "link", href: INSTALLATION_HREF },

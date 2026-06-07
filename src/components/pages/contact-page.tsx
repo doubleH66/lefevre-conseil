@@ -25,7 +25,7 @@ const BREADCRUMBS = [
   { label: "Prendre rendez-vous" },
 ] as const;
 
-/** « Vous êtes » — profil du demandeur. */
+/** « Vous êtes » - profil du demandeur. */
 const CONTACT_PROFILES = [
   "Particulier",
   "Dirigeant / indépendant",
@@ -533,7 +533,7 @@ export function ContactPage({ initialSubject = "" }: { initialSubject?: string }
                 <div className="relative size-14 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-md ring-2 ring-[#1f2a7c]/10 sm:size-16">
                   <Image
                     src={ADVISOR_ROUND_AVATAR_IMAGE_URL}
-                    alt="Philippe Lefèvre — conseiller en gestion de patrimoine"
+                    alt="Philippe Lefèvre - conseiller en gestion de patrimoine"
                     fill
                     sizes="64px"
                     className="object-cover"
@@ -558,7 +558,7 @@ export function ContactPage({ initialSubject = "" }: { initialSubject?: string }
                   >
                     <Phone className="size-3.5 shrink-0 opacity-70" aria-hidden />
                     {phone}
-                    <span className="font-normal text-[#1f2a7c]/55">· Du lundi au vendredi, 9h – 18h</span>
+                    <span className="font-normal text-[#1f2a7c]/55">· Du lundi au vendredi, 9h - 18h</span>
                   </a>
                 </li>
                 <li>

@@ -1,4 +1,4 @@
-/** FAQ publique — page /faq (catégories + mise en avant). */
+/** FAQ publique - page /faq (catégories + mise en avant). */
 
 export const FAQ_CATEGORIES = [
   "Gestion de patrimoine",

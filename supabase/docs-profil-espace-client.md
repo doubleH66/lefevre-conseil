@@ -1,4 +1,4 @@
-# Profil espace client — flux Supabase (source de vérité)
+# Profil espace client - flux Supabase (source de vérité)
 
 Le front **lit** `public.client_accounts` via `loadClientPortalData()` (JWT navigateur).  
 L’**écriture** passe par `saveClientProfile()` : RPC **`update_my_client_account`** (migration **`010_client_profile_save.sql`**) via le **même client Supabase navigateur** que le chargement (pattern identique aux médias publics / avatar).
@@ -7,7 +7,7 @@ L’**écriture** passe par `saveClientProfile()` : RPC **`update_my_client_acco
 
 Production : **`gyisrwfapphqqdbpujtb`** → `https://gyisrwfapphqqdbpujtb.supabase.co`
 
-Vérification automatique : `src/lib/supabase/config.ts` — en production, toute autre URL lève une erreur explicite au démarrage des clients Supabase.
+Vérification automatique : `src/lib/supabase/config.ts` - en production, toute autre URL lève une erreur explicite au démarrage des clients Supabase.
 
 ## Variables d’environnement
 
@@ -22,13 +22,13 @@ Pas de `SUPABASE_SERVICE_ROLE_KEY` côté Next.js (non utilisée dans ce repo).
 
 ## Fichiers env locaux
 
-- `.env.example` — modèle (commité)
-- `.env.local` — dev local (gitignored)
+- `.env.example` - modèle (commité)
+- `.env.local` - dev local (gitignored)
 - Pas de `.env.production` dans le repo
 
 ## Ordre migrations
 
-**001** → **010** — voir [`migrations/README.md`](../migrations/README.md).
+**001** → **010** - voir [`migrations/README.md`](../migrations/README.md).
 
 ## Côté Next.js
 

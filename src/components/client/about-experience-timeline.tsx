@@ -8,7 +8,7 @@ import { FlickeringGrid } from "@/components/ui/flickering-footer";
 import { cn } from "@/lib/utils";
 
 const LG_MEDIA_QUERY = "(min-width: 1024px)";
-/** Centre vertical de la pastille desktop — aligné sur la ligne de progression. */
+/** Centre vertical de la pastille desktop - aligné sur la ligne de progression. */
 const DESKTOP_TRACK_LINE_TOP = "top-6";
 
 function subscribeLgMediaQuery(onChange: () => void) {
@@ -27,7 +27,7 @@ function useIsLgUp() {
 
 export type AboutTimelineMilestone = {
   year: string;
-  /** Titre court affiché sur la frise (optionnel — sinon dérivé de la description). */
+  /** Titre court affiché sur la frise (optionnel - sinon dérivé de la description). */
   title?: string;
   description: string;
   bullets?: readonly string[];
@@ -37,7 +37,7 @@ type AboutExperienceTimelineProps = {
   milestones: readonly AboutTimelineMilestone[];
   className?: string;
   tone?: "light" | "dark";
-  /** `dot-grid` — fond pointillé type section méthode (scroll). */
+  /** `dot-grid` - fond pointillé type section méthode (scroll). */
   surface?: "card" | "dot-grid";
   navigationAriaLabel?: string;
 };
@@ -446,7 +446,7 @@ function MobileVerticalTimeline({
                       ? "border-transparent hover:bg-white/[0.06]"
                       : "border-transparent hover:bg-[#17213b]/[0.04]",
                 )}
-                aria-label={`${item.year} — ${heading}`}
+                aria-label={`${item.year} - ${heading}`}
               >
                 <span className="mt-0.5 shrink-0">
                   <TimelineDot

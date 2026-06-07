@@ -1,4 +1,4 @@
-/** Contenu page /expertises/investissement-art — images servies depuis /public */
+/** Contenu page /expertises/investissement-art - images servies depuis /public */
 export const ART_INVESTMENT_IMAGES = {
   croco: "/images/investissement-art/croco.png",
   courseBrise: "/images/investissement-art/course-brise-legere.png",
@@ -71,7 +71,7 @@ export const ART_TAX_BENEFITS = [
   {
     title: "Diminution des impôts",
     description:
-      "Sous conditions, les dépenses liées à des œuvres d'artistes vivants peuvent être déduites du résultat imposable — dans la limite des plafonds légaux.",
+      "Sous conditions, les dépenses liées à des œuvres d'artistes vivants peuvent être déduites du résultat imposable - dans la limite des plafonds légaux.",
   },
   {
     title: "Levée d'option",

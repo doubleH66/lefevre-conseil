@@ -270,10 +270,7 @@ export function SimulateurPage() {
         >
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/70">
-                Expertises
-              </p>
-              <h2 id="simulateur-services-title" className="mt-1 text-xl font-semibold text-neutral-900">
+              <h2 id="simulateur-services-title" className="text-xl font-semibold text-neutral-900">
                 Découvrir nos domaines
               </h2>
             </div>

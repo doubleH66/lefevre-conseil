@@ -85,12 +85,9 @@ function MethodDotGrid() {
 function MethodIntroHeader() {
   return (
     <div className="mx-auto max-w-3xl text-center">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/70">
-        Notre méthode
-      </p>
       <h2
         id="home-method-title"
-        className="mt-3 text-balance text-[clamp(1.4rem,3vw,2.25rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]"
+        className="text-balance text-[clamp(1.4rem,3vw,2.25rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]"
       >
         Une méthode claire pour prendre de meilleures décisions patrimoniales
       </h2>
@@ -142,7 +139,7 @@ function MethodStepCard({
   );
 }
 
-/** Section « Notre méthode » — scroll multi-étapes (pattern Hey Aurenis). */
+/** Section « Notre méthode » - scroll multi-étapes (pattern Hey Aurenis). */
 export function MethodScrollStack() {
   const reduceMotion = useReducedMotion();
   const [active, setActive] = useState(0);

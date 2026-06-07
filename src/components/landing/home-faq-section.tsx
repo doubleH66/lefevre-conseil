@@ -16,7 +16,7 @@ import {
 import { FAQ_HREF } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 
-/** FAQ accueil — titre unique + recherche (pattern hub DAS, design Lefèvre). */
+/** FAQ accueil --- titre unique + recherche (pattern hub DAS, design Lefèvre). */
 export function HomeFaqSection() {
   const [search, setSearch] = React.useState("");
 

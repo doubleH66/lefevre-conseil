@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Marges latérales communes — hero, sections, carrousels. */
+/** Marges latérales communes --- hero, sections, carrousels. */
 export const LANDING_SECTION_SHELL = "mx-2.5 lg:mx-4";
 
 /** Padding intérieur des blocs de contenu. */

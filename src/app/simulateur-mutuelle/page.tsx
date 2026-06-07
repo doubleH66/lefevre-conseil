@@ -10,7 +10,7 @@ const PATH = ROUTES.simulateurMutuelle;
 export const metadata: Metadata = {
   title: "Simulateur mutuelle santé | Lefèvre Conseil",
   description:
-    "Obtenez une proposition mutuelle en quelques minutes. Demande simple, sans souscription en ligne — un conseiller vous recontacte.",
+    "Obtenez une proposition mutuelle en quelques minutes. Demande simple, sans souscription en ligne --- un conseiller vous recontacte.",
   alternates: { canonical: PATH },
 };
 

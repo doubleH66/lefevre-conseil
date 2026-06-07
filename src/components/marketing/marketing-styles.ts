@@ -1,4 +1,4 @@
-/** Tokens visuels pages intérieures — fond gris continu, sans blocs carrés empilés. */
+/** Tokens visuels pages intérieures --- fond gris continu, sans blocs carrés empilés. */
 
 export const marketingSectionClass = "mt-10 sm:mt-14";
 
@@ -8,9 +8,6 @@ export const marketingPageShellClass = "relative z-0 flex-1 bg-white pb-10 pt-6 
 
 export const marketingProseClass =
   "text-[#1f2a7c]/78 max-lg:text-[#1f2a7c]/72 lg:text-[#1f2a7c]/88";
-
-export const marketingKickerClass =
-  "text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f2a7c]/45";
 
 export const marketingTitleClass =
   "text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em] sm:text-[clamp(1.35rem,2.9vw,2.2rem)]";

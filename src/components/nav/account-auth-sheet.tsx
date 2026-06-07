@@ -21,7 +21,7 @@ export type AccountAuthSheetProps = {
   resolveHref: (href: string) => string;
 };
 
-/** Modale Compte — session existante ou formulaire connexion / inscription. */
+/** Modale Compte - session existante ou formulaire connexion / inscription. */
 export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthSheetProps) {
   const [nextPath, setNextPath] = React.useState("/espace-client");
   const [signingOut, setSigningOut] = React.useState(false);
@@ -45,7 +45,7 @@ export function AccountAuthSheet({ open, onClose, resolveHref }: AccountAuthShee
   const subtitle =
     session.status === "authenticated"
       ? "Vous êtes déjà connecté."
-      : "Connexion ou inscription — directement ici.";
+      : "Connexion ou inscription - directement ici.";
 
   const handleSignOut = async () => {
     setSigningOut(true);

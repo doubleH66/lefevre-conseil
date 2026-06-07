@@ -37,7 +37,7 @@ export async function updateSession(request: NextRequest) {
   try {
     await supabase.auth.getUser();
   } catch {
-    // Projet Supabase injoignable (pause, réseau…) — ne pas bloquer la navigation.
+    // Projet Supabase injoignable (pause, réseau…) - ne pas bloquer la navigation.
   }
 
   return supabaseResponse;

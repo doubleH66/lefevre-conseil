@@ -104,13 +104,13 @@ export async function POST(request: Request) {
     await Promise.all([
       invokePortalNotify({
         to: cabinetEmail,
-        subject: `[Site] Nouvelle demande — ${fullName}`,
+        subject: `[Site] Nouvelle demande --- ${fullName}`,
         clientName: fullName,
         text: `Nouvelle demande reçue via le formulaire du site.\n\n${detailLines}\n\nVoir : /espace-admin/demandes`,
       }),
       invokePortalNotify({
         to: email,
-        subject: "Votre demande a bien été reçue — Lefèvre Conseil",
+        subject: "Votre demande a bien été reçue --- Lefèvre Conseil",
         clientName: firstName,
         text:
           `Bonjour ${firstName},\n\n` +

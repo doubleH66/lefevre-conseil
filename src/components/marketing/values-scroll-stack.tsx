@@ -11,7 +11,6 @@ export type ValueCardPart = {
 
 export type ValueCardItem = {
   title: string;
-  kicker?: string;
   parts: readonly ValueCardPart[];
 };
 
@@ -30,12 +29,7 @@ function ValueCardContent({
 }) {
   return (
     <>
-      {value.kicker ? (
-        <p className="hidden text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/55 lg:block">
-          {value.kicker}
-        </p>
-      ) : null}
-      <h3 className={cn("text-lg font-semibold tracking-tight text-neutral-900 sm:text-xl", value.kicker && "mt-2")}>
+      <h3 className="text-lg font-semibold tracking-tight text-neutral-900 sm:text-xl">
         {value.title}
       </h3>
       <p className="mt-3 text-sm leading-relaxed text-neutral-600 sm:text-[15px]">

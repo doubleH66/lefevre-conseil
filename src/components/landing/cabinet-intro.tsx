@@ -43,7 +43,7 @@ function StatValue({ value, label }: { value: string; label: string }) {
   );
 }
 
-/** Introduction cabinet (Server Component — expand mobile via `<details>`). */
+/** Introduction cabinet (Server Component - expand mobile via `<details>`). */
 export function CabinetIntro() {
   return (
     <section

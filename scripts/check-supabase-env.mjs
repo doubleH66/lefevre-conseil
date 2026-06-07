@@ -62,7 +62,7 @@ if (!key || key === "eyJ..." || key.length < 100) {
 }
 
 if (issues.length === 0) {
-  console.log("OK — Supabase configuré pour le dev local (.env.local).");
+  console.log("OK - Supabase configuré pour le dev local (.env.local).");
   process.exit(0);
 }
 

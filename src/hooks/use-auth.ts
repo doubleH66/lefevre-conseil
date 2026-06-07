@@ -36,7 +36,7 @@ export type UseAuthOptions = {
   enabled?: boolean;
 };
 
-/** Session Supabase — même logique que DAS Bâtiment (onAuthStateChange + getSession). */
+/** Session Supabase --- même logique que DAS Bâtiment (onAuthStateChange + getSession). */
 export function useAuth(options?: UseAuthOptions): AuthState {
   const enabled = options?.enabled ?? true;
   const [user, setUser] = React.useState<User | null>(null);

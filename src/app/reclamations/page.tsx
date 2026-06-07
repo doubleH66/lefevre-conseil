@@ -8,7 +8,7 @@ import { ROUTES } from "@/lib/content/routes";
 export const metadata: Metadata = {
   title: "Réclamations clients | Lefèvre Conseil",
   description:
-    "Procédure de réclamation et médiation pour les clients Lefèvre Conseil — courtage en assurance à Perpignan.",
+    "Procédure de réclamation et médiation pour les clients Lefèvre Conseil --- courtage en assurance à Perpignan.",
   alternates: { canonical: ROUTES.reclamations },
 };
 

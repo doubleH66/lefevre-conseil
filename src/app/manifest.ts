@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Lefèvre Conseil — Gestion de patrimoine",
+    name: "Lefèvre Conseil - Gestion de patrimoine",
     short_name: "Lefèvre Conseil",
     description:
       "Cabinet indépendant de conseil en gestion de patrimoine à Perpignan. Placements, retraite, transmission, fiscalité patrimoniale et prévoyance.",
@@ -80,7 +80,7 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "1200x630",
         type: "image/png",
         form_factor: "wide",
-        label: "Lefèvre Conseil — Accueil",
+        label: "Lefèvre Conseil - Accueil",
       },
     ],
   };

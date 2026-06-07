@@ -65,7 +65,7 @@ export function SiteNavbar() {
 
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
-  /** Panneaux portail (sous-menus + menu compte) — fond opaque, adapté au scroll / thème. */
+  /** Panneaux portail (sous-menus + menu compte) --- fond opaque, adapté au scroll / thème. */
   const dropdownSurfaceClass =
     mobileOpen || !controlsLight ? navGlassWhite : navGlassDropdownPanelDark;
 

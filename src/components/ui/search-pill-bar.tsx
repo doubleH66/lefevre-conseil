@@ -111,7 +111,7 @@ export function SearchPillBar({
               aria-haspopup="dialog"
               aria-expanded={filterOpen}
               aria-label={
-                filtersActive ? `${filterButtonLabel} (1 actif) — ${category}` : filterButtonLabel
+                filtersActive ? `${filterButtonLabel} (1 actif) - ${category}` : filterButtonLabel
               }
             >
               <span className="hidden min-[380px]:inline">{filterButtonLabel}</span>
@@ -147,7 +147,7 @@ export function SearchPillBar({
           onOpenChange={setFilterOpen}
           title={filterTitle}
           description={filterDescription}
-          backdropLabel={`Fermer — ${filterTitle.toLowerCase()}`}
+          backdropLabel={`Fermer - ${filterTitle.toLowerCase()}`}
         >
           <div className="flex flex-wrap gap-2">
             {categories.map((option) => {

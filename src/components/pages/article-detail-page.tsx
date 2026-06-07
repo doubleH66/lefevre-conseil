@@ -40,7 +40,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
 
           <div className="grid gap-8 lg:grid-cols-[16rem_1fr] lg:items-start lg:gap-10">
 
-            {/* ── Sidebar sticky ── */}
+            {/* ------ Sidebar sticky ------ */}
             <aside className="flex flex-col gap-4 lg:sticky lg:top-28">
 
               {/* Article meta card */}
@@ -78,9 +78,6 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                 href={CONTACT_HREF}
                 className="group flex flex-col gap-2 rounded-2xl border border-[#1f2a7c]/15 bg-[#1f2a7c] p-4 text-white transition-opacity hover:opacity-90"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/55">
-                  Une question ?
-                </p>
                 <p className="text-[15px] font-semibold leading-snug">
                   Parlez-en avec le cabinet
                 </p>
@@ -91,7 +88,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
 
             </aside>
 
-            {/* ── Article body ── */}
+            {/* ------ Article body ------ */}
             <article>
               {/* Hero image */}
               <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-[#1f2a7c]/5">
@@ -105,7 +102,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1f2a7c]/35 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-white/25 bg-black/40 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+                  <span className="rounded-full border border-white/25 bg-black/40 px-3 py-1 text-[10px] font-semibold text-white backdrop-blur-sm">
                     {article.category}
                   </span>
                   <span className="rounded-full border border-white/25 bg-black/40 px-3 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
@@ -141,9 +138,6 @@ export function ArticleDetailPage({ article }: { article: Article }) {
 
               {faq.length > 0 ? (
                 <div className="mt-10">
-                  <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1f2a7c]/45">
-                    Questions fréquentes
-                  </p>
                   <FaqAccordion items={faq} />
                 </div>
               ) : null}
