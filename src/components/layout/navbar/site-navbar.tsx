@@ -11,7 +11,7 @@ import { SitePromoBar } from "@/components/layout/site-promo-bar";
 import { resolveSiteHref } from "@/lib/resolve-site-href";
 import { useNavbarTheme } from "@/components/layout/navbar/hooks/use-navbar-theme";
 import { NavMobileMenu } from "@/components/layout/navbar/nav-mobile-menu";
-import { NAV_SHELL_MENU, SITE_PROMO_BAR_HEIGHT } from "@/lib/nav-styles";
+import { NAV_SHELL_MENU, SITE_PROMO_BAR_HEIGHT, readPromoBarHeight } from "@/lib/nav-styles";
 import {
   navGlassDropdownPanelDark,
   navGlassSurfaceDocked,
@@ -33,8 +33,9 @@ export function SiteNavbar() {
   const [desktopOpen, setDesktopOpen] = useState<NavDropdownId | null>(null);
   const [accountSheetOpen, setAccountSheetOpen] = useState(false);
   const [glassShell, setGlassShell] = useState(!enabled);
+  const [promoBarHeight, setPromoBarHeight] = useState(SITE_PROMO_BAR_HEIGHT);
 
-  const headerTop = useTransform(promoHide, [0, 1], [SITE_PROMO_BAR_HEIGHT, 0]);
+  const headerTop = useTransform(promoHide, [0, 1], [promoBarHeight, 0]);
 
   useMotionValueEvent(navDock, "change", (progress) => {
     setGlassShell(progress > 0.18);
@@ -42,6 +43,14 @@ export function SiteNavbar() {
 
   useEffect(() => {
     setGlassShell(!enabled);
+  }, [enabled, pathname]);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const syncPromoHeight = () => setPromoBarHeight(readPromoBarHeight());
+    syncPromoHeight();
+    window.addEventListener("resize", syncPromoHeight);
+    return () => window.removeEventListener("resize", syncPromoHeight);
   }, [enabled, pathname]);
 
   const resolveHref = useCallback((href: string) => resolveSiteHref(pathname ?? "/", href), [pathname]);

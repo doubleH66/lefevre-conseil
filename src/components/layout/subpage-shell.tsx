@@ -22,6 +22,35 @@ export type SubpageBreadcrumb = {
   href?: string;
 };
 
+function breadcrumbTooltip(label: string) {
+  if (label.toLowerCase() === "accueil") return "Revenir à l'accueil";
+  return `Revenir sur ${label}`;
+}
+
+function SubpageBreadcrumbLink({ href, label }: { href: string; label: string }) {
+  const tooltip = breadcrumbTooltip(label);
+
+  return (
+    <Link
+      href={href}
+      title={tooltip}
+      className="group/breadcrumb relative rounded-sm text-white/70 outline-none ring-white/30 transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black/0"
+    >
+      {label}
+      <span
+        role="tooltip"
+        className="pointer-events-none absolute bottom-[calc(100%+0.45rem)] left-1/2 z-30 hidden -translate-x-1/2 whitespace-nowrap rounded-lg border border-white/15 bg-[#1f2a7c]/95 px-2.5 py-1.5 text-[11px] font-medium leading-none text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] group-hover/breadcrumb:block group-focus-visible/breadcrumb:block"
+      >
+        {tooltip}
+        <span
+          className="absolute left-1/2 top-full -translate-x-1/2 border-[5px] border-transparent border-t-[#1f2a7c]/95"
+          aria-hidden
+        />
+      </span>
+    </Link>
+  );
+}
+
 export type SubpageHeroCta = {
   href: string;
   label: string;
@@ -253,12 +282,7 @@ export function SubpageShell({
                           </span>
                         ) : null}
                         {crumb.href ? (
-                          <Link
-                            href={crumb.href}
-                            className="rounded-sm text-white/70 outline-none ring-white/30 transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black/0"
-                          >
-                            {crumb.label}
-                          </Link>
+                          <SubpageBreadcrumbLink href={crumb.href} label={crumb.label} />
                         ) : (
                           <span className="text-white/90" aria-current="page">
                             {crumb.label}

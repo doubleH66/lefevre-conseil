@@ -125,49 +125,29 @@ function ServiceCard({ service }: { service: HomeServiceSlide }) {
   );
 }
 
-/** Bandes étroites + chute rapide opacité (bord net, peu de « trainée »). */
-const SIDE_FADE_MOBILE_L =
-  "linear-gradient(90deg, #fff 0%, #fff 6%, rgba(255,255,255,0.78) 28%, rgba(255,255,255,0.22) 58%, transparent 92%)";
-const SIDE_FADE_MOBILE_R =
-  "linear-gradient(270deg, #fff 0%, #fff 6%, rgba(255,255,255,0.78) 28%, rgba(255,255,255,0.22) 58%, transparent 92%)";
-const SIDE_FADE_DESKTOP_L =
-  "linear-gradient(90deg, #fff 0%, #fff 8%, rgba(255,255,255,0.82) 32%, rgba(255,255,255,0.18) 62%, transparent 94%)";
-const SIDE_FADE_DESKTOP_R =
-  "linear-gradient(270deg, #fff 0%, #fff 8%, rgba(255,255,255,0.82) 32%, rgba(255,255,255,0.18) 62%, transparent 94%)";
+/** Dégradés latéraux — pleine largeur section, fondu très doux. */
+const SIDE_FADE_L =
+  "linear-gradient(90deg, rgb(255 255 255) 0%, rgb(255 255 255 / 0.82) 18%, rgb(255 255 255 / 0.38) 48%, rgb(255 255 255 / 0.08) 78%, transparent 100%)";
+const SIDE_FADE_R =
+  "linear-gradient(270deg, rgb(255 255 255) 0%, rgb(255 255 255 / 0.82) 18%, rgb(255 255 255 / 0.38) 48%, rgb(255 255 255 / 0.08) 78%, transparent 100%)";
 
 function SideFades({ atStart, atEnd }: { atStart: boolean; atEnd: boolean }) {
   return (
     <>
       <div
         className={cn(
-          "pointer-events-none absolute inset-y-0 left-0 z-20 w-7 transition-opacity duration-300 md:hidden",
+          "pointer-events-none absolute inset-y-0 left-0 z-20 w-14 transition-opacity duration-300 sm:w-20 md:w-24 lg:w-28",
           atStart && "opacity-0",
         )}
-        style={{ backgroundImage: SIDE_FADE_MOBILE_L }}
+        style={{ backgroundImage: SIDE_FADE_L }}
         aria-hidden
       />
       <div
         className={cn(
-          "pointer-events-none absolute inset-y-0 right-0 z-20 w-7 transition-opacity duration-300 md:hidden",
+          "pointer-events-none absolute inset-y-0 right-0 z-20 w-14 transition-opacity duration-300 sm:w-20 md:w-24 lg:w-28",
           atEnd && "opacity-0",
         )}
-        style={{ backgroundImage: SIDE_FADE_MOBILE_R }}
-        aria-hidden
-      />
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-y-0 left-0 z-20 hidden w-10 transition-opacity duration-300 md:block md:w-11 lg:w-12",
-          atStart && "opacity-0",
-        )}
-        style={{ backgroundImage: SIDE_FADE_DESKTOP_L }}
-        aria-hidden
-      />
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-y-0 right-0 z-20 hidden w-10 transition-opacity duration-300 md:block md:w-11 lg:w-12",
-          atEnd && "opacity-0",
-        )}
-        style={{ backgroundImage: SIDE_FADE_DESKTOP_R }}
+        style={{ backgroundImage: SIDE_FADE_R }}
         aria-hidden
       />
     </>
@@ -289,7 +269,7 @@ function ArrowsCarousel() {
       <div className="relative min-h-[min(26rem,68svh)] overflow-hidden pt-1 md:min-h-[30rem] md:pt-2">
         <SideFades atStart={activeIndex === 0} atEnd={activeIndex === maxIndex} />
 
-        <div ref={viewportRef} className={cn(LANDING_SECTION_SHELL, CAROUSEL_INSET, "overflow-hidden")}>
+        <div ref={viewportRef} className="w-full overflow-hidden">
           <motion.div
             ref={trackRef}
             animate={{ x: targetX }}
@@ -298,7 +278,11 @@ function ArrowsCarousel() {
               duration: reduceMotion ? 0.01 : 0.42,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="flex w-max items-center gap-3 md:gap-4"
+            className={cn(
+              "flex w-max items-center gap-3 md:gap-4",
+              LANDING_SECTION_SHELL,
+              CAROUSEL_INSET,
+            )}
           >
             {homeServiceSlides.map((service) => (
               <ServiceCard key={service.href} service={service} />

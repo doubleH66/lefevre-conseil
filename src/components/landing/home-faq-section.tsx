@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowUpRight, HelpCircle, Search, X } from "lucide-react";
+import { ArrowUpRight, HelpCircle } from "lucide-react";
 import { FaqAccordion } from "@/components/client/faq-accordion";
+import { FaqSearchBar } from "@/components/client/faq-search-bar";
+import { SEARCH_PILL_BAR_WIDTH_CLASS } from "@/components/ui/search-pill-bar";
 import { HOME_FAQ } from "@/lib/content/home-faq";
 import {
   LANDING_SCROLL_MARGIN,
@@ -13,44 +15,6 @@ import {
 } from "@/lib/content/landing-layout";
 import { FAQ_HREF } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
-
-function HomeFaqSearch({
-  value,
-  onChange,
-  onClear,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  onClear: () => void;
-}) {
-  return (
-    <div className="flex w-full items-center gap-1 rounded-full border border-[#1f2a7c]/15 bg-white p-1 shadow-sm transition-[border-color,box-shadow] focus-within:border-[#1f2a7c]/35 focus-within:ring-2 focus-within:ring-[#1f2a7c]/12">
-      <Search className="ml-2.5 size-4 shrink-0 text-[#1f2a7c]/35" aria-hidden />
-      <input
-        type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="Rechercher une question (rendez-vous, gratuit, distance…)"
-        aria-label="Rechercher dans les questions fréquentes"
-        autoComplete="off"
-        className={cn(
-          "min-h-10 min-w-0 flex-1 rounded-full border-0 bg-transparent py-0 pl-1 text-sm text-[#1f2a7c] outline-none placeholder:text-[#1f2a7c]/40 [&::-webkit-search-cancel-button]:hidden",
-          value ? "pr-1" : "pr-3",
-        )}
-      />
-      {value ? (
-        <button
-          type="button"
-          onClick={onClear}
-          className="mr-0.5 flex size-8 shrink-0 items-center justify-center rounded-full text-[#1f2a7c]/50 transition hover:bg-[#1f2a7c]/6 hover:text-[#1f2a7c]"
-          aria-label="Effacer la recherche"
-        >
-          <X className="size-4" aria-hidden />
-        </button>
-      ) : null}
-    </div>
-  );
-}
 
 /** FAQ accueil — titre unique + recherche (pattern hub DAS, design Lefèvre). */
 export function HomeFaqSection() {
@@ -82,12 +46,8 @@ export function HomeFaqSection() {
             Questions fréquentes
           </h2>
 
-          <div className="mx-auto mt-7 max-w-2xl sm:mt-9">
-            <HomeFaqSearch
-              value={search}
-              onChange={setSearch}
-              onClear={() => setSearch("")}
-            />
+          <div className={cn("mt-7 sm:mt-9", SEARCH_PILL_BAR_WIDTH_CLASS)}>
+            <FaqSearchBar value={search} onChange={setSearch} onClear={() => setSearch("")} />
             {hasSearch ? (
               <p className="mt-3 text-center text-[13px] tracking-[-0.01em] text-[#1f2a7c]/50">
                 {filtered.length === 1

@@ -1,15 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Tag } from "lucide-react";
-import { FilterChip } from "@/components/marketing/filter-chip";
-import {
-  FilterPanelActions,
-  FilterPanelField,
-  filterOptionClass,
-  filterSelectClass,
-} from "@/components/marketing/filter-panel-fields";
-import { SearchFilterBar } from "@/components/marketing/search-filter-bar";
+import { SearchPillBar, SEARCH_PILL_BAR_WIDTH_CLASS } from "@/components/ui/search-pill-bar";
+import { cn } from "@/lib/utils";
 
 export type CategorySearchToolbarProps = {
   searchTerm: string;
@@ -21,8 +14,9 @@ export type CategorySearchToolbarProps = {
   onCategoryChange: (category: string) => void;
   categories: readonly string[];
   allCategoryValue?: string;
-  categoryFieldLabel?: string;
+  filterTitle?: string;
   filterPanelDescription?: string;
+  activeCategoryLabel?: string;
   resultCount?: number;
   hasActiveSearchOrFilters?: boolean;
   resultLabel?: (count: number) => string;
@@ -39,69 +33,57 @@ export function CategorySearchToolbar({
   onCategoryChange,
   categories,
   allCategoryValue = categories[0] ?? "Tous",
-  categoryFieldLabel = "Catégorie",
-  filterPanelDescription = "Affinez par catégorie.",
+  filterTitle = "Filtrer",
+  filterPanelDescription = "Affinez les résultats selon votre besoin.",
+  activeCategoryLabel = "Catégorie",
   resultCount,
   hasActiveSearchOrFilters,
   resultLabel = (count) => `${count} résultat${count > 1 ? "s" : ""}`,
   className,
 }: CategorySearchToolbarProps) {
-  const [filterOpen, setFilterOpen] = React.useState(false);
   const showCategories = categories.length > 1;
-  const activeFilterCount = category !== allCategoryValue ? 1 : 0;
-
-  const resetFilters = React.useCallback(() => {
-    onCategoryChange(allCategoryValue);
-  }, [allCategoryValue, onCategoryChange]);
-
-  const filterPanel = showCategories ? (
-    <div className="space-y-6">
-      <FilterPanelField label={categoryFieldLabel} icon={Tag} htmlFor="category-filter">
-        <select
-          id="category-filter"
-          value={category}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          className={filterSelectClass}
-        >
-          {categories.map((option) => (
-            <option key={option} value={option} className={filterOptionClass}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </FilterPanelField>
-      <FilterPanelActions onReset={resetFilters} onApply={() => setFilterOpen(false)} />
-    </div>
-  ) : null;
-
-  const activeChips =
-    activeFilterCount > 0 ? (
-      <FilterChip label={category} icon={Tag} onRemove={resetFilters} />
-    ) : null;
 
   return (
-    <SearchFilterBar
-      className={className}
-      searchTerm={searchTerm}
-      onSearchChange={onSearchChange}
-      onSearchClear={onSearchClear}
-      searchPlaceholder={searchPlaceholder}
-      searchAriaLabel={searchAriaLabel}
-      filterOpen={filterOpen}
-      onFilterOpenChange={setFilterOpen}
-      filterPanelTitle="Filtres"
-      filterPanelDescription={filterPanelDescription}
-      filterPanel={filterPanel}
-      activeFilterCount={activeFilterCount}
-      activeChips={activeChips}
-      resultCount={resultCount}
-      resultLabel={resultLabel}
-      showResultsSummary={hasActiveSearchOrFilters}
-      onClearAll={() => {
-        onSearchClear();
-        resetFilters();
-      }}
-      showFilterButton={showCategories}
-    />
+    <div className={cn(SEARCH_PILL_BAR_WIDTH_CLASS, "space-y-3", className)}>
+      <SearchPillBar
+        value={searchTerm}
+        onChange={onSearchChange}
+        onClear={onSearchClear}
+        placeholder={searchPlaceholder}
+        ariaLabel={searchAriaLabel}
+        category={showCategories ? category : undefined}
+        onCategoryChange={showCategories ? onCategoryChange : undefined}
+        categories={showCategories ? categories : undefined}
+        allCategoryValue={allCategoryValue}
+        filterTitle={filterTitle}
+        filterDescription={filterPanelDescription}
+        filterButtonLabel="Filtrer"
+        activeCategoryLabel={activeCategoryLabel}
+      />
+
+      {hasActiveSearchOrFilters ? (
+        <p className="text-center text-[13px] tracking-[-0.01em] text-[#1f2a7c]/50 sm:text-left">
+          {resultCount != null ? resultLabel(resultCount) : null}
+          {resultCount != null && (searchTerm.trim() || category !== allCategoryValue) ? (
+            <>
+              {" "}
+              ·{" "}
+            </>
+          ) : null}
+          {searchTerm.trim() || category !== allCategoryValue ? (
+            <button
+              type="button"
+              onClick={() => {
+                onSearchClear();
+                onCategoryChange(allCategoryValue);
+              }}
+              className="font-medium text-[#1f2a7c]/70 underline-offset-4 hover:text-[#1f2a7c] hover:underline"
+            >
+              Tout effacer
+            </button>
+          ) : null}
+        </p>
+      ) : null}
+    </div>
   );
 }

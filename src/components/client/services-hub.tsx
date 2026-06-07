@@ -51,8 +51,9 @@ export function ServicesHub() {
           onCategoryChange={setCategory}
           categories={CATEGORIES}
           allCategoryValue={ALL_CATEGORY}
-          categoryFieldLabel="Expertise"
+          filterTitle="Filtrer par expertise"
           filterPanelDescription="Affinez par domaine d'expertise."
+          activeCategoryLabel="Expertise"
           resultCount={filtered.length}
           hasActiveSearchOrFilters={hasActiveSearchOrFilters}
           resultLabel={(count) => `${count} expertise${count > 1 ? "s" : ""}`}

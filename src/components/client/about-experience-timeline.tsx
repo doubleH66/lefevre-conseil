@@ -4,9 +4,12 @@ import * as React from "react";
 import { useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { FlickeringGrid } from "@/components/ui/flickering-footer";
 import { cn } from "@/lib/utils";
 
 const LG_MEDIA_QUERY = "(min-width: 1024px)";
+/** Centre vertical de la pastille desktop — aligné sur la ligne de progression. */
+const DESKTOP_TRACK_LINE_TOP = "top-6";
 
 function subscribeLgMediaQuery(onChange: () => void) {
   const mq = window.matchMedia(LG_MEDIA_QUERY);
@@ -34,8 +37,28 @@ type AboutExperienceTimelineProps = {
   milestones: readonly AboutTimelineMilestone[];
   className?: string;
   tone?: "light" | "dark";
+  /** `dot-grid` — fond pointillé type section méthode (scroll). */
+  surface?: "card" | "dot-grid";
   navigationAriaLabel?: string;
 };
+
+function TimelineDotGrid() {
+  const reduceMotion = useReducedMotion();
+  if (reduceMotion) return null;
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit]" aria-hidden>
+      <FlickeringGrid
+        className="h-full w-full"
+        squareSize={1}
+        gridGap={4}
+        color="#1f2a7c"
+        maxOpacity={0.18}
+        flickerChance={0.09}
+      />
+    </div>
+  );
+}
 
 function timelineHeading(m: AboutTimelineMilestone): string {
   if (m.title?.trim()) return m.title.trim();
@@ -288,7 +311,7 @@ function TimelineProgressLines({
   return (
     <>
       <div
-        className={cn("absolute top-7 h-px", trackClass)}
+        className={cn("absolute h-px", DESKTOP_TRACK_LINE_TOP, trackClass)}
         style={{
           left: `calc(100% / ${n} / 2)`,
           right: `calc(100% / ${n} / 2)`,
@@ -296,7 +319,7 @@ function TimelineProgressLines({
         aria-hidden
       />
       <motion.div
-        className={cn("absolute top-7 h-px origin-left", fillClass)}
+        className={cn("absolute h-px origin-left", DESKTOP_TRACK_LINE_TOP, fillClass)}
         style={{ left: `calc(100% / ${n} / 2)` }}
         initial={false}
         animate={{
@@ -326,7 +349,7 @@ function DesktopTimelineTrack({
   const progressRatio = n <= 1 ? 0 : activeIndex / (n - 1);
 
   return (
-    <div className="relative h-[100px]">
+    <div className="relative h-[5.5rem]">
       <TimelineProgressLines isDark={isDark} progressRatio={progressRatio} n={n} />
       <div
         className="grid h-full"
@@ -511,12 +534,14 @@ export function AboutExperienceTimeline({
   milestones,
   className,
   tone = "light",
+  surface = "card",
   navigationAriaLabel = "Parcours professionnel par année",
 }: AboutExperienceTimelineProps) {
   const instanceId = React.useId();
   const isLgUp = useIsLgUp();
   const reduceMotion = useReducedMotion();
   const isDark = tone === "dark";
+  const isDotGrid = surface === "dot-grid";
 
   const [activeIndex, setActiveIndex] = React.useState(0);
 
@@ -574,12 +599,17 @@ export function AboutExperienceTimeline({
     >
       <div
         className={cn(
-          isDark
-            ? "text-white"
-            : "rounded-[1.75rem] border border-[#e8dfd4] bg-white/60 p-5 shadow-[0_22px_70px_rgba(23,33,59,0.055)] backdrop-blur sm:p-8 lg:rounded-[2rem] lg:p-10",
+          isDotGrid &&
+            "relative overflow-hidden rounded-3xl border border-[#1f2a7c]/12 bg-white px-4 py-6 sm:px-6 sm:py-8 lg:rounded-[3rem] lg:px-10 lg:py-10",
+          !isDotGrid && isDark && "text-white",
+          !isDotGrid &&
+            !isDark &&
+            "rounded-[1.75rem] border border-[#e8dfd4] bg-white/60 p-5 shadow-[0_22px_70px_rgba(23,33,59,0.055)] backdrop-blur sm:p-8 lg:rounded-[2rem] lg:p-10",
         )}
-        style={!isDark ? { backgroundColor: "rgba(255, 255, 255, 0.72)" } : undefined}
+        style={!isDotGrid && !isDark ? { backgroundColor: "rgba(255, 255, 255, 0.72)" } : undefined}
       >
+        {isDotGrid ? <TimelineDotGrid /> : null}
+        <div className={cn(isDotGrid && "relative z-10")}>
         <div role="tablist" aria-label={navigationAriaLabel}>
           {isLgUp ? (
             <DesktopTimelineTrack
@@ -623,6 +653,7 @@ export function AboutExperienceTimeline({
             ) : null}
           </AnimatePresence>
         ) : null}
+        </div>
       </div>
     </div>
   );

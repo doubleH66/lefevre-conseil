@@ -9,7 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { pathnameHasHeroOverlay } from "@/lib/content/navigation";
-import { SITE_NAV_BAR_HEIGHT, SITE_PROMO_BAR_HEIGHT } from "@/lib/nav-styles";
+import { SITE_NAV_BAR_HEIGHT, SITE_PROMO_BAR_HEIGHT, readPromoBarHeight } from "@/lib/nav-styles";
 import { SCROLL_RANGES, mix, scrollProgress } from "@/lib/scroll-motion";
 
 type PremiumScrollContextValue = {
@@ -67,7 +67,8 @@ export function PremiumScrollProvider({ children }: { children: React.ReactNode 
   });
 
   useMotionValueEvent(promoHide, "change", (progress) => {
-    const promoHeight = (1 - progress) * SITE_PROMO_BAR_HEIGHT;
+    const promoTotal = readPromoBarHeight();
+    const promoHeight = (1 - progress) * promoTotal;
     const headerTop = promoHeight > 2 ? promoHeight : 0;
     document.documentElement.style.setProperty("--promo-hide-progress", progress.toFixed(4));
     document.documentElement.style.setProperty("--site-promo-height", `${promoHeight.toFixed(2)}px`);
@@ -95,14 +96,21 @@ export function PremiumScrollProvider({ children }: { children: React.ReactNode 
       return;
     }
 
-    document.documentElement.style.setProperty("--promo-hide-progress", "0");
-    document.documentElement.style.setProperty("--site-promo-height", `${SITE_PROMO_BAR_HEIGHT}px`);
-    document.documentElement.style.setProperty("--site-nav-offset", `${SITE_PROMO_BAR_HEIGHT}px`);
-    document.documentElement.style.setProperty(
-      "--site-nav-total",
-      `${(SITE_PROMO_BAR_HEIGHT + SITE_NAV_BAR_HEIGHT).toFixed(2)}px`,
-    );
-    document.documentElement.style.setProperty("--nav-dock-progress", "0");
+    const syncPromoChrome = () => {
+      const promoTotal = readPromoBarHeight();
+      document.documentElement.style.setProperty("--promo-hide-progress", "0");
+      document.documentElement.style.setProperty("--site-promo-height", `${promoTotal.toFixed(2)}px`);
+      document.documentElement.style.setProperty("--site-nav-offset", `${promoTotal.toFixed(2)}px`);
+      document.documentElement.style.setProperty(
+        "--site-nav-total",
+        `${(promoTotal + SITE_NAV_BAR_HEIGHT).toFixed(2)}px`,
+      );
+      document.documentElement.style.setProperty("--nav-dock-progress", "0");
+    };
+
+    syncPromoChrome();
+    window.addEventListener("resize", syncPromoChrome);
+    return () => window.removeEventListener("resize", syncPromoChrome);
   }, [enabled, pathname]);
 
   const value = useMemo(

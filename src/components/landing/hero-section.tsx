@@ -3,7 +3,7 @@ import { Highlight } from "@/components/ui/highlight";
 import { CtaPrimaryLink, heroCtaRowClassName } from "@/components/ui/cta-link";
 import { ContactGlassLink } from "@/components/ui/contact-glass-link";
 import { GoogleLogo } from "@/components/ui/google-logo";
-import { HERO_LANDING_CONTENT_CLASS, LANDING_HERO_SECTION_CLASS } from "@/lib/content/hero-shell";
+import { HERO_LANDING_CONTENT_CLASS, LANDING_HERO_RADIUS_CLASS, LANDING_HERO_SECTION_CLASS } from "@/lib/content/hero-shell";
 import { CONTACT_HREF, NOTRE_CABINET_HREF } from "@/lib/content/routes";
 import { googleBadgeClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
@@ -34,12 +34,12 @@ function GoogleBadge() {
 export function HeroSection() {
   return (
     <section id="accueil" className={LANDING_HERO_SECTION_CLASS}>
-      <HeroBackground />
+      <HeroBackground className={LANDING_HERO_RADIUS_CLASS} />
 
         <div className={HERO_LANDING_CONTENT_CLASS}>
           <div className="mx-auto flex w-full max-w-none flex-col px-4 sm:px-7 xl:block xl:px-11">
             <div className="mx-auto w-full max-w-5xl text-center xl:mx-0 xl:text-left">
-              <div className="mt-8 sm:mt-10 xl:mt-52">
+              <div className="mt-40 sm:mt-10 xl:mt-52">
                 <div className="mb-4 flex justify-center sm:mb-5 xl:justify-start">
                   <GoogleBadge />
                 </div>
@@ -80,23 +80,12 @@ export function HeroSection() {
               </div>
 
                 <p className="mx-auto mt-4 max-w-md text-balance text-center text-[12px] leading-relaxed text-white/55 sm:mt-5 sm:text-[13px] xl:mx-0 xl:mt-3 xl:text-left">
-                  Premier échange offert · Sans engagement · Cabinet basé à Perpignan
+                  Premier échange offert · Sans engagement
                 </p>
               </div>
             </div>
           </div>
         </div>
-
-        <a
-          href="#apres-hero"
-          className="pointer-events-auto absolute bottom-6 left-1/2 z-[15] flex -translate-x-1/2 flex-col items-center text-white/45 outline-none transition-colors hover:text-white/70 focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-2 focus-visible:ring-offset-black/25 sm:bottom-8 xl:hidden"
-          aria-label="Continuer : voir la suite de la page"
-        >
-          <span className="flex flex-col items-center -space-y-3" aria-hidden>
-            <span className="hero-scroll-hint-a text-xl">⌄</span>
-            <span className="hero-scroll-hint-b text-xl">⌄</span>
-          </span>
-        </a>
       </section>
   );
 }

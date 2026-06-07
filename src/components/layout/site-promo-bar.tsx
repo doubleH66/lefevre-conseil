@@ -1,10 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { AnimatedTextCycle } from "@/components/ui/animated-text-cycle";
 import { CONTACT_HREF } from "@/lib/content/routes";
-import { SITE_PROMO_BAR_HEIGHT } from "@/lib/nav-styles";
+import { SITE_PROMO_BAR_HEIGHT, readPromoBarHeight } from "@/lib/nav-styles";
 import { cn } from "@/lib/utils";
 
 const promoMessages = [
@@ -19,13 +20,22 @@ export function SitePromoBar({
   enabled: boolean;
   promoHide: MotionValue<number>;
 }) {
-  const promoY = useTransform(promoHide, [0, 1], [0, -SITE_PROMO_BAR_HEIGHT]);
+  const [promoHeight, setPromoHeight] = useState(SITE_PROMO_BAR_HEIGHT);
+
+  useEffect(() => {
+    const sync = () => setPromoHeight(readPromoBarHeight());
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+
+  const promoY = useTransform(promoHide, [0, 1], [0, -promoHeight]);
   const promoOpacity = useTransform(promoHide, [0, 0.65, 1], [1, 0.4, 0]);
 
   return (
     <motion.div
       className={cn(
-        "site-chrome-promo fixed inset-x-0 top-0 z-[55] will-change-transform",
+        "site-chrome-promo fixed inset-x-0 top-0 z-[55] will-change-transform supports-[padding:max(0px)]:pt-[env(safe-area-inset-top,0px)]",
         !enabled && "pointer-events-none",
       )}
       style={enabled ? { y: promoY, opacity: promoOpacity } : undefined}

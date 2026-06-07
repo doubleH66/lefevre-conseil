@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { Mail, X } from "lucide-react";
+import { Mail } from "lucide-react";
 import { CABINET_CONTACT } from "@/lib/content/site";
+import { BrandDialog } from "@/components/ui/brand-dialog";
 import { HeroCtaSecondaryButton } from "@/components/ui/hero-cta";
 import { cn } from "@/lib/utils";
 
@@ -40,38 +39,10 @@ export function NewsletterSignup({
   const dialogTitleId = `newsletter-dialog-title-${idSuffix}`;
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [mounted, setMounted] = React.useState(false);
-  const [mdUp, setMdUp] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  React.useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const sync = () => setMdUp(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  React.useEffect(() => {
-    if (!dialogOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setDialogOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [dialogOpen]);
 
   const formInner = (
     <form
-      className="mt-5 flex w-full flex-col gap-2"
+      className="flex w-full flex-col gap-2"
       action={`mailto:${CABINET_CONTACT.email}`}
       method="post"
       encType="text/plain"
@@ -141,67 +112,6 @@ export function NewsletterSignup({
   }
 
   if (presentation === "dialog-trigger") {
-    const modal = (
-      <AnimatePresence>
-        {dialogOpen ? (
-          <motion.div
-            key="newsletter-dialog-shell"
-            className="fixed inset-0 z-[200] flex items-end justify-center md:items-center md:p-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <button
-              type="button"
-              className="absolute inset-0 bg-neutral-950/45 backdrop-blur-[2px]"
-              aria-label="Fermer la fenêtre newsletter"
-              onClick={() => setDialogOpen(false)}
-            />
-            <motion.div
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={dialogTitleId}
-              className={cn(
-                "relative z-10 flex max-h-[min(88dvh,640px)] w-full max-w-lg flex-col overflow-y-auto bg-white shadow-2xl outline-none",
-                "rounded-t-[1.35rem] border border-[#1f2a7c]/10 p-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:max-h-[min(80dvh,520px)] md:rounded-2xl md:p-7 md:pb-7",
-              )}
-              initial={mdUp ? { opacity: 0, scale: 0.96, y: 0 } : { opacity: 1, y: "100%" }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={mdUp ? { opacity: 0, scale: 0.96, y: 0 } : { opacity: 1, y: "100%" }}
-              transition={{ type: "tween", duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="mx-auto mb-3 h-1 w-10 shrink-0 rounded-full bg-neutral-300 md:hidden" aria-hidden />
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex min-w-0 items-start gap-3">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#1f2a7c]/[0.08] text-[#1f2a7c]">
-                    <Mail className="size-5" aria-hidden />
-                  </span>
-                  <div className="min-w-0">
-                    <h2 id={dialogTitleId} className="text-base font-semibold tracking-tight text-[#1f2a7c]">
-                      Newsletter
-                    </h2>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1f2a7c]/75">
-                      Environ une fois par mois, sans spam.
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="grid size-9 shrink-0 place-items-center rounded-full border border-[#1f2a7c]/15 text-[#1f2a7c] transition-colors hover:bg-[#1f2a7c]/[0.06]"
-                  aria-label="Fermer"
-                  onClick={() => setDialogOpen(false)}
-                >
-                  <X className="size-4" aria-hidden />
-                </button>
-              </div>
-              {formInner}
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    );
-
     return (
       <>
         {footerOnDark ? (
@@ -244,7 +154,16 @@ export function NewsletterSignup({
             </div>
           </section>
         )}
-        {mounted && typeof document !== "undefined" ? createPortal(modal, document.body) : null}
+        <BrandDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          title="Newsletter"
+          description="Environ une fois par mois, sans spam."
+          titleId={dialogTitleId}
+          backdropLabel="Fermer la fenêtre newsletter"
+        >
+          {formInner}
+        </BrandDialog>
       </>
     );
   }

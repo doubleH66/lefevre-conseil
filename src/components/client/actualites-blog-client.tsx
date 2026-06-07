@@ -57,8 +57,9 @@ export function ActualitesBlogClient() {
             onCategoryChange={setCategory}
             categories={CATEGORIES}
             allCategoryValue={ALL_CATEGORY}
-            categoryFieldLabel="Thématique"
+            filterTitle="Filtrer par thématique"
             filterPanelDescription="Affinez par thématique d'article."
+            activeCategoryLabel="Thématique"
             resultCount={filtered.length}
             hasActiveSearchOrFilters={hasActiveSearchOrFilters}
             resultLabel={(count) => `${count} article${count > 1 ? "s" : ""}`}

@@ -4,12 +4,9 @@ import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
   BadgeCheck,
-  Clock,
   GraduationCap,
   Lock,
-  Mail,
   MapPin,
-  Phone,
   RefreshCw,
   ShieldCheck,
   Sparkles,
@@ -18,11 +15,16 @@ import {
 } from "lucide-react";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { HighlightReveal } from "@/components/ui/highlight-reveal";
-import { CtaPrimaryLink } from "@/components/ui/cta-link";
+import { FaqSectionClient } from "@/components/client/faq-section-client";
+import {
+  LANDING_SECTION_INNER_Y,
+  LANDING_SECTION_INSET,
+  LANDING_SECTION_SHELL,
+} from "@/lib/content/landing-layout";
 import { bilanCtaSectionClassName } from "@/components/landing/bilan-cta-section";
 import { CtaBand } from "@/components/landing/cta-band";
 import { PartnersStrip } from "@/components/landing/partners-strip";
-import { FaqAccordion, type FaqItem } from "@/components/client/faq-accordion";
+import { type FaqItem } from "@/components/client/faq-accordion";
 import { FAQPageJsonLd } from "@/components/seo/page-jsonld";
 import {
   AboutExperienceTimeline,
@@ -31,7 +33,6 @@ import {
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
 import {
   CONTACT_HREF,
-  EXPERTISES_BASE_HREF,
   NOTRE_CABINET_HREF,
   ROUTES,
 } from "@/lib/content/routes";
@@ -178,29 +179,24 @@ export const CABINET_FAQ: readonly FaqItem[] = [
 ];
 
 const CONTACT_CARD_ITEMS: readonly {
-  icon: LucideIcon;
   label: string;
   value: string;
   href?: string;
 }[] = [
   {
-    icon: MapPin,
     label: "Adresse",
     value: `${CABINET_CONTACT.address.street}, ${CABINET_CONTACT.address.postalCode} ${CABINET_CONTACT.address.city}`,
   },
   {
-    icon: Clock,
     label: "Horaires",
     value: CABINET_CONTACT.openingHours.label,
   },
   {
-    icon: Phone,
     label: "Téléphone",
     value: CABINET_CONTACT.phone,
     href: `tel:${CABINET_CONTACT.phoneTel}`,
   },
   {
-    icon: Mail,
     label: "Email",
     value: CABINET_CONTACT.email,
     href: `mailto:${CABINET_CONTACT.email}`,
@@ -220,11 +216,6 @@ export function NotreCabinetPage() {
       hideBilanCta
       heroCtas={{
         primary: { href: CONTACT_HREF, label: "Prendre rendez-vous" },
-        secondary: {
-          href: EXPERTISES_BASE_HREF,
-          label: "Découvrir nos expertises",
-          shortLabel: "Nos expertises",
-        },
       }}
       breadcrumbs={[
         { label: "Accueil", href: "/" },
@@ -260,8 +251,7 @@ export function NotreCabinetPage() {
           <div className={cn(sectionInner)}>
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
               <div>
-                <p className={kickerClass}>Le cabinet</p>
-                <h2 id="presentation-title" className={sectionTitleClass}>
+                <h2 id="presentation-title" className={cn(sectionTitleClass, "mt-0")}>
                   Un accompagnement patrimonial clair, humain et suivi dans le temps
                 </h2>
                 <div
@@ -302,46 +292,39 @@ export function NotreCabinetPage() {
                 </div>
               </div>
 
-              <aside className="rounded-[1.75rem] border border-[#1f2a7c]/12 bg-[#f5f6fb] p-5 sm:p-6 lg:rounded-[2rem]">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/60">
+              <aside className="rounded-2xl border border-[#1f2a7c]/8 bg-white p-5 sm:p-6">
+                <h3 className="text-balance text-[clamp(1.125rem,2vw,1.35rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]">
                   Coordonnées
-                </p>
-                <ul className="mt-4 space-y-3.5">
-                  {CONTACT_CARD_ITEMS.map(({ icon: Icon, label, value, href }) => (
-                    <li key={label} className="flex items-start gap-3">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#1f2a7c] shadow-sm">
-                        <Icon className="size-[1.05rem]" aria-hidden strokeWidth={1.85} />
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-[11px] font-medium uppercase tracking-[0.1em] text-[#1f2a7c]/55">
-                          {label}
-                        </span>
-                        {href ? (
-                          <a
-                            href={href}
-                            className="mt-0.5 block text-[15px] font-medium text-[#1f2a7c] underline-offset-2 hover:underline"
-                          >
-                            {value}
-                          </a>
-                        ) : (
-                          <span className="mt-0.5 block text-[15px] font-medium text-[#1f2a7c]">
-                            {value}
-                          </span>
-                        )}
-                      </span>
+                </h3>
+                <ul className="mt-4 divide-y divide-[#1f2a7c]/8 border-y border-[#1f2a7c]/8">
+                  {CONTACT_CARD_ITEMS.map(({ label, value, href }) => (
+                    <li key={label} className="py-4">
+                      <p className="text-[15px] font-medium leading-snug tracking-[-0.018em] text-[#1f2a7c]/86">
+                        {label}
+                      </p>
+                      {href ? (
+                        <a
+                          href={href}
+                          className="mt-1 block text-sm leading-relaxed text-[#1f2a7c]/70 underline-offset-4 hover:text-[#1f2a7c] hover:underline"
+                        >
+                          {value}
+                        </a>
+                      ) : (
+                        <p className="mt-1 text-sm leading-relaxed text-[#1f2a7c]/70">{value}</p>
+                      )}
                     </li>
                   ))}
                 </ul>
-                <CtaPrimaryLink
+                <Link
                   href={CONTACT_HREF}
-                  className="group mt-6 w-full !justify-center"
+                  className="group mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-[#1f2a7c]/12 bg-white px-4 py-2.5 text-sm font-semibold text-[#1f2a7c]/78 shadow-sm transition-[color,box-shadow,border-color] hover:border-[#1f2a7c]/20 hover:text-[#1f2a7c] hover:shadow-md"
                 >
                   Prendre rendez-vous
                   <ArrowUpRight
                     aria-hidden
-                    className="size-4 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    className="size-4 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                   />
-                </CtaPrimaryLink>
+                </Link>
               </aside>
             </div>
           </div>
@@ -438,8 +421,12 @@ export function NotreCabinetPage() {
             </div>
           </div>
 
-          <div className="mt-8 overflow-hidden rounded-3xl border border-[#1f2a7c]/12 bg-[#1f2a7c] px-4 py-6 text-white sm:px-6 sm:py-8 lg:rounded-[3rem] lg:px-10 lg:py-10">
-            <AboutExperienceTimeline milestones={TIMELINE_MILESTONES} tone="dark" />
+          <div className="mt-8">
+            <AboutExperienceTimeline
+              milestones={TIMELINE_MILESTONES}
+              tone="light"
+              surface="dot-grid"
+            />
           </div>
         </section>
 
@@ -617,17 +604,20 @@ export function NotreCabinetPage() {
         </section>
 
         {/* 10. Mini FAQ */}
-        <section id="faq" aria-labelledby="faq-title" className={cn(sectionShell, "scroll-mt-28")}>
-          <div className={cn(sectionInner)}>
-            <div className="mx-auto max-w-3xl text-center">
-              <p className={kickerClass}>Questions fréquentes</p>
-              <h2 id="faq-title" className={sectionTitleClass}>
-                Vos questions sur le cabinet
-              </h2>
-            </div>
-            <div className="mx-auto mt-8 max-w-3xl">
-              <FaqAccordion items={CABINET_FAQ} />
-            </div>
+        <section
+          id="faq"
+          aria-labelledby="faq-title"
+          className={cn(LANDING_SECTION_SHELL, "scroll-mt-28 border-t border-[#1f2a7c]/8")}
+        >
+          <div className={cn(LANDING_SECTION_INSET, LANDING_SECTION_INNER_Y)}>
+            <FaqSectionClient
+              items={CABINET_FAQ}
+              kicker="Questions fréquentes"
+              title="Vos questions sur le cabinet"
+              titleId="faq-title"
+              titleClassName={sectionTitleClass}
+              contentClassName="max-w-4xl"
+            />
           </div>
         </section>
 

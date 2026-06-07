@@ -21,10 +21,9 @@ export const PAGE_HEROES = {
     titleId: "contact-hero-title",
   },
   notreCabinet: {
-    title: "Un cabinet de conseil patrimonial indépendant à Perpignan",
+    title: "Conseil patrimonial à Perpignan",
     tagline:
-      "Lefèvre Conseil accompagne les particuliers, dirigeants et professions libérales dans l’organisation, la protection et la transmission de leur patrimoine.",
-    taglineHighlightAfter: "dirigeants et professions libérales",
+      "Accompagnement indépendant pour organiser, protéger et transmettre votre patrimoine.",
     titleId: "notre-cabinet-hero-title",
   },
   avis: {
