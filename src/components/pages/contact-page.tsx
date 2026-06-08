@@ -4,7 +4,7 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Check, Clock, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { MarketingPageStack } from "@/components/marketing/marketing-section";
 import {
@@ -14,9 +14,9 @@ import {
   fieldClass,
 } from "@/components/marketing/marketing-styles";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
-import { CABINET_CONTACT, formatAddressLine } from "@/lib/content/site";
-import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION } from "@/lib/content/site";
-import { ROUTES, SIMULATEUR_HREF } from "@/lib/content/routes";
+import { CABINET_CONTACT, CABINET_PORTRAIT_IMAGE_URL, CABINET_PORTRAIT_OBJECT_POSITION, formatAddressLine } from "@/lib/content/site";
+import { ROUTES } from "@/lib/content/routes";
+import { openConsultPopup } from "@/lib/consult-popup";
 import { submitSiteLead } from "@/lib/site-lead/submit-site-lead";
 import { cn } from "@/lib/utils";
 
@@ -197,6 +197,25 @@ function FormAlert({ children }: { children: React.ReactNode }) {
   );
 }
 
+function ContactRdvLink({ className }: { className?: string }) {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      event.preventDefault();
+      openConsultPopup();
+    }
+  };
+
+  return (
+    <Link
+      href="#contact-form-title"
+      onClick={handleClick}
+      className={className}
+    >
+      Prendre rendez-vous
+    </Link>
+  );
+}
+
 // ─── Multi-step form ─────────────────────────────────────────────────────────
 
 function ContactForm({ initialSubject = "" }: { initialSubject?: string }) {
@@ -297,7 +316,7 @@ function ContactForm({ initialSubject = "" }: { initialSubject?: string }) {
   }
 
   return (
-    <section aria-labelledby="contact-form-title" className={cn(marketingCardClass, "overflow-hidden shadow-[0_18px_50px_-28px_rgba(31,42,124,0.28)]")}>
+    <section aria-labelledby="contact-form-title" className={cn(marketingCardClass, "scroll-mt-28 overflow-hidden shadow-[0_18px_50px_-28px_rgba(31,42,124,0.28)]")}>
       <ContactFormHeader step={step} />
 
       <div className="overflow-hidden">
@@ -526,90 +545,87 @@ export function ContactPage({ initialSubject = "" }: { initialSubject?: string }
 
           <section
             aria-labelledby="cabinet-title"
-            className={cn(marketingCardClass, "mt-6 overflow-hidden px-5 py-5 sm:px-6 sm:py-6")}
+            className={cn(marketingCardClass, "mt-6 overflow-hidden border-[#1f2a7c]/10 p-0")}
           >
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-              <div className="flex min-w-0 items-center gap-3.5 sm:gap-4">
-                <div className="relative size-14 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-md ring-2 ring-[#1f2a7c]/10 sm:size-16">
-                  <Image
-                    src={ADVISOR_ROUND_AVATAR_IMAGE_URL}
-                    alt="Philippe Lefèvre - conseiller en gestion de patrimoine"
-                    fill
-                    sizes="64px"
-                    className="object-cover"
-                    style={{ objectPosition: ADVISOR_ROUND_AVATAR_OBJECT_POSITION }}
-                  />
-                </div>
-                <div className="min-w-0">
-                  <h2 id="cabinet-title" className="text-base font-semibold tracking-tight text-[#1f2a7c] sm:text-lg">
-                    Philippe Lefèvre
-                  </h2>
-                  <p className="mt-0.5 text-sm leading-snug text-[#1f2a7c]/60">
-                    Conseiller en gestion de patrimoine · Sur rendez-vous
-                  </p>
-                </div>
+            <div className="grid lg:grid-cols-2 lg:items-stretch">
+              <div className="relative min-h-[13rem] bg-[#f5f6fb] sm:min-h-[16rem] lg:min-h-[24rem]">
+                <Image
+                  src={CABINET_PORTRAIT_IMAGE_URL}
+                  alt="Philippe Lefèvre, conseiller en gestion de patrimoine à Perpignan"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                  style={{ objectPosition: CABINET_PORTRAIT_OBJECT_POSITION }}
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/10 lg:bg-gradient-to-t lg:from-[#1f2a7c]/15 lg:via-transparent lg:to-transparent"
+                  aria-hidden
+                />
               </div>
 
-              <ul className="flex min-w-0 flex-1 flex-col gap-2.5 text-sm text-[#1f2a7c] sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5 sm:gap-y-2 lg:justify-center">
-                <li>
-                  <a
-                    href={`tel:${phoneTel}`}
-                    className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5 font-medium transition-colors hover:text-[#1f2a7c]/80"
+              <div className="flex flex-col justify-between gap-10 px-6 py-10 sm:px-9 sm:py-12 lg:gap-12 lg:px-10 lg:py-12 xl:px-12">
+                <div>
+                  <h2
+                    id="cabinet-title"
+                    className="text-balance text-[clamp(1.35rem,2.2vw,1.75rem)] font-normal leading-[1.1] tracking-[-0.035em] text-[#1f2a7c]"
                   >
-                    <Phone className="size-3.5 shrink-0 opacity-70" aria-hidden />
-                    {phone}
-                    <span className="font-normal text-[#1f2a7c]/55">· Du lundi au vendredi, 9h - 18h</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={`mailto:${email}`}
-                    className="inline-flex items-center gap-1.5 font-medium break-all transition-colors hover:text-[#1f2a7c]/80"
-                  >
-                    <Mail className="size-3.5 shrink-0 opacity-70" aria-hidden />
-                    {email}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-start gap-1.5 font-medium transition-colors hover:text-[#1f2a7c]/80"
-                  >
-                    <MapPin className="mt-0.5 size-3.5 shrink-0 opacity-70" aria-hidden />
-                    {formatAddressLine()}
-                  </a>
-                </li>
-                <li className="inline-flex items-center gap-1.5 text-[#1f2a7c]/70">
-                  <Clock className="size-3.5 shrink-0 opacity-70" aria-hidden />
-                  {openingHours.label}
-                </li>
-              </ul>
+                    Philippe Lefèvre
+                  </h2>
+                  <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-[#1f2a7c]/55">
+                    Conseil patrimonial à Perpignan
+                  </p>
 
-              <div className="flex min-w-0 shrink-0 flex-col gap-2.5 lg:max-w-[18rem] lg:items-end lg:text-right">
-                <ul className="w-full space-y-1.5 rounded-xl border border-[#1f2a7c]/12 bg-[#1f2a7c]/[0.04] px-4 py-3.5 lg:w-auto lg:text-left">
-                  {[
-                    "Premier échange offert",
-                    "Rendez-vous au cabinet ou à distance",
-                    "Réponse personnalisée",
-                    "Confidentialité",
-                  ].map((point) => (
-                    <li key={point} className="flex items-center gap-2 text-[13px] font-medium text-[#1f2a7c]">
-                      <Check className="size-3.5 shrink-0 text-[#1f2a7c]/60" aria-hidden />
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-                <p className="text-xs leading-relaxed text-[#1f2a7c]/55">
-                  Préparer votre échange ?{" "}
-                  <Link
-                    href={SIMULATEUR_HREF}
-                    className="font-medium text-[#1f2a7c] underline decoration-[#1f2a7c]/25 underline-offset-2 hover:decoration-[#1f2a7c]/50"
-                  >
-                    Lancer le simulateur patrimonial
-                  </Link>
-                </p>
+                  <dl className="mt-8 grid gap-x-8 gap-y-7 sm:mt-9 sm:grid-cols-2 sm:gap-x-10">
+                    <div>
+                      <dt className="text-[12px] font-medium text-[#1f2a7c]/42">Téléphone</dt>
+                      <dd className="mt-1.5">
+                        <a
+                          href={`tel:${phoneTel}`}
+                          className="text-[15px] font-medium tracking-[-0.01em] text-[#1f2a7c] transition-colors hover:text-[#1f2a7c]/70"
+                        >
+                          {phone}
+                        </a>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-[12px] font-medium text-[#1f2a7c]/42">E-mail</dt>
+                      <dd className="mt-1.5">
+                        <a
+                          href={`mailto:${email}`}
+                          className="break-all text-[15px] font-medium tracking-[-0.01em] text-[#1f2a7c] transition-colors hover:text-[#1f2a7c]/70"
+                        >
+                          {email}
+                        </a>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-[12px] font-medium text-[#1f2a7c]/42">Adresse</dt>
+                      <dd className="mt-1.5">
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[15px] font-medium leading-snug tracking-[-0.01em] text-[#1f2a7c] transition-colors hover:text-[#1f2a7c]/70"
+                        >
+                          {formatAddressLine()}
+                        </a>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-[12px] font-medium text-[#1f2a7c]/42">Horaires</dt>
+                      <dd className="mt-1.5 text-[15px] font-medium tracking-[-0.01em] text-[#1f2a7c]/72">
+                        {openingHours.label}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div className="flex flex-col gap-4 border-t border-[#1f2a7c]/8 pt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                  <p className="text-[12px] leading-[1.6] text-[#1f2a7c]/42">
+                    Premier échange offert · Sur rendez-vous · À distance possible
+                  </p>
+                  <ContactRdvLink className="shrink-0 text-[13px] font-semibold text-[#1f2a7c] underline decoration-[#1f2a7c]/25 underline-offset-[0.35em] transition-colors hover:decoration-[#1f2a7c]/45" />
+                </div>
               </div>
             </div>
           </section>

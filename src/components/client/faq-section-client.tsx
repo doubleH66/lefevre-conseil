@@ -117,7 +117,7 @@ export function FaqSectionClient({
               <HelpCircle className="size-5 text-[#1f2a7c]/45" aria-hidden />
             </div>
             <p className="mt-4 text-sm leading-relaxed text-[#1f2a7c]/70">
-              Aucune question ne correspond à votre recherche. Essayez « rendez-vous », « gratuit » ou «
+              Aucune question ne correspond à votre recherche. Essayez « contact », « rendez-vous », « gratuit » ou «
               distance ».
             </p>
             <button

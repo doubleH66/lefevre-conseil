@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Phone, X } from "lucide-react";
 import { CONTACT_HREF } from "@/lib/content/routes";
+import { CONSULT_POPUP_OPEN_EVENT } from "@/lib/consult-popup";
 import { ADVISOR_ROUND_AVATAR_IMAGE_URL, ADVISOR_ROUND_AVATAR_OBJECT_POSITION, CABINET_CONTACT } from "@/lib/content/site";
 import { heroCtaPrimaryCompactClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
@@ -62,6 +63,7 @@ export function FloatingConsultButton({
 }: FloatingConsultButtonProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
+  const [mdUp, setMdUp] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const pathId = React.useId().replace(/:/g, "");
@@ -69,6 +71,20 @@ export function FloatingConsultButton({
 
   React.useEffect(() => {
     setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const sync = () => setMdUp(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  React.useEffect(() => {
+    const onOpen = () => setIsOpen(true);
+    window.addEventListener(CONSULT_POPUP_OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(CONSULT_POPUP_OPEN_EVENT, onOpen);
   }, []);
 
   const hide = pathname != null && HIDDEN_PATH_TESTERS.some((t) => t(pathname));
@@ -80,8 +96,15 @@ export function FloatingConsultButton({
     ...position,
   };
 
+  const onContactPage = pathname === CONTACT_HREF;
+  const effectiveCtaText = onContactPage ? "Accéder au formulaire" : ctaButtonText;
+
   const onCta = () => {
     setIsOpen(false);
+    if (pathname === CONTACT_HREF) {
+      document.getElementById("contact-form-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     router.push(ctaHref);
   };
 
@@ -96,7 +119,7 @@ export function FloatingConsultButton({
           {isOpen ? (
             <motion.div
               key="floating-consult-shell"
-              className="fixed inset-0 z-[200] flex items-end justify-center md:justify-end"
+              className="fixed inset-0 z-[200] flex items-end justify-center md:items-center md:p-6 md:pr-16"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -104,26 +127,50 @@ export function FloatingConsultButton({
             >
               <button
                 type="button"
-                className="absolute inset-0 bg-neutral-950/40 backdrop-blur-[1px]"
+                className="absolute inset-0 bg-neutral-950/45 backdrop-blur-[2px]"
                 aria-label="Fermer la fenêtre de contact"
                 onClick={() => setIsOpen(false)}
               />
               <motion.div
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="floating-consult-title"
-                className={cn(
-                  "relative z-10 w-full max-w-lg overflow-hidden border border-b-0 border-[#1f2a7c]/10 bg-white",
-                  "rounded-t-[1.25rem] shadow-[0_-12px_48px_rgba(15,23,42,0.14)]",
-                  "pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]",
-                  "md:w-[min(100vw-1.5rem,22.5rem)] md:max-w-none md:rounded-t-2xl",
-                  "md:mr-[max(1rem,env(safe-area-inset-right,0px))]",
-                )}
-                initial={reduceMotion ? { opacity: 0 } : { y: "100%" }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={reduceMotion ? { opacity: 0 } : { y: "100%" }}
+                className="relative z-10 w-full max-w-lg md:max-w-md"
+                initial={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : mdUp
+                      ? { opacity: 0, scale: 0.96, y: 0 }
+                      : { y: "100%", opacity: 1, scale: 1 }
+                }
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                exit={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : mdUp
+                      ? { opacity: 0, scale: 0.96, y: 0 }
+                      : { y: "100%", opacity: 1, scale: 1 }
+                }
                 transition={sheetTransition}
               >
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="absolute left-full top-0 z-20 ml-4 hidden size-11 place-items-center rounded-full bg-white text-[#1f2a7c] shadow-lg ring-1 ring-[#1f2a7c]/10 transition hover:bg-white hover:shadow-xl md:grid"
+                  aria-label="Fermer"
+                >
+                  <X className="size-5" strokeWidth={1.75} aria-hidden />
+                </button>
+                <motion.div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="floating-consult-title"
+                  className={cn(
+                    "overflow-hidden border border-[#1f2a7c]/10 bg-white shadow-2xl",
+                    "rounded-t-[1.25rem] border-b-0 pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]",
+                    "md:rounded-2xl md:border md:pb-0",
+                  )}
+                  initial={false}
+                  animate={{ y: 0 }}
+                  exit={{ y: 0 }}
+                >
                 <div className="mx-auto mt-2.5 h-1 w-9 shrink-0 rounded-full bg-neutral-300/90 md:hidden" aria-hidden />
 
                 <div className="px-5 py-5 sm:px-6 sm:py-5">
@@ -150,7 +197,7 @@ export function FloatingConsultButton({
                     <button
                       type="button"
                       onClick={() => setIsOpen(false)}
-                      className="grid size-8 shrink-0 place-items-center rounded-full text-[#1f2a7c]/70 transition-colors hover:bg-[#1f2a7c]/[0.06]"
+                      className="grid size-8 shrink-0 place-items-center rounded-full text-[#1f2a7c]/70 transition-colors hover:bg-[#1f2a7c]/[0.06] md:hidden"
                       aria-label="Fermer"
                     >
                       <X className="size-4" aria-hidden />
@@ -168,7 +215,7 @@ export function FloatingConsultButton({
                       onClick={onCta}
                     >
                       <span className="inline-flex items-center gap-2">
-                        {ctaButtonText}
+                        {effectiveCtaText}
                         <ArrowUpRight className="size-4" aria-hidden />
                       </span>
                     </button>
@@ -181,6 +228,7 @@ export function FloatingConsultButton({
                     </a>
                   </div>
                 </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           ) : null}
