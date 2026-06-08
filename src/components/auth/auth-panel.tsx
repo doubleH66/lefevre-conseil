@@ -7,9 +7,12 @@ import {
   marketingProseClass,
 } from "@/components/marketing/marketing-styles";
 import { HeroCtaPrimaryButton } from "@/components/ui/hero-cta";
+import { applySignupRequestedRole } from "@/lib/auth/apply-signup-requested-role";
 import { resolvePostAuthRedirect } from "@/lib/portal/resolve-post-auth-redirect";
 import { cn } from "@/lib/utils";
 import * as React from "react";
+
+type AppRoleChoice = "client" | "admin";
 
 const labelClass = "mb-1.5 block text-sm font-medium text-[#1f2a7c]/80";
 
@@ -32,6 +35,7 @@ export function AuthPanel({
   const [mode, setMode] = React.useState<"login" | "register">(initialMode);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [role, setRole] = React.useState<AppRoleChoice>("client");
   const [msg, setMsg] = React.useState<string | null>(null);
   const [err, setErr] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -78,7 +82,7 @@ export function AuthPanel({
       return;
     }
     setLoading(true);
-    const nextAfter = nextPath;
+    const nextAfter = role === "admin" ? "/espace-admin" : nextPath;
     try {
       const supabase = createClient();
       const { data, error } = await supabase.auth.signUp({
@@ -88,11 +92,13 @@ export function AuthPanel({
           emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextAfter)}`,
           data: {
             full_name: email.trim().split("@")[0],
+            requested_role: role,
           },
         },
       });
       if (error) setErr(error.message);
       else if (data.session) {
+        await applySignupRequestedRole(supabase);
         onSuccess?.();
         const destination = await resolvePostAuthRedirect(supabase, nextAfter);
         window.location.assign(destination);
@@ -234,10 +240,28 @@ export function AuthPanel({
                 />
               </div>
 
-              <p className="text-xs text-[#1f2a7c]/55">
-                L&apos;inscription ouvre un espace client. Les accès administrateur sont créés manuellement par le
-                cabinet.
-              </p>
+              <fieldset>
+                <legend className={labelClass}>Type de compte</legend>
+                <p className="mb-3 text-xs leading-relaxed text-[#1f2a7c]/55">
+                  Choisissez le profil correspondant à votre usage.
+                </p>
+                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2" role="radiogroup" aria-label="Rôle du compte">
+                  <RoleCard
+                    id={`role-client${idSuffix}`}
+                    title="Client"
+                    description="Espace personnel et documents."
+                    selected={role === "client"}
+                    onSelect={() => setRole("client")}
+                  />
+                  <RoleCard
+                    id={`role-admin${idSuffix}`}
+                    title="Administrateur"
+                    description="Gestion du cabinet et accès étendus."
+                    selected={role === "admin"}
+                    onSelect={() => setRole("admin")}
+                  />
+                </div>
+              </fieldset>
 
               <HeroCtaPrimaryButton
                 type="submit"
@@ -287,5 +311,34 @@ export function AuthPanel({
         </section>
       )}
     </div>
+  );
+}
+
+function RoleCard({
+  id,
+  title,
+  description,
+  selected,
+  onSelect,
+}: {
+  id: string;
+  title: string;
+  description: string;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <label
+      className={cn(
+        "relative flex cursor-pointer flex-col rounded-2xl border px-3.5 py-3 transition-colors duration-200",
+        selected
+          ? "border-[#1f2a7c] bg-[#1f2a7c]/[0.06] ring-1 ring-[#1f2a7c]/20"
+          : "border-[#1f2a7c]/10 bg-[#1f2a7c]/[0.02] hover:border-[#1f2a7c]/20 hover:bg-white",
+      )}
+    >
+      <input id={id} type="radio" name="account_role" className="sr-only" checked={selected} onChange={onSelect} />
+      <span className="text-sm font-semibold text-[#1f2a7c]">{title}</span>
+      <span className="mt-0.5 text-xs leading-snug text-[#1f2a7c]/60">{description}</span>
+    </label>
   );
 }

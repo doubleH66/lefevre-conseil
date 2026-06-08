@@ -23,10 +23,17 @@ Schéma complet pour le portail Lefèvre Conseil (001 → 015).
 | 013 | `013_mutuelle_admin_tools.sql` | Admin mutuelle |
 | 014 | `014_fix_submit_mutuelle_lead_params.sql` | Fix RPC mutuelle |
 | 015 | `015_mutuelle_install.sql` | Install idempotent mutuelle |
+| 016 | `016_restore_signup_requested_role.sql` | Rôle admin/client à l'inscription (`requested_role`) |
 
 ## Appliquer
 
-- **Nouveau projet vide :** exécuter 001 → 015 dans l’ordre (SQL Editor ou `supabase db push`).
-- **Projet `gyisrwfapphqqdbpujtb` :** déjà appliqué (juin 2026).
+- **Nouveau projet vide :** exécuter 001 → 016 dans l'ordre (SQL Editor ou `supabase db push`).
+- **Projet `gyisrwfapphqqdbpujtb` :** appliquer **016** si l'inscription admin ne fonctionne pas (migration 011 forçait le rôle client).
+
+Script local (token Keychain Supabase CLI ou `SUPABASE_ACCESS_TOKEN`) :
+
+```bash
+node scripts/apply-supabase-sql.mjs supabase/migrations/016_restore_signup_requested_role.sql
+```
 
 Dashboard : https://supabase.com/dashboard/project/gyisrwfapphqqdbpujtb/sql/new

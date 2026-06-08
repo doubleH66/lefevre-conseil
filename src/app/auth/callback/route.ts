@@ -5,6 +5,16 @@ import { sanitizeInternalPath } from "@/lib/sanitize-internal-path";
 import { resolvePortalDestination } from "@/lib/portal/resolve-portal-destination";
 import { requireSupabasePublicEnv, supabaseAuthCookieOptions } from "@/lib/supabase/public-env";
 
+async function syncSignupRole(
+  supabase: ReturnType<typeof createServerClient>,
+): Promise<void> {
+  try {
+    await supabase.rpc("apply_signup_requested_role");
+  } catch {
+    /* migration 016 non appliquée */
+  }
+}
+
 export async function GET(request: Request) {
   let url: string;
   let anonKey: string;
@@ -45,6 +55,8 @@ export async function GET(request: Request) {
   if (error) {
     return NextResponse.redirect(new URL("/login?error=auth", origin));
   }
+
+  await syncSignupRole(supabase);
 
   const {
     data: { user },

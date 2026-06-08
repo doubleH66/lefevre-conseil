@@ -21,7 +21,7 @@ Migrations SQL : [supabase/migrations/README.md](./supabase/migrations/README.md
 **Important :** exécuter `011_admin_business_tools.sql` pour :
 - formulaire de demande `/demande` (leads en base)
 - notifications admin, historique, CRUD clients
-- blocage du rôle admin à l'inscription publique
+- inscription client ou admin (`requested_role`) — migration **016** requise sur Supabase
 
 ## Routes principales
 
