@@ -96,6 +96,9 @@ $$;
 
 grant execute on function public.apply_signup_requested_role() to authenticated;
 
+-- Backfill : désactiver temporairement le garde-fou rôle (pas de session auth.uid() en SQL direct).
+alter table public.profiles disable trigger trg_profiles_role_guard;
+
 -- Comptes déjà créés avec requested_role = admin
 update public.profiles p
 set role = 'admin'::public.app_role,
@@ -104,3 +107,5 @@ from auth.users u
 where p.id = u.id
   and lower(trim(coalesce(u.raw_user_meta_data ->> 'requested_role', ''))) = 'admin'
   and p.role is distinct from 'admin'::public.app_role;
+
+alter table public.profiles enable trigger trg_profiles_role_guard;

@@ -1,7 +1,7 @@
 /**
- * Écran de maintenance global — actif en production uniquement (pas en local ni preview Vercel).
+ * Écran de maintenance global — désactivé par défaut.
  *
- * Pour désactiver en prod : `NEXT_PUBLIC_MAINTENANCE=0`.
+ * Pour réactiver en prod uniquement : `NEXT_PUBLIC_MAINTENANCE=1`.
  * Code d'accès réservé : voir `MAINTENANCE_BYPASS_CODE`.
  */
 const isProductionDeploy =
@@ -9,7 +9,7 @@ const isProductionDeploy =
   (process.env.NODE_ENV === "production" && !process.env.VERCEL);
 
 export const MAINTENANCE_ENABLED =
-  process.env.NEXT_PUBLIC_MAINTENANCE !== "0" && isProductionDeploy;
+  process.env.NEXT_PUBLIC_MAINTENANCE === "1" && isProductionDeploy;
 
 /** Code de déverrouillage (insensible à la casse et aux espaces superflus). */
 export const MAINTENANCE_BYPASS_CODE = "100 ok";

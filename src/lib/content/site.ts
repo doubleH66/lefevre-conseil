@@ -45,6 +45,9 @@ export const ADVISOR_ROUND_AVATAR_IMAGE_URL = HERO_MOBILE_IMAGE_URL;
 
 export const ADVISOR_ROUND_AVATAR_OBJECT_POSITION = "50% 45%";
 
+/** Destinataire des notifications admin (nouvelles demandes site / RDV). */
+export const SITE_ADMIN_NOTIFY_EMAIL = "elfarissih7@gmail.com";
+
 export const CABINET_CONTACT = {
   name: SITE_NAME,
   phone: "04 68 86 36 22",

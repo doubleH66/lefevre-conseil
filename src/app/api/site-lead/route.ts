@@ -1,6 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { CABINET_CONTACT } from "@/lib/content/site";
+import { SITE_ADMIN_NOTIFY_EMAIL } from "@/lib/content/site";
+import {
+  buildAdminLeadEmail,
+  buildVisitorLeadConfirmationEmail,
+} from "@/lib/site-lead/email-templates";
 import { requireSupabasePublicEnv } from "@/lib/supabase/public-env";
 
 export const runtime = "nodejs";
@@ -24,6 +28,7 @@ async function invokePortalNotify(payload: {
   to: string | string[];
   subject: string;
   text: string;
+  html?: string;
   clientName?: string;
 }) {
   const { url, anonKey } = requireSupabasePublicEnv();
@@ -35,9 +40,22 @@ async function invokePortalNotify(payload: {
     },
     body: JSON.stringify(payload),
   });
+  const body = await res.text();
   if (!res.ok) {
-    console.warn("portal-notify site-lead:", await res.text());
+    console.warn("portal-notify site-lead HTTP:", res.status, body);
+    return false;
   }
+  try {
+    const data = JSON.parse(body) as { ok?: boolean; skipped?: boolean; error?: string };
+    if (!data.ok && !data.skipped) {
+      console.warn("portal-notify site-lead:", body);
+      return false;
+    }
+  } catch {
+    console.warn("portal-notify site-lead parse:", body);
+    return false;
+  }
+  return true;
 }
 
 export async function POST(request: Request) {
@@ -83,40 +101,41 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    const cabinetEmail = process.env.CABINET_NOTIFY_EMAIL?.trim() || CABINET_CONTACT.email;
-    const fullName = `${firstName} ${lastName}`;
-    const requestType = body.requestType?.trim() || "Demande générale";
+    const adminEmail =
+      process.env.CABINET_NOTIFY_EMAIL?.trim() ||
+      process.env.PHILIPPE_NOTIFICATION_EMAIL?.trim() ||
+      SITE_ADMIN_NOTIFY_EMAIL;
+    const requestType = body.requestType?.trim() || "Prise de rendez-vous";
+    const emailCtx = {
+      firstName,
+      lastName,
+      email,
+      phone: body.phone?.trim(),
+      requestType,
+      currentSituation: body.currentSituation?.trim(),
+      patrimonialGoal: body.patrimonialGoal?.trim(),
+      approximateAmount: body.approximateAmount?.trim(),
+      message: body.message?.trim(),
+      contactPreference: body.contactPreference ?? "either",
+    };
 
-    const detailLines = [
-      `Contact : ${fullName}`,
-      `E-mail : ${email}`,
-      body.phone ? `Téléphone : ${body.phone}` : null,
-      `Type : ${requestType}`,
-      body.currentSituation ? `Situation : ${body.currentSituation}` : null,
-      body.patrimonialGoal ? `Objectif : ${body.patrimonialGoal}` : null,
-      body.approximateAmount ? `Montant approx. : ${body.approximateAmount}` : null,
-      body.message ? `Message :\n${body.message}` : null,
-      `Préférence contact : ${body.contactPreference ?? "either"}`,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    const adminMail = buildAdminLeadEmail(emailCtx);
+    const visitorMail = buildVisitorLeadConfirmationEmail(emailCtx);
 
     await Promise.all([
       invokePortalNotify({
-        to: cabinetEmail,
-        subject: `[Site] Nouvelle demande --- ${fullName}`,
-        clientName: fullName,
-        text: `Nouvelle demande reçue via le formulaire du site.\n\n${detailLines}\n\nVoir : /espace-admin/demandes`,
+        to: adminEmail,
+        subject: adminMail.subject,
+        text: adminMail.text,
+        html: adminMail.html,
+        clientName: adminMail.clientName,
       }),
       invokePortalNotify({
         to: email,
-        subject: "Votre demande a bien été reçue --- Lefèvre Conseil",
-        clientName: firstName,
-        text:
-          `Bonjour ${firstName},\n\n` +
-          `Nous avons bien reçu votre demande (${requestType}). ` +
-          `Un conseiller du cabinet Lefèvre Conseil revient vers vous rapidement.\n\n` +
-          `Cordialement,\nLefèvre Conseil\n04 68 86 36 22`,
+        subject: visitorMail.subject,
+        text: visitorMail.text,
+        html: visitorMail.html,
+        clientName: visitorMail.clientName,
       }),
     ]);
 

@@ -43,7 +43,8 @@ serve(async (req) => {
     }
 
     const from =
-      Deno.env.get("RESEND_FROM_EMAIL")?.trim() || "Lefevre Conseil <onboarding@resend.dev>";
+      Deno.env.get("RESEND_FROM_EMAIL")?.trim() ||
+      "Lefèvre Conseil <no-reply@lefevre-conseil.fr>";
 
     const payload = (await req.json()) as NotifyPayload;
     if (!payload?.subject?.trim()) {
@@ -111,24 +112,30 @@ serve(async (req) => {
 });
 
 function defaultHtml(payload: NotifyPayload) {
+  const body = payload.text?.trim()
+    ? `<div style="margin:0 0 16px;white-space:pre-wrap">${escapeHtml(payload.text)}</div>`
+    : `<p style="margin:0 0 12px">${escapeHtml(payload.subject)}</p>`;
+
   return `
-    <div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#111827">
-      <h2 style="margin:0 0 12px;font-size:18px">Lefevre Conseil - Notification portail</h2>
-      <p style="margin:0 0 12px">${escapeHtml(payload.subject)}</p>
+    <div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#111827;max-width:560px">
+      <h2 style="margin:0 0 12px;font-size:18px;color:#1f2a7c">Lefèvre Conseil</h2>
+      <p style="margin:0 0 12px;font-weight:600">${escapeHtml(payload.subject)}</p>
       ${
         payload.clientName
           ? `<p style="margin:0 0 12px"><strong>Client :</strong> ${escapeHtml(payload.clientName)}</p>`
           : ""
       }
-      <p style="margin:0;color:#6b7280;font-size:13px">Message automatique envoyé depuis l'espace client/admin.</p>
+      ${body}
+      <p style="margin:16px 0 0;color:#6b7280;font-size:13px">Message automatique — Lefèvre Conseil</p>
     </div>
   `;
 }
 
 function defaultText(payload: NotifyPayload) {
-  return `Lefevre Conseil - Notification portail\n\n${payload.subject}${
+  if (payload.text?.trim()) return payload.text.trim();
+  return `Lefèvre Conseil\n\n${payload.subject}${
     payload.clientName ? `\nClient: ${payload.clientName}` : ""
-  }\n\nMessage automatique envoyé depuis l'espace client/admin.`;
+  }`;
 }
 
 function escapeHtml(input: string) {

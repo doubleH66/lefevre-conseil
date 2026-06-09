@@ -301,9 +301,9 @@ function ContactForm({ initialSubject = "" }: { initialSubject?: string }) {
   if (success) {
     return (
       <section className={cn(marketingCardClass, "overflow-hidden px-6 py-12 text-center sm:px-8")}>
-        <h2 className="text-xl font-semibold text-[#1f2a7c]">Message envoyé</h2>
+        <h2 className="text-xl font-semibold text-[#1f2a7c]">Demande de rendez-vous envoyée</h2>
         <p className="mt-3 text-sm leading-relaxed text-[#1f2a7c]/70">
-          Merci pour votre message. Vous recevrez une confirmation par e-mail et le cabinet vous recontactera rapidement.
+          Merci. Un e-mail de confirmation vient de vous être adressé. Le cabinet vous recontactera rapidement pour convenir d&apos;un créneau.
         </p>
         <Link
           href={ROUTES.home}

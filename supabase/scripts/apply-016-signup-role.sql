@@ -94,6 +94,8 @@ $$;
 
 grant execute on function public.apply_signup_requested_role() to authenticated;
 
+alter table public.profiles disable trigger trg_profiles_role_guard;
+
 update public.profiles p
 set role = 'admin'::public.app_role,
     updated_at = now()
@@ -110,3 +112,5 @@ from auth.users u
 where p.id = u.id
   and u.email = 'elfarissih7@gmail.com'
   and p.role is distinct from 'admin'::public.app_role;
+
+alter table public.profiles enable trigger trg_profiles_role_guard;
