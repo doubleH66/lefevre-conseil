@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
+import { SITE_BLOCK_SHELL } from "@/lib/content/landing-layout";
 import {
   heroCtaPrimaryCompactClassName,
   heroCtaRowCompactClassName,
@@ -29,7 +30,7 @@ export function ServiceActionBand({
   secondaryLabel?: string;
 }) {
   return (
-    <section aria-labelledby="service-action-band-title" className="mx-2.5 mt-3 scroll-mt-28 lg:mx-4 lg:mt-4">
+    <section aria-labelledby="service-action-band-title" className={cn(SITE_BLOCK_SHELL, "scroll-mt-28")}>
       <div className="relative min-h-[min(28rem,85svh)] overflow-hidden rounded-[1.75rem] border border-[#1f2a7c]/15 shadow-[0_24px_60px_-30px_rgba(15,23,42,0.5)] sm:min-h-0 lg:rounded-[2rem]">
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <Image src={imageSrc} alt="" fill className="object-cover object-center" sizes="(min-width: 1024px) 80vw, 100vw" aria-hidden />

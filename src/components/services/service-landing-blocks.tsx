@@ -4,11 +4,12 @@ import {
   marketingProseClass,
   marketingTitleClass,
 } from "@/components/marketing/marketing-styles";
+import { SITE_BLOCK_INNER, SITE_WHITE_BLOCK } from "@/lib/content/landing-layout";
 import { cn } from "@/lib/utils";
 
-export const serviceLandingSectionClass = "mx-2.5 mt-3 bg-white text-[#1f2a7c] lg:mx-4 lg:mt-4";
+export const serviceLandingSectionClass = SITE_WHITE_BLOCK;
 
-export const serviceLandingInnerClass = "px-4 py-10 sm:px-7 sm:py-12 xl:px-11 xl:py-14";
+export const serviceLandingInnerClass = SITE_BLOCK_INNER;
 
 export const serviceContentMaxClass = "mx-auto w-full max-w-5xl text-center";
 
@@ -29,7 +30,7 @@ export function ServiceLandingBlock({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn(serviceLandingSectionClass, "scroll-mt-28", className)}
+      className={cn(serviceLandingSectionClass, "scroll-mt-28 text-[#1f2a7c]", className)}
     >
       <div className={serviceLandingInnerClass}>{children}</div>
     </section>

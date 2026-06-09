@@ -14,8 +14,8 @@ export const IS_INDEXABLE =
   process.env.NEXT_PUBLIC_NOINDEX !== "1";
 
 import {
-  HERO_DESKTOP_IMAGE_URL,
-  HERO_MOBILE_IMAGE_URL,
+  ADVISOR_FACE_ICON_IMAGE_URL,
+  CABINET_ABOUT_IMAGE_URL,
 } from "@/lib/content/media";
 
 export const SITE_LOGO_URL =
@@ -37,13 +37,13 @@ export const GOOGLE_BUSINESS_PROFILE_URL = "";
  */
 export const ORIAS_NUMBER = "25 001 948";
 
-export const CABINET_PORTRAIT_IMAGE_URL = HERO_DESKTOP_IMAGE_URL;
+export const CABINET_PORTRAIT_IMAGE_URL = CABINET_ABOUT_IMAGE_URL;
 
 export const CABINET_PORTRAIT_OBJECT_POSITION = "50% 20%";
 
-export const ADVISOR_ROUND_AVATAR_IMAGE_URL = HERO_MOBILE_IMAGE_URL;
+export const ADVISOR_ROUND_AVATAR_IMAGE_URL = ADVISOR_FACE_ICON_IMAGE_URL;
 
-export const ADVISOR_ROUND_AVATAR_OBJECT_POSITION = "50% 45%";
+export const ADVISOR_ROUND_AVATAR_OBJECT_POSITION = "50% 50%";
 
 /** Destinataire des notifications admin (nouvelles demandes site / RDV). */
 export const SITE_ADMIN_NOTIFY_EMAIL = "elfarissih7@gmail.com";

@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaqAccordion } from "@/components/client/faq-accordion";
+import { ShortFaqSection } from "@/components/client/short-faq-section";
+import { ServiceExpertiseVisual } from "@/components/services/service-expertise-visual";
 import { MarketingHighlight } from "@/components/marketing/marketing-section";
 import { marketingPageShellClass } from "@/components/marketing/marketing-styles";
 import {
@@ -14,7 +15,12 @@ import {
 } from "@/components/client/about-experience-timeline";
 import type { ServiceContent } from "@/lib/content/service-data";
 import { DEFISCALISATION_CAROUSEL_HERO_IMAGE } from "@/lib/content/services";
-import { CONTACT_HREF, FAQ_HREF, ROUTES } from "@/lib/content/routes";
+import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
+import {
+  SITE_BLOCK_INNER,
+  SITE_BLOCK_SHELL,
+  SITE_WHITE_BLOCK,
+} from "@/lib/content/landing-layout";
 import {
   heroCtaPrimaryCompactClassName,
   heroCtaRowCompactClassName,
@@ -80,9 +86,9 @@ const SOURCES_OFFICIELLES = [
   { label: "economie.gouv.fr", href: "https://www.economie.gouv.fr/" },
 ] as const;
 
-const landingSectionClass = "mx-2.5 mt-3 bg-white text-[#1f2a7c] lg:mx-4 lg:mt-4";
+const landingSectionClass = cn(SITE_WHITE_BLOCK, "text-[#1f2a7c]");
 
-const landingInnerClass = "px-4 py-10 sm:px-7 sm:py-12 xl:px-11 xl:py-14";
+const landingInnerClass = SITE_BLOCK_INNER;
 
 const contentMax = "mx-auto w-full max-w-5xl text-center";
 
@@ -165,7 +171,7 @@ function DefiscalMergedActionBand() {
   return (
     <section
       aria-labelledby="defiscal-merged-title"
-      className="mx-2.5 mt-3 scroll-mt-28 lg:mx-4 lg:mt-4"
+      className={cn(SITE_BLOCK_SHELL, "scroll-mt-28")}
     >
       <div className="relative min-h-[min(28rem,85svh)] overflow-hidden rounded-[1.75rem] border border-[#1f2a7c]/15 shadow-[0_24px_60px_-30px_rgba(15,23,42,0.5)] sm:min-h-0 lg:rounded-[2rem]">
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -295,6 +301,9 @@ export type DefiscalisationServiceClientProps = {
 };
 
 export function DefiscalisationServiceClient({ content, otherServices }: DefiscalisationServiceClientProps) {
+  const heroImage = DEFISCALISATION_CAROUSEL_HERO_IMAGE;
+  const imageAlt = content.title;
+
   return (
     <main className={marketingPageShellClass}>
       <section className="relative z-0 pb-8 pt-0 sm:pb-10">
@@ -313,22 +322,27 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
         ) : null}
 
         <Block labelledBy="defiscal-bases-title" className={content.intro ? "mt-10 sm:mt-12" : undefined}>
-          <div className={contentMax}>
-            <h2
-              id="defiscal-bases-title"
-              className={cn(
-                "text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em] sm:text-[clamp(1.35rem,2.9vw,2.2rem)]",
-                prose,
-              )}
-            >
-              Trois notions pour lire une proposition,{" "}
-              <MarketingHighlight>quatre familles</MarketingHighlight>{" "}
-              de leviers possibles.
-            </h2>
-            <LeadParagraph>
-              Déduction, réduction, crédit : le vocabulaire revient souvent - ensuite on raisonne par familles
-              (épargne, capital-investissement, immobilier, cas particuliers), sans catalogue de produits.
-            </LeadParagraph>
+          <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-10">
+            <div className={cn(contentMax, "lg:text-left")}>
+              <h2
+                id="defiscal-bases-title"
+                className={cn(
+                  "text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em] sm:text-[clamp(1.35rem,2.9vw,2.2rem)]",
+                  prose,
+                )}
+              >
+                Trois notions pour lire une proposition,{" "}
+                <MarketingHighlight>quatre familles</MarketingHighlight>{" "}
+                de leviers possibles.
+              </h2>
+              <LeadParagraph className="lg:mx-0">
+                Déduction, réduction, crédit : le vocabulaire revient souvent - ensuite on raisonne par familles
+                (épargne, capital-investissement, immobilier, cas particuliers), sans catalogue de produits.
+              </LeadParagraph>
+            </div>
+            <div className="flex min-h-0 flex-col justify-center">
+              <ServiceExpertiseVisual src={heroImage} alt={imageAlt} />
+            </div>
           </div>
 
           <div className={tableShell}>
@@ -375,6 +389,14 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
         </Block>
 
         <Block labelledBy="defiscal-methode-title">
+          <div className="mx-auto max-w-5xl">
+            <ServiceExpertiseVisual
+              src={heroImage}
+              alt=""
+              variant="break"
+              className="mb-10 sm:mb-12"
+            />
+          </div>
           <div className={contentMax}>
             <h2
               id="defiscal-methode-title"
@@ -407,29 +429,9 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
 
         <Block labelledBy="defiscal-faq-title" className="border-t border-[#1f2a7c]/10">
           <div className={contentMax}>
-            <h2
-              id="defiscal-faq-title"
-              className={cn(
-                "mt-0 text-balance text-[clamp(1.28rem,3.2vw,2.05rem)] font-normal leading-[1.08] tracking-[-0.038em]",
-                prose,
-              )}
-            >
-              <MarketingHighlight>
-                FAQ
-              </MarketingHighlight>
-              ,{" "}
-              <MarketingHighlight>
-                vigilance
-              </MarketingHighlight>{" "}
-              et{" "}
-              <MarketingHighlight>
-                liens utiles
-              </MarketingHighlight>
-              .
-            </h2>
             <p
               className={cn(
-                "mx-auto mt-6 max-w-2xl rounded-2xl border border-[#1f2a7c]/14 bg-[#1f2a7c]/[0.05] px-5 py-4 text-left text-[14px] leading-relaxed sm:px-6 sm:text-[15px]",
+                "mx-auto max-w-2xl rounded-2xl border border-[#1f2a7c]/14 bg-[#1f2a7c]/[0.05] px-5 py-4 text-left text-[14px] leading-relaxed sm:px-6 sm:text-[15px]",
                 prose,
               )}
             >
@@ -457,21 +459,9 @@ export function DefiscalisationServiceClient({ content, otherServices }: Defisca
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-3xl">
-            <FaqAccordion items={content.faq} questionEmphasis="highlight" />
+            <ShortFaqSection items={content.faq} titleId="defiscal-faq-title" />
           </div>
 
-          <div className="mx-auto mt-8 flex max-w-3xl justify-center px-2">
-            <Link
-              href={FAQ_HREF}
-              className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#1f2a7c] bg-white px-7 py-3.5 text-sm font-semibold text-[#1f2a7c] shadow-sm transition-colors hover:bg-[#1f2a7c]/[0.06] hover:shadow-md sm:px-8 sm:text-[15px]"
-            >
-              Toute la FAQ du site
-              <ArrowUpRight
-                aria-hidden
-                className="size-4 shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </Link>
-          </div>
           <div className="mx-auto mt-12 max-w-3xl border-t border-[#1f2a7c]/10 pt-10 text-center">
             <ul className="flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-5">
               {SOURCES_OFFICIELLES.map((src) => (

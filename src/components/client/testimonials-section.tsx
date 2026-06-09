@@ -219,7 +219,7 @@ export function TestimonialsSection() {
     <section
       id="avis-clients"
       data-nav-theme="light"
-      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN, "relative my-10 bg-white sm:my-14 md:my-20")}
+      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN, "relative bg-white")}
     >
       <div className={cn(LANDING_SECTION_INSET, "z-10")}>
         <motion.div

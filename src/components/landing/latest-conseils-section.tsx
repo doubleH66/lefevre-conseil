@@ -6,7 +6,7 @@ import { LANDING_SECTION_SHELL } from "@/lib/content/landing-layout";
 import { CONSEILS_HREF, articleHref } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 
-const defaultClassName = cn(LANDING_SECTION_SHELL, "mb-12 lg:mb-16");
+const defaultClassName = cn(LANDING_SECTION_SHELL);
 
 export function LatestConseilsSection({ className }: { className?: string }) {
   if (HOME_ARTICLES_TEASER.length === 0) return null;

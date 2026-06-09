@@ -16,13 +16,14 @@ import {
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { HighlightReveal } from "@/components/ui/highlight-reveal";
 import { FaqSectionClient } from "@/components/client/faq-section-client";
+import { FAQ_EXPAND_LINK } from "@/lib/content/faq-section";
 import {
   LANDING_SECTION_INNER_Y,
   LANDING_SECTION_INSET,
   LANDING_SECTION_SHELL,
+  SITE_SECTION_STACK,
 } from "@/lib/content/landing-layout";
-import { bilanCtaSectionClassName } from "@/components/landing/bilan-cta-section";
-import { CtaBand } from "@/components/landing/cta-band";
+import { bilanCtaSectionClassName, BilanCtaSection } from "@/components/landing/bilan-cta-section";
 import { PartnersStrip } from "@/components/landing/partners-strip";
 import { type FaqItem } from "@/components/client/faq-accordion";
 import { FAQPageJsonLd } from "@/components/seo/page-jsonld";
@@ -46,7 +47,7 @@ import { cn } from "@/lib/utils";
 
 const aboutProse = "text-[#1f2a7c]/78 max-lg:text-[#1f2a7c]/72 lg:text-[#1f2a7c]/88";
 
-const sectionShell = "mx-2.5 lg:mx-4";
+const sectionShell = LANDING_SECTION_SHELL;
 const sectionInner = "px-4 py-12 sm:px-7 sm:py-14 xl:px-11 xl:py-16";
 const sectionTitleClass =
   "text-balance text-[clamp(1.45rem,3vw,2.25rem)] font-normal leading-[1.1] tracking-[-0.03em] text-[#1f2a7c]";
@@ -219,9 +220,9 @@ export function NotreCabinetPage() {
     >
       <FAQPageJsonLd items={CABINET_FAQ} path={NOTRE_CABINET_HREF} />
 
-      <main className="flex-1 overflow-x-clip bg-white pb-6 text-neutral-950 sm:pb-10">
+      <main className={cn("flex-1 overflow-x-clip bg-white text-neutral-950", SITE_SECTION_STACK, "pb-6 sm:pb-10")}>
         {/* Réassurances sous le hero */}
-        <div className={cn(sectionShell, "mt-4")}>
+        <div className={sectionShell}>
           <ul className="grid gap-2.5 sm:grid-cols-3">
             {HERO_REASSURANCES.map(({ icon: Icon, label }) => (
               <li
@@ -606,22 +607,14 @@ export function NotreCabinetPage() {
               titleId="faq-title"
               titleClassName={sectionTitleClass}
               contentClassName="max-w-4xl"
+              maxItems={4}
+              showContactLink={false}
+              footerLink={FAQ_EXPAND_LINK}
             />
           </div>
         </section>
 
-        {/* 11. CTA final */}
-        <section className={cn(bilanCtaSectionClassName, "mt-2 lg:mb-0")}>
-          <CtaBand
-            eyebrow={false}
-            centered
-            showSecondaryCta={false}
-            primaryLabel="Prendre rendez-vous"
-            primaryHref={CONTACT_HREF}
-            title="Faisons le point sur votre situation patrimoniale."
-            description="Un premier échange pour comprendre vos objectifs et vous orienter vers les solutions adaptées."
-          />
-        </section>
+        <BilanCtaSection className={cn(bilanCtaSectionClassName, "mt-2 lg:mb-0")} />
       </main>
     </MarketingSubpage>
   );

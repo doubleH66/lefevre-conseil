@@ -9,6 +9,12 @@ export const SUBPAGE_HEADER_IMAGE_URL = `${SITE_MEDIA_CDN}/1778742468697-Capture
 const SUPABASE_PUBLIC_MEDIA =
   "https://gyisrwfapphqqdbpujtb.supabase.co/storage/v1/object/public/public-media/d4660a7b-c5d8-424e-bae8-333215d81e70";
 
+/** Portrait « Qui sommes-nous » (Notre cabinet, contact, intro accueil). */
+export const CABINET_ABOUT_IMAGE_URL = `${SUPABASE_PUBLIC_MEDIA}/1780985941693-le0pdt-qui-sommes-nous-lefevre.webp`;
+
+/** Icône visage rond (FAB contact, avatar conseiller). */
+export const ADVISOR_FACE_ICON_IMAGE_URL = `${SUPABASE_PUBLIC_MEDIA}/1780985921601-qss3tu-Icone-visage-lefevre.webp`;
+
 /** Visuels expertises (carrousel accueil, hub /expertises, héros pages service). */
 export const EXPERTISE_MEDIA = {
   gestionPatrimoine: `${SUPABASE_PUBLIC_MEDIA}/1780929754709-wmh2vz-gestion-patrimoine-lefevre-conseil-bureau-premium.webp`,

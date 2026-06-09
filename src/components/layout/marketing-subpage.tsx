@@ -10,6 +10,7 @@ type MarketingSubpageProps = {
   hero: PageHeroConfig;
   children: React.ReactNode;
   hideBilanCta?: boolean;
+  headerImageSrc?: string;
 };
 
 /**
@@ -20,11 +21,13 @@ export function MarketingSubpage({
   hero,
   children,
   hideBilanCta,
+  headerImageSrc,
 }: MarketingSubpageProps) {
   return (
     <SubpageShell
       heroMinHeightClass={PAGE_HERO_MIN_HEIGHT_CLASS}
       hideBilanCta={hideBilanCta}
+      headerImageSrc={headerImageSrc}
       heroLead={{
         title: hero.title,
         tagline: hero.tagline,

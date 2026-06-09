@@ -49,7 +49,7 @@ export function CabinetIntro() {
     <section
       id="apres-hero"
       data-nav-theme="light"
-      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN, "mt-2 bg-white text-[#1f2a7c] sm:mt-3")}
+      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN, "mt-2 bg-white text-[#1f2a7c] sm:mt-0")}
       aria-labelledby="cabinet-intro-title"
     >
       <div className={cn(LANDING_SECTION_INSET, LANDING_SECTION_INNER_Y)}>

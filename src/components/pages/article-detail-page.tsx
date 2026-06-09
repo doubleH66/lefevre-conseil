@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Calendar, Tag } from "lucide-react";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
-import { FaqAccordion } from "@/components/client/faq-accordion";
+import { ShortFaqSection } from "@/components/client/short-faq-section";
 import { ShareButton } from "@/components/ui/share-modal";
 import type { Article } from "@/lib/content/articles";
 import { CONSEILS_HREF, CONTACT_HREF, articleHref } from "@/lib/content/routes";
@@ -138,7 +138,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
 
               {faq.length > 0 ? (
                 <div className="mt-10">
-                  <FaqAccordion items={faq} />
+                  <ShortFaqSection items={faq} titleId="article-faq-title" />
                 </div>
               ) : null}
 

@@ -20,6 +20,7 @@ import {
   ART_VISUAL_BENEFITS,
 } from "@/lib/content/investissement-art-content";
 import { CONTACT_HREF } from "@/lib/content/routes";
+import { SITE_BLOCK_INNER, SITE_WHITE_BLOCK } from "@/lib/content/landing-layout";
 import { marketingTitleClass } from "@/components/marketing/marketing-styles";
 import { cn } from "@/lib/utils";
 
@@ -61,8 +62,8 @@ function ArtBlock({
   id?: string;
 }) {
   return (
-    <div id={id} className={cn("mx-2.5 mt-3 bg-white lg:mx-4 lg:mt-4", className)}>
-      <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-12">{children}</div>
+    <div id={id} className={cn(SITE_WHITE_BLOCK, className)}>
+      <div className={SITE_BLOCK_INNER}>{children}</div>
     </div>
   );
 }

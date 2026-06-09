@@ -6,12 +6,16 @@ import { cn } from "@/lib/utils";
 
 const INNER_PAGE_HEADER_IMAGE = SUBPAGE_HEADER_IMAGE_URL;
 
+type SubpageHeaderBackgroundProps = {
+  imageSrc?: string;
+};
+
 /** Visuel d’en-tête des pages intérieures (bandeau photo arrondi). */
-export function SubpageHeaderBackground() {
+export function SubpageHeaderBackground({ imageSrc }: SubpageHeaderBackgroundProps = {}) {
   return (
     <div className={cn("absolute inset-0 z-0 overflow-hidden", HERO_SHELL_RADIUS_CLASS)}>
       <Image
-        src={INNER_PAGE_HEADER_IMAGE}
+        src={imageSrc ?? INNER_PAGE_HEADER_IMAGE}
         alt=""
         fill
         className="object-cover object-center"

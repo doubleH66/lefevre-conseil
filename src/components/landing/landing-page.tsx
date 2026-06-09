@@ -7,6 +7,8 @@ import { MethodScrollStack } from "@/components/landing/method-scroll-stack";
 import ExpertisesCarousel from "@/components/client/expertises-carousel";
 import { TestimonialsSection } from "@/components/client/testimonials-section";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SITE_SECTION_STACK } from "@/lib/content/landing-layout";
+import { cn } from "@/lib/utils";
 
 /**
  * Page d’accueil - chaque bloc gère son layout via `landing-layout.ts`.
@@ -14,7 +16,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
  */
 export function LandingPage() {
   return (
-    <main className="min-h-dvh overflow-x-clip bg-white text-neutral-950">
+    <main className={cn("min-h-dvh overflow-x-clip bg-white text-neutral-950", SITE_SECTION_STACK, "pb-4 sm:pb-6")}>
       <LandingHeroBlock />
       <CabinetIntro />
       <MethodScrollStack />

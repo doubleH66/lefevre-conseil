@@ -1,6 +1,7 @@
 import { DefiscalisationServiceClient } from "@/components/pages/defiscalisation-service-client";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
+import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
 import { getOtherServices, getServiceContent } from "@/lib/content/service-data";
 
 /** Page « Fiscalité & investissement » --- même gabarit que heritage `DefiscalisationServicePage`. */
@@ -12,6 +13,7 @@ export function DefiscalisationServicePage() {
 
   return (
     <MarketingSubpage
+      headerImageSrc={EXPERTISE_CAROUSEL_IMAGES["fiscalite-investissement"]}
       hero={{
         title: content.title,
         tagline: content.tagline,

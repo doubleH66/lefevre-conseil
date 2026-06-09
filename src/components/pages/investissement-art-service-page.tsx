@@ -3,7 +3,7 @@ import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { getOtherServices } from "@/lib/content/service-data";
 import { getServicePremiumContent } from "@/lib/content/services-premium";
 import { EXPERTISES_BASE_HREF } from "@/lib/content/routes";
-import { getServiceBySlug } from "@/lib/content/services";
+import { EXPERTISE_CAROUSEL_IMAGES, getServiceBySlug } from "@/lib/content/services";
 
 export function InvestissementArtServicePage() {
   const content = getServicePremiumContent("investissement-art");
@@ -14,6 +14,7 @@ export function InvestissementArtServicePage() {
 
   return (
     <MarketingSubpage
+      headerImageSrc={EXPERTISE_CAROUSEL_IMAGES["investissement-art"]}
       hero={{
         title: content.hero.h1,
         tagline: content.hero.subtitle,
@@ -26,7 +27,11 @@ export function InvestissementArtServicePage() {
         { label: catalog?.title ?? content.hero.h1 },
       ]}
     >
-      <InvestissementArtClient content={content} otherServices={otherServices} />
+      <InvestissementArtClient
+        content={content}
+        otherServices={otherServices}
+        imageAlt={catalog?.title ?? content.hero.h1}
+      />
     </MarketingSubpage>
   );
 }

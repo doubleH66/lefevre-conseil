@@ -15,6 +15,11 @@ export type FaqSectionItem = {
   category?: string;
 };
 
+type FaqFooterLink = {
+  href: string;
+  label: string;
+};
+
 type FaqSectionClientProps = {
   items: readonly FaqSectionItem[];
   title?: string;
@@ -25,6 +30,10 @@ type FaqSectionClientProps = {
   allCategoryValue?: string;
   className?: string;
   showContactLink?: boolean;
+  /** Lien pied de section (prioritaire sur le bouton contact). */
+  footerLink?: FaqFooterLink;
+  /** Limite le nombre de questions affichées (FAQ courtes hors page /faq). */
+  maxItems?: number;
   /** Masquer le titre (ex. page /faq : le hero affiche déjà le H1). */
   showTitle?: boolean;
 };
@@ -40,15 +49,22 @@ export function FaqSectionClient({
   allCategoryValue = "Tous",
   className,
   showContactLink = true,
+  footerLink,
+  maxItems,
   showTitle = true,
 }: FaqSectionClientProps) {
   const [search, setSearch] = React.useState("");
   const [category, setCategory] = React.useState<string>(allCategoryValue);
   const showFilter = Boolean(categories?.length && categories.length > 1);
 
+  const sectionItems = React.useMemo(
+    () => (maxItems != null ? items.slice(0, maxItems) : items),
+    [items, maxItems],
+  );
+
   const filtered = React.useMemo(() => {
     const query = search.trim().toLowerCase();
-    return items.filter((item) => {
+    return sectionItems.filter((item) => {
       const matchesCategory =
         !showFilter || category === allCategoryValue || item.category === category;
       const matchesSearch =
@@ -58,7 +74,7 @@ export function FaqSectionClient({
         (item.category?.toLowerCase().includes(query) ?? false);
       return matchesCategory && matchesSearch;
     });
-  }, [allCategoryValue, category, items, search, showFilter]);
+  }, [allCategoryValue, category, sectionItems, search, showFilter]);
 
   const hasActiveFilters = Boolean(search.trim()) || (showFilter && category !== allCategoryValue);
 
@@ -138,7 +154,20 @@ export function FaqSectionClient({
         )}
       </div>
 
-      {showContactLink ? (
+      {footerLink ? (
+        <p className="mt-10 text-center sm:mt-12">
+          <Link
+            href={footerLink.href}
+            className="group inline-flex items-center gap-1.5 rounded-full border border-[#1f2a7c]/12 bg-white px-4 py-2 text-sm font-semibold text-[#1f2a7c]/78 shadow-sm transition-[color,box-shadow,border-color] hover:border-[#1f2a7c]/20 hover:text-[#1f2a7c] hover:shadow-md"
+          >
+            {footerLink.label}
+            <ArrowUpRight
+              aria-hidden
+              className="size-4 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+          </Link>
+        </p>
+      ) : showContactLink ? (
         <p className="mt-10 text-center sm:mt-12">
           <Link
             href={CONTACT_HREF}

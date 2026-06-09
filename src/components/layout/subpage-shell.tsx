@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SubpageHeroTagline } from "@/components/layout/subpage-hero-tagline";
 import { GoogleLogo } from "@/components/ui/google-logo";
 import { HERO_SHELL_OUTER_CLASS, HERO_SHELL_RADIUS_CLASS, PAGE_HERO_MIN_HEIGHT_CLASS } from "@/lib/content/hero-shell";
+import { SITE_SECTION_STACK } from "@/lib/content/landing-layout";
 import { googleBadgeClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
 
@@ -78,6 +79,8 @@ type SubpageShellProps = {
   breadcrumbs?: readonly SubpageBreadcrumb[];
   heroMinHeightClass?: string;
   heroLead?: SubpageHeroLead;
+  /** Image du bandeau (ex. visuel expertise sur les pages service). */
+  headerImageSrc?: string;
   bannerMode?: "photo" | "content";
   hideBilanCta?: boolean;
 };
@@ -88,6 +91,7 @@ export function SubpageShell({
   breadcrumbs,
   heroMinHeightClass = PAGE_HERO_MIN_HEIGHT_CLASS,
   heroLead,
+  headerImageSrc,
   bannerMode = "photo",
   hideBilanCta = false,
 }: SubpageShellProps) {
@@ -108,7 +112,7 @@ export function SubpageShell({
               heroMinHeightClass,
             )}
           >
-            <SubpageHeaderBackground />
+            <SubpageHeaderBackground imageSrc={headerImageSrc} />
 
             {heroLead ? (
               <div
@@ -200,20 +204,19 @@ export function SubpageShell({
         </div>
       ) : null}
 
-      <div className="relative z-0 flex flex-1 flex-col" data-nav-theme="light">
+      <div
+        className={cn("relative z-0 flex flex-1 flex-col", SITE_SECTION_STACK, "pb-4 sm:pb-6")}
+        data-nav-theme="light"
+      >
         {children}
-      </div>
 
-      {hideBilanCta ? null : (
-        <>
-          <div data-nav-theme="dark">
-            <BilanCtaSection className={cn(bilanCtaSectionClassName, "mb-6 mt-10 sm:mt-12")} />
-          </div>
-          <div data-nav-theme="light">
-            <LatestConseilsSection className="mb-12 lg:mb-16" />
-          </div>
-        </>
-      )}
+        {hideBilanCta ? null : (
+          <>
+            <BilanCtaSection className={bilanCtaSectionClassName} />
+            <LatestConseilsSection />
+          </>
+        )}
+      </div>
 
       <div data-nav-theme="light">
         <SiteFooter />
