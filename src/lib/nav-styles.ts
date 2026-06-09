@@ -1,5 +1,8 @@
-/** Hauteur du bandeau promo fixe en haut de page. */
+/** Hauteur du bandeau promo fixe en haut de page (desktop). */
 export const SITE_PROMO_BAR_HEIGHT = 36;
+
+/** Hauteur du bandeau promo sur mobile (< sm). */
+export const SITE_PROMO_BAR_HEIGHT_MOBILE = 28;
 
 /** Hauteur utile de la barre de navigation (alignée sur NavContent). */
 export const SITE_NAV_BAR_HEIGHT = 64;

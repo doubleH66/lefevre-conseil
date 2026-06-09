@@ -32,8 +32,14 @@
 }
 
 :root {
-  --site-promo-bar-height: 36px;
+  --site-promo-bar-height: 28px;
   --site-promo-total-height: calc(var(--site-promo-bar-height) + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-promo-bar-height: 36px;
+  }
 }
 
 /** Hero accueil + sous-pages --- haut collé sous le bandeau promo (tous appareils). */

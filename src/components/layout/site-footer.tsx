@@ -116,8 +116,9 @@ export function SiteFooter() {
           title: "Outils",
           links: [
             { id: 20, title: "Simulateur patrimonial", url: ROUTES.simulateur },
-            { id: 21, title: "Comparateur assurance", url: ROUTES.comparateur },
-            { id: 22, title: "Installer l’application", url: ROUTES.installation },
+            { id: 21, title: "Proposition mutuelle", url: `${EXPERTISES_BASE_HREF}#mutuelle` },
+            { id: 22, title: "Comparateur assurance", url: `${EXPERTISES_BASE_HREF}#comparateur` },
+            { id: 23, title: "Installer l’application", url: ROUTES.installation },
           ],
           extra: <FooterSocialLinks />,
         },

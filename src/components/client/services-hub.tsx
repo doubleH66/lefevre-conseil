@@ -37,7 +37,8 @@ export function ServicesHub() {
     <section className={hubSectionClass}>
       <div className={hubInnerWideClass}>
         <p className={hubIntroClass}>
-          Six expertises complémentaires pour structurer, protéger et transmettre votre patrimoine.
+          Six expertises complémentaires pour structurer, protéger et transmettre votre patrimoine. Retrouvez
+          aussi le simulateur mutuelle et le comparateur assurance en bas de page.
         </p>
 
         <CategorySearchToolbar

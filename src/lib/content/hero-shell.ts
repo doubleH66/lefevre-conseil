@@ -1,6 +1,6 @@
 import { LANDING_SECTION_SHELL } from "@/lib/content/landing-layout";
 import { cn } from "@/lib/utils";
-import { SITE_NAV_BAR_HEIGHT, SITE_PROMO_BAR_HEIGHT } from "@/lib/nav-styles";
+import { SITE_NAV_BAR_HEIGHT, SITE_PROMO_BAR_HEIGHT, SITE_PROMO_BAR_HEIGHT_MOBILE } from "@/lib/nav-styles";
 
 /** Collé sous le bandeau promo - toutes tailles (voir globals.css). */
 export const LANDING_HERO_PROMO_OFFSET_CLASS = "landing-hero-promo-offset";
@@ -65,11 +65,14 @@ export function heroShellSectionClass(minHeightClass: string) {
 /** Hauteur bandeau promo + gap navbar + barre nav. */
 export const HERO_NAV_CHROME_HEIGHT = SITE_PROMO_BAR_HEIGHT + 8 + SITE_NAV_BAR_HEIGHT;
 
+const heroNavChromeHeightMobile = SITE_PROMO_BAR_HEIGHT_MOBILE + 8 + SITE_NAV_BAR_HEIGHT;
+
 const heroNavClearanceLg = HERO_NAV_CHROME_HEIGHT - SITE_PROMO_BAR_HEIGHT;
 
-/** Padding haut contenu - aligné sur promo + navbar fixes. */
+/** Padding haut contenu - clearance navbar uniquement ; le décalage visuel mobile est dans hero-section. */
 export const HERO_CONTENT_TOP_PAD = cn(
-  `pt-[calc(${HERO_NAV_CHROME_HEIGHT}px+1rem)]`,
+  `pt-[calc(${heroNavChromeHeightMobile}px+0.5rem)]`,
+  `sm:pt-[calc(${HERO_NAV_CHROME_HEIGHT}px+1rem)]`,
   `lg:pt-[calc(${heroNavClearanceLg}px+1.25rem)]`,
 );
 

@@ -38,31 +38,34 @@ export function HeroSection() {
 
         <div className={HERO_LANDING_CONTENT_CLASS}>
           <div className="mx-auto flex w-full max-w-none flex-col px-4 sm:px-7 xl:block xl:px-11">
-            <div className="mx-auto w-full max-w-5xl text-center xl:mx-0 xl:text-left">
-              <div className="mt-40 sm:mt-10 xl:mt-52">
-                <div className="mb-4 flex justify-center sm:mb-5 xl:justify-start">
-                  <GoogleBadge />
-                </div>
+            <div
+              className={cn(
+                "mx-auto flex w-full max-w-5xl flex-col text-center xl:mx-0 xl:text-left",
+                "max-xl:mt-[clamp(6rem,28vh,10.5rem)] max-xl:gap-4",
+                "xl:mt-52",
+              )}
+            >
+              <div className="flex justify-center xl:justify-start">
+                <GoogleBadge />
+              </div>
 
-                <h1 className="w-full max-w-5xl text-balance text-center text-[clamp(2.125rem,5.75vw,4.875rem)] font-normal leading-[1.2] tracking-[-0.03em] text-white xl:text-left">
-                  <span className="block">Conseil en gestion de</span>
-                  <span className="mt-0 block">
-                    patrimoine à{" "}
-                    <Highlight variant="dark" delay="hero" className="rounded-xl px-3 pb-1.5">
-                      Perpignan
-                    </Highlight>
-                  </span>
-                </h1>
+              <h1 className="w-full max-w-5xl text-balance text-center text-[clamp(2.125rem,5.75vw,4.875rem)] font-normal leading-[1.15] tracking-[-0.03em] text-white sm:leading-[1.2] xl:text-left">
+                <span className="block">Conseil en gestion de</span>
+                <span className="mt-0 block">
+                  patrimoine à{" "}
+                  <Highlight variant="dark" delay="hero" className="rounded-xl px-3 pb-1.5">
+                    Perpignan
+                  </Highlight>
+                </span>
+              </h1>
 
-                <p className="mx-auto mt-10 max-w-2xl text-balance text-[15px] leading-[1.6] text-white/80 sm:mt-12 sm:text-lg sm:leading-[1.75] xl:mx-0 xl:mt-5">
-                  Lefèvre Conseil accompagne particuliers, dirigeants et professions libérales dans leurs
-                  décisions patrimoniales : placements, retraite, transmission, prévoyance et fiscalité, au
-                  cabinet à Perpignan ou à distance.
-                </p>
+              <p className="mx-auto max-w-2xl text-balance text-[15px] leading-[1.55] text-white/80 max-xl:mt-0 sm:text-lg sm:leading-[1.75] xl:mx-0 xl:mt-5">
+                Lefèvre Conseil accompagne particuliers, dirigeants et professions libérales dans leurs
+                décisions patrimoniales : placements, retraite, transmission, prévoyance et fiscalité, au
+                cabinet à Perpignan ou à distance.
+              </p>
 
-                <div
-                  className={cn("mt-10 sm:mt-12 xl:mt-6", heroCtaRowClassName, "max-sm:gap-2 xl:justify-start")}
-                >
+              <div className={cn("max-xl:mt-0 xl:mt-6", heroCtaRowClassName, "max-xl:gap-2 xl:justify-start")}>
                 <CtaPrimaryLink
                   href={CONTACT_HREF}
                   className="max-sm:!h-12 max-sm:!min-h-12 max-sm:!w-auto max-sm:!flex-none max-sm:!px-5 max-sm:!text-sm"
@@ -79,10 +82,9 @@ export function HeroSection() {
                 </ContactGlassLink>
               </div>
 
-                <p className="mx-auto mt-4 max-w-md text-balance text-center text-[12px] leading-relaxed text-white/55 sm:mt-5 sm:text-[13px] xl:mx-0 xl:mt-3 xl:text-left">
-                  Premier échange offert · Sans engagement
-                </p>
-              </div>
+              <p className="mx-auto max-w-md text-balance text-center text-[12px] leading-relaxed text-white/55 max-xl:mt-0 sm:text-[13px] xl:mx-0 xl:mt-3 xl:text-left">
+                Premier échange offert · Sans engagement
+              </p>
             </div>
           </div>
         </div>

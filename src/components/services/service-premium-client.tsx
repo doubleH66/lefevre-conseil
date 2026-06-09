@@ -10,7 +10,7 @@ import { ServiceRichText } from "@/components/services/service-rich-text";
 import { BeforeAfterTable } from "@/components/ui/before-after-table";
 import { ComparisonTable } from "@/components/ui/comparison-table";
 import type { ServicePremiumContent } from "@/lib/content/service-premium-types";
-import { EXPERTISE_CAROUSEL_IMAGES } from "@/lib/content/services";
+import { EXPERTISE_CAROUSEL_IMAGES, serviceDetailHref } from "@/lib/content/services";
 import {
   marketingProseClass,
   marketingTitleClass,
@@ -87,7 +87,9 @@ export function ServicePremiumClient({
           </ul>
         ) : null}
 
-        {content.slug === "prevoyance-sante-assurance-pret" ? <ServiceComparateurBlock /> : null}
+        {content.slug === "prevoyance-sante-assurance-pret" ? (
+          <ServiceComparateurBlock sourcePage={serviceDetailHref(content.slug)} />
+        ) : null}
       </Block>
 
       <ServiceActionBand

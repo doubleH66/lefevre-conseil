@@ -18,9 +18,15 @@ export const NAV_CABINET_LINKS: NavLink[] = [
   { label: "Installer l’app", href: INSTALLATION_HREF },
 ];
 
+export const NAV_EXPERTISE_TOOL_LINKS: NavLink[] = [
+  { label: "Proposition mutuelle", href: `${EXPERTISES_BASE_HREF}#mutuelle` },
+  { label: "Comparateur assurance", href: `${EXPERTISES_BASE_HREF}#comparateur` },
+];
+
 export const NAV_EXPERTISE_LINKS: NavLink[] = [
   { label: "Voir toutes les expertises", href: EXPERTISES_BASE_HREF },
   ...SERVICE_CATALOG.map((s) => ({ label: s.title, href: serviceHref(s.slug) })),
+  ...NAV_EXPERTISE_TOOL_LINKS,
 ];
 
 export const NAV_DROPDOWNS = {

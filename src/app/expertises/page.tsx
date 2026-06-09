@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicesHub } from "@/components/client/services-hub";
+import { ExpertisesToolsSection } from "@/components/client/expertises-tools-section";
 import { MarketingSubpage } from "@/components/layout/marketing-subpage";
 import { BreadcrumbJsonLd } from "@/components/seo/page-jsonld";
 import { PAGE_HEROES } from "@/lib/content/page-heroes";
@@ -34,6 +35,7 @@ export default function ServicesPage() {
         ]}
       >
         <ServicesHub />
+        <ExpertisesToolsSection />
       </MarketingSubpage>
     </>
   );
