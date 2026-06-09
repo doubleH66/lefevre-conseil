@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { ShortFaqSection } from "@/components/client/short-faq-section";
 import { ServiceActionBand } from "@/components/services/service-action-band";
+import { ServiceLuxembourgContractSection } from "@/components/services/service-luxembourg-contract-section";
 import { ServiceComparateurBlock } from "@/components/services/service-comparateur-block";
 import { ServiceIntroSection } from "@/components/services/service-intro-section";
 import { ServiceRichText } from "@/components/services/service-rich-text";
@@ -91,6 +92,12 @@ export function ServicePremiumClient({
           <ServiceComparateurBlock sourcePage={serviceDetailHref(content.slug)} />
         ) : null}
       </Block>
+
+      {content.slug === "placements-epargne" ? (
+        <Block>
+          <ServiceLuxembourgContractSection />
+        </Block>
+      ) : null}
 
       <ServiceActionBand
         imageSrc={heroImage}

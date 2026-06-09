@@ -2,12 +2,6 @@ import Link from "next/link";
 import { ArrowUpRight, Check, Globe2, Layers, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { LUXEMBOURG_CONTRACT_SECTION } from "@/lib/content/luxembourg-contract";
-import {
-  LANDING_SCROLL_MARGIN,
-  LANDING_SECTION_INNER_Y,
-  LANDING_SECTION_INSET,
-  LANDING_SECTION_SHELL,
-} from "@/lib/content/landing-layout";
 import { heroCtaPrimaryCompactClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
 
@@ -35,24 +29,17 @@ function AdvantageCard({
   );
 }
 
-/** Section pédagogique — contrat d’assurance-vie luxembourgeois (sans promesse commerciale). */
-export function LuxembourgContractSection() {
+/** Section pédagogique — contrat d’assurance-vie luxembourgeois (page service). */
+export function ServiceLuxembourgContractSection() {
   const { title, intro, advantages, audience, advisory, cta } = LUXEMBOURG_CONTRACT_SECTION;
 
   return (
     <section
       id="contrat-luxembourgeois"
-      data-nav-theme="light"
       aria-labelledby="luxembourg-contract-title"
-      className={cn(LANDING_SECTION_SHELL, LANDING_SCROLL_MARGIN)}
+      className="scroll-mt-28"
     >
-      <div
-        className={cn(
-          LANDING_SECTION_INSET,
-          LANDING_SECTION_INNER_Y,
-          "rounded-[1.75rem] border border-[#1f2a7c]/8 bg-[#f8f6f1] sm:rounded-[2rem] lg:rounded-[2.25rem]",
-        )}
-      >
+      <div className="rounded-[1.75rem] border border-[#1f2a7c]/8 bg-[#f8f6f1] p-6 sm:rounded-[2rem] sm:p-8 lg:rounded-[2.25rem] lg:p-10">
         <div className="mx-auto max-w-3xl text-center lg:max-w-4xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1f2a7c]/45">
             Enveloppe patrimoniale

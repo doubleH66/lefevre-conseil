@@ -3,7 +3,6 @@ import { LatestConseilsSection } from "@/components/landing/latest-conseils-sect
 import { CabinetIntro } from "@/components/landing/cabinet-intro";
 import { HomeFaqSection } from "@/components/landing/home-faq-section";
 import { LandingHeroBlock } from "@/components/landing/landing-hero-block";
-import { LuxembourgContractSection } from "@/components/landing/luxembourg-contract-section";
 import { MethodScrollStack } from "@/components/landing/method-scroll-stack";
 import ExpertisesCarousel from "@/components/client/expertises-carousel";
 import { TestimonialsSection } from "@/components/client/testimonials-section";
@@ -13,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Page d’accueil - chaque bloc gère son layout via `landing-layout.ts`.
- * Ordre : hero → cabinet → méthode → expertises → luxembourg → avis → FAQ → CTA → conseils → footer.
+ * Ordre : hero → cabinet → méthode → expertises → avis → FAQ → CTA → conseils → footer.
  */
 export function LandingPage() {
   return (
@@ -22,7 +21,6 @@ export function LandingPage() {
       <CabinetIntro />
       <MethodScrollStack />
       <ExpertisesCarousel />
-      <LuxembourgContractSection />
       <TestimonialsSection />
       <HomeFaqSection />
       <BilanCtaSection />
