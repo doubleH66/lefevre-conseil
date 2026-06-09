@@ -27,8 +27,6 @@ export const SITE_WHITE_BLOCK = cn(SITE_BLOCK_SHELL, "bg-white");
 /** Padding intérieur des blocs blancs (contenu service). */
 export const SITE_BLOCK_INNER = "mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-14";
 
-/** Bandeau CTA final — le gap vertical est géré par le stack parent. */
-export const LANDING_CTA_SECTION_CLASS = cn(
-  LANDING_SECTION_SHELL,
-  "mx-auto w-full max-w-3xl sm:max-w-4xl lg:max-w-4xl",
-);
+/** Bandeau CTA final — centré, sans conflit mx-auto / mx-2.5. */
+export const LANDING_CTA_SECTION_CLASS =
+  "mx-auto w-[calc(100%-1.25rem)] max-w-3xl sm:max-w-4xl lg:w-[calc(100%-2rem)] lg:max-w-4xl";

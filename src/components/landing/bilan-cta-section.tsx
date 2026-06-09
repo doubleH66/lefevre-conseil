@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { BILAN_CTA_CONTENT, BILAN_CTA_IMAGE } from "@/lib/content/bilan-cta";
 import { LANDING_CTA_SECTION_CLASS } from "@/lib/content/landing-layout";
-import { heroCtaPrimaryCompactClassName, heroCtaRowCompactClassName } from "@/lib/styles/cta";
+import { heroCtaPrimaryCompactClassName } from "@/lib/styles/cta";
 import { cn } from "@/lib/utils";
 
 export const bilanCtaSectionClassName = LANDING_CTA_SECTION_CLASS;
@@ -74,10 +74,10 @@ export function BilanCtaSection({ className }: { className?: string }) {
           className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_55%)]"
         />
 
-        <div className="relative z-[2] flex flex-col items-center gap-6 px-6 py-10 text-center sm:gap-7 sm:px-9 sm:py-11 lg:px-12 lg:py-12">
+        <div className="relative z-[2] mx-auto flex w-full max-w-2xl flex-col items-center justify-center gap-6 px-6 py-10 text-center sm:gap-7 sm:px-9 sm:py-11 lg:max-w-xl lg:px-12 lg:py-12">
           <motion.h2
             id="bilan-cta-title"
-            className="max-w-xl text-balance text-[clamp(1.35rem,4vw,1.875rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-white sm:text-3xl"
+            className="mx-auto w-full max-w-xl text-balance text-center text-[clamp(1.35rem,4vw,1.875rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-white sm:text-3xl"
             variants={REVEAL}
             initial="hidden"
             animate={revealed ? "visible" : "hidden"}
@@ -87,7 +87,7 @@ export function BilanCtaSection({ className }: { className?: string }) {
           </motion.h2>
 
           <motion.p
-            className="max-w-md text-balance text-[15px] leading-relaxed text-white/78 sm:max-w-lg"
+            className="mx-auto w-full max-w-md text-balance text-center text-[15px] leading-relaxed text-white/78 sm:max-w-lg"
             variants={REVEAL}
             initial="hidden"
             animate={revealed ? "visible" : "hidden"}
@@ -97,7 +97,7 @@ export function BilanCtaSection({ className }: { className?: string }) {
           </motion.p>
 
           <motion.div
-            className={cn("justify-center", heroCtaRowCompactClassName)}
+            className="flex w-full justify-center"
             variants={REVEAL}
             initial="hidden"
             animate={revealed ? "visible" : "hidden"}
@@ -105,7 +105,7 @@ export function BilanCtaSection({ className }: { className?: string }) {
           >
             <Link
               href={BILAN_CTA_CONTENT.primaryHref}
-              className={cn(heroCtaPrimaryCompactClassName, "group lg:min-w-[12.5rem]")}
+              className={cn(heroCtaPrimaryCompactClassName, "group sm:min-w-[12.5rem]")}
             >
               {BILAN_CTA_CONTENT.primaryLabel}
               <ArrowUpRight
