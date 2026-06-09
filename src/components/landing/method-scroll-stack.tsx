@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ClipboardList, Compass, RefreshCw, Target } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -16,14 +17,16 @@ import {
   LANDING_SECTION_INSET,
   LANDING_SECTION_SHELL,
 } from "@/lib/content/landing-layout";
+import { METHOD_STEP_IMAGES, type MethodStepImageId } from "@/lib/content/media";
 import { cn } from "@/lib/utils";
 
 type MethodStep = {
-  id: string;
+  id: MethodStepImageId;
   tab: string;
   icon: LucideIcon;
   title: string;
   text: string;
+  image: string;
 };
 
 const METHOD_STEPS: MethodStep[] = [
@@ -33,6 +36,7 @@ const METHOD_STEPS: MethodStep[] = [
     icon: Compass,
     title: "Comprendre votre situation",
     text: "Nous faisons le point sur votre situation personnelle, professionnelle, familiale et fiscale afin d’identifier vos priorités.",
+    image: METHOD_STEP_IMAGES.situation,
   },
   {
     id: "objectifs",
@@ -40,6 +44,7 @@ const METHOD_STEPS: MethodStep[] = [
     icon: Target,
     title: "Définir vos objectifs",
     text: "Retraite, transmission, épargne, prévoyance, fiscalité ou projet d’investissement : nous clarifions les objectifs à court, moyen et long terme.",
+    image: METHOD_STEP_IMAGES.objectifs,
   },
   {
     id: "strategie",
@@ -47,6 +52,7 @@ const METHOD_STEPS: MethodStep[] = [
     icon: ClipboardList,
     title: "Construire une stratégie adaptée",
     text: "Le cabinet étudie les solutions possibles et vous explique les avantages, limites, frais et risques de chaque orientation.",
+    image: METHOD_STEP_IMAGES.strategie,
   },
   {
     id: "suivi",
@@ -54,6 +60,7 @@ const METHOD_STEPS: MethodStep[] = [
     icon: RefreshCw,
     title: "Suivre et ajuster dans le temps",
     text: "Votre patrimoine évolue. L’accompagnement permet d’ajuster les décisions selon votre situation, vos projets et le cadre réglementaire.",
+    image: METHOD_STEP_IMAGES.suivi,
   },
 ];
 
@@ -113,11 +120,20 @@ function MethodStepCard({
   return (
     <article
       className={cn(
-        "rounded-[1.5rem] border border-[#1f2a7c]/10 bg-white/95 p-6 shadow-[0_18px_50px_rgba(23,33,59,0.07)] ring-1 ring-[#1f2a7c]/[0.04] backdrop-blur-[1px] sm:p-8",
+        "overflow-hidden rounded-[1.5rem] border border-[#1f2a7c]/10 bg-white/95 shadow-[0_18px_50px_rgba(23,33,59,0.07)] ring-1 ring-[#1f2a7c]/[0.04] backdrop-blur-[1px]",
         className,
       )}
     >
-      <div className="flex items-start gap-5 sm:gap-7">
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#1f2a7c]/[0.04] sm:aspect-[2/1]">
+        <Image
+          src={step.image}
+          alt={step.title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 768px"
+        />
+      </div>
+      <div className="flex items-start gap-5 p-6 sm:gap-7 sm:p-8">
         <div className="flex shrink-0 flex-col items-center gap-3">
           <span className="text-[clamp(2rem,4.5vw,3rem)] font-semibold leading-none tracking-[-0.04em] text-[#1f2a7c]/15 tabular-nums">
             0{index + 1}

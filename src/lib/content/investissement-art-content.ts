@@ -1,9 +1,11 @@
-/** Contenu page /expertises/investissement-art - images servies depuis /public */
+/** Contenu page /expertises/investissement-art */
+import { EXPERTISE_MEDIA } from "@/lib/content/media";
+
 export const ART_INVESTMENT_IMAGES = {
   croco: "/images/investissement-art/croco.png",
   courseBrise: "/images/investissement-art/course-brise-legere.png",
   ludwig: "/images/investissement-art/ludwig.png",
-  accompagnement: "/images/investissement-art/accompagnement.webp",
+  accompagnement: EXPERTISE_MEDIA.investissementArt,
   fiscalite: "/images/investissement-art/fiscalite.webp",
 } as const;
 
