@@ -379,14 +379,6 @@ html[data-method-sticky-active] .site-chrome-method-shift-floating {
   pointer-events: none;
 }
 
-/* Écran de maintenance — masqué sans flash dès que l'accès a été débloqué. */
-html[data-mbypass="1"] [data-maintenance-overlay] {
-  display: none !important;
-}
-html[data-maintenance-active="1"] {
-  overflow: hidden;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .method-sticky-slide {
     opacity: 1;
