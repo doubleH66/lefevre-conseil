@@ -166,6 +166,7 @@ export function LefevreUniqueTestimonials() {
                   <img
                     src={testimonial.avatar}
                     alt={`Photo de ${testimonial.author}`}
+                    referrerPolicy="no-referrer"
                       className={cn(
                         "size-8 rounded-full object-cover transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
                         isActive ? "ring-2 ring-white/50" : "ring-0",

@@ -134,6 +134,7 @@ export function AvisReviewsBrowser() {
                           <img
                             src={review.avatar}
                             alt={`Photo de ${review.author}`}
+                            referrerPolicy="no-referrer"
                             className="size-10 shrink-0 rounded-full object-cover"
                           />
                         ) : (

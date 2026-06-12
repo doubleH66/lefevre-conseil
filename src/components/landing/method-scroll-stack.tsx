@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ClipboardList, Compass, RefreshCw, Target } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { MethodDesktopFrise } from "@/components/landing/method-desktop-frise";
 import {
   LANDING_SCROLL_MARGIN,
   LANDING_SECTION_INNER_Y,
@@ -113,89 +114,7 @@ function MethodStepCard({
   );
 }
 
-function MethodStepVisual({ step }: { step: MethodStep }) {
-  return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.75rem] border border-[#1f2a7c]/10 bg-[#1f2a7c]/[0.04] shadow-[0_20px_55px_rgba(23,33,59,0.08)] xl:aspect-[5/4] xl:rounded-[2rem]">
-      <Image
-        src={step.image}
-        alt={step.title}
-        fill
-        className="object-cover"
-        sizes="(min-width: 1024px) 42vw, 100vw"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1f2a7c]/20 via-transparent to-transparent" />
-    </div>
-  );
-}
-
-function MethodStepCopy({
-  step,
-  index,
-  align = "left",
-  titleId,
-}: {
-  step: MethodStep;
-  index: number;
-  align?: "left" | "right";
-  titleId: string;
-}) {
-  const Icon = step.icon;
-
-  return (
-    <div
-      className={cn(
-        "flex flex-col justify-center",
-        align === "right" ? "lg:items-end lg:text-right" : "lg:items-start lg:text-left",
-      )}
-    >
-      <div className={cn("flex items-center gap-3", align === "right" && "lg:flex-row-reverse")}>
-        <span className="text-[clamp(2.5rem,4vw,3.5rem)] font-semibold leading-none tracking-[-0.04em] text-[#1f2a7c]/12 tabular-nums">
-          0{index + 1}
-        </span>
-        <span className="flex size-12 items-center justify-center rounded-2xl bg-[#1f2a7c]/[0.07] text-[#1f2a7c]">
-          <Icon className="size-5" aria-hidden strokeWidth={1.85} />
-        </span>
-      </div>
-      <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f2a7c]/45">
-        {step.tab}
-      </p>
-      <h3
-        id={titleId}
-        className="mt-2 max-w-md text-balance text-[clamp(1.35rem,2.2vw,1.85rem)] font-medium leading-tight tracking-[-0.025em] text-[#1f2a7c]"
-      >
-        {step.title}
-      </h3>
-      <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[#1f2a7c]/72 sm:text-base">
-        {step.text}
-      </p>
-    </div>
-  );
-}
-
-function MethodDesktopRow({ step, index }: { step: MethodStep; index: number }) {
-  const imageFirst = index % 2 === 1;
-
-  return (
-    <article
-      aria-labelledby={`method-step-title-${step.id}`}
-      className="grid items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14"
-    >
-      <div className={cn(imageFirst ? "lg:order-1" : "lg:order-2")}>
-        <MethodStepVisual step={step} />
-      </div>
-      <div className={cn(imageFirst ? "lg:order-2" : "lg:order-1")}>
-        <MethodStepCopy
-          step={step}
-          index={index}
-          align={imageFirst ? "right" : "left"}
-          titleId={`method-step-title-${step.id}`}
-        />
-      </div>
-    </article>
-  );
-}
-
-/** Section « Notre méthode » — grille mobile ; alternance visuel / texte sur desktop. */
+/** Section « Notre méthode » — grille mobile ; frise compacte sur desktop. */
 export function MethodScrollStack() {
   return (
     <section
@@ -221,14 +140,18 @@ export function MethodScrollStack() {
           ))}
         </ol>
 
-        {/* Desktop — une étape par ligne, visuel et texte face à face */}
-        <ol className="mx-auto mt-14 hidden max-w-6xl flex-col gap-16 lg:flex xl:mt-16 xl:gap-20">
-          {METHOD_STEPS.map((step, index) => (
-            <li key={step.id}>
-              <MethodDesktopRow step={step} index={index} />
-            </li>
-          ))}
-        </ol>
+        {/* Desktop — frise compacte + panneau unique (hover / focus clavier) */}
+        <div className="hidden lg:block">
+          <MethodDesktopFrise
+            steps={METHOD_STEPS.map(({ id, tab, title, text, image }) => ({
+              id,
+              tab,
+              title,
+              text,
+              image,
+            }))}
+          />
+        </div>
       </div>
     </section>
   );

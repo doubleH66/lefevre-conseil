@@ -60,9 +60,8 @@ export function HeroSection() {
               </h1>
 
               <p className="mx-auto max-w-2xl text-balance text-[15px] leading-[1.55] text-white/80 max-xl:mt-0 sm:text-lg sm:leading-[1.75] xl:mx-0 xl:mt-5">
-                Lefèvre Conseil accompagne particuliers, dirigeants et professions libérales dans leurs
-                décisions patrimoniales : placements, retraite, transmission, prévoyance et fiscalité, au
-                cabinet à Perpignan ou à distance.
+                Lefèvre Conseil accompagne les entreprises et leurs dirigeants, professions libérales et
+                particuliers à Perpignan ou à distance.
               </p>
 
               <div className={cn("max-xl:mt-0 xl:mt-6", heroCtaRowClassName, "max-xl:gap-2 xl:justify-start")}>
