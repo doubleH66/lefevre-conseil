@@ -1,161 +1,103 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Loader2, Sparkles, Wand2 } from "lucide-react";
-import { AdminBtn } from "@/components/portal/admin/admin-ui";
-import { cn } from "@/lib/utils";
+import { ArrowUpRight, FileText, Linkedin, LogIn, Sparkles, Wand2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-type AiTab = "brief" | "blog";
+const HELLOKLIK_APP_URL = "https://app.helloklik.com";
+const HELLOKLIK_SITE_URL = "https://helloklik.com";
 
-type AdminDashboardAiPanelProps = {
-  stats: Record<string, number | string>;
-  weeklyActions: { id: string; label: string; category: string }[];
-};
+const AI_CAPABILITIES: { icon: LucideIcon; title: string; text: string }[] = [
+  {
+    icon: FileText,
+    title: "Articles de blog",
+    text: "Rédaction et publication des billets « Conseils » assistées par IA.",
+  },
+  {
+    icon: Linkedin,
+    title: "Posts LinkedIn",
+    text: "Création et programmation des publications LinkedIn du cabinet.",
+  },
+  {
+    icon: Wand2,
+    title: "Contenus & visuels",
+    text: "Génération de contenus, visuels et campagnes, centralisée au même endroit.",
+  },
+];
 
-export function AdminDashboardAiPanel({ stats, weeklyActions }: AdminDashboardAiPanelProps) {
-  const [tab, setTab] = React.useState<AiTab>("brief");
-  const [blogTopic, setBlogTopic] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [reply, setReply] = React.useState("");
-  const [source, setSource] = React.useState<"openai" | "fallback" | null>(null);
-
-  const runAssistant = async (task: AiTab, topic?: string) => {
-    setLoading(true);
-    setReply("");
-    setSource(null);
-    try {
-      const res = await fetch("/api/portal-assistant", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mode: "admin",
-          task,
-          blogTopic: topic,
-          stats,
-          weeklyActions,
-        }),
-      });
-      const data = (await res.json()) as { reply?: string; source?: "openai" | "fallback" };
-      setReply(data.reply ?? "Aucune réponse.");
-      setSource(data.source ?? "fallback");
-    } catch {
-      setReply("Impossible de joindre l’assistant pour le moment.");
-      setSource("fallback");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const copyReply = async () => {
-    if (!reply) return;
-    try {
-      await navigator.clipboard.writeText(reply);
-    } catch {
-      /* ignore */
-    }
-  };
-
+export function AdminDashboardAiPanel() {
   return (
-    <section className="overflow-hidden rounded-2xl border border-[#1f2a7c]/20 bg-gradient-to-br from-[#1f2a7c]/[0.06] via-white to-[#eef1fb] shadow-[0_12px_40px_rgba(31,42,124,0.08)]">
-      <header className="border-b border-[#1f2a7c]/10 px-4 py-3 sm:px-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex items-start gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-[#1f2a7c] text-white shadow-lg shadow-[#1f2a7c]/25">
-              <Sparkles className="size-4" aria-hidden />
-            </span>
-            <div>
-              <h2 className="text-sm font-semibold text-neutral-900">Utiliser l’IA</h2>
-              <p className="mt-0.5 text-xs text-neutral-600">
-                Brief du jour ou brouillon pour la rubrique Conseils
-              </p>
-            </div>
-          </div>
-          <div className="flex rounded-xl border border-neutral-200 bg-white p-0.5">
-            {(
-              [
-                { id: "brief" as const, label: "Brief du jour" },
-                { id: "blog" as const, label: "Créer un billet" },
-              ] as const
-            ).map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setTab(item.id)}
-                className={cn(
-                  "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
-                  tab === item.id
-                    ? "bg-[#1f2a7c] text-white"
-                    : "text-neutral-600 hover:bg-neutral-50",
-                )}
-              >
-                {item.label}
-              </button>
-            ))}
+    <section className="overflow-hidden rounded-2xl border border-[#1f2a7c]/20 bg-gradient-to-br from-[#1f2a7c]/[0.07] via-white to-[#eef1fb] shadow-[0_12px_40px_rgba(31,42,124,0.08)]">
+      <header className="flex flex-wrap items-start justify-between gap-3 border-b border-[#1f2a7c]/10 px-4 py-3.5 sm:px-5">
+        <div className="flex items-start gap-3">
+          <span className="flex size-10 items-center justify-center rounded-xl bg-[#1f2a7c] text-white shadow-lg shadow-[#1f2a7c]/25">
+            <Sparkles className="size-4" aria-hidden />
+          </span>
+          <div>
+            <h2 className="text-sm font-semibold text-neutral-900">Utiliser l’IA</h2>
+            <p className="mt-0.5 text-xs text-neutral-600">
+              Contenus, blog et réseaux sociaux du cabinet
+            </p>
           </div>
         </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1f2a7c]/15 bg-white px-2.5 py-1 text-[11px] font-semibold text-[#1f2a7c]">
+          <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden />
+          Propulsé par HelloKlik
+        </span>
       </header>
 
       <div className="space-y-4 p-4 sm:p-5">
-        {tab === "brief" ? (
-          <div className="rounded-xl border border-white/80 bg-white/90 p-4">
-            <p className="text-sm text-neutral-700">
-              Synthèse des priorités à partir de vos indicateurs et des actions en cours (documents, demandes,
-              relances).
-            </p>
-            <AdminBtn
-              variant="primary"
-              className="mt-3"
-              disabled={loading}
-              onClick={() => void runAssistant("brief")}
-            >
-              {loading ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Wand2 className="size-3.5" aria-hidden />}
-              Générer le brief
-            </AdminBtn>
-          </div>
-        ) : (
-          <div className="rounded-xl border border-white/80 bg-white/90 p-4">
-            <label htmlFor="blog-topic" className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              Sujet du billet Conseils
-            </label>
-            <input
-              id="blog-topic"
-              value={blogTopic}
-              onChange={(e) => setBlogTopic(e.target.value)}
-              placeholder="Ex. : comment anticiper sa retraite en tant que dirigeant"
-              className="mt-2 h-10 w-full rounded-xl border border-neutral-200 bg-white px-3 text-sm outline-none focus:border-[#1f2a7c]/40 focus:ring-2 focus:ring-[#1f2a7c]/12"
-            />
-            <AdminBtn
-              variant="primary"
-              className="mt-3"
-              disabled={loading || !blogTopic.trim()}
-              onClick={() => void runAssistant("blog", blogTopic.trim())}
-            >
-              {loading ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Sparkles className="size-3.5" aria-hidden />}
-              Créer un brouillon
-            </AdminBtn>
-          </div>
-        )}
+        <p className="text-sm leading-relaxed text-neutral-700">
+          Toute la partie intelligence artificielle du cabinet est gérée directement depuis{" "}
+          <a
+            href={HELLOKLIK_SITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-[#1f2a7c] underline decoration-[#1f2a7c]/30 underline-offset-2 hover:decoration-[#1f2a7c]"
+          >
+            helloklik.com
+          </a>
+          . Articles de blog, posts LinkedIn et contenus sont créés, planifiés et publiés depuis votre espace
+          HelloKlik — sans quitter un seul outil.
+        </p>
 
-        {reply ? (
-          <div className="rounded-xl border border-[#1f2a7c]/15 bg-white p-4">
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500">
-                {source === "openai" ? "Réponse IA" : "Mode hors ligne"}
-              </span>
-              <button
-                type="button"
-                onClick={() => void copyReply()}
-                className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-semibold text-[#1f2a7c] hover:bg-[#1f2a7c]/5"
+        <ul className="grid gap-2.5 sm:grid-cols-3">
+          {AI_CAPABILITIES.map((cap) => {
+            const Icon = cap.icon;
+            return (
+              <li
+                key={cap.title}
+                className="rounded-xl border border-white/80 bg-white/90 p-3.5 shadow-sm"
               >
-                <Copy className="size-3" aria-hidden />
-                Copier
-              </button>
-            </div>
-            <div className="max-h-56 overflow-y-auto whitespace-pre-wrap text-sm leading-relaxed text-neutral-800">
-              {reply}
-            </div>
+                <span className="flex size-8 items-center justify-center rounded-lg bg-[#1f2a7c]/[0.08] text-[#1f2a7c]">
+                  <Icon className="size-4" aria-hidden strokeWidth={1.85} />
+                </span>
+                <p className="mt-2.5 text-[13px] font-semibold text-neutral-900">{cap.title}</p>
+                <p className="mt-1 text-[11px] leading-relaxed text-neutral-600">{cap.text}</p>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="flex flex-col gap-3 rounded-xl border border-[#1f2a7c]/15 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-neutral-900">Accès à la plateforme</p>
+            <p className="mt-0.5 text-xs text-neutral-600">
+              Connexion à votre espace :{" "}
+              <span className="font-medium text-[#1f2a7c]">app.helloklik.com</span>
+            </p>
           </div>
-        ) : null}
+          <a
+            href={HELLOKLIK_APP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#1f2a7c] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#182266]"
+          >
+            <LogIn className="size-4" aria-hidden />
+            Se connecter à HelloKlik
+            <ArrowUpRight className="size-3.5" aria-hidden />
+          </a>
+        </div>
       </div>
     </section>
   );

@@ -28,7 +28,6 @@ import { DocumentRequestModal } from "@/components/portal/DocumentRequestModal";
 import { StatusBadge } from "@/components/portal/StatusBadge";
 import { usePortal } from "@/components/portal/portal-provider";
 import {
-  buildWeeklyActions,
   clientStatusBreakdown,
   leadsActivityByMonth,
   pipelineBreakdown,
@@ -91,21 +90,10 @@ export function AdminDashboardView() {
   const activityChart = React.useMemo(() => leadsActivityByMonth(analyticsInput), [analyticsInput]);
   const pipelineChart = React.useMemo(() => pipelineBreakdown(analyticsInput), [analyticsInput]);
   const clientsChart = React.useMemo(() => clientStatusBreakdown(clients), [clients]);
-  const weeklyActions = React.useMemo(() => buildWeeklyActions(analyticsInput), [analyticsInput]);
 
   const priorityDocs = documents.filter((d) => d.status === "Envoyé" || d.status === "À corriger").slice(0, 6);
   const unreadNotifications = notifications.filter((n) => !n.readAt).slice(0, 5);
   const recentLeads = siteLeads.slice(0, 5);
-
-  const aiStats = React.useMemo(
-    () => ({
-      clientsActifs: stats.clientsActifs,
-      demandesOuvertes: stats.demandesOuvertes,
-      aValider: stats.aValider,
-      aDeposer: stats.aDeposer,
-    }),
-    [stats],
-  );
 
   return (
     <>
@@ -176,7 +164,7 @@ export function AdminDashboardView() {
 
       <div className="mt-5 grid gap-4 xl:grid-cols-3">
         <div className="space-y-4 xl:col-span-2">
-          <AdminDashboardAiPanel stats={aiStats} weeklyActions={weeklyActions} />
+          <AdminDashboardAiPanel />
           <AdminDashboardClientsMini
             clients={clients}
             onViewClient={(id) => setSelectedClientId(id)}
