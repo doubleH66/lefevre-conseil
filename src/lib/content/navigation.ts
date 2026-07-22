@@ -11,16 +11,17 @@ import {
 } from "@/lib/content/routes";
 import { SERVICE_CATALOG } from "@/lib/content/services";
 
-export type NavLink = { label: string; href: string };
+export type NavLink = { label: string; href: string; dividerBefore?: boolean };
 
 export const NAV_CABINET_LINKS: NavLink[] = [
   { label: "Qui sommes-nous", href: NOTRE_CABINET_HREF },
   { label: "Installer l’app", href: INSTALLATION_HREF },
 ];
 
+/** Pages outils séparées (pas d’ancres #mutuelle / #comparateur). */
 export const NAV_EXPERTISE_TOOL_LINKS: NavLink[] = [
-  { label: "Proposition mutuelle", href: `${EXPERTISES_BASE_HREF}#mutuelle` },
-  { label: "Comparateur assurance", href: `${EXPERTISES_BASE_HREF}#comparateur` },
+  { label: "Mutuelle santé", href: ROUTES.simulateurMutuelle, dividerBefore: true },
+  { label: "Assurance de prêt", href: ROUTES.comparateur },
 ];
 
 export const NAV_EXPERTISE_LINKS: NavLink[] = [
@@ -46,6 +47,7 @@ export const NAV_HERO_OVERLAY_PATHS = new Set<string>([
   ROUTES.faq,
   ROUTES.installation,
   ROUTES.simulateur,
+  ROUTES.simulateurs,
   ROUTES.simulateurMutuelle,
   ROUTES.comparateur,
   ROUTES.login,

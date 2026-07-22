@@ -181,6 +181,7 @@ export function FloatingConsultButton({
                         alt={imageAlt}
                         fill
                         sizes="48px"
+                        unoptimized
                         className="object-cover"
                         style={{ objectPosition: ADVISOR_ROUND_AVATAR_OBJECT_POSITION }}
                       />
@@ -319,6 +320,7 @@ export function FloatingConsultButton({
                   alt={imageAlt}
                   fill
                   sizes="96px"
+                  unoptimized
                   className="object-cover"
                   style={{ objectPosition: ADVISOR_ROUND_AVATAR_OBJECT_POSITION }}
                 />

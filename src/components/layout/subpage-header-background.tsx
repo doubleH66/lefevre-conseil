@@ -18,6 +18,7 @@ export function SubpageHeaderBackground({ imageSrc }: SubpageHeaderBackgroundPro
         src={imageSrc ?? INNER_PAGE_HEADER_IMAGE}
         alt=""
         fill
+        unoptimized
         className="object-cover object-center"
         sizes="(min-width: 1024px) 90vw, 100vw"
         priority

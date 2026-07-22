@@ -146,6 +146,15 @@ export function NavDropdown({ id, light, surfaceClass, open, setOpen }: NavDropd
                 <ul className="max-h-[min(20rem,58vh)] overflow-y-auto overscroll-contain">
                   {item.links.map((link) => (
                     <li key={`${link.href}-${link.label}`}>
+                      {link.dividerBefore ? (
+                        <div
+                          role="separator"
+                          className={cn(
+                            "mx-3 my-2 border-t",
+                            light ? "border-white/15" : "border-[#1f2a7c]/10",
+                          )}
+                        />
+                      ) : null}
                       <Link
                         href={link.href}
                         role="menuitem"

@@ -20,6 +20,7 @@ export const ROUTES = {
   espaceAdminReglages: "/espace-admin/reglages",
   cookies: "/cookies",
   simulateur: "/simulateur",
+  simulateurs: "/simulateurs",
   simulateurMutuelle: "/simulateur-mutuelle",
   comparateur: "/comparateur",
   mentionsLegales: "/mentions-legales",
@@ -37,7 +38,9 @@ export const DEMANDE_HREF = ROUTES.contact;
 /** @deprecated CTA principal unifié vers /contact (le simulateur reste un outil secondaire). */
 export const SIMULATION_HREF = ROUTES.contact;
 export const SIMULATEUR_HREF = ROUTES.simulateur;
+export const SIMULATEURS_HREF = ROUTES.simulateurs;
 export const SIMULATEUR_MUTUELLE_HREF = ROUTES.simulateurMutuelle;
+export const COMPARATEUR_HREF = ROUTES.comparateur;
 export const CONTACT_HREF = ROUTES.contact;
 export const CONSEILS_HREF = ROUTES.conseils;
 export const AVIS_HREF = ROUTES.avis;

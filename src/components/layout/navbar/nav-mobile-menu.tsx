@@ -53,14 +53,18 @@ function MobileAccordion({
           >
             <div className="ml-2 mt-1 py-1 pl-2">
               {item.links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={onNavigate}
-                  className="block rounded-lg px-3 py-2.5 text-[13px] text-neutral-700 transition-colors hover:bg-[#1f2a7c]/[0.05]"
-                >
-                  {link.label}
-                </Link>
+                <div key={`${link.href}-${link.label}`}>
+                  {link.dividerBefore ? (
+                    <div role="separator" className="mx-3 my-2 border-t border-[#1f2a7c]/10" />
+                  ) : null}
+                  <Link
+                    href={link.href}
+                    onClick={onNavigate}
+                    className="block rounded-lg px-3 py-2.5 text-[13px] text-neutral-700 transition-colors hover:bg-[#1f2a7c]/[0.05]"
+                  >
+                    {link.label}
+                  </Link>
+                </div>
               ))}
             </div>
           </motion.div>

@@ -213,6 +213,7 @@ export function NotreCabinetPage() {
     <MarketingSubpage
       hero={PAGE_HEROES.notreCabinet}
       hideBilanCta
+      headerImageSrc={CABINET_PORTRAIT_IMAGE_URL}
       breadcrumbs={[
         { label: "Accueil", href: "/" },
         { label: "Notre cabinet" },
@@ -340,6 +341,7 @@ export function NotreCabinetPage() {
                     src={CABINET_PORTRAIT_IMAGE_URL}
                     alt="Philippe Lefèvre, conseiller patrimonial à Perpignan"
                     fill
+                    unoptimized
                     className="object-cover"
                     style={{ objectPosition: CABINET_PORTRAIT_OBJECT_POSITION }}
                     sizes="(max-width: 1024px) 100vw, 40vw"

@@ -553,6 +553,7 @@ export function ContactPage({ initialSubject = "" }: { initialSubject?: string }
                   src={CABINET_PORTRAIT_IMAGE_URL}
                   alt="Philippe Lefèvre, conseiller en gestion de patrimoine à Perpignan"
                   fill
+                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                   style={{ objectPosition: CABINET_PORTRAIT_OBJECT_POSITION }}

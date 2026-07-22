@@ -110,6 +110,7 @@ export function CabinetIntro() {
                   src={CABINET_PORTRAIT_IMAGE_URL}
                   alt={`Philippe Lefèvre, ${CABINET_CONTACT.name} - conseil en gestion de patrimoine à Perpignan (${CABINET_CONTACT.address.postalCode})`}
                   fill
+                  unoptimized
                   className="object-cover"
                   style={{ objectPosition: CABINET_PORTRAIT_OBJECT_POSITION }}
                   sizes="(max-width: 1024px) 100vw, 45vw"

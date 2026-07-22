@@ -115,10 +115,11 @@ export function SiteFooter() {
         {
           title: "Outils",
           links: [
-            { id: 20, title: "Simulateur patrimonial", url: ROUTES.simulateur },
-            { id: 21, title: "Proposition mutuelle", url: `${EXPERTISES_BASE_HREF}#mutuelle` },
-            { id: 22, title: "Comparateur assurance", url: `${EXPERTISES_BASE_HREF}#comparateur` },
-            { id: 23, title: "Installer l’application", url: ROUTES.installation },
+            { id: 20, title: "Mutuelle santé", url: ROUTES.simulateurMutuelle },
+            { id: 21, title: "Assurance de prêt", url: ROUTES.comparateur },
+            { id: 22, title: "Simulateurs", url: ROUTES.simulateurs },
+            { id: 23, title: "Simulateur patrimonial", url: ROUTES.simulateur },
+            { id: 24, title: "Installer l’application", url: ROUTES.installation },
           ],
           extra: <FooterSocialLinks />,
         },

@@ -1,8 +1,10 @@
 /** CDN principal des visuels marketing (portraits hero). */
 export const SITE_MEDIA_CDN = "https://cdn.helloklik.com/uploads";
 
-export const HERO_DESKTOP_IMAGE_URL = `${SITE_MEDIA_CDN}/1778596576110-philippe_le_fevre_desktop.webp`;
-export const HERO_MOBILE_IMAGE_URL = `${SITE_MEDIA_CDN}/1778596576981-philippe_le_fevre.webp`;
+/** Fonds hero accueil (desktop + mobile). */
+export const HERO_DESKTOP_IMAGE_URL =
+  "https://gyisrwfapphqqdbpujtb.supabase.co/storage/v1/object/public/public-media/1f318ab7-622c-4617-8462-5fcc92625aee/1784730818315-hn5v3a-philippe-lefevre-fondsite.webp";
+export const HERO_MOBILE_IMAGE_URL = HERO_DESKTOP_IMAGE_URL;
 export const SUBPAGE_HEADER_IMAGE_URL = `${SITE_MEDIA_CDN}/1778742468697-Capture_d_e_cran_2026-05-14_a__09.06.37.png`;
 
 /** Préfixe bucket public Supabase (Réglages → Médias publics du site). */
@@ -10,10 +12,12 @@ const SUPABASE_PUBLIC_MEDIA =
   "https://gyisrwfapphqqdbpujtb.supabase.co/storage/v1/object/public/public-media/d4660a7b-c5d8-424e-bae8-333215d81e70";
 
 /** Portrait « Qui sommes-nous » (Notre cabinet, contact, intro accueil). */
-export const CABINET_ABOUT_IMAGE_URL = `${SUPABASE_PUBLIC_MEDIA}/1780985941693-le0pdt-qui-sommes-nous-lefevre.webp`;
+export const CABINET_ABOUT_IMAGE_URL =
+  "https://gyisrwfapphqqdbpujtb.supabase.co/storage/v1/object/public/public-media/1f318ab7-622c-4617-8462-5fcc92625aee/1784731492401-dov0l1-qui-sommes-nous-lefevre-conseil.webp";
 
 /** Icône visage rond (FAB contact, avatar conseiller). */
-export const ADVISOR_FACE_ICON_IMAGE_URL = `${SUPABASE_PUBLIC_MEDIA}/1780985921601-qss3tu-Icone-visage-lefevre.webp`;
+export const ADVISOR_FACE_ICON_IMAGE_URL =
+  "https://gyisrwfapphqqdbpujtb.supabase.co/storage/v1/object/public/public-media/1f318ab7-622c-4617-8462-5fcc92625aee/1784730150505-ykfxkr-philippe-lefevre-siteweb.webp";
 
 /** Visuels expertises (carrousel accueil, hub /expertises, héros pages service). */
 export const EXPERTISE_MEDIA = {

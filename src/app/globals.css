@@ -308,7 +308,47 @@
   background: #182266;
 }
 
-/* Section « Notre méthode » — chrome masqué (legacy scroll sticky, conservé inactif). */
+/* Méthode mobile — onglets + glissement de carte */
+.method-sticky-tabs .method-sticky-tab-indicator {
+  top: 6px;
+  left: 6px;
+  width: calc((100% - 12px) / 4);
+  height: calc(100% - 12px);
+}
+
+.method-sticky-tab-indicator {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc((100% - 12px) / 4);
+  height: calc(100% - 12px);
+  border-radius: 999px;
+  background: #1f2a7c;
+  box-shadow: 0 10px 28px rgba(31, 42, 124, 0.22);
+  transform: translateX(calc(var(--active) * 100%));
+  transition: transform 0.65s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 0;
+}
+
+.method-sticky-slide {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(4px);
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.62s cubic-bezier(0.19, 1, 0.22, 1),
+    filter 0.5s ease;
+}
+
+.method-sticky-slide[data-active="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+/* Section « Notre méthode » — chrome masqué pendant le sticky scroll */
 .site-chrome-method-shift {
   transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -341,6 +381,18 @@ html[data-method-sticky-active] .site-chrome-method-shift-floating {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .method-sticky-slide {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  .method-sticky-tab-indicator {
+    transition: none;
+  }
+
   .site-chrome-method-shift,
   .site-chrome-method-shift-promo,
   .site-chrome-method-shift-floating {

@@ -75,18 +75,25 @@ export const PAGE_HEROES = {
     taglineHighlightAfter: " - pour préparer",
     titleId: "simulateur-hero-title",
   },
-  simulateurMutuelle: {
-    title: "Proposition mutuelle santé",
+  simulateurs: {
+    title: "Mutuelle santé et assurance emprunteur",
     tagline:
-      "Une demande simple en quelques minutes - Philippe Lefèvre vous recontacte pour une offre adaptée, sans souscription en ligne.",
-    taglineHighlightAfter: " - Philippe Lefèvre",
+      "Demandez une proposition mutuelle en ligne, ou comparez votre assurance de prêt. Un conseiller affine ensuite avec vous les garanties et le budget.",
+    taglineHighlightAfter: " Un conseiller",
+    titleId: "simulateurs-hero-title",
+  },
+  simulateurMutuelle: {
+    title: "Mutuelle santé",
+    tagline:
+      "Parcours en 6 étapes : profil, coordonnées, besoins santé et budget. Philippe Lefèvre vous recontacte pour une offre adaptée — sans souscription en ligne ni engagement.",
+    taglineHighlightAfter: " Philippe Lefèvre",
     titleId: "simulateur-mutuelle-hero-title",
   },
   comparateur: {
-    title: "Comparateur assurance",
+    title: "Assurance de prêt",
     tagline:
-      "Comparez les offres en ligne - puis affinez avec un conseiller pour choisir la bonne protection.",
-    taglineHighlightAfter: " - puis affinez",
+      "Comparez votre assurance emprunteur en ligne — délégation possible (loi Lemoine). Un conseiller affine ensuite garanties et budget avec vous.",
+    taglineHighlightAfter: " Un conseiller",
     titleId: "comparateur-hero-title",
   },
   mentionsLegales: {

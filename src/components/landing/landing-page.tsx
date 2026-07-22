@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
  */
 export function LandingPage() {
   return (
-    <main className={cn("min-h-dvh overflow-x-clip bg-white text-neutral-950", SITE_SECTION_STACK, "pb-4 sm:pb-6")}>
+    <main className={cn("min-h-dvh bg-white text-neutral-950", SITE_SECTION_STACK, "pb-4 sm:pb-6")}>
       <LandingHeroBlock />
       <CabinetIntro />
       <MethodScrollStack />

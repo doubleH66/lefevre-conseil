@@ -1,76 +1,47 @@
-"use client";
-
-import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, HeartPulse, Shield } from "lucide-react";
-import { ComparateurEmbed } from "@/components/marketing/comparateur-embed";
-import { MutuelleSimulator } from "@/components/mutuelle/MutuelleSimulator";
-import { CONTACT_HREF, ROUTES } from "@/lib/content/routes";
 import { marketingProseClass, marketingTitleClass } from "@/components/marketing/marketing-styles";
+import { COMPARATEUR_HREF, CONTACT_HREF, SIMULATEUR_MUTUELLE_HREF } from "@/lib/content/routes";
 import { cn } from "@/lib/utils";
 
-type Mode = "mutuelle" | "assurance-pret";
-
-const MODES: { id: Mode; label: string; icon: React.ReactNode; hash: string }[] = [
-  {
-    id: "mutuelle",
-    label: "Mutuelle santé",
-    icon: <HeartPulse className="size-4" aria-hidden />,
-    hash: "mutuelle",
-  },
-  {
-    id: "assurance-pret",
-    label: "Assurance de prêt",
-    icon: <Shield className="size-4" aria-hidden />,
-    hash: "comparateur",
-  },
-];
-
-function modeFromHash(hash: string): Mode | null {
-  const id = hash.replace(/^#/, "");
-  if (id === "mutuelle" || id === "outils-sante-pret") return "mutuelle";
-  if (id === "comparateur" || id === "assurance-pret") return "assurance-pret";
-  return null;
-}
-
 type ServiceComparateurBlockProps = {
-  /** Ancre scroll (hub expertises). */
+  /** Ancre scroll (page service). */
   id?: string;
   className?: string;
   sourcePage?: string;
-  /** `inline` : sous-section page service · `standalone` : bloc hub expertises. */
+  /** `inline` : sous-section page service · `standalone` : bloc hub. */
   layout?: "inline" | "standalone";
   titleId?: string;
 };
 
-/** Simulateur mutuelle + comparateur iframe (Assur Distribution). */
+const TOOLS = [
+  {
+    id: "mutuelle",
+    href: SIMULATEUR_MUTUELLE_HREF,
+    icon: HeartPulse,
+    title: "Mutuelle santé",
+    description:
+      "Parcours en 6 étapes : profil, coordonnées, besoins santé et budget. Sans souscription en ligne ni engagement.",
+    cta: "Obtenir ma proposition mutuelle",
+  },
+  {
+    id: "comparateur",
+    href: COMPARATEUR_HREF,
+    icon: Shield,
+    title: "Assurance de prêt",
+    description:
+      "Étude en ligne pour votre prêt immobilier ou professionnel — délégation d’assurance possible (loi Lemoine).",
+    cta: "Comparer mon assurance de prêt",
+  },
+] as const;
+
+/** Deux outils séparés, chacun vers sa page dédiée (page prévoyance). */
 export function ServiceComparateurBlock({
   id = "outils-sante-pret",
   className,
-  sourcePage = ROUTES.expertises,
   layout = "inline",
   titleId = "service-comparateur-title",
 }: ServiceComparateurBlockProps) {
-  const [mode, setMode] = React.useState<Mode>("mutuelle");
-
-  React.useEffect(() => {
-    const syncFromHash = () => {
-      const next = modeFromHash(window.location.hash);
-      if (next) setMode(next);
-    };
-    syncFromHash();
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-  }, []);
-
-  function selectMode(next: Mode) {
-    setMode(next);
-    const hash = MODES.find((m) => m.id === next)?.hash;
-    if (hash && layout === "standalone") {
-      window.history.replaceState(null, "", `#${hash}`);
-    }
-  }
-
   return (
     <div
       id={id}
@@ -81,75 +52,40 @@ export function ServiceComparateurBlock({
       )}
     >
       <h2 id={titleId} className={cn("text-center", marketingTitleClass, marketingProseClass)}>
-        Mutuelle santé et assurance emprunteur
+        Outils dédiés
       </h2>
       <p className="mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed text-[#1f2a7c]/70">
-        Demandez une proposition mutuelle en ligne, ou comparez votre assurance de prêt. Un conseiller
-        affine ensuite avec vous les garanties et le budget.
+        Mutuelle santé et assurance de prêt sont sur des pages séparées. Un conseiller affine ensuite avec
+        vous les garanties et le budget.
       </p>
 
-      <div
-        className="mx-auto mt-6 flex max-w-md flex-col gap-2 rounded-2xl border border-[#1f2a7c]/10 bg-[#1f2a7c]/[0.03] p-1.5 sm:flex-row"
-        role="tablist"
-        aria-label="Type de comparaison"
-      >
-        {MODES.map(({ id: modeId, label, icon }) => (
-          <button
-            key={modeId}
-            type="button"
-            role="tab"
-            aria-selected={mode === modeId}
-            aria-controls={`${id}-${modeId}-panel`}
-            id={`${id}-${modeId}-tab`}
-            onClick={() => selectMode(modeId)}
-            className={cn(
-              "flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors",
-              mode === modeId
-                ? "bg-[#1f2a7c] text-white shadow-sm"
-                : "text-[#1f2a7c]/65 hover:bg-white hover:text-[#1f2a7c]",
-            )}
+      <div className="mx-auto mt-8 grid max-w-4xl gap-5 sm:grid-cols-2">
+        {TOOLS.map(({ id: toolId, href, icon: Icon, title, description, cta }) => (
+          <section
+            key={toolId}
+            id={toolId}
+            aria-labelledby={`${toolId}-title`}
+            className="flex flex-col rounded-2xl border border-[#1f2a7c]/10 bg-white p-6 shadow-[0_12px_36px_rgba(23,33,59,0.05)]"
           >
-            {icon}
-            {label}
-          </button>
+            <span className="inline-flex size-10 items-center justify-center rounded-xl bg-[#1f2a7c]/[0.06] text-[#1f2a7c]">
+              <Icon className="size-5" aria-hidden />
+            </span>
+            <h3 id={`${toolId}-title`} className="mt-4 text-lg font-semibold tracking-tight text-[#1f2a7c]">
+              {title}
+            </h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-neutral-600">{description}</p>
+            <Link
+              href={href}
+              className="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1f2a7c] transition-all hover:gap-2.5"
+            >
+              {cta}
+              <ArrowRight className="size-3.5" aria-hidden />
+            </Link>
+          </section>
         ))}
       </div>
 
-      <div
-        id={`${id}-${mode}-panel`}
-        role="tabpanel"
-        aria-labelledby={`${id}-${mode}-tab`}
-        className="mt-6 overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-[0_18px_50px_rgba(23,33,59,0.06)]"
-      >
-        {mode === "mutuelle" ? (
-          <div className="px-4 py-6 sm:px-6 sm:py-8">
-            <p className="text-sm font-semibold text-[#1f2a7c]">Proposition mutuelle personnalisée</p>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600">
-              Parcours en 6 étapes : profil, coordonnées, besoins santé et budget. Philippe Lefèvre vous
-              recontacte pour une offre adaptée — sans souscription en ligne ni engagement.
-            </p>
-            <div className="mt-6">
-              <MutuelleSimulator sourcePage={sourcePage} />
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="border-b border-neutral-100 px-5 py-4 sm:px-6">
-              <p className="text-sm font-semibold text-[#1f2a7c]">Assurance emprunteur</p>
-              <p className="mt-1 text-sm text-neutral-600">
-                Étude en ligne pour votre prêt immobilier ou professionnel — délégation d&apos;assurance possible
-                (loi Lemoine).
-              </p>
-            </div>
-            <div className="bg-neutral-50/80 p-4 sm:p-6">
-              <ComparateurEmbed />
-            </div>
-          </>
-        )}
-      </div>
-
-      <p className="mt-4 text-center text-xs text-[#1f2a7c]/55">
-        {mode === "assurance-pret" ? <>Outil Assur Distribution · </> : null}
+      <p className="mt-5 text-center text-xs text-[#1f2a7c]/55">
         Pour un accompagnement personnalisé,{" "}
         <Link href={CONTACT_HREF} className="font-semibold text-[#1f2a7c] underline-offset-2 hover:underline">
           contactez le cabinet
